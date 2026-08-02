@@ -1,0 +1,385 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "The Links — 'editorial' token overlay (register: editorial-minimal). Stance: the homepage is set like a printed feature — one warm paper field, hairline rules, marginal heads, and type carrying the entire hierarchy, so restraint reads as confidence rather than emptiness. The venue's warm dark room enters only as captioned photographic PLATES dropped into that paper page, which makes the dark/light rhythm the brand's photography already owns into the page's structural system — and makes the missing photography an honest, designed, captioned absence instead of a hole. Overlay for design/tokens.json; unlisted tokens inherit from the canonical set. Every ratio below is a computed WCAG 2.1 sRGB contrast ratio, not an estimate.",
+
+  "$extensions": {
+    "com.monkeyjumplabs.meta": {
+      "candidate": "home-editorial",
+      "register": "editorial-minimal",
+      "divergenceAxis": "theme → token_set",
+      "surface": "homepage",
+      "baseTokens": "marketing/websites/the-links/design/tokens.json",
+      "dials": { "variance": 5, "motion": 2, "density": 4 },
+      "date": "2026-08-02",
+      "status": "PROPOSAL — divergent candidate for a human gate. Not client-approved, not merged.",
+      "note": "See editorial.md (sibling) for the candidate note: committed idea, kept vs. replaced, every computed ratio, and flagged token gaps."
+    }
+  },
+
+  "palette": {
+    "$type": "color",
+    "$description": "Overlay primitives. The overlay KEEPS the canonical warm/green family verbatim and changes only the neutrals and the darks. Net: this surface runs on TWO fields — paper and plate — instead of four near-identical off-whites.",
+
+    "forest": {
+      "$value": "#124b2e",
+      "$description": "KEPT VERBATIM from tokens.json. Re-cast: in this overlay forest stops being a background and becomes THE INK. The brand's strongest colour equity now appears on every word of the page rather than behind two of them."
+    },
+    "paper": {
+      "$value": "#f4f0e8",
+      "$description": "REPLACES palette.paper #F7F5F3. Warmed and deepened (~2% down, +6 red-over-blue) so it reads as a printed sheet rather than an off-white screen, and so a true-white form field can sit on it as a visible inset. This is now the ONLY light field on the page — see the note on greige/sage."
+    },
+    "plate": {
+      "$value": "#0b2a1a",
+      "$description": "REPLACES palette.night #0D3520, ~1.5% darker at the same 150° hue. The field for the featured-offer band and the footer. Named 'plate' because in this register every dark area on the page is a printed plate, not a coloured section."
+    },
+    "plateDeep": {
+      "$value": "#071a10",
+      "$description": "NEW. The photographic near-black INSIDE an image plate only — never a text field. Matches the shoot's measured 33–38% near-black coverage (screen-spec §8). It is a green-black, not #000000 (anti-slop: no pure black)."
+    },
+    "ember": {
+      "$value": "#8a400a",
+      "$description": "KEPT VERBATIM. Still the action colour, still the pendant light. In this register it is the page's ONLY chromatic event on paper: the CTA fill, the hours caveat, the link rules. Scarce and semantic, per the register."
+    },
+    "emberHover": {
+      "$value": "#ad500d",
+      "$description": "KEPT VERBATIM (was role.primary.hover)."
+    },
+    "emberActive": {
+      "$value": "#6d3308",
+      "$description": "KEPT VERBATIM (was role.primary.active)."
+    },
+    "emberMid": {
+      "$value": "#b85718",
+      "$description": "KEPT VERBATIM. Focus ring on light only. Still never a text-bearing fill."
+    },
+    "amber": {
+      "$value": "#f3b268",
+      "$description": "KEPT VERBATIM. The pendant light. DARK FIELDS ONLY — 1.62:1 on the new paper, which is worse than on the old #F7F5F3, so the existing rule tightens rather than loosens."
+    },
+    "screen": {
+      "$value": "#2e5a6e",
+      "$description": "KEPT VERBATIM. Informational/status, and the deep tone of the simulator projection in every image plate."
+    },
+    "screenGlow": {
+      "$value": "#7fa8be",
+      "$description": "NEW, DECORATIVE-ONLY. The lit face of the simulator projection inside an image plate — the shoot's one cool note (7–8% of saturated pixels, 210–240°). Never carries text; never appears on a light field. On plateDeep it is 7.08:1, which is stated for information only, not as a text permission."
+    },
+    "rule": {
+      "$value": "#c7bfac",
+      "$description": "NEW. The hairline. The single most-used non-type element in this register: it replaces every card border and every box. Decorative divider only (1.61:1 on paper) — anywhere a rule is a meaningful boundary the overlay uses border.control instead. This is the register's named common gap ('a hairline border/divider token'), now closed."
+    },
+    "ruleOnDark": {
+      "$value": "#2f4a3b",
+      "$description": "NEW. The hairline on a plate field. Decorative divider only (1.59:1 on plate)."
+    },
+    "controlEdge": {
+      "$value": "#7d7768",
+      "$description": "NEW. Meaningful boundaries: form-field edges, plate crop frames. 3.92:1 vs paper, 4.46:1 vs white — clears WCAG 2.1 1.4.11 (3:1 non-text) on both."
+    },
+    "inkMuted": {
+      "$value": "#456052",
+      "$description": "KEPT VERBATIM from role.ink.muted. Still an explicit value, never an opacity on ink — the ink/70 = 4.39:1 trap in the canonical set is unchanged and still fails."
+    },
+    "inkMutedOnDark": {
+      "$value": "#a8bcad",
+      "$description": "NEW. Secondary text on a plate field — the dark-side equivalent of inkMuted, which the canonical set has no token for. The featured band's body copy needs a second level and paper-at-opacity would repeat the ink/70 mistake on dark."
+    },
+    "white": {
+      "$value": "#ffffff",
+      "$description": "KEPT, DEMOTED. No longer the page background. In this overlay white survives in exactly one job: the fill of a text input, so a field reads as an inset cut into the paper. §10.2's complaint — 'white and #F7F5F3 differ by almost nothing' — is answered by giving them different jobs instead of adjacent ones."
+    },
+    "clay": { "$value": "#a22c22", "$description": "KEPT VERBATIM. Error." },
+    "moss": { "$value": "#155e36", "$description": "KEPT VERBATIM. Success." }
+  },
+
+  "unusedOnThisSurface": {
+    "$type": "color",
+    "$description": "NOT deleted from the brand — deliberately unspent on the homepage in this register. They remain available on rates tables, callouts and legal pages. Recorded so a merger knows this was a choice, not an omission.",
+    "greige": {
+      "$value": "#e5e1e0",
+      "$description": "A third near-neutral would recreate §10.2 exactly: it is 1.12:1 against the new paper. In this register the page's rhythm comes from paper↔plate, not from three off-whites that differ by nothing."
+    },
+    "sage": {
+      "$value": "#9cbead",
+      "$description": "1.78:1 against paper. As a decorative field it is invisible here, and the register's colour budget is one warm accent."
+    },
+    "emberTint": {
+      "$value": "#f0dcc9",
+      "$description": "The featured-offer block is a full-bleed PLATE in this candidate, not a tinted panel, so the tint has no job on this surface."
+    }
+  },
+
+  "role": {
+    "$type": "color",
+    "$description": "The semantic layer. Components reference only these. Every text pairing carries its computed ratio and verdict.",
+
+    "surface": {
+      "page": {
+        "$value": "{palette.paper}",
+        "$description": "The page. ink on it 8.92:1 (AA ✓), inkMuted 6.06:1 (AA ✓), ember 6.56:1 (AA ✓)."
+      },
+      "plate": {
+        "$value": "{palette.plate}",
+        "$description": "The dark field — featured offer, footer. paper on it 13.58:1, inkMutedOnDark 7.69:1, amber 8.36:1 (all AA ✓)."
+      },
+      "plateDeep": {
+        "$value": "{palette.plateDeep}",
+        "$description": "Inside an image plate only. paper on it 15.87:1, amber 9.77:1 (AA ✓) — used for plate captions rendered over artwork."
+      },
+      "inset": {
+        "$value": "{palette.white}",
+        "$description": "Form-field fill only. ink on it 10.14:1 (AA ✓); its edge is border.control at 4.46:1 (non-text 3:1 ✓)."
+      }
+    },
+
+    "ink": {
+      "default": {
+        "$value": "{palette.forest}",
+        "$description": "All headings and body on paper. 8.92:1 (AA ✓). Was 9.32:1 on the old paper — 0.4 lower and still far clear."
+      },
+      "muted": {
+        "$value": "{palette.inkMuted}",
+        "$description": "Captions, addresses, secondary body. on paper 6.06:1 (AA ✓)."
+      },
+      "onDark": {
+        "$value": "{palette.paper}",
+        "$description": "Text on a plate. on plate 13.58:1, on plateDeep 15.87:1 (AA ✓)."
+      },
+      "mutedOnDark": {
+        "$value": "{palette.inkMutedOnDark}",
+        "$description": "Secondary text on a plate. on plate 7.69:1, on plateDeep 8.99:1, on forest 5.05:1 (AA ✓)."
+      }
+    },
+
+    "primary": {
+      "default": {
+        "$value": "{palette.ember}",
+        "$description": "Primary CTA fill on paper. paper text on it 6.56:1 (AA ✓). As text on paper 6.56:1 (AA ✓). Boundary vs paper 6.56:1 (non-text 3:1 ✓)."
+      },
+      "hover": {
+        "$value": "{palette.emberHover}",
+        "$description": "paper text on it 4.70:1 (AA ✓). Tighter than the canonical 4.91:1 because the paper moved; still clears 4.5. This is the binding constraint on any future change to paper — do not lighten ember or darken paper without recomputing this one."
+      },
+      "active": {
+        "$value": "{palette.emberActive}",
+        "$description": "paper text on it 8.69:1 (AA ✓)."
+      },
+      "on": {
+        "$value": "{palette.paper}",
+        "$description": "Foreground on a primary fill. 6.56:1 (AA ✓)."
+      },
+      "onPlateRule": {
+        "$value": "{palette.paper}",
+        "$description": "RULE, INHERITED UNCHANGED: a solid ember button on a plate field is 2.07:1 against its own background and fails the 3:1 non-text gate. On any plate the CTA inverts to a paper fill with forest text (13.58:1 boundary, 8.92:1 label) — which in this register reads correctly as a paper coupon laid on a dark page."
+      }
+    },
+
+    "accent": {
+      "highlight": {
+        "$value": "{palette.amber}",
+        "$description": "Eyebrows, rules and marginal heads ON PLATE ONLY. on plate 8.36:1, on plateDeep 9.77:1 (AA ✓); on paper 1.62:1 (FAIL — never)."
+      },
+      "info": {
+        "$value": "{palette.screen}",
+        "$description": "Status. paper text on it 6.59:1; as text on paper 6.59:1 (AA ✓)."
+      }
+    },
+
+    "border": {
+      "hairline": {
+        "$value": "{palette.rule}",
+        "$description": "Section dividers, marginal-head rules, list separators. Decorative (1.61:1) — carries no meaning a sighted user needs to perceive; every meaningful boundary uses border.control."
+      },
+      "hairlineOnDark": {
+        "$value": "{palette.ruleOnDark}",
+        "$description": "Dividers on a plate. Decorative (1.59:1)."
+      },
+      "control": {
+        "$value": "{palette.controlEdge}",
+        "$description": "Form fields, plate crop frames — anything whose boundary must be perceivable. 3.92:1 on paper, 4.46:1 on white (WCAG 1.4.11 3:1 ✓)."
+      },
+      "emphasis": {
+        "$value": "{palette.forest}",
+        "$description": "The one heavy rule in the system: the 2px ink rule that opens a section. 8.92:1 on paper."
+      },
+      "accentRule": {
+        "$value": "{palette.ember}",
+        "$description": "The short ember hairline above a marginal head — the page's repeated graphic device (§10.10). 6.56:1 on paper (non-text 3:1 ✓)."
+      }
+    },
+
+    "state": {
+      "focus": {
+        "$value": "{palette.emberMid}",
+        "$description": "Focus ring on paper. 4.19:1 (non-text 3:1 ✓). Lower than the canonical 4.37:1 because paper darkened; still clear. Always a visible 2px ring at 3px offset — never outline:none."
+      },
+      "focusOnDark": {
+        "$value": "{palette.amber}",
+        "$description": "Focus ring on a plate. 8.36:1 (non-text 3:1 ✓)."
+      },
+      "caveat": {
+        "$value": "{palette.ember}",
+        "$description": "NEW ROLE. The '(hours being confirmed)' caveat and the '[awaiting content]' plate labels. 6.56:1 on paper (AA ✓). Exists because §10.6 is a colour-role failure, not a size failure: today the caveat and the hours are the same muted grey and are therefore indistinguishable. Giving the caveat the ember role separates them without hiding either."
+      },
+      "error": { "$value": "{palette.clay}", "$description": "on paper 6.33:1 (AA ✓); paper on a clay fill 6.33:1 (AA ✓)." },
+      "success": { "$value": "{palette.moss}", "$description": "on paper 6.88:1 (AA ✓)." }
+    }
+  },
+
+  "font": {
+    "$type": "fontFamily",
+    "$description": "THE TYPE PROPOSAL. Three roles: one expressive display, one invisible body, one mono for data. Maximal display/body contrast is the register's core typographic move — one face does all the talking so the rest of the page can whisper.",
+
+    "display": {
+      "$value": ["Fraunces", "ui-serif", "Iowan Old Style", "Georgia", "Times New Roman", "Times", "serif"],
+      "$description": "REPLACES Bitter. Weights 300 / 400 / 500 / 700; variable axes opsz 9–144, wght 100–900, SOFT 0–100, WONK 0–1. Ship with WONK=0 and SOFT≈40. WHY: Fraunces has a real optical-size axis, so ONE file sets an 84px hero line with tight display fitting AND a 12px caption with opened counters — the exact failure that retired Alfa Slab One, solved rather than sidestepped. Its softened, slightly-slabbed terminals hold genus continuity with the ball-in-the-I slab wordmark (brand-direction §4.2), so this still reads as finishing the rename. And it is warm and a little characterful, which is the brand's actual voice — Bitter is correct but neutral, and 'not built out enough' is the client's complaint about exactly that neutrality. Set at 300–400 at display sizes: this register earns hierarchy from face, scale, colour and rule, NOT from bolding a heading until it shouts. Quieter fallback if the client finds Fraunces too characterful: Newsreader (OFL, variable, opsz) — same argument, less personality, ~20 KB lighter."
+    },
+    "body": {
+      "$value": ["Open Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+      "$description": "KEPT VERBATIM from tokens.json — 400 / 600 / 700 + one italic. Deliberately unchanged: in this register the body face's job is to be invisible while the display face carries the page, and Open Sans is already everywhere, already self-hosted, and already paid for. Spending the warmth budget on the display face and the photography is the same call brand-direction §3.2 made; this overlay just holds it."
+    },
+    "mono": {
+      "$value": ["IBM Plex Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+      "$description": "NEW ROLE — closes the register's named gap ('a mono role for numerals/meta'). Weights 400 / 500, latin subset only. It carries: hours, phone numbers, addresses, bay counts, marginal section heads, plate captions and the eyebrow. WHY it earns a third family: (a) §10.6 — the trust strip is the highest-leverage block on the page and is currently whispered; mono at 17px with tabular figures makes the hours the second-loudest thing on the page after the h1, which is what the evidence says they should be. (b) §10.10 — the page has no motif; recurring mono data lines are a scorecard/tee-sheet device a returning visitor can recognise from a fragment. (c) It extends rather than breaks brand-direction §3.2's 'numbers are not set in the display face' rule — mono figures are tabular by construction. NOTE the canonical set has no real mono: its `font.display` slot is bound to --brand-font-mono for codebase reasons and is a serif. Wiring this overlay needs a genuinely new CSS var, not a slot reuse."
+    },
+    "retiredByThisOverlay": {
+      "$value": ["Bitter"],
+      "$description": "Bitter leaves the web build in this candidate only. It is a good screen slab and remains the zero-cost fallback if the client rejects the display change — the swap is one token."
+    }
+  },
+
+  "fontLoading": {
+    "$description": "Self-hosted from public/fonts/, no CDN, font-display: swap — all inherited unchanged. BUDGET, FLAGGED: this overlay's latin critical path is Fraunces VF + Open Sans + IBM Plex Mono 400 against the current Bitter + Open Sans (75 KB measured). Fraunces is a four-axis variable font and is materially heavier than Bitter; a latin subset is estimated at 55–70 KB and IBM Plex Mono 400 latin at ~17 KB, putting the path at roughly 115–130 KB. THIS IS AN ESTIMATE, NOT A MEASUREMENT — subset and measure before committing. Mitigations if it lands high: pin Fraunces to two static instances instead of the variable file, or drop to the Newsreader fallback. Mono is above the fold (the trust strip), so it cannot be deferred."
+  },
+
+  "fontWeight": {
+    "$type": "fontWeight",
+    "$description": "The whole ladder moves DOWN. The canonical set peaks at 800 for the hero h1; this register peaks at 500 for anything set in the display face, because a 5rem line at 400 is already emphatic and bolding it is the 'H1 that just screams' the anti-slop list bans.",
+    "displayLight": { "$value": 300, "$description": "Reserved for the largest display line if the hero needs to sit back further." },
+    "displayRegular": { "$value": 400, "$description": "h1, the featured-offer h2, pull quotes." },
+    "displayMedium": { "$value": 500, "$description": "h3, list-item titles, the wordmark. The heaviest display weight this overlay uses." },
+    "bodyRegular": { "$value": 400 },
+    "bodySemibold": { "$value": 600, "$description": "Button labels, active nav, form labels." },
+    "monoRegular": { "$value": 400, "$description": "Hours, addresses, phone, meta." },
+    "monoMedium": { "$value": 500, "$description": "Marginal section heads, eyebrows, plate status labels." }
+  },
+
+  "typography": {
+    "$description": "The ramp. Maximal display/body contrast: the hero is ~5.25rem and the section heads are 0.8125rem mono set in the margin — an 8x gap where the canonical page has about 2x. Fluid values use clamp so the ratio holds from 390px to 1440px.",
+    "displayHero": {
+      "$description": "h1 only. One per page.",
+      "fontFamily": "{font.display}", "fontWeight": "{fontWeight.displayRegular}",
+      "fontSize": { "$value": "clamp(2.25rem, 6.4vw, 5.25rem)" },
+      "lineHeight": { "$value": 1.02 }, "letterSpacing": { "$value": "-0.021em" }
+    },
+    "displayFeature": {
+      "$description": "The one large h2 — the featured-offer band, the page's second typographic event.",
+      "fontFamily": "{font.display}", "fontWeight": "{fontWeight.displayRegular}",
+      "fontSize": { "$value": "clamp(1.875rem, 4vw, 3rem)" },
+      "lineHeight": { "$value": 1.08 }, "letterSpacing": { "$value": "-0.015em" }
+    },
+    "displayVenue": {
+      "$description": "h3 — venue names, the lead item in the jobs list.",
+      "fontFamily": "{font.display}", "fontWeight": "{fontWeight.displayMedium}",
+      "fontSize": { "$value": "clamp(1.5rem, 2.4vw, 1.875rem)" },
+      "lineHeight": { "$value": 1.15 }, "letterSpacing": { "$value": "-0.01em" }
+    },
+    "displayItem": {
+      "$description": "h3 — the four secondary items in the jobs list.",
+      "fontFamily": "{font.display}", "fontWeight": "{fontWeight.displayMedium}",
+      "fontSize": { "$value": "1.25rem" }, "lineHeight": { "$value": 1.3 }
+    },
+    "displayQuote": {
+      "$description": "Pull quotes — the proof section's designed container.",
+      "fontFamily": "{font.display}", "fontWeight": "{fontWeight.displayRegular}",
+      "fontSize": { "$value": "clamp(1.375rem, 2.2vw, 1.75rem)" },
+      "lineHeight": { "$value": 1.3 }
+    },
+    "bodyLead": {
+      "fontFamily": "{font.body}", "fontWeight": "{fontWeight.bodyRegular}",
+      "fontSize": { "$value": "1.125rem" }, "lineHeight": { "$value": 1.6 }
+    },
+    "bodyDefault": {
+      "fontFamily": "{font.body}", "fontWeight": "{fontWeight.bodyRegular}",
+      "fontSize": { "$value": "1rem" }, "lineHeight": { "$value": 1.65 }
+    },
+    "bodySmall": {
+      "fontFamily": "{font.body}", "fontWeight": "{fontWeight.bodyRegular}",
+      "fontSize": { "$value": "0.875rem" }, "lineHeight": { "$value": 1.55 }
+    },
+    "monoData": {
+      "$description": "Hours, phone, bay counts. The register's 'mono role for numerals'. Set larger than the body small — the data is the point.",
+      "fontFamily": "{font.mono}", "fontWeight": "{fontWeight.monoRegular}",
+      "fontSize": { "$value": "1.0625rem" }, "lineHeight": { "$value": 1.35 }, "letterSpacing": { "$value": "-0.01em" }
+    },
+    "monoHead": {
+      "$description": "The marginal section head — an h2 set small in the margin instead of large in the column. The register's committed hierarchy move.",
+      "fontFamily": "{font.mono}", "fontWeight": "{fontWeight.monoMedium}",
+      "fontSize": { "$value": "0.8125rem" }, "lineHeight": { "$value": 1.25 },
+      "letterSpacing": { "$value": "0.11em" }, "textTransform": { "$value": "uppercase" }
+    },
+    "monoMeta": {
+      "$description": "Plate captions, venue meta lines, the degradation note, legal.",
+      "fontFamily": "{font.mono}", "fontWeight": "{fontWeight.monoRegular}",
+      "fontSize": { "$value": "0.75rem" }, "lineHeight": { "$value": 1.5 }, "letterSpacing": { "$value": "0.045em" }
+    }
+  },
+
+  "radius": {
+    "$type": "dimension",
+    "$description": "REPLACES the canonical set's implicit rounded-card look. The register wants a crisp small radius and no pill-shaped large containers.",
+    "none": { "$value": "0", "$description": "Plates, panels, sections, the waitlist coupon. Nothing large is rounded." },
+    "control": { "$value": "2px", "$description": "Buttons and form fields only. Just enough to read as a manufactured control on a paper page." }
+  },
+
+  "elevation": {
+    "$description": "REPLACES shadows entirely. In this register depth is TONE, not blur: a plate is dark, paper is light, and the only edge is a hairline. There is no shadow token because a shadow on a printed page is a tell.",
+    "none": { "$value": "none" },
+    "plate": { "$value": "none", "$description": "A plate separates from the page by 13.58:1 of tone. It needs no shadow and gets none." },
+    "coupon": { "$value": "none", "$description": "The waitlist block on the dark band is paper on plate — separation is 13.58:1 of tone. No shadow." }
+  },
+
+  "space": {
+    "$type": "dimension",
+    "$description": "Rhythm loosened. Section padding grows and the reading measure narrows — macro-whitespace is the feature; micro-spacing stays tight so the page reads as composed, not sparse.",
+    "s1": { "$value": "0.25rem" },
+    "s2": { "$value": "0.5rem" },
+    "s3": { "$value": "0.75rem" },
+    "s4": { "$value": "1rem" },
+    "s5": { "$value": "1.5rem" },
+    "s6": { "$value": "2rem" },
+    "s7": { "$value": "3rem" },
+    "s8": { "$value": "4rem" },
+    "s9": { "$value": "6rem" },
+    "s10": { "$value": "9rem" },
+    "sectionY": { "$value": "5rem", "$description": "REPLACES 4rem." },
+    "sectionYLg": { "$value": "9rem", "$description": "REPLACES 8rem." },
+    "gutterX": { "$value": "1.5rem", "$description": "KEPT VERBATIM." },
+    "gutterXLg": { "$value": "4rem", "$description": "KEPT VERBATIM." }
+  },
+
+  "size": {
+    "$type": "dimension",
+    "contentMax": { "$value": "71rem", "$description": "REPLACES 75rem. Narrower so the rail + column structure holds a real measure at 1440px instead of stretching." },
+    "measure": { "$value": "34rem", "$description": "REPLACES size.proseMax 46.875rem — a ~62-character line. 46.875rem is ~95 characters, which is a documentation width, not an editorial one. This is the single largest reason the page will read as designed rather than as a wireframe." },
+    "rail": { "$value": "11rem", "$description": "NEW. The left margin column that carries marginal heads, eyebrows and plate captions. Collapses below the lg breakpoint; its contents then sit inline above the column." },
+    "railGap": { "$value": "3rem", "$description": "NEW. Gutter between rail and content column." },
+    "hairline": { "$value": "1px", "$description": "NEW. The rule weight. There is exactly one, everywhere, except border.emphasis at 2px." }
+  },
+
+  "motion": {
+    "$description": "Dial: 2/10 — hover and focus only, no scroll-driven anything, no cascade. The page has no JS on it today and this candidate adds none.",
+    "duration": { "$value": "120ms" },
+    "easing": { "$value": "cubic-bezier(0.2, 0, 0, 1)" },
+    "properties": { "$value": "color, background-color, border-color, text-decoration-color" }
+  },
+
+  "imagePlate": {
+    "$description": "NOT a colour set — the spec for the one component this candidate invents, because the surface's biggest single failure (§10.1) is that no image slot exists at all. A PLATE is a full-tone rectangle carrying: (1) the shoot's measured register — plateDeep base, warm amber pools at 8–18% for the pendants, one screenGlow rectangle for the projection, ~35% of the frame near-black; (2) a border.control crop frame; (3) a mono caption naming the exact frame from brand-direction §5.2's shoot list and its honest status. A plate with no artwork at all is the correct rendering for a venue that has not been photographed — the absence is designed and captioned, never filled with stock. Aspect ratios in use: 21:9 hero, 4:3 venue.",
+    "aspectHero": { "$value": "21 / 9" },
+    "aspectVenue": { "$value": "4 / 3" },
+    "nearBlackCoverage": { "$value": "0.33–0.38", "$description": "Measured off the existing Lakeville shoot (screen-spec §8). Any real photograph dropped into these slots must match it." },
+    "warmOverBlue": { "$value": "+15 to +19", "$description": "Red channel over blue. Measured, not chosen." },
+    "coolBand": { "$value": "7–8% of saturated pixels at 210–240°", "$description": "The simulator projection. The one cool note." }
+  }
+}

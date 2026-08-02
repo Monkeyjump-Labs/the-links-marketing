@@ -1,0 +1,316 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "The Links — token overlay `soft`. Stance: the page is LIT, not tinted — every surface behaves as if it sits under the venue's warm pendant, so warmth arrives as a light source (a tinted glow, a tinted shadow, a warm paper ground) instead of as pale colour. Contrast is therefore free to stay high: the ink is the brand forest at 9.5:1 on the page ground and the darks go deeper than the current system, because a soft room is a dark room with a good lamp in it, not a washed-out one.",
+
+  "$extensions": {
+    "com.monkeyjumplabs.meta": {
+      "brand": "The Links",
+      "candidate": "home-soft",
+      "register": "soft",
+      "divergenceAxis": "theme → token_set",
+      "overlays": "marketing/websites/the-links/design/tokens.json",
+      "version": "0.1.0-candidate",
+      "date": "2026-08-02",
+      "status": "CANDIDATE — divergent explorer output. Not client-approved, not merged.",
+      "dials": { "variance": 5, "motion": 3, "density": 5 },
+      "committedIdea": "One light source. The action colour IS the light: ember on a lit page, amber on a dark one — so the CTA is never the invisible ember-on-forest and never a bare white rectangle. Every raised surface is lit from above by a warm pendant gradient and dropped on a warm-tinted (never grey) shadow. Pure white is removed from the system entirely.",
+      "siblingsWouldNot": "An editorial-minimal, brutalist, or technical-dense sibling all resolve elevation by REMOVING it — hairlines, hard edges, flat fills. This candidate is the only one where light itself is a token, and the only one that changes the CTA fill by field polarity so the action colour reads as the pendant in both.",
+      "aaVerification": "Every ratio in this file was computed from sRGB relative luminance per WCAG 2.1 §1.4.3, not estimated. Nothing text-bearing is below 4.5:1; nothing that identifies a control is below 3:1."
+    }
+  },
+
+  "palette": {
+    "$type": "color",
+    "$description": "16 primitives. Components reference `role.*`, never these. KEPT = value carried verbatim from design/tokens.json. NEW = proposed by this overlay, with the one-line reason it replaces something.",
+
+    "forest": {
+      "$value": "#124b2e",
+      "$description": "KEPT verbatim. The brand's only real colour equity (theme black on 66 live sections). Unchanged — this overlay changes the light, not the green."
+    },
+    "night": {
+      "$value": "#0d3520",
+      "$description": "KEPT verbatim. The dark brand field: hero, footer, the venue band."
+    },
+    "roomBlack": {
+      "$value": "#17120e",
+      "$description": "NEW. A warm near-black (R−B +9), used ONLY inside the photography slot and its immediate vignette. Justification is measured, not aesthetic: 33–38% of every frame in the existing shoot is near-black and every frame is red-dominant over blue by +15 to +19. A neutral #111 slot would misdescribe the asset it is holding a place for."
+    },
+
+    "ember": {
+      "$value": "#8a400a",
+      "$description": "KEPT verbatim. The action colour on LIGHT fields. Retained rather than re-chosen because its darkness was tuned to survive this codebase's hover:brightness-125 (see role.primary.hover) — re-picking a prettier orange re-opens a solved arithmetic problem."
+    },
+    "emberHover": {
+      "$value": "#ad500d",
+      "$description": "KEPT verbatim. Explicit hover fill, equal to brightness-125 of ember."
+    },
+    "emberActive": {
+      "$value": "#6d3308",
+      "$description": "KEPT verbatim. Pressed."
+    },
+    "emberMid": {
+      "$value": "#b85718",
+      "$description": "KEPT verbatim. Focus ring on light fields. Border/ring only — never a text-bearing fill."
+    },
+    "emberTint": {
+      "$value": "#f0dcc9",
+      "$description": "KEPT verbatim. Promoted: in this overlay it is a full-width SECTION band (the featured offer), not a small callout fill, because the section rhythm now needs a warm mid-step between the lit page and the dark room."
+    },
+    "amber": {
+      "$value": "#f3b268",
+      "$description": "KEPT verbatim, but PROMOTED to a fill. In the canonical set amber is a dark-field text/rule highlight; here it is also the primary BUTTON fill on dark fields, carrying night-green text at 7.35:1. This is the overlay's one structural colour change and it is what makes the action colour visible on the hero (see role.primary.onDarkFill)."
+    },
+    "amberHover": {
+      "$value": "#ffc98a",
+      "$description": "NEW. Hover for the dark-field amber button. Brightening (not darkening) keeps the 'turning the lamp up' behaviour and lands night text at 9.03:1 — safe under the codebase's brightness-125."
+    },
+
+    "linen": {
+      "$value": "#fbf7f1",
+      "$description": "NEW. The page ground. REPLACES palette.white outright: pure white is a screen colour, it is the coldest value in a measurably warm brand, and 155 sections of it are half of why §10.2 reads as eleven feet of nothing. Removing white from the system is the cheapest warmth available and costs zero contrast — forest on linen is 9.50:1 vs 10.14:1 on white."
+    },
+    "oat": {
+      "$value": "#f1e7da",
+      "$description": "NEW. Raised surfaces (cards, the waitlist panel). REPLACES palette.paper #F7F5F3. Deliberately NOT relied on for separation — oat vs linen is only 1.15:1, the same trap §10.2 names. In this overlay a card reads raised because of elevation.lamp, not because of its fill; the fill only supplies warmth."
+    },
+    "wheat": {
+      "$value": "#e6d9c9",
+      "$description": "NEW. Hairlines, chips, rules, and the small-print field. REPLACES palette.greige #E5E1E0, which is a near-neutral grey and the one light value that fights the pendant. Decorative contrast only (1.30:1 on linen) — never used to identify a control."
+    },
+    "sandMuted": {
+      "$value": "#c9bca8",
+      "$description": "NEW. Secondary TEXT on dark fields. The canonical set has no muted ink for dark surfaces at all — it goes straight from paper to amber — so subordinate text on the hero and footer had nowhere to sit but an opacity, which is the exact failure ink.muted exists to prevent. 7.27:1 on night, 5.43:1 on forest."
+    },
+    "bark": {
+      "$value": "#7f7261",
+      "$description": "NEW. Control borders (inputs, outline buttons) on light fields. Warm (R−B +30) and, unlike wheat, it clears the 3:1 non-text gate on every light field this system uses. The canonical set has no border token at all — components hand-roll border-ink/15, which is 1.4:1 and does not identify a control."
+    },
+    "screen": {
+      "$value": "#2e5a6e",
+      "$description": "KEPT verbatim. Informational/status. Also the literal colour job it was named for: the cool simulator projection inside the photography slot."
+    },
+    "screenLit": {
+      "$value": "#a8cbdc",
+      "$description": "NEW. The lit projection itself, inside the photo slot only. DECORATIVE — never text-bearing on a light field (1.9:1 on linen). It exists so the image slot can render the measured 7–8% cool band at 210–240° rather than a grey rectangle."
+    },
+    "clay": { "$value": "#a22c22", "$description": "KEPT verbatim. Error." },
+    "moss": { "$value": "#155e36", "$description": "KEPT verbatim. Success." },
+
+    "white": {
+      "$value": "#ffffff",
+      "$description": "RETIRED IN THIS OVERLAY. Declared so nobody reintroduces it: there is no pure white anywhere on a `soft` page — not as a page ground, not as a card, not as a button fill, not as text on dark (ink.onDark is linen). This is one of the two changes the whole register rests on."
+    },
+    "sage": {
+      "$value": "#9cbead",
+      "$description": "DROPPED IN THIS OVERLAY (value recorded, not used). It is the only cool light field in the palette and it directly contradicts a one-light-source stance. It is already demoted to a decorative light field in the canonical set and only 2 live sections use it, so the cost of dropping it is nil. If the client has an attachment to it, it returns as a light field carrying forest text at 5.01:1 — but it will look like a different lamp."
+    },
+    "greige": {
+      "$value": "#e5e1e0",
+      "$description": "REPLACED by palette.wheat. Recorded because it is real, in use on 54 live sections, and the swap should be a decision rather than an accident."
+    }
+  },
+
+  "role": {
+    "$type": "color",
+    "$description": "The semantic layer. Every pairing carries its COMPUTED WCAG 2.1 ratio.",
+
+    "surface": {
+      "base":   { "$value": "{palette.linen}",     "$description": "Page ground. ink.default on it 9.50:1 (AA ✓)." },
+      "raised": { "$value": "{palette.oat}",       "$description": "Cards, the waitlist panel, the trust strip. ink.default 8.29:1, ink.muted 5.98:1 (AA ✓). Separation comes from elevation.lamp — the fill is 1.15:1 from base and must never be the only cue." },
+      "line":   { "$value": "{palette.wheat}",     "$description": "Chips, rules, the small-print field. ink.default 7.31:1, ink.muted 5.26:1 (AA ✓). As a divider it is 1.30:1 on base — decorative, exempt from 1.4.11." },
+      "tintWarm": { "$value": "{palette.emberTint}", "$description": "The warm section band (featured offer). ink.default 7.62:1, ink.muted 5.49:1, primary as text 5.60:1 (all AA ✓)." },
+      "dark":   { "$value": "{palette.night}",     "$description": "Hero, venue band, footer. ink.onDark 12.72:1, ink.mutedOnDark 7.27:1, accent.highlight 7.35:1 (all AA ✓)." },
+      "darkAlt":{ "$value": "{palette.forest}",    "$description": "Secondary dark field. ink.onDark 9.50:1, ink.mutedOnDark 5.43:1, accent.highlight 5.49:1 (all AA ✓)." },
+      "room":   { "$value": "{palette.roomBlack}", "$description": "Photography slot interior ONLY. ink.onDark 17.42:1, ink.mutedOnDark 9.96:1 (AA ✓)." }
+    },
+
+    "ink": {
+      "default":     { "$value": "{palette.forest}",    "$description": "Body and headings on light. base 9.50:1 · raised 8.29:1 · line 7.31:1 · tintWarm 7.62:1 (AA ✓ everywhere)." },
+      "muted":       { "$value": "#4e5a46",             "$description": "REPLACES ink.muted #456052 — same job, warm-shifted (R−B +8 instead of −13) and higher contrast on every field. base 6.84:1 · raised 5.98:1 · tintWarm 5.49:1 · line 5.26:1 (AA ✓). Never an opacity on ink." },
+      "onDark":      { "$value": "{palette.linen}",     "$description": "Text on dark. night 12.72:1 · forest 9.50:1 · room 17.42:1 (AA ✓)." },
+      "mutedOnDark": { "$value": "{palette.sandMuted}", "$description": "NEW ROLE. Secondary text on dark. night 7.27:1 · forest 5.43:1 · room 9.96:1 (AA ✓). Fills the gap that forced opacity on the current hero subhead." }
+    },
+
+    "primary": {
+      "default": { "$value": "{palette.ember}",      "$description": "Action fill on LIGHT fields. ink.onDark on it 6.98:1 (AA ✓). Boundary vs base 6.98:1 (3:1 ✓)." },
+      "hover":   { "$value": "{palette.emberHover}", "$description": "ink.onDark on it 5.01:1 (AA ✓) — the reason ember is this dark." },
+      "active":  { "$value": "{palette.emberActive}","$description": "ink.onDark on it 9.25:1 (AA ✓)." },
+      "on":      { "$value": "{palette.linen}",      "$description": "Foreground on a primary fill. 6.98:1 (AA ✓)." },
+
+      "onDarkFill": {
+        "$value": "{palette.amber}",
+        "$description": "THE OVERLAY'S ONE STRUCTURAL RULE CHANGE. On a dark field the primary CTA is an AMBER fill with NIGHT-GREEN text: label 7.35:1 (AA ✓), boundary vs the night field 7.35:1 (3:1 ✓). The canonical set solves the same arithmetic by inverting to a paper fill, which is correct and safe but produces §10.5 — a white rectangle where the action colour should be. Amber is the pendant light; making it the button is what lets the action colour read as the same thing in both polarities. A solid EMBER button on forest is still forbidden (1.36:1) and this does not relax that."
+      },
+      "onDarkFillHover": { "$value": "{palette.amberHover}", "$description": "night text on it 9.03:1 (AA ✓) — safe under brightness-125." },
+      "onDarkFillOn":    { "$value": "{palette.night}",      "$description": "Label on the amber fill. 7.35:1 (AA ✓)." }
+    },
+
+    "accent": {
+      "default":   { "$value": "{palette.screen}",    "$description": "Informational/status. ink.onDark on it 7.02:1 (AA ✓); as text on raised 6.13:1, on line 5.40:1 (AA ✓). Carries the '(hours being confirmed)' chip." },
+      "highlight": { "$value": "{palette.amber}",     "$description": "Rules, eyebrows, numerals on dark. night 7.35:1 · forest 5.49:1 · room 10.08:1 (AA ✓). NEVER on a light field (1.85:1 on white, 4.04:1 on linen — both fail)." },
+      "projection":{ "$value": "{palette.screenLit}", "$description": "The simulator screen inside the photo slot. DECORATIVE ONLY, never text-bearing on light. 10.84:1 against surface.room." }
+    },
+
+    "border": {
+      "hairline": { "$value": "{palette.wheat}",  "$description": "NEW ROLE. Decorative divider / card edge. 1.30:1 on base — permitted because it never identifies a control." },
+      "control":  { "$value": "{palette.bark}",   "$description": "NEW ROLE. Input and outline-button borders. base 4.39:1 · raised 3.83:1 · tintWarm 3.52:1 · line 3.38:1 — all clear WCAG 2.1 1.4.11 (3:1). Replaces the hand-rolled border-ink/15 (≈1.4:1), which does not." },
+      "onDark":   { "$value": "{palette.sandMuted}", "$description": "Outline controls on dark. vs night 7.27:1, vs forest 5.43:1 (3:1 ✓)." }
+    },
+
+    "state": {
+      "focus":       { "$value": "{palette.emberMid}", "$description": "Focus ring on light. base 4.46:1 · raised 3.89:1 · tintWarm 3.58:1 · line 3.43:1 (3:1 ✓). Mandatory and visible — the site currently has none." },
+      "focusOnDark": { "$value": "{palette.amber}",    "$description": "Focus ring on dark. night 7.35:1 · forest 5.49:1 · room 10.08:1 (3:1 ✓)." },
+      "disabledSurface": { "$value": "{palette.wheat}", "$description": "Disabled fill." },
+      "disabledInk": { "$value": "#6e6350", "$description": "REPLACES #52685B with a warm equivalent. on line 4.25:1, on raised 4.82:1 — clears 3:1 and nearly clears body AA, though 1.4.3 exempts inactive controls." },
+      "error":       { "$value": "{palette.clay}", "$description": "base 6.74:1, raised 5.89:1 (AA ✓)." },
+      "success":     { "$value": "{palette.moss}", "$description": "base 7.32:1 (AA ✓)." }
+    }
+  },
+
+  "light": {
+    "$type": "gradient",
+    "$description": "THE COMMITTED IDEA, made into tokens. Warmth on this page is a light source with a direction, not a wash. Every dark field gets a pendant pool at its top edge; every raised surface gets a faint sheen on its upper rim. A gradient can silently break a ratio, so each one below is verified against its BRIGHTEST composite point, not against the flat field underneath it.",
+
+    "pendant": {
+      "$value": "radial-gradient(120% 84% at 50% -14%, rgba(243,178,104,0.20) 0%, rgba(243,178,104,0.07) 38%, rgba(243,178,104,0) 68%)",
+      "$description": "The section lamp. HARD RULE: composites over surface.dark (night) ONLY. Brightest point resolves to #3B4E2E, where ink.onDark is 8.50:1, ink.mutedOnDark 4.86:1 and accent.highlight-as-text 4.91:1 — all still AA ✓. Over surface.darkAlt (forest) the same 20% lands ink.mutedOnDark at 3.82:1 and amber text at 3.86:1, which FAIL, which is exactly why the rule is a rule and not a preference. Forest fields carry no gradient."
+    },
+    "pendantWide": {
+      "$value": "radial-gradient(90% 120% at 18% 0%, rgba(243,178,104,0.16) 0%, rgba(243,178,104,0) 62%)",
+      "$description": "Off-centre variant, so two adjacent dark bands are not the same lamp twice. Also surface.dark only. Brightest point #32492C: ink.onDark 9.26:1, ink.mutedOnDark 5.29:1, accent.highlight 5.35:1 (AA ✓)."
+    },
+    "sheen": {
+      "$value": "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 42%)",
+      "$description": "Upper-rim highlight on a raised light surface — the only place white appears in the system, and it appears as light, not as a fill. Brightest composite over oat is #F9F4EE, where ink.default is 9.27:1 and ink.muted 6.68:1 (AA ✓ — the sheen raises contrast, it cannot lower it)."
+    },
+    "roomVignette": {
+      "$value": "radial-gradient(120% 100% at 50% 34%, rgba(23,18,14,0) 0%, rgba(23,18,14,0.72) 100%)",
+      "$description": "Photography-slot vignette. Reproduces the measured 33–38% near-black coverage of the real shoot so the slot describes the asset it is reserving."
+    }
+  },
+
+  "elevation": {
+    "$type": "shadow",
+    "$description": "One family, warm-tinted. The shadow colour is ember (25°), never grey and never black — a grey shadow under a warm surface is the single tell that turns 'lit room' into 'default card component'. Two steps only; there is no third.",
+
+    "lamp": {
+      "$value": "0 1px 2px rgba(45,26,8,0.06), 0 10px 24px -14px rgba(138,64,10,0.28)",
+      "$description": "Resting elevation for every raised light surface."
+    },
+    "lampLift": {
+      "$value": "0 2px 4px rgba(45,26,8,0.08), 0 22px 44px -20px rgba(138,64,10,0.36)",
+      "$description": "Hover / the two surfaces that must win: the primary CTA and the waitlist panel."
+    },
+    "none": { "$value": "none", "$description": "Dark fields take no shadow — a lit room has no drop shadows in it." }
+  },
+
+  "radius": {
+    "$type": "dimension",
+    "$description": "Rounded, but on a ramp that grows with the container rather than one universal 8px. The tell the register warns about is uniform mid-radius everywhere; the fix is that a button is a lozenge and a room is a soft rectangle.",
+    "chip":    { "$value": "999px", "$description": "Chips, badges, the venue switcher." },
+    "control": { "$value": "999px", "$description": "Buttons. Full lozenge — hospitality, not SaaS card." },
+    "field":   { "$value": "0.75rem", "$description": "Inputs. Deliberately NOT a lozenge: a pill input reads as a search box and this is a name/email pair." },
+    "surface": { "$value": "1.25rem", "$description": "Cards and panels." },
+    "media":   { "$value": "1.5rem", "$description": "Photography slots." },
+    "band":    { "$value": "2rem",   "$description": "Full-width dark bands, top corners only, so the room reads as an inset object on the page rather than a stripe." }
+  },
+
+  "font": {
+    "$type": "fontFamily",
+    "$description": "THE REAL TYPE PROPOSAL. Two families, one net change. The preview HTML cannot load either (no network in the review surface) and approximates with a system serif + system humanist sans; judge the proposal here, not there.",
+
+    "display": {
+      "$value": ["Fraunces", "ui-serif", "Georgia", "Iowan Old Style", "Times New Roman", "Times", "serif"],
+      "$description": "REPLACES Bitter. Fraunces, variable, weights 400/600/700, axes opsz 9–144 and SOFT ~40 (WONK off). Rationale: it keeps the bracketed, slab-adjacent genus that ties the page type to the existing ball-in-the-I wordmark — so this is still 'finish the rename', not a third brand — but its SOFT axis rounds the terminals and opens the counters, which is where this register's warmth is supposed to come from. Bitter is a competent screen slab and is *rigid*; asking a rigid face to carry 'you will not embarrass yourself here' is what leaves the page needing pastel to feel friendly. Optical-size axis means the 64px hero and the 18px card title are genuinely different drawings rather than one drawing scaled. Sentence case always; no all-caps headings. Fallback if the client wants the slab equity held tighter: Bitter at 300/500 on this exact ramp — one line, no other change."
+    },
+    "body": {
+      "$value": ["Open Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+      "$description": "RETAINED verbatim from the canonical set — 400/600/700 + italic, already self-hosted, already on all 41 pages. Not retained out of caution: the register's warmth budget is spent on the display face and on light, and Open Sans is a humanist sans with open apertures that sets a rates table and a form without argument. What DOES change is how it is used — see `type.body` below: it is promoted a full step in size and leading, because 'body-forward hierarchy' is the register's own instruction and the current 16/1.5 setting is why the page reads as a wireframe. Numerals stay in this face with `font-variant-numeric: tabular-nums`."
+    },
+    "retired": {
+      "$value": ["Bitter", "Alfa Slab One", "Poppins"],
+      "$description": "Bitter is retired only by THIS overlay and only if this candidate is selected; Alfa Slab One and Poppins are already retired by the canonical direction."
+    }
+  },
+
+  "fontWeight": {
+    "$type": "fontWeight",
+    "$description": "Hierarchy is carried by weight and colour, not by scale. Note the ceiling: 700, not 800. The current h1 is the heaviest thing available and it is still not doing any work.",
+    "displayRegular": { "$value": 400 },
+    "displayMedium":  { "$value": 600, "$description": "h1 and h2. The soft register's display is present, not shouting." },
+    "displayBold":    { "$value": 700, "$description": "Card titles and the wordmark only." },
+    "bodyRegular":    { "$value": 400 },
+    "bodyMedium":     { "$value": 600, "$description": "Eyebrows, labels, the two beginner-reassurance lines, and every numeral that is a fact." },
+    "bodyBold":       { "$value": 700 }
+  },
+
+  "type": {
+    "$description": "The ramp. Fluid where it should be, fixed where a fact is being read. Body-forward: the gap between h2 and body is deliberately smaller than the current build's, and body is a full step larger.",
+    "display": {
+      "h1":      { "$value": { "size": "clamp(2.5rem, 6.2vw, 4rem)",   "lineHeight": 1.06, "letterSpacing": "-0.018em", "weight": "{fontWeight.displayMedium}" } },
+      "h2":      { "$value": { "size": "clamp(1.875rem, 3.4vw, 2.5rem)", "lineHeight": 1.14, "letterSpacing": "-0.012em", "weight": "{fontWeight.displayMedium}" } },
+      "h3":      { "$value": { "size": "1.375rem", "lineHeight": 1.24, "letterSpacing": "-0.006em", "weight": "{fontWeight.displayBold}" } },
+      "stat":    { "$value": { "size": "2rem", "lineHeight": 1, "weight": "{fontWeight.displayMedium}" }, "$description": "Bay counts, the price. Display face, tabular figures." }
+    },
+    "body": {
+      "lead":    { "$value": { "size": "clamp(1.125rem, 1.6vw, 1.3125rem)", "lineHeight": 1.6, "weight": "{fontWeight.bodyRegular}" }, "$description": "Hero subhead and section intros." },
+      "base":    { "$value": { "size": "1.0625rem", "lineHeight": 1.65, "weight": "{fontWeight.bodyRegular}" }, "$description": "PROMOTED from 1rem/1.5. 17px at 1.65 is the single cheapest legibility gain on the page and it is what 'body-forward' means here." },
+      "small":   { "$value": { "size": "0.9375rem", "lineHeight": 1.55 }, "$description": "Caveats and meta. Note: the trust strip is NOT set at this size — see §10.6, it is `base`." },
+      "eyebrow": { "$value": { "size": "0.8125rem", "lineHeight": 1.2, "letterSpacing": "0.14em", "weight": "{fontWeight.bodyMedium}", "textTransform": "uppercase" }, "$description": "Body face, never a small slab." },
+      "label":   { "$value": { "size": "0.9375rem", "lineHeight": 1.2, "letterSpacing": "0.02em", "weight": "{fontWeight.bodyMedium}" } }
+    },
+    "measure": {
+      "prose":    { "$value": "40rem", "$description": "TIGHTENED from 46.875rem. At 17px, 46.875rem runs past 85 characters." },
+      "headline": { "$value": "22ch",  "$description": "h1 wraps to three lines by design; the hero is a sentence, not a banner." }
+    }
+  },
+
+  "space": {
+    "$type": "dimension",
+    "$description": "A 4px base on a warmer rhythm than the current 4rem/8rem pair, which has only two steps and therefore no rhythm at all. Section padding drops slightly and INTERNAL padding rises — a soft page is generous inside its containers, not just between them.",
+    "3xs": { "$value": "0.25rem" },
+    "2xs": { "$value": "0.5rem" },
+    "xs":  { "$value": "0.75rem" },
+    "sm":  { "$value": "1rem" },
+    "md":  { "$value": "1.5rem" },
+    "lg":  { "$value": "2rem" },
+    "xl":  { "$value": "2.75rem" },
+    "2xl": { "$value": "3.5rem" },
+    "3xl": { "$value": "5rem" },
+    "sectionY":    { "$value": "3.5rem", "$description": "Was 4rem." },
+    "sectionYLg":  { "$value": "6rem",   "$description": "Was 8rem. Reduced deliberately: the page now has four field changes to do the work that whitespace was doing alone, and 8rem of nothing between two near-identical whites is §10.2." },
+    "cardPad":     { "$value": "1.75rem" },
+    "cardPadLg":   { "$value": "2.25rem" },
+    "gutterX":     { "$value": "1.5rem", "$description": "KEPT." },
+    "gutterXLg":   { "$value": "4rem",   "$description": "KEPT." }
+  },
+
+  "size": {
+    "$type": "dimension",
+    "contentMax": { "$value": "75rem", "$description": "KEPT verbatim — layout is off-axis." },
+    "proseMax":   { "$value": "40rem", "$description": "See type.measure.prose." },
+    "mediaRatio": { "$value": "3 / 2", "$description": "NEW. The photography slot's aspect ratio, matching the existing shoot's full-frame 6000×4000 / 5648×3765 / 4549×3033 originals. Reserving the wrong ratio is how a designed slot still breaks when the real frames land." }
+  },
+
+  "motion": {
+    "$description": "Dial 3 — hover and focus only, transform/opacity only, no scroll-driven anything. The page is zero-JS by contract.",
+    "duration": { "quick": { "$value": "140ms" }, "settle": { "$value": "240ms" } },
+    "easing":   { "settle": { "$value": "cubic-bezier(0.22, 0.8, 0.3, 1)" } },
+    "reducedMotion": { "$value": "All transitions collapse to 0ms under prefers-reduced-motion." }
+  },
+
+  "tokenGaps": {
+    "$description": "Wanted by this design and absent from design/tokens.json. FLAGGED, not silently invented — each is proposed above with its computed ratios so design-brand-guardian can accept or reject it as a token decision.",
+    "gaps": [
+      "role.border.* — the canonical set has no border token at all. Components hand-roll `border-ink/15` (≈1.4:1), which cannot identify a control under WCAG 2.1 1.4.11. Proposed: border.hairline (decorative) + border.control (3.38–4.39:1) + border.onDark.",
+      "role.ink.mutedOnDark — the canonical set has ink.muted for light fields but nothing for dark, which is why the hero subhead uses opacity-80. Proposed: palette.sandMuted, 7.27:1 on night.",
+      "elevation.* — no shadow tokens exist. This register cannot be expressed without one, and a grey shadow would be the wrong one. Proposed: two warm-tinted steps.",
+      "radius.* — no radius tokens exist; the codebase uses raw Tailwind `rounded`. Proposed: a six-step ramp.",
+      "light.* (gradients) — no gradient tokens exist. Proposed as a named group precisely so 'the pendant' is a system object and not four hand-written radial-gradients that drift.",
+      "type.* ramp — the canonical set declares families and weights but no sizes, line-heights or tracking, so every screen re-decides. Proposed as a complete ramp.",
+      "space.* — only sectionY/sectionYLg/gutters exist; there is no internal spacing scale, which is why every card in the build is `p-6`. Proposed: a 9-step scale.",
+      "size.mediaRatio — no aspect-ratio token, and the photography slot is this sprint's central problem.",
+      "NOT INVENTED, deliberately left open: there is no wordmark/logo token and this candidate does not propose one. The preview TYPESETS 'The Links' per brand-direction.md §4.2 (mark + rule + venue line) and draws nothing. Commissioning the SVG lockup set stays a commission."
+    ]
+  }
+}

@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indoor Golf &amp; Simulators — Lakeville &amp; Stillwater, MN</title>
+<meta name="description" content="Two indoor golf venues in the Twin Cities. Book a GolfZon NX bay by the hour, bring up to five friends, full bar and food. Lakeville and Stillwater, MN.">
+<style>
+/* ==========================================================================
+   home-technical — register: technical-dense
+   Generated FROM design/token-sets/technical.json. Every value below is a
+   token from that overlay. Nothing here is hand-tuned away from it.
+   Preview type: system stack + system mono (a wisplet design variant loads
+   no network resources). The production proposal is IBM Plex Sans + IBM Plex
+   Mono — see the overlay's `font` group.
+   ========================================================================== */
+
+:root{
+  /* --- palette ---------------------------------------------------------- */
+  --forest:#124b2e; --night:#0d3520; --room:#1b1409;
+  --ember:#8a400a; --ember-hover:#ad500d; --ember-active:#6d3308; --ember-mid:#b85718;
+  --amber:#f3b268; --screen:#2e5a6e; --screen-on-dark:#8fc0d8; --screen-trace:#5e93ae;
+  --paper:#f7f5f3; --white:#ffffff; --chalk:#efeae5; --greige:#e5e1e0;
+  --rule:#7c736b; --hairline:#c4bbb2; --sage:#9cbead; --hairline-dark:#2c6244;
+  --ink-muted:#456052; --on-dark-muted:#9fb3a6; --field-on-dark:#5c8a72;
+  --clay:#a22c22; --moss:#155e36;
+
+  /* --- roles ------------------------------------------------------------ */
+  --surface-base:var(--white); --surface-raised:var(--paper);
+  --surface-inset:var(--chalk); --surface-alt:var(--greige);
+  --surface-dark:var(--forest); --surface-darkest:var(--night); --surface-photo:var(--room);
+  --ink:var(--forest); --ink-2:var(--ink-muted);
+  --on-dark:var(--paper); --on-dark-2:var(--on-dark-muted);
+  --label-light:var(--screen); --label-dark:var(--amber);
+  --value-light:var(--forest); --value-dark:var(--paper);
+  --primary:var(--ember); --primary-on:var(--paper);
+  --measure:var(--screen); --measure-dark:var(--screen-on-dark);
+  --focus:var(--ember-mid); --focus-dark:var(--amber);
+  --pending:var(--screen); --pending-dark:var(--screen-on-dark);
+
+  /* --- type ------------------------------------------------------------- */
+  --f-sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --f-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-h1:clamp(2.25rem,1.35rem + 3.1vw,3.25rem);
+  --fs-h2:1.75rem; --fs-h3:1.25rem; --fs-h4:1.0625rem;
+  --fs-body-lg:1.0625rem; --fs-body:1rem; --fs-dense:.9375rem;
+  --fs-value-lg:1.875rem; --fs-value:1rem; --fs-label:.75rem; --fs-micro:.6875rem;
+  --lh-display:1.06; --lh-heading:1.18; --lh-prose:1.6; --lh-dense:1.45; --lh-readout:1.2;
+  --ls-display:-.02em; --ls-heading:-.015em; --ls-label:.1em; --ls-micro:.12em; --ls-word:.06em;
+  --w-regular:400; --w-medium:500; --w-semibold:600; --w-bold:700;
+
+  /* --- space / size ----------------------------------------------------- */
+  --s1:.25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem;
+  --s6:2rem; --s7:2.5rem; --s8:3.5rem; --s9:4.5rem;
+  --section-y:3.5rem; --section-y-lg:5.5rem;
+  --gutter:1.25rem; --gutter-lg:3rem;
+  --row-y:.875rem;
+  --content-max:75rem; --prose-max:42rem; --lane:5.5rem; --row-min:2.75rem;
+  --hairline-w:1px; --emphasis-w:2px; --ring-w:2px; --ring-off:2px;
+
+  /* --- radius / motion -------------------------------------------------- */
+  --r-none:0; --r-control:2px; --r-surface:3px;
+  --dur:120ms; --ease:cubic-bezier(.2,0,.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--surface-base); color:var(--ink);
+  font:var(--w-regular) var(--fs-body)/var(--lh-prose) var(--f-sans);
+  font-variant-numeric:tabular-nums;
+}
+img,svg{max-width:100%}
+a{color:inherit}
+h1,h2,h3,h4,p,ul,ol,figure{margin:0}
+ul{list-style:none;padding:0}
+
+:focus-visible{outline:var(--ring-w) solid var(--focus);outline-offset:var(--ring-off)}
+.on-dark :focus-visible,.on-dark:focus-visible{outline-color:var(--focus-dark)}
+
+.wrap{max-width:var(--content-max);margin-inline:auto;padding-inline:var(--gutter)}
+@media(min-width:1024px){.wrap{padding-inline:var(--gutter-lg)}}
+
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* --- the one ornament: a ruled baseline with ticks. A gauge edge. -------- */
+.tick{position:relative;height:5px;border-bottom:var(--hairline-w) solid var(--rule);
+      margin-block:var(--s4) var(--s6)}
+.tick::before{content:"";position:absolute;inset:auto 0 0 0;height:4px;
+  background-image:repeating-linear-gradient(to right,var(--measure) 0 1px,transparent 1px 12px)}
+.tick--dark{border-bottom-color:var(--sage)}
+.tick--dark::before{background-image:repeating-linear-gradient(to right,var(--amber) 0 1px,transparent 1px 12px)}
+
+/* --- readout: the page's atom ------------------------------------------- */
+.rd{display:grid;grid-template-columns:var(--lane) minmax(0,1fr);gap:0 var(--s4);
+    align-items:baseline;min-height:var(--row-min);padding-block:var(--row-y);
+    border-top:var(--hairline-w) solid var(--hairline)}
+.rd:first-of-type{border-top:0}
+.k{font:var(--w-medium) var(--fs-label)/var(--lh-readout) var(--f-mono);
+   letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--label-light)}
+.v{font:var(--w-medium) var(--fs-value)/var(--lh-readout) var(--f-mono);
+   font-variant-numeric:tabular-nums;color:var(--value-light)}
+.on-dark .rd{border-top-color:var(--hairline-dark)}
+.on-dark .k{color:var(--label-dark)}
+.on-dark .v{color:var(--value-dark)}
+a.v{text-decoration:none;text-underline-offset:3px}
+a.v:hover{text-decoration:underline}
+
+/* --- buttons ------------------------------------------------------------ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);
+  min-height:var(--row-min);padding:0 var(--s5);border-radius:var(--r-control);
+  font:var(--w-semibold) var(--fs-body)/1 var(--f-sans);text-decoration:none;
+  border:var(--hairline-w) solid transparent;cursor:pointer;
+  transition:background-color var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease)}
+.btn--primary{background:var(--primary);color:var(--primary-on)}
+.btn--primary:hover{background:var(--ember-hover)}
+.btn--primary:active{background:var(--ember-active)}
+/* On a near-black green field a solid ember button is 1.36:1 against its own
+   background. The CTA inverts: paper fill, night text = 12.48:1. */
+.btn--on-dark{background:var(--paper);color:var(--night)}
+.btn--on-dark:hover{background:var(--white)}
+.btn--ghost-dark{background:transparent;color:var(--paper);border-color:var(--sage)}
+.btn--ghost-dark:hover{border-color:var(--paper)}
+.btn--sm{min-height:var(--row-min);padding:0 var(--s4);font-size:var(--fs-dense)}
+
+/* --- header ------------------------------------------------------------- */
+.hdr{position:sticky;top:0;z-index:50;background:var(--surface-raised);
+     border-bottom:var(--hairline-w) solid var(--rule)}
+.hdr__bar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3) var(--s5);
+          padding-block:var(--s2)}
+.mark{display:inline-flex;align-items:baseline;gap:.35em;text-decoration:none;
+  font:var(--w-bold) 1.1875rem/1 var(--f-sans);letter-spacing:var(--ls-word);
+  color:var(--ink);text-transform:uppercase;min-height:var(--row-min);align-items:center}
+.mark::after{content:"";width:6px;height:6px;background:var(--primary);align-self:center}
+.nav{order:3;flex:1 0 100%;display:flex;flex-wrap:wrap;gap:0 var(--s5);
+     border-top:var(--hairline-w) solid var(--hairline);padding-top:var(--s1)}
+.nav a{display:inline-flex;align-items:center;min-height:var(--row-min);
+  font:var(--w-medium) var(--fs-dense)/1 var(--f-sans);text-decoration:none;color:var(--ink)}
+.nav a:hover{color:var(--primary)}
+.nav a[aria-current="page"]{color:var(--primary);box-shadow:inset 0 -2px 0 var(--primary)}
+.hdr__end{margin-left:auto;display:flex;align-items:center;gap:var(--s3)}
+.switch{display:flex;align-items:center;gap:var(--s2)}
+.switch__lab{font:var(--w-medium) var(--fs-micro)/1 var(--f-mono);letter-spacing:var(--ls-micro);
+  text-transform:uppercase;color:var(--label-light)}
+.switch a{display:inline-flex;align-items:center;min-height:var(--row-min);padding:0 var(--s3);
+  border:var(--hairline-w) solid var(--rule);border-radius:var(--r-control);
+  font:var(--w-medium) var(--fs-dense)/1 var(--f-sans);text-decoration:none;color:var(--ink)}
+.switch a:hover{border-color:var(--primary);color:var(--primary)}
+@media(min-width:1024px){
+  .nav{order:0;flex:0 1 auto;border-top:0;padding-top:0}
+  .switch__lab{display:inline}
+}
+@media(max-width:639px){.switch__lab{display:none}}
+
+/* --- sections ----------------------------------------------------------- */
+section{padding-block:var(--section-y)}
+@media(min-width:1024px){section{padding-block:var(--section-y-lg)}}
+.on-dark{background:var(--surface-dark);color:var(--on-dark)}
+.on-darkest{background:var(--surface-darkest);color:var(--on-dark)}
+h2{font:var(--w-semibold) var(--fs-h2)/var(--lh-heading) var(--f-sans);letter-spacing:var(--ls-heading)}
+h3{font:var(--w-semibold) var(--fs-h3)/var(--lh-heading) var(--f-sans)}
+h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
+.eyebrow{font:var(--w-medium) var(--fs-micro)/1 var(--f-mono);letter-spacing:var(--ls-micro);
+  text-transform:uppercase;color:var(--label-light);display:block}
+.on-dark .eyebrow,.on-darkest .eyebrow{color:var(--label-dark)}
+.prose{max-width:var(--prose-max);font-size:var(--fs-body-lg);line-height:var(--lh-prose)}
+
+/* --- hero --------------------------------------------------------------- */
+.hero{padding-block:var(--s6) var(--s7)}
+@media(min-width:1024px){.hero{padding-block:var(--s8) var(--s9)}}
+.hero__grid{display:grid;gap:var(--s6);align-items:start}
+@media(min-width:1024px){.hero__grid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--s7)}}
+.hero h1{font:var(--w-semibold) var(--fs-h1)/var(--lh-display) var(--f-sans);
+  letter-spacing:var(--ls-display);color:var(--on-dark);margin-block:var(--s3) var(--s4);
+  max-width:16ch}
+.hero__sub{color:var(--on-dark-2);font-size:var(--fs-body-lg);line-height:var(--lh-prose);max-width:52ch}
+.hero__cta{display:flex;flex-wrap:wrap;gap:var(--s3);margin-top:var(--s5)}
+.mono-hl{font-family:var(--f-mono);font-weight:var(--w-medium);color:var(--amber)}
+
+/* --- image slot: the photography stand-in ------------------------------- */
+.slot{background:var(--surface-photo);border-radius:var(--r-surface);overflow:hidden;
+      border:var(--hairline-w) solid var(--rule)}
+.on-dark .slot,.on-darkest .slot{border-color:var(--sage)}
+.slot__img{display:block;width:100%;aspect-ratio:16/5;object-fit:cover}
+@media(min-width:640px){.slot__img{aspect-ratio:16/7}}
+@media(min-width:1024px){.slot__img{aspect-ratio:3/2}}
+.slot__cap{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:baseline;
+  padding:var(--s3) var(--s4);border-top:var(--hairline-w) solid var(--screen-trace)}
+.slot__tag{font:var(--w-medium) var(--fs-micro)/1.3 var(--f-mono);letter-spacing:var(--ls-micro);
+  text-transform:uppercase;color:var(--amber)}
+.slot__note{font:var(--w-regular) .8125rem/1.35 var(--f-mono);color:var(--paper)}
+
+/* --- jobs list (What you can do here) ----------------------------------- */
+.jobs{border-top:var(--hairline-w) solid var(--rule);border-bottom:var(--hairline-w) solid var(--rule)}
+.jobs li + li{border-top:var(--hairline-w) solid var(--hairline)}
+.jobs a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s1) var(--s5);
+  align-items:baseline;min-height:var(--row-min);padding:var(--s4) var(--s4) var(--s4) var(--s5);
+  text-decoration:none;border-left:var(--emphasis-w) solid transparent;
+  transition:background-color var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+@media(min-width:768px){
+  .jobs a{grid-template-columns:11rem minmax(0,1fr) 1.5rem;align-items:baseline}
+}
+.jobs a:hover{background:var(--chalk);border-left-color:var(--primary)}
+.jobs__t{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans);color:var(--ink)}
+.jobs__b{color:var(--ink-2);font-size:var(--fs-dense);line-height:var(--lh-dense)}
+.jobs__go{font-family:var(--f-mono);color:var(--primary);justify-self:end;align-self:center}
+.jobs .is-feature a{background:var(--surface-inset);border-left-color:var(--primary)}
+.jobs .is-feature .jobs__t{color:var(--primary)}
+
+/* --- proof -------------------------------------------------------------- */
+.proof{background:var(--surface-inset)}
+.chip{display:inline-flex;align-items:center;gap:var(--s2);padding:var(--s1) var(--s2);
+  border:var(--hairline-w) solid currentColor;border-radius:var(--r-control);
+  font:var(--w-medium) var(--fs-micro)/1.4 var(--f-mono);letter-spacing:var(--ls-micro);
+  text-transform:uppercase;color:var(--pending)}
+.chip--dark{color:var(--pending-dark)}
+.hd-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3) var(--s4)}
+.stub{margin-top:var(--s4);max-width:var(--prose-max);color:var(--ink-2);
+  font-size:var(--fs-dense);line-height:var(--lh-dense)}
+.qslots{margin-top:var(--s6);border-top:var(--hairline-w) solid var(--rule)}
+.qslot{border-bottom:var(--hairline-w) solid var(--hairline);padding-block:var(--s5)}
+.qslot__lines{display:grid;gap:var(--s3);max-width:46rem}
+.qslot__ln{height:0;border-bottom:var(--hairline-w) dashed var(--rule)}
+.qslot__ln--short{max-width:58%}
+.qslot__meta{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s6);margin-top:var(--s4);align-items:baseline}
+.qslot__pair{display:flex;align-items:baseline;gap:var(--s3)}
+.ph{font:var(--w-regular) var(--fs-dense)/1.3 var(--f-mono);color:var(--ink-2);
+  border-bottom:var(--hairline-w) dashed var(--rule);padding-bottom:2px}
+.src{margin-top:var(--s5);border-top:var(--hairline-w) solid var(--rule)}
+
+/* --- featured offer ----------------------------------------------------- */
+.offer__grid{display:grid;gap:var(--s7)}
+@media(min-width:1024px){.offer__grid{grid-template-columns:minmax(0,1fr) minmax(0,26rem);gap:var(--s9)}}
+.offer p{color:var(--on-dark-2);font-size:var(--fs-body-lg);line-height:var(--lh-prose);max-width:46ch}
+.offer p + p{margin-top:var(--s4)}
+.offer h2{color:var(--on-dark);margin-block:var(--s3) var(--s5)}
+.lnk-dark{display:inline-block;margin-top:var(--s5);color:var(--paper);
+  font:var(--w-semibold) var(--fs-body)/1 var(--f-sans);text-decoration:underline;
+  text-decoration-color:var(--amber);text-decoration-thickness:2px;text-underline-offset:5px}
+.form{border:var(--hairline-w) solid var(--sage);border-top:var(--emphasis-w) solid var(--amber);
+  border-radius:var(--r-control);padding:var(--s5)}
+.form h3{color:var(--on-dark)}
+.form__blurb{color:var(--on-dark-2);font-size:var(--fs-dense);line-height:var(--lh-dense);margin-top:var(--s2)}
+.form__fields{display:grid;gap:var(--s3);margin-top:var(--s5)}
+@media(min-width:640px){.form__fields{grid-template-columns:1fr 1fr}}
+.inp{width:100%;min-height:var(--row-min);padding:0 var(--s3);
+  background:transparent;color:var(--paper);border:var(--hairline-w) solid var(--field-on-dark);
+  border-radius:var(--r-control);font:var(--w-regular) var(--fs-body)/1 var(--f-mono);
+  box-shadow:inset 0 1px 0 rgba(18,75,46,.4)}
+.inp::placeholder{color:var(--on-dark-2);opacity:1}
+.inp:focus-visible{border-color:var(--amber)}
+.form .btn{width:100%;margin-top:var(--s3)}
+.note{display:flex;gap:var(--s3);margin-top:var(--s4);padding-left:var(--s3);
+  border-left:var(--emphasis-w) solid var(--screen-on-dark);
+  font:var(--w-regular) .8125rem/1.4 var(--f-mono);color:var(--screen-on-dark)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* --- venues ------------------------------------------------------------- */
+.venues{border-top:var(--hairline-w) solid var(--rule)}
+.venue{display:grid;gap:var(--s5);padding-block:var(--s7);
+  border-bottom:var(--hairline-w) solid var(--rule)}
+@media(min-width:900px){
+  .venue{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:var(--s7);align-items:start}
+}
+.venue h3{margin-bottom:var(--s4)}
+.spec{display:flex;flex-wrap:wrap;gap:var(--s6);padding-block:var(--s4);
+  border-block:var(--hairline-w) solid var(--hairline)}
+.spec__cell{display:grid;gap:var(--s1)}
+.spec__v{font:var(--w-medium) var(--fs-value-lg)/1 var(--f-mono);
+  font-variant-numeric:tabular-nums;color:var(--value-light)}
+.spec__v--t{font-size:var(--fs-h4);line-height:1.6}
+.venue__intro{margin-top:var(--s4);color:var(--ink-2);font-size:var(--fs-dense);
+  line-height:var(--lh-dense);max-width:48ch}
+.venue__act{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4);margin-top:var(--s5)}
+.lnk{display:inline-flex;align-items:center;min-height:var(--row-min);color:var(--ink);
+  font:var(--w-semibold) var(--fs-dense)/1 var(--f-sans);text-decoration:underline;
+  text-decoration-color:var(--rule);text-underline-offset:4px}
+.lnk:hover{text-decoration-color:var(--primary);color:var(--primary)}
+
+/* --- footer ------------------------------------------------------------- */
+.ftr{background:var(--surface-dark);color:var(--on-dark);padding-block:var(--section-y)}
+.ftr__grid{display:grid;gap:var(--s7)}
+@media(min-width:640px){.ftr__grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1024px){.ftr__grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s6)}}
+.lockup{display:grid;gap:var(--s1);margin-bottom:var(--s4)}
+.lockup__mark{font:var(--w-bold) 1.0625rem/1 var(--f-sans);letter-spacing:var(--ls-word);
+  text-transform:uppercase;color:var(--paper)}
+.lockup__rule{height:var(--hairline-w);background:var(--sage);width:100%;max-width:11rem}
+.lockup__venue{font:var(--w-semibold) var(--fs-micro)/1 var(--f-sans);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--paper)}
+.ftr__nap{display:grid;gap:var(--s2);font:var(--w-regular) .875rem/1.5 var(--f-mono);color:var(--paper)}
+.ftr__nap a{text-decoration:none;text-underline-offset:3px}
+.ftr__nap a:hover{text-decoration:underline}
+.ftr__hd{font:var(--w-medium) var(--fs-micro)/1 var(--f-mono);letter-spacing:var(--ls-micro);
+  text-transform:uppercase;color:var(--amber);margin-bottom:var(--s3);display:block}
+.ftr__list{display:grid}
+.ftr__list a{display:inline-flex;align-items:center;min-height:var(--row-min);
+  font-size:var(--fs-dense);color:var(--paper);text-decoration:none}
+.ftr__list a:hover{text-decoration:underline;text-underline-offset:3px}
+.ftr__legal{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s5);align-items:center;
+  margin-top:var(--s6);padding-top:var(--s4);
+  font:var(--w-regular) .8125rem/1.5 var(--f-mono);color:var(--paper)}
+.ftr__legal a{text-underline-offset:3px}
+
+/* --- preview note ------------------------------------------------------- */
+.pv{background:var(--surface-inset);border-top:var(--hairline-w) solid var(--rule);
+    padding-block:var(--s5)}
+.pv p{font:var(--w-regular) .8125rem/1.5 var(--f-mono);color:var(--ink);max-width:70ch}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ===== schematic symbols (image-slot content) ========================= -->
+<svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <linearGradient id="proj" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fc0d8"/>
+      <stop offset=".52" stop-color="#8fc0d8"/>
+      <stop offset=".54" stop-color="#5e93ae"/>
+      <stop offset="1" stop-color="#3f7391"/>
+    </linearGradient>
+    <radialGradient id="pend" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#f3b268" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#f3b268" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- A bay in section: dark room, one bright screen, one warm pendant,
+       one ball-flight arc on a tick scale. No numeric values are drawn. -->
+  <symbol id="bay" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+    <rect width="600" height="400" fill="#1b1409"/>
+    <ellipse cx="452" cy="52" rx="150" ry="105" fill="url(#pend)"/>
+    <rect x="46" y="58" width="286" height="196" fill="url(#proj)"/>
+    <path d="M46 190h286" stroke="#1b1409" stroke-opacity=".28" stroke-width="1"/>
+    <path d="M92 254v-30l46-14 52 20 44-26 52 18" stroke="#1b1409" stroke-opacity=".22"
+          stroke-width="2" fill="none"/>
+    <rect x="46" y="58" width="286" height="196" fill="none" stroke="#8fc0d8" stroke-opacity=".5"/>
+    <path d="M452 30v34" stroke="#f3b268" stroke-width="1.5"/>
+    <circle cx="452" cy="70" r="7" fill="#f3b268"/>
+    <path d="M0 300h600" stroke="#5e93ae" stroke-opacity=".35" stroke-width="1"/>
+    <path d="M392 316h132l-26 26H366z" fill="none" stroke="#5e93ae" stroke-width="1.5"/>
+    <circle cx="446" cy="330" r="3.5" fill="#f3b268"/>
+    <path d="M446 330C400 262 330 196 214 176" stroke="#f3b268" stroke-width="2" fill="none"/>
+    <g fill="#f3b268">
+      <circle cx="416" cy="303" r="2.4"/><circle cx="386" cy="278" r="2.4"/>
+      <circle cx="352" cy="252" r="2.4"/><circle cx="316" cy="228" r="2.4"/>
+      <circle cx="278" cy="205" r="2.4"/><circle cx="244" cy="188" r="2.4"/>
+    </g>
+    <g stroke="#5e93ae" stroke-width="1.5">
+      <path d="M572 60v280"/>
+      <path d="M562 60h10M562 116h10M562 172h10M562 228h10M562 284h10M562 340h10"/>
+    </g>
+    <g stroke="#5e93ae" stroke-opacity=".55" stroke-width="1.5">
+      <path d="M12 44v312"/><path d="M356 44v312"/>
+    </g>
+  </symbol>
+
+  <!-- Stillwater: the same slot, unfilled. No projection, no pendant, no
+       trace — because no professional photography of that room exists. -->
+  <symbol id="bay-empty" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+    <rect width="600" height="400" fill="#1b1409"/>
+    <rect x="46" y="58" width="286" height="196" fill="none" stroke="#5e93ae"
+          stroke-width="1.5" stroke-dasharray="7 7" stroke-opacity=".85"/>
+    <path d="M0 300h600" stroke="#5e93ae" stroke-opacity=".3" stroke-width="1"/>
+    <path d="M392 316h132l-26 26H366z" fill="none" stroke="#5e93ae" stroke-width="1.5"
+          stroke-dasharray="7 7" stroke-opacity=".85"/>
+    <g stroke="#5e93ae" stroke-opacity=".45" stroke-width="1.5">
+      <path d="M572 60v280"/>
+      <path d="M562 60h10M562 116h10M562 172h10M562 228h10M562 284h10M562 340h10"/>
+      <path d="M12 44v312"/><path d="M356 44v312"/>
+    </g>
+  </symbol>
+</svg>
+
+<!-- ===== header ========================================================= -->
+<header class="hdr">
+  <div class="wrap hdr__bar">
+    <a class="mark" href="/">The Links</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/book/" aria-current="page">Book</a>
+      <a href="/rates/">Rates &amp; Hours</a>
+      <a href="/leagues/">Leagues</a>
+      <a href="/memberships/">Memberships</a>
+      <a href="/events/">Events</a>
+      <a href="/food-and-drink/">Food &amp; Drink</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <div class="hdr__end">
+      <div class="switch">
+        <span class="switch__lab">Visiting</span>
+        <a href="/locations/lakeville/">Lakeville</a>
+        <a href="/locations/stillwater/">Stillwater</a>
+      </div>
+      <a class="btn btn--primary btn--sm" href="/book/" data-analytics="book:chooser">Book a Bay</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== 3.1 hero ======================================================= -->
+<section class="hero on-darkest">
+  <div class="wrap">
+    <div class="hero__grid">
+      <div>
+        <span class="eyebrow">Lakeville &amp; Stillwater, Minnesota</span>
+        <h1>Indoor golf that&rsquo;s actually a night out.</h1>
+        <p class="hero__sub">Ten <span class="mono-hl">GolfZon NX</span> bays across two Twin Cities
+          venues. Book by the hour, bring up to five friends for the same price, and let the
+          simulator keep score while you order another round.</p>
+        <div class="hero__cta">
+          <a class="btn btn--on-dark" href="/book/" data-analytics="book:chooser">Book a Bay</a>
+          <a class="btn btn--ghost-dark" href="/rates/">See rates &amp; hours</a>
+        </div>
+      </div>
+
+      <figure class="slot">
+        <svg class="slot__img" role="img" aria-label="Schematic of a simulator bay: a dark room, a lit projection screen, a pendant light and an illustrative ball-flight arc. This is a placeholder for photography.">
+          <use href="#bay"/>
+        </svg>
+        <figcaption class="slot__cap">
+          <span class="slot__tag">Photo slot &middot; 3:2</span>
+          <span class="slot__note">Bay schematic, illustrative &mdash; no measured values shown.
+            The Lakeville shoot exists and is not in this repo.</span>
+        </figcaption>
+      </figure>
+    </div>
+    <div class="tick tick--dark" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- ===== 3.2 trust strip ================================================ -->
+<section class="on-dark" aria-label="Hours and locations" style="padding-block:var(--s7)">
+  <div class="wrap">
+    <div style="display:grid;gap:var(--s7)" class="ts">
+      <div>
+        <h2 style="font-size:var(--fs-h4);color:var(--on-dark)">
+          <a href="/locations/lakeville/" style="text-decoration:none">The Links of Lakeville</a>
+        </h2>
+        <div class="rd"><span class="k">Hours</span><span class="v">Mon&ndash;Sun 11am&ndash;9pm</span></div>
+        <div class="rd" style="border-top:0;padding-top:0;min-height:0">
+          <span></span>
+          <span style="display:inline-flex;align-items:center;gap:var(--s2);
+            border:1px solid var(--sage);border-left:2px solid var(--amber);
+            border-radius:var(--r-control);padding:var(--s1) var(--s2);
+            font:var(--w-regular) .8125rem/1.3 var(--f-mono);color:var(--paper)">(hours being confirmed)</span>
+        </div>
+        <div class="rd"><span class="k">Address</span>
+          <a class="v" style="font-size:.9375rem" target="_blank" rel="noopener"
+             href="https://maps.google.com/?q=17630+Juniper+Path+Suite+H,+Lakeville,+MN+55044">17630 Juniper Path Suite H, Lakeville, MN 55044</a></div>
+        <div class="rd"><span class="k">Phone</span>
+          <a class="v" href="tel:+16126990526">612-699-0526</a></div>
+      </div>
+
+      <div>
+        <h2 style="font-size:var(--fs-h4);color:var(--on-dark)">
+          <a href="/locations/stillwater/" style="text-decoration:none">The Links of Stillwater</a>
+        </h2>
+        <div class="rd"><span class="k">Hours</span>
+          <span class="v" style="font-size:.9375rem;line-height:1.45">Mon 12pm&ndash;9pm &middot; Tue&ndash;Fri 3pm&ndash;9pm &middot; Sat 10am&ndash;10pm &middot; Sun 12pm&ndash;7pm</span></div>
+        <div class="rd" style="border-top:0;padding-top:0;min-height:0">
+          <span></span>
+          <span style="display:inline-flex;align-items:center;gap:var(--s2);
+            border:1px solid var(--sage);border-left:2px solid var(--amber);
+            border-radius:var(--r-control);padding:var(--s1) var(--s2);
+            font:var(--w-regular) .8125rem/1.3 var(--f-mono);color:var(--paper)">(hours being confirmed)</span>
+        </div>
+        <div class="rd"><span class="k">Address</span>
+          <a class="v" style="font-size:.9375rem" target="_blank" rel="noopener"
+             href="https://maps.google.com/?q=5862+Omaha+Ave+N,+Stillwater,+MN+55082">5862 Omaha Ave N, Stillwater, MN 55082</a></div>
+        <div class="rd"><span class="k">Phone</span>
+          <a class="v" href="tel:+16126990527">612-699-0527</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3.3 what you can do here ======================================= -->
+<section>
+  <div class="wrap">
+    <h2>What you can do here</h2>
+    <div class="tick" aria-hidden="true"></div>
+    <ul class="jobs">
+      <li class="is-feature"><a href="/book/">
+        <span class="jobs__t">Play</span>
+        <span class="jobs__b">Book a bay by the hour. Up to five of you, same price.</span>
+        <span class="jobs__go" aria-hidden="true">&rarr;</span>
+      </a></li>
+      <li><a href="/leagues/">
+        <span class="jobs__t">Compete</span>
+        <span class="jobs__b">Fall and winter leagues at both venues.</span>
+        <span class="jobs__go" aria-hidden="true">&rarr;</span>
+      </a></li>
+      <li><a href="/events/">
+        <span class="jobs__t">Celebrate</span>
+        <span class="jobs__b">Work parties, birthdays, bachelor parties.</span>
+        <span class="jobs__go" aria-hidden="true">&rarr;</span>
+      </a></li>
+      <li><a href="/lessons/">
+        <span class="jobs__t">Improve</span>
+        <span class="jobs__b">Lessons and practice on a real launch monitor.</span>
+        <span class="jobs__go" aria-hidden="true">&rarr;</span>
+      </a></li>
+      <li><a href="/food-and-drink/">
+        <span class="jobs__t">Eat &amp; drink</span>
+        <span class="jobs__b">Full bar, real food, nine screens.</span>
+        <span class="jobs__go" aria-hidden="true">&rarr;</span>
+      </a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 3.4 proof ====================================================== -->
+<section class="proof">
+  <div class="wrap">
+    <div class="hd-row">
+      <h2>What players say</h2>
+      <span class="chip">Awaiting content</span>
+    </div>
+    <div class="tick" aria-hidden="true"></div>
+    <p class="stub">STUB &mdash; awaiting real, attributed reviews and the Google Business Profile
+      links for both venues. Unsourced quotes are not shipped.</p>
+
+    <ul class="qslots">
+      <li class="qslot">
+        <div class="qslot__lines" aria-hidden="true">
+          <span class="qslot__ln"></span><span class="qslot__ln"></span>
+          <span class="qslot__ln qslot__ln--short"></span>
+        </div>
+        <div class="qslot__meta">
+          <span class="qslot__pair"><span class="k">Attribution</span><span class="ph">first name, last initial</span></span>
+          <span class="qslot__pair"><span class="k">Venue</span><span class="ph">Lakeville or Stillwater</span></span>
+          <span class="qslot__pair"><span class="k">Source</span><span class="ph">Google Business Profile</span></span>
+        </div>
+      </li>
+      <li class="qslot">
+        <div class="qslot__lines" aria-hidden="true">
+          <span class="qslot__ln"></span><span class="qslot__ln"></span>
+          <span class="qslot__ln qslot__ln--short"></span>
+        </div>
+        <div class="qslot__meta">
+          <span class="qslot__pair"><span class="k">Attribution</span><span class="ph">first name, last initial</span></span>
+          <span class="qslot__pair"><span class="k">Venue</span><span class="ph">Lakeville or Stillwater</span></span>
+          <span class="qslot__pair"><span class="k">Source</span><span class="ph">Google Business Profile</span></span>
+        </div>
+      </li>
+      <li class="qslot">
+        <div class="qslot__lines" aria-hidden="true">
+          <span class="qslot__ln"></span><span class="qslot__ln"></span>
+          <span class="qslot__ln qslot__ln--short"></span>
+        </div>
+        <div class="qslot__meta">
+          <span class="qslot__pair"><span class="k">Attribution</span><span class="ph">first name, last initial</span></span>
+          <span class="qslot__pair"><span class="k">Venue</span><span class="ph">Lakeville or Stillwater</span></span>
+          <span class="qslot__pair"><span class="k">Source</span><span class="ph">Google Business Profile</span></span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="src">
+      <div class="rd"><span class="k">GBP &middot; Lakeville</span>
+        <span class="v" style="font-size:.9375rem;color:var(--pending)">URL not yet supplied</span></div>
+      <div class="rd"><span class="k">GBP &middot; Stillwater</span>
+        <span class="v" style="font-size:.9375rem;color:var(--pending)">No profile found</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3.5 featured offer + waitlist ================================== -->
+<section class="offer on-darkest">
+  <div class="wrap offer__grid">
+    <div>
+      <span class="eyebrow">This season</span>
+      <h2>Fall &amp; winter leagues</h2>
+      <p>League nights are the reason winter is our busiest season. Teams, handicaps, a live
+        leaderboard and a bar tab. Registration for
+        <span class="mono-hl">Fall/Winter&nbsp;2026-27</span> opens soon at both venues.</p>
+      <p>Never played in one? Most of our league players hadn&rsquo;t either. Handicaps keep it fair.</p>
+      <a class="lnk-dark" href="/leagues/">See how leagues work</a>
+    </div>
+
+    <form class="form" action="mailto:info@lakevillelinks.com" method="GET">
+      <h3>Get first word on league sign-ups</h3>
+      <p class="form__blurb">One email when registration opens. Nothing else.</p>
+      <input type="hidden" name="list" value="league-general">
+      <div class="hp" aria-hidden="true">
+        <label for="_hp">Leave this empty</label>
+        <input id="_hp" name="_hp" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="form__fields">
+        <div>
+          <label class="sr" for="wl-name">Your name</label>
+          <input class="inp" id="wl-name" name="name" type="text" placeholder="Your name" required>
+        </div>
+        <div>
+          <label class="sr" for="wl-email">Email address</label>
+          <input class="inp" id="wl-email" name="email" type="email" placeholder="you@example.com" required>
+        </div>
+      </div>
+      <button class="btn btn--on-dark" type="submit">Notify me</button>
+      <p class="note">Lead endpoint not configured &mdash; this form opens an email instead.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ===== 3.6 the space / two venues ===================================== -->
+<section>
+  <div class="wrap">
+    <h2>Two venues</h2>
+    <div class="tick" aria-hidden="true"></div>
+
+    <div class="venues">
+      <article class="venue">
+        <figure class="slot">
+          <svg class="slot__img" style="aspect-ratio:3/2" role="img" aria-label="Schematic of a Lakeville simulator bay: a dark room, a lit projection screen, a pendant light and an illustrative ball-flight arc. This is a placeholder for photography.">
+            <use href="#bay"/>
+          </svg>
+          <figcaption class="slot__cap">
+            <span class="slot__tag">Photo slot &middot; 3:2</span>
+            <span class="slot__note">Professional shoot exists (2022, warm/dark/pendant-lit).
+              Not in this repo.</span>
+          </figcaption>
+        </figure>
+        <div>
+          <h3>The Links of Lakeville</h3>
+          <div class="spec">
+            <span class="spec__cell"><span class="k">Bays</span><span class="spec__v">6</span></span>
+            <span class="spec__cell"><span class="k">Simulator</span><span class="spec__v spec__v--t">GolfZon NX</span></span>
+          </div>
+          <p class="venue__intro">Six GolfZon NX bays, a full bar and nine screens in the south metro.
+            Five bays play both-handed; one is right-handed only.</p>
+          <div class="venue__act">
+            <a class="btn btn--primary" target="_blank" rel="noopener" data-analytics="book:lakeville"
+               href="https://app.whoosh.io/patron/club/the-links-indoor-golf/agenda/simulators/today">
+              Book at Lakeville <span aria-hidden="true">&rarr;</span>
+              <span class="sr">(opens Whoosh booking in a new tab)</span></a>
+            <a class="lnk" href="/locations/lakeville/">Venue details</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="venue">
+        <figure class="slot">
+          <svg class="slot__img" style="aspect-ratio:3/2" role="img" aria-label="Empty photo slot for Stillwater: the outline of a bay, unfilled, because no professional photography of this venue exists yet.">
+            <use href="#bay-empty"/>
+          </svg>
+          <figcaption class="slot__cap">
+            <span class="slot__tag">Photo slot &middot; 3:2 &middot; empty</span>
+            <span class="slot__note">No professional photography of this venue exists. Shoot required
+              before launch &mdash; never a Lakeville frame in its place.</span>
+          </figcaption>
+        </figure>
+        <div>
+          <h3>The Links of Stillwater</h3>
+          <div class="spec">
+            <span class="spec__cell"><span class="k">Bays</span><span class="spec__v">4</span></span>
+            <span class="spec__cell"><span class="k">Simulator</span><span class="spec__v spec__v--t">GolfZon NX</span></span>
+          </div>
+          <p class="venue__intro">Four GolfZon NX bays in the east metro, inside Stillwater Bowl &amp;
+            Lounge. Opened early 2026.</p>
+          <div class="venue__act">
+            <a class="btn btn--primary" target="_blank" rel="noopener" data-analytics="book:stillwater"
+               href="https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today">
+              Book at Stillwater <span aria-hidden="true">&rarr;</span>
+              <span class="sr">(opens Whoosh booking in a new tab)</span></a>
+            <a class="lnk" href="/locations/stillwater/">Venue details</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== footer ========================================================= -->
+<footer class="ftr on-dark">
+  <div class="wrap">
+    <div class="ftr__grid">
+      <div>
+        <div class="lockup">
+          <span class="lockup__mark">The Links</span>
+          <span class="lockup__rule"></span>
+          <span class="lockup__venue">of Lakeville</span>
+        </div>
+        <div class="ftr__nap">
+          <span>17630 Juniper Path Suite H, Lakeville, MN 55044</span>
+          <a href="tel:+16126990526">612-699-0526</a>
+          <a href="mailto:info@lakevillelinks.com">info@lakevillelinks.com</a>
+          <span>Mon&ndash;Sun 11am&ndash;9pm</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="lockup">
+          <span class="lockup__mark">The Links</span>
+          <span class="lockup__rule"></span>
+          <span class="lockup__venue">of Stillwater</span>
+        </div>
+        <div class="ftr__nap">
+          <span>5862 Omaha Ave N, Stillwater, MN 55082</span>
+          <a href="tel:+16126990527">612-699-0527</a>
+          <span>Mon 12pm&ndash;9pm &middot; Tue&ndash;Fri 3pm&ndash;9pm</span>
+          <span>Sat 10am&ndash;10pm &middot; Sun 12pm&ndash;7pm</span>
+        </div>
+      </div>
+
+      <nav aria-label="Visit">
+        <span class="ftr__hd">Visit</span>
+        <div class="ftr__list">
+          <a href="/book/">Book</a>
+          <a href="/rates/">Rates &amp; Hours</a>
+          <a href="/leagues/">Leagues</a>
+          <a href="/memberships/">Memberships</a>
+          <a href="/events/">Events</a>
+          <a href="/food-and-drink/">Food &amp; Drink</a>
+          <a href="/contact/">Contact</a>
+        </div>
+      </nav>
+
+      <nav aria-label="More">
+        <span class="ftr__hd">More</span>
+        <div class="ftr__list">
+          <a href="/lessons/">Lessons</a>
+          <a href="/juniors/">Juniors</a>
+          <a href="/the-bays/">The Bays</a>
+          <a href="/gift-cards/">Gift Cards</a>
+          <a href="/faq/">FAQ</a>
+          <a href="/about/">About</a>
+          <a href="https://facebook.com/lakevillelinks/" target="_blank" rel="noopener">Facebook &mdash; Lakeville</a>
+          <a href="https://facebook.com/linksofstillwater/" target="_blank" rel="noopener">Facebook &mdash; Stillwater</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="tick tick--dark" aria-hidden="true" style="margin-block:var(--s6) 0"></div>
+    <div class="ftr__legal">
+      <span>&copy; 2026 The Links. All rights reserved.</span>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/booking-policy/">Booking policy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== preview note (not part of the design) ========================== -->
+<div class="pv">
+  <div class="wrap">
+    <p>PREVIEW NOTE &mdash; this file loads nothing over the network. Type is the system sans and the
+      system mono; the real proposal in <code>token-sets/technical.json</code> is IBM Plex Sans + IBM
+      Plex Mono, a superfamily whose sans and mono share cap height and skeleton so a label and its
+      value align in a lane. The image slots are labelled schematics standing in for the photography
+      that does not exist in this repo; they carry no numbers and are not measurements from either
+      venue. Wordmark is typeset, not drawn &mdash; the production mark is the redrawn slab SVG in
+      brand-direction &sect;4.2.</p>
+  </div>
+</div>
+
+<style>
+/* trust strip becomes two columns at sm, as the shipped component does */
+@media(min-width:640px){.ts{grid-template-columns:1fr 1fr;gap:var(--s6) var(--s7)!important}}
+</style>
+</body>
+</html>

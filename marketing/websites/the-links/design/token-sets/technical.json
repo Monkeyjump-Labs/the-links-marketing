@@ -1,0 +1,333 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "The Links — 'technical-dense' token overlay. STANCE: precision is the hospitality. This venue measures your club path on every swing; it should tell you its Sunday closing time with the same exactness — so every hard fact on the page (hours, address, bay count, phone) is typeset as an instrument readout: a mono label over a tabular value, on a hairline lane, at a contrast that survives 11px. Density here means the page respects the visitor's time, never that it is cramped — which is why the densest token in the set is a 2.75rem (44px) minimum row height, and why no text below 14px is allowed a colour under 6.5:1.",
+
+  "$extensions": {
+    "com.monkeyjumplabs.meta": {
+      "candidate": "home-technical",
+      "register": "technical-dense",
+      "divergenceAxis": "theme → token_set",
+      "baseTokens": "../tokens.json",
+      "surface": "homepage (/)",
+      "date": "2026-08-02",
+      "status": "PROPOSAL — divergent candidate, not client-approved, not merged.",
+      "dials": { "variance": 2, "motion": 1, "density": 8 },
+      "committedIdea": "Every hard fact is an instrument readout, and the missing photograph is held by a labelled bay schematic rather than a grey rectangle. The trust strip stops being fine print and becomes the hero's own readout rail.",
+      "contrastMethod": "WCAG 2.1 §1.4.3 / §1.4.11, sRGB relative luminance, computed — not estimated. Every ratio in this file was produced by a script over the two literal hex values stated beside it.",
+      "denseUiRule": "THE HARD RULE OF THIS OVERLAY: any text set below 14px must use a foreground/background pairing at 6.5:1 or better. The classic technical-register accessibility failure is small type at low contrast, and density makes it worse, not more acceptable. `role.ink.muted` (6.34:1 on paper, 5.76:1 on chalk) is therefore BANNED below 15px in this set — use `role.ink.default`, `role.accent.measure`, or `role.primary.default`, all of which clear 6.2:1 on every light surface here.",
+      "unusedFromBase": {
+        "palette.emberTint": "#f0dcc9 — dropped from use in this candidate, NOT deleted from the brand. This register has no decorative tint field; the featured offer (§3.5) goes to `surface.darkest` instead, which gives the page its second contrast event (screen-spec §10.2) and makes the waitlist the loudest block below the fold (§10.9). If this candidate merges, emberTint stays in the canonical palette for other surfaces."
+      }
+    }
+  },
+
+  "palette": {
+    "$type": "color",
+    "$description": "Primitives. KEPT values are byte-identical to ../tokens.json. NEW values are additions this register needs; each states the job it does and the gap in the base ramp that forced it.",
+
+    "forest": {
+      "$value": "#124b2e",
+      "$description": "KEPT VERBATIM. The brand's single largest colour equity (66 sections on the live site). Ink on light, and the trust-strip field. Untouched."
+    },
+    "night": {
+      "$value": "#0d3520",
+      "$description": "KEPT VERBATIM. Promoted in this overlay: it is the hero field AND the featured-offer field, so the page reads night → forest → light → light → NIGHT → light → forest. That rhythm is the direct answer to screen-spec §10.2 ('one dark hero, then eleven feet of white')."
+    },
+    "room": {
+      "$value": "#1b1409",
+      "$description": "NEW. A warm near-black — R−B +18, inside the photography register's measured +15..+19 band (screen-spec §8). USED ONLY as the ground of an image slot. Reason for a new value: the brand has no near-black that is *warm*; forest and night are green near-blacks, and a photo slot filled with green does not read as the room. paper on it 16.78:1, amber 9.89:1, sage 9.02:1. Against the light page it is a 16.78:1 block — deliberately the darkest object on the page, because in the real build that rectangle is a photograph of a dark room."
+    },
+    "ember": {
+      "$value": "#8a400a",
+      "$description": "KEPT VERBATIM. The action colour, and in this overlay the ONLY colour that means 'you can act on this'. No rules, ticks, eyebrows or diagram strokes are allowed to use it — that is what spends it (screen-spec §10.5) instead of scattering it."
+    },
+    "emberHover": { "$value": "#ad500d", "$description": "KEPT VERBATIM. paper on it 4.91:1 (AA ✓)." },
+    "emberActive": { "$value": "#6d3308", "$description": "KEPT VERBATIM. paper on it 9.08:1 (AA ✓)." },
+    "emberMid": { "$value": "#b85718", "$description": "KEPT VERBATIM. Focus ring only, never a text-bearing fill. vs white 4.76:1, vs paper 4.37:1, vs chalk 3.98:1, vs greige 3.66:1 — all clear the 3:1 non-text gate." },
+    "amber": {
+      "$value": "#f3b268",
+      "$description": "KEPT VERBATIM, and given a real job at last: in this overlay amber is THE LABEL COLOUR ON DARK FIELDS. Every mono field label on night or forest is amber. on night 7.35:1, on forest 5.49:1, on room 9.89:1. Still dark-fields-only — 1.85:1 on white."
+    },
+    "screen": {
+      "$value": "#2e5a6e",
+      "$description": "KEPT VERBATIM, and PROMOTED — this is the largest single move in the overlay. In the base tokens it is an unused status colour. Here it is the system's second voice: the colour of measurement. Every field label on a LIGHT surface, every status chip, and every schematic stroke is screen blue. It is the trace of the simulator projection — the one cool element in every frame of the photography — so making it the instrument colour is transcribing the room, not decorating it. on white 7.49:1, paper 6.89:1, chalk 6.27:1, greige 5.77:1 (all AA ✓ at 11px under this set's 6.5:1 dense rule, except greige which is 15px-and-up only)."
+    },
+    "screenOnDark": {
+      "$value": "#8fc0d8",
+      "$description": "NEW. Screen blue lightened for near-black grounds. Reason: base `screen` on `room` is 2.44:1 — unusable. This is the projection's own light. on room 9.30:1, on night 6.92:1 (AA ✓)."
+    },
+    "screenTrace": {
+      "$value": "#5e93ae",
+      "$description": "NEW. The mid stop between screen and screenOnDark. Schematic strokes on `room` only. on room 5.44:1 (AA ✓) — set above the body threshold even though it carries no text, so a diagram stroke is never fainter than the caption describing it."
+    },
+    "paper": { "$value": "#f7f5f3", "$description": "KEPT VERBATIM. Raised surface, and the text colour on every dark field." },
+    "white": { "$value": "#ffffff", "$description": "KEPT VERBATIM. Page background." },
+    "chalk": {
+      "$value": "#efeae5",
+      "$description": "NEW. Reason: white → paper → greige are three values that 'differ by almost nothing' (screen-spec §10.2), and this register needs an inset field that reads as a row, not a card. chalk sits one perceptible step below paper and above greige. ink on it 8.48:1, screen 6.27:1, ember 6.23:1, inkMuted 5.76:1 (all AA ✓)."
+    },
+    "greige": { "$value": "#e5e1e0", "$description": "KEPT VERBATIM. Alternating light band. ink on it 7.81:1." },
+    "rule": {
+      "$value": "#7c736b",
+      "$description": "NEW — and the register's named gap ('a hairline divider token'). Greige darkened until it clears the 3:1 non-text gate on EVERY light surface in this set: vs white 4.64:1, paper 4.27:1, chalk 3.89:1, greige 3.58:1. This is the structural hairline that replaces the current 2px `border-ink/15` card box on all three of the containers screen-spec §10.3 complains are identical. Border/rule token — it is NOT approved as a text colour (4.27:1 on paper misses the body floor)."
+    },
+    "hairline": {
+      "$value": "#c4bbb2",
+      "$description": "NEW. Decorative separation only — 1.89:1 vs white, which is BELOW the 3:1 non-text gate and is stated here so nobody promotes it. Legal because it never is the sole indicator of anything: it separates rows whose own text already groups them. Anything that is a control boundary, a field edge, or a section edge uses `rule`, not this."
+    },
+    "sage": {
+      "$value": "#9cbead",
+      "$description": "KEPT VERBATIM as a value and RE-JOBBED. The base tokens keep sage as a demoted decorative light field; this register has no decorative fields, so instead of dropping it, sage becomes the RULE AND BORDER COLOUR ON DARK FIELDS. vs forest 5.01:1, vs night 6.71:1, vs room 9.02:1 — comfortably past the 3:1 non-text gate, so it can carry a real field border. A retained brand value doing structural work beats a retained brand value doing nothing."
+    },
+    "hairlineOnDark": {
+      "$value": "#2c6244",
+      "$description": "NEW. The dark-field twin of `hairline` — decorative row separation inside a readout block. 1.42:1 on forest, 1.90:1 on night: BELOW the non-text gate, and therefore never a control boundary or a sole indicator. Structural separation on dark uses `sage`."
+    },
+    "inkMuted": {
+      "$value": "#456052",
+      "$description": "KEPT VERBATIM. Secondary body copy. on white 6.89:1, paper 6.34:1, chalk 5.76:1, greige 5.31:1. BANNED below 15px in this overlay — see $extensions.denseUiRule."
+    },
+    "onDarkMuted": {
+      "$value": "#9fb3a6",
+      "$description": "NEW. Secondary text and input placeholders on dark. Reason: the base set has exactly one on-dark text colour (paper), so a dark field has no hierarchy at all — and the hero subhead, the two league paragraphs and the form placeholders all need to sit below the heading without dropping out. on night 6.12:1, on forest 4.57:1 (AA ✓ body). 15px and up only."
+    },
+    "fieldOnDark": {
+      "$value": "#5c8a72",
+      "$description": "NEW. Input border on `night`. 3.45:1 vs night — clears WCAG 2.1 §1.4.11 for a control boundary. Reason: the base set has no on-dark form border at all, and the waitlist is the page's differentiator (screen-spec §10.9), so its inputs cannot be an invisible edge."
+    },
+    "clay": { "$value": "#a22c22", "$description": "KEPT VERBATIM. Error. on white 7.19:1, on paper 6.61:1." },
+    "moss": { "$value": "#155e36", "$description": "KEPT VERBATIM. Success. on white 7.82:1, on chalk 6.54:1." },
+    "errorOnDark": { "$value": "#f2a2a2", "$description": "KEPT VERBATIM. 5.05:1 on forest." },
+    "successOnDark": { "$value": "#a8e0c0", "$description": "KEPT VERBATIM. 6.80:1 on forest." },
+    "disabledInk": { "$value": "#52685b", "$description": "KEPT VERBATIM. on greige 4.64:1, on white 6.02:1." }
+  },
+
+  "role": {
+    "$type": "color",
+    "$description": "The semantic layer. Components reference ONLY these. Every pairing carries its computed ratio.",
+
+    "surface": {
+      "base": { "$value": "{palette.white}", "$description": "Page background. KEPT." },
+      "raised": { "$value": "{palette.paper}", "$description": "Header chrome, footer legal bar. KEPT. ink on it 9.32:1." },
+      "inset": { "$value": "{palette.chalk}", "$description": "NEW ROLE. The dense inset row — the featured 'Play' row (§3.3) and the proof section's field (§3.4). ink 8.48:1, screen 6.27:1, ember 6.23:1." },
+      "alt": { "$value": "{palette.greige}", "$description": "Alternating light band. KEPT. ink 7.81:1." },
+      "dark": { "$value": "{palette.forest}", "$description": "The trust strip and the footer. paper on it 9.32:1, amber 5.49:1, sage 5.01:1, onDarkMuted 4.57:1." },
+      "darkest": { "$value": "{palette.night}", "$description": "The hero AND the featured offer. paper 12.48:1, amber 7.35:1, sage 6.71:1, screenOnDark 6.92:1, onDarkMuted 6.12:1." },
+      "photo": { "$value": "{palette.room}", "$description": "NEW ROLE. Image-slot ground ONLY. Never a section background — the register's whole point is that this rectangle stands in for a photograph. paper 16.78:1, amber 9.89:1, screenOnDark 9.30:1, screenTrace 5.44:1, sage 9.02:1." }
+    },
+
+    "ink": {
+      "default": { "$value": "{palette.forest}", "$description": "Body + headings on light. white 10.14:1, paper 9.32:1, chalk 8.48:1, greige 7.81:1." },
+      "muted": { "$value": "{palette.inkMuted}", "$description": "Secondary copy, 15px and up only. white 6.89:1, paper 6.34:1, chalk 5.76:1, greige 5.31:1." },
+      "onDark": { "$value": "{palette.paper}", "$description": "Text on dark. forest 9.32:1, night 12.48:1, room 16.78:1." },
+      "onDarkMuted": { "$value": "{palette.onDarkMuted}", "$description": "Secondary text + placeholders on dark, 15px and up only. night 6.12:1, forest 4.57:1." }
+    },
+
+    "label": {
+      "$description": "NEW ROLE FAMILY — the readout label. This is what makes the candidate the candidate: a fact is a mono label plus a tabular value, and the label has its own colour role so it can never be set in a low-contrast grey. Both values clear 6.5:1, which is this overlay's floor for the 11–12px sizes labels are set at.",
+      "onLight": { "$value": "{palette.screen}", "$description": "Field labels on white / paper / chalk. 7.49:1 / 6.89:1 / 6.27:1 (AA ✓). NOT approved on greige at 11px (5.77:1 — under the dense floor); use ink.default there." },
+      "onDark": { "$value": "{palette.amber}", "$description": "Field labels on forest / night / room. 5.49:1 / 7.35:1 / 9.89:1 (AA ✓)." }
+    },
+
+    "value": {
+      "$description": "NEW ROLE FAMILY — the measured value beside a label. Deliberately NOT the label colour: label recedes, value is ink. This is how the trust strip stops being fine print (screen-spec §10.6).",
+      "onLight": { "$value": "{palette.forest}", "$description": "white 10.14:1, chalk 8.48:1." },
+      "onDark": { "$value": "{palette.paper}", "$description": "forest 9.32:1, night 12.48:1." }
+    },
+
+    "primary": {
+      "default": { "$value": "{palette.ember}", "$description": "Every CTA fill on a light surface. paper text on it 6.85:1, white text 7.45:1; as a fill against white the boundary is 7.45:1 (3:1 gate ✓)." },
+      "hover": { "$value": "{palette.emberHover}", "$description": "paper on it 4.91:1 (AA ✓)." },
+      "active": { "$value": "{palette.emberActive}", "$description": "paper on it 9.08:1." },
+      "on": { "$value": "{palette.paper}", "$description": "Foreground on a primary fill. 6.85:1." },
+      "onDarkField": {
+        "$value": "{palette.paper}",
+        "$description": "RULE, INHERITED UNCHANGED from ../tokens.json and re-verified here: a solid ember button on forest is 1.36:1 and on night 1.82:1 against its own field — it is arithmetically impossible for one fill to carry white text at 4.5:1 and clear 3:1 against a near-black green. On dark fields the primary CTA is a PAPER FILL WITH NIGHT TEXT — 12.48:1, the highest-contrast object on the page, which is the correct outcome for this register anyway. Amber was considered as a dark-field fill (night text on amber = 7.35:1, and it passes both gates) and REJECTED: it would give the page two action colours and undo the one-colour-means-clickable discipline above."
+      }
+    },
+
+    "accent": {
+      "measure": { "$value": "{palette.screen}", "$description": "The measurement voice on light — status chips, schematic strokes, the tick rule. white 7.49:1, paper 6.89:1, chalk 6.27:1." },
+      "measureOnDark": { "$value": "{palette.screenOnDark}", "$description": "The projection colour on near-black. room 9.30:1, night 6.92:1." },
+      "trace": { "$value": "{palette.screenTrace}", "$description": "Schematic stroke on `surface.photo` only. room 5.44:1." },
+      "highlight": { "$value": "{palette.amber}", "$description": "Dark-field highlight — labels, focus rings, the pendant note in a schematic. forest 5.49:1, night 7.35:1, room 9.89:1. NEVER on light: 1.85:1." }
+    },
+
+    "border": {
+      "$description": "NEW ROLE FAMILY, and the structural core of this register: hairline rules replace card boxes. Three of the containers screen-spec §10.3 calls identical (the 5 job cards, the 2 venue cards, the waitlist box) stop being boxes at all.",
+      "rule": { "$value": "{palette.rule}", "$description": "STRUCTURAL. Section edges, list boundaries, table header underlines, input borders on light. Clears 3:1 on white (4.64), paper (4.27), chalk (3.89), greige (3.58)." },
+      "hairline": { "$value": "{palette.hairline}", "$description": "DECORATIVE ONLY — 1.89:1 vs white, below the non-text gate. Row separation inside a list whose text already groups it. Never a control boundary." },
+      "ruleOnDark": { "$value": "{palette.sage}", "$description": "STRUCTURAL on dark. forest 5.01:1, night 6.71:1, room 9.02:1." },
+      "hairlineOnDark": { "$value": "{palette.hairlineOnDark}", "$description": "DECORATIVE ONLY on dark — 1.42:1 on forest, 1.90:1 on night." },
+      "field": { "$value": "{palette.rule}", "$description": "Input border on light. 4.64:1 vs white (§1.4.11 ✓)." },
+      "fieldOnDark": { "$value": "{palette.fieldOnDark}", "$description": "Input border on night. 3.45:1 (§1.4.11 ✓)." },
+      "emphasis": { "$value": "{palette.ember}", "$description": "The 2px marker rule that flags the one featured row. 7.45:1 vs white." }
+    },
+
+    "state": {
+      "focus": { "$value": "{palette.emberMid}", "$description": "Focus ring on light. white 4.76:1, paper 4.37:1, chalk 3.98:1, greige 3.66:1 — all past 3:1. Rendered as a 2px outline with 2px offset. `outline: none` is forbidden; the base build has no focus treatment at all and that is an open ship-gate item." },
+      "focusOnDark": { "$value": "{palette.amber}", "$description": "forest 5.49:1, night 7.35:1." },
+      "error": { "$value": "{palette.clay}", "$description": "white 7.19:1, paper 6.61:1." },
+      "errorOnDark": { "$value": "{palette.errorOnDark}", "$description": "5.05:1 on forest." },
+      "success": { "$value": "{palette.moss}", "$description": "white 7.82:1, chalk 6.54:1." },
+      "successOnDark": { "$value": "{palette.successOnDark}", "$description": "6.80:1 on forest." },
+      "pending": { "$value": "{palette.screen}", "$description": "NEW. 'Awaiting content' / 'hours being confirmed' / 'not configured' — this build has three live stub states and the base set has no colour for 'not wrong, just not here yet'. Deliberately the measurement colour, not the error colour: a missing shoot is not a fault. white 7.49:1, chalk 6.27:1." },
+      "disabledSurface": { "$value": "{palette.greige}" },
+      "disabledInk": { "$value": "{palette.disabledInk}", "$description": "greige 4.64:1, white 6.02:1." }
+    }
+  },
+
+  "font": {
+    "$type": "fontFamily",
+    "$description": "THE TYPE PROPOSAL. This is the real declaration; the HTML preview only approximates it with a system stack, because a wisplet design variant loads no network resources.",
+
+    "sans": {
+      "$value": ["IBM Plex Sans", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+      "$description": "PROPOSED — REPLACES both Bitter (display) and Open Sans (body). Weights 400 / 500 / 600 / 700; variable build, one file. Rationale in one line: IBM Plex was briefed as 'the relationship between man and machine', which is this candidate's whole argument, and it is a designed SUPERFAMILY — Plex Sans and Plex Mono share skeleton, metrics and cap height, so a mono label and a sans heading optically align in a readout lane instead of nearly aligning. Its humanist details (the flared `a`, the true two-storey `g` in text weights) keep it off the cold-grotesque end that would make a hospitality business look like a SaaS product. Cost, stated honestly: this discards the 75 KB of Bitter + Open Sans already self-hosted in public/fonts/, and it departs from brand-direction §3.2 which kept Open Sans. That is the trade this candidate is making, not an oversight."
+    },
+    "mono": {
+      "$value": ["IBM Plex Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+      "$description": "PROPOSED — genuinely NEW, and the register's named gap ('a mono role'). Weights 400 / 500. Carries every numeral, every field label, every status chip and the schematic captions. NOTE THE TRAP THIS FIXES: in the shipped codebase the `--brand-font-mono` slot holds Bitter, a slab serif, and `font-mono` is what every heading and button uses. There is no monospace in this system today. Tabular figures are the point — `Mon–Sun 11am–9pm` above `Mon 12pm–9pm · Tue–Fri 3pm–9pm` only reads as a comparison if the digits are the same width."
+    },
+    "displayNote": {
+      "$value": ["IBM Plex Sans"],
+      "$description": "There is no separate display face in this overlay, and that is deliberate. Anti-slop: serif is for editorial and publication, not for dense product — so Bitter is retired from the WEB BUILD and the slab survives where brand-direction §4.2 actually needs it, inside the redrawn wordmark SVG. The mark is then the one warm slab moment on an otherwise instrument-set page, which is a contrast the candidate wants, not a mismatch it tolerated. Headings are Plex Sans 600, hierarchy carried by weight and colour rather than raw scale."
+    },
+    "retiredHere": {
+      "$value": ["Bitter", "Open Sans", "Alfa Slab One", "Poppins"],
+      "$description": "Bitter and Open Sans are retired FROM THIS CANDIDATE'S web build only — they remain the canonical proposal in ../tokens.json. Alfa Slab One and Poppins stay retired for the reasons already recorded in brand-direction §3.1."
+    }
+  },
+
+  "fontWeight": {
+    "$type": "fontWeight",
+    "$description": "Six weights, one family. The register controls hierarchy with weight and colour, not with scale — the type ramp below is deliberately shallow.",
+    "regular": { "$value": 400, "$description": "Body copy." },
+    "medium": { "$value": 500, "$description": "Values, mono labels, nav." },
+    "semibold": { "$value": 600, "$description": "All headings, h1 through h3, and button labels. There is no 700 heading in this set." },
+    "bold": { "$value": 700, "$description": "The wordmark lockup only." }
+  },
+
+  "fontSize": {
+    "$type": "dimension",
+    "$description": "COMPACT AND SHALLOW. h1 tops out at 3.25rem against the base build's 3.75rem (lg:text-6xl), and h2 sits at 1.75rem — a 1.86× h1:h2 step instead of the base build's 2.5×. Nothing here 'just screams'.",
+    "h1": { "$value": "clamp(2.25rem, 1.35rem + 3.1vw, 3.25rem)", "$description": "36 → 52px. Weight 600, tracking -0.02em, line-height 1.06." },
+    "h2": { "$value": "1.75rem", "$description": "28px, weight 600, tracking -0.015em." },
+    "h3": { "$value": "1.25rem", "$description": "20px, weight 600." },
+    "h4": { "$value": "1.0625rem", "$description": "17px, weight 600. Card and row titles." },
+    "bodyLg": { "$value": "1.0625rem", "$description": "17px / 1.6. Hero subhead and section prose." },
+    "body": { "$value": "1rem", "$description": "16px / 1.55." },
+    "bodyDense": { "$value": "0.9375rem", "$description": "15px / 1.45. Readout rows and list bodies. THIS IS THE FLOOR FOR ink.muted." },
+    "valueLg": { "$value": "1.875rem", "$description": "30px mono 500, tabular. The bay count." },
+    "value": { "$value": "1rem", "$description": "16px mono 500, tabular. Hours, phone, address." },
+    "label": { "$value": "0.75rem", "$description": "12px mono 500, uppercase, tracking 0.1em. MUST use role.label.* — 6.5:1 minimum." },
+    "micro": { "$value": "0.6875rem", "$description": "11px mono 500, uppercase, tracking 0.12em. Slot captions and status chips. MUST use role.label.* or role.ink.default — never ink.muted." }
+  },
+
+  "lineHeight": {
+    "$type": "number",
+    "$description": "Density is horizontal and structural, not vertical. Prose keeps 1.55–1.6 — a cramped paragraph is how this register reads as hostile to a beginner.",
+    "display": { "$value": 1.06 },
+    "heading": { "$value": 1.18 },
+    "prose": { "$value": 1.6 },
+    "dense": { "$value": 1.45 },
+    "readout": { "$value": 1.2 }
+  },
+
+  "letterSpacing": {
+    "$type": "dimension",
+    "display": { "$value": "-0.02em" },
+    "heading": { "$value": "-0.015em" },
+    "body": { "$value": "0" },
+    "label": { "$value": "0.1em" },
+    "micro": { "$value": "0.12em" },
+    "wordmark": { "$value": "0.06em" }
+  },
+
+  "space": {
+    "$type": "dimension",
+    "$description": "REPLACED. The base set carries four spacing tokens (sectionY, sectionYLg, gutterX, gutterXLg) and nothing between them, so every internal gap in the build is an ad-hoc Tailwind step. This is a 4px-based scale so every gap on the page is a named step — the register's third named gap ('a dense spacing step').",
+    "1": { "$value": "0.25rem" },
+    "2": { "$value": "0.5rem" },
+    "3": { "$value": "0.75rem" },
+    "4": { "$value": "1rem" },
+    "5": { "$value": "1.5rem" },
+    "6": { "$value": "2rem" },
+    "7": { "$value": "2.5rem" },
+    "8": { "$value": "3.5rem" },
+    "9": { "$value": "4.5rem" },
+    "sectionY": { "$value": "3.5rem", "$description": "REPLACES 4rem. Tighter." },
+    "sectionYLg": { "$value": "5.5rem", "$description": "REPLACES 8rem. A 31% cut — the single most visible density move, and the reason more of the page is above the fold." },
+    "gutterX": { "$value": "1.25rem", "$description": "REPLACES 1.5rem." },
+    "gutterXLg": { "$value": "3rem", "$description": "REPLACES 4rem." },
+    "rowY": { "$value": "0.875rem", "$description": "Vertical padding inside a readout row." }
+  },
+
+  "size": {
+    "$type": "dimension",
+    "contentMax": { "$value": "75rem", "$description": "KEPT VERBATIM. The container does not change on a theme axis." },
+    "proseMax": { "$value": "42rem", "$description": "REPLACED (was 46.875rem). A shorter measure at 17px keeps prose at ~68 characters — density applied to the line, not to the leading." },
+    "labelLane": { "$value": "5.5rem", "$description": "NEW. The fixed-width label column of a readout. Every label lane on the page is this width, which is what makes six unrelated blocks read as one instrument." },
+    "rowMin": {
+      "$value": "2.75rem",
+      "$description": "NEW, AND THE MOST IMPORTANT TOKEN IN THIS SET. 44px — the minimum height of any interactive readout row. This is the floor on density: the page gets tighter until it hits 44px and then it stops. Density that respects your time, not density that crowds your thumb."
+    },
+    "hairline": { "$value": "1px", "$description": "REPLACES the build's 2px card border everywhere." },
+    "emphasisRule": { "$value": "2px", "$description": "The ember marker on the one featured row. The only 2px line left on the page." },
+    "focusRing": { "$value": "2px" },
+    "focusOffset": { "$value": "2px" }
+  },
+
+  "radius": {
+    "$type": "dimension",
+    "$description": "REPLACED. Near-zero — an instrument does not have rounded corners, and the base build's `rounded` boxes are half of why three structurally different jobs look like one container.",
+    "none": { "$value": "0" },
+    "control": { "$value": "2px", "$description": "Buttons, inputs, chips." },
+    "surface": { "$value": "3px", "$description": "Image slots, the one panel that is a panel." }
+  },
+
+  "elevation": {
+    "$type": "shadow",
+    "$description": "REPLACED WITH NOTHING, on purpose. There is not one drop shadow in this overlay. Separation is carried by `border.rule` and by a change of field colour — which is exactly what 'chrome recedes' means, and it is why the page has no floating card anywhere.",
+    "none": { "$value": { "color": "#00000000", "offsetX": "0", "offsetY": "0", "blur": "0", "spread": "0" } },
+    "insetField": {
+      "$value": { "color": "#124b2e14", "offsetX": "0", "offsetY": "1px", "blur": "0", "spread": "0", "inset": true },
+      "$description": "The only shadow token: a 1px inset top edge on a form input, so a field reads as recessed rather than raised. 8% forest, not black — no pure #000000 anywhere in this set."
+    }
+  },
+
+  "ornament": {
+    "$description": "NEW TOKEN FAMILY, and the answer to screen-spec §10.10 ('no texture, no ornament, no motif, no rhythm'). One repeated graphic device, expressed as tokens rather than as an SVG asset, so it costs zero bytes and survives on a rates table and a legal page.",
+    "tickRule": {
+      "$type": "strokeStyle",
+      "$value": { "baseline": "1px solid {role.border.rule}", "tickHeight": "4px", "tickWidth": "1px", "tickPitch": "12px", "tickColor": "{role.accent.measure}" },
+      "$description": "A ruled baseline with 1px ticks every 12px — a measuring scale with no numbers on it. Sits under every h2 and under the hero. It is the page's only ornament and it is literally the edge of a gauge."
+    },
+    "tickRuleOnDark": {
+      "$type": "strokeStyle",
+      "$value": { "baseline": "1px solid {role.border.ruleOnDark}", "tickHeight": "4px", "tickWidth": "1px", "tickPitch": "12px", "tickColor": "{role.accent.highlight}" },
+      "$description": "The dark-field twin. Amber ticks on a sage baseline."
+    }
+  },
+
+  "motion": {
+    "$description": "Dial 1 — static. Colour and border-colour only; no transforms, no scroll-driven anything, no load-in cascade. The page is complete and identical with JS off.",
+    "duration": { "$type": "duration", "$value": "120ms" },
+    "easing": { "$type": "cubicBezier", "$value": [0.2, 0, 0.2, 1] },
+    "properties": { "$value": ["color", "background-color", "border-color", "outline-color"] }
+  },
+
+  "imageSlot": {
+    "$description": "NEW TOKEN FAMILY. There is no photography in this repo and stock is a named ship-blocker, so the image slot is a first-class specified component rather than a grey rectangle. It renders the photography register from screen-spec §8 — a warm dark room with one bright screen in it — as a labelled bay schematic on `surface.photo`, with NO numeric values drawn anywhere on it, so nothing can be mistaken for a measurement from this venue.",
+    "ratio": { "$type": "number", "$value": 1.5, "$description": "3:2, matching the existing shoot's frame." },
+    "ground": { "$value": "{role.surface.photo}", "$description": "#1b1409 — warm near-black, in the shoot's measured R−B band." },
+    "projection": { "$value": "{role.accent.measureOnDark}", "$description": "The one cool bright element. 9.30:1 on the ground." },
+    "practical": { "$value": "{role.accent.highlight}", "$description": "The warm pendant. 9.89:1 on the ground." },
+    "stroke": { "$value": "{role.accent.trace}", "$description": "Schematic geometry. 5.44:1 on the ground." },
+    "caption": { "$value": "{role.label.onDark}", "$description": "Mono micro caption naming the slot, its ratio, and its real content status. Amber on room, 9.89:1." },
+    "statusEmpty": {
+      "$value": "{role.state.pending}",
+      "$description": "RULE, not a colour: the two venues get DIFFERENT slot states, because they have different truths. Lakeville's slot says the shoot exists and is not in this repo; Stillwater's says no professional photography exists at all and renders the schematic UNFILLED — dashed outline, no projection, no trace. Never fill a Stillwater slot with a Lakeville frame; the live site already does that on /bookingstillwater and it is a trust defect."
+    }
+  }
+}

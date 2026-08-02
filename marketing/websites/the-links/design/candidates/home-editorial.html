@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indoor Golf &amp; Simulators — Lakeville &amp; Stillwater, MN</title>
+<meta name="description" content="Two indoor golf venues in the Twin Cities. Book a GolfZon NX bay by the hour, bring up to five friends, full bar and food. Lakeville and Stillwater, MN.">
+<style>
+/* ============================================================================
+   home-editorial — disposable preview, generated from
+   design/token-sets/editorial.json  ·  register: editorial-minimal
+   Every value below is a token from that overlay. Type is APPROXIMATED with
+   system faces (see the preview note at the foot); the overlay carries the real
+   proposal — Fraunces / Open Sans / IBM Plex Mono.
+   ========================================================================== */
+
+:root{
+  /* palette */
+  --forest:#124b2e;  --paper:#f4f0e8;  --plate:#0b2a1a;  --plate-deep:#071a10;
+  --ember:#8a400a;   --ember-hover:#ad500d; --ember-active:#6d3308; --ember-mid:#b85718;
+  --amber:#f3b268;   --screen-glow:#7fa8be;
+  --rule:#c7bfac;    --rule-dark:#2f4a3b;   --control-edge:#7d7768;
+  --ink-muted:#456052; --ink-muted-dark:#a8bcad; --white:#ffffff;
+
+  /* roles */
+  --surface-page:var(--paper);
+  --surface-plate:var(--plate);
+  --surface-inset:var(--white);
+  --ink:var(--forest);
+  --ink-on-dark:var(--paper);
+
+  /* type — PREVIEW SUBSTITUTES for Fraunces / Open Sans / IBM Plex Mono */
+  --f-display:ui-serif,"Iowan Old Style",Georgia,"Times New Roman",Times,serif;
+  --f-body:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --f-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+
+  /* space */
+  --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem; --s6:2rem; --s7:3rem; --s8:4rem;
+  --s9:6rem; --s10:9rem;
+  --section-y:5rem; --section-y-lg:9rem;
+  --gutter:1.5rem; --gutter-lg:4rem;
+
+  /* size */
+  --content-max:71rem; --measure:34rem; --rail:11rem; --rail-gap:3rem; --hairline:1px;
+
+  /* radius / motion */
+  --r-control:2px; --dur:120ms; --ease:cubic-bezier(.2,0,0,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--surface-page);color:var(--ink);
+  font-family:var(--f-body);font-size:1rem;line-height:1.65;
+  font-synthesis-weight:none;text-rendering:optimizeLegibility;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3,p,ul,figure,figcaption,blockquote,address{margin:0}
+ul{list-style:none;padding:0}
+address{font-style:normal}
+
+:focus-visible{outline:2px solid var(--ember-mid);outline-offset:3px}
+.on-plate :focus-visible{outline-color:var(--amber)}
+.coupon :focus-visible{outline-color:var(--ember-mid)}
+
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-9999px;top:0;background:var(--paper);color:var(--ink);
+      padding:var(--s3) var(--s4);z-index:100;font-family:var(--f-mono);font-size:.8125rem}
+.skip:focus{left:var(--s4);top:var(--s2)}
+
+/* ---------- layout primitives ---------------------------------------- */
+.wrap{max-width:var(--content-max);margin-inline:auto;padding-inline:var(--gutter)}
+@media (min-width:64rem){ .wrap{padding-inline:var(--gutter-lg)} }
+
+.grid{display:grid;grid-template-columns:1fr;gap:var(--s5)}
+@media (min-width:64rem){
+  .grid{grid-template-columns:var(--rail) minmax(0,1fr);gap:var(--rail-gap)}
+}
+.sec{padding-block:var(--section-y)}
+@media (min-width:64rem){ .sec{padding-block:var(--section-y-lg)} }
+.sec--flush{padding-top:0}
+
+/* the marginal head — an h2 set small in the margin, not large in the column.
+   This is the candidate's committed hierarchy move. */
+.mhead{
+  font-family:var(--f-mono);font-size:.8125rem;font-weight:500;line-height:1.25;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--ink);
+  padding-top:var(--s3);border-top:2px solid var(--ember);display:inline-block;
+}
+@media (min-width:64rem){ .mhead{position:sticky;top:7.5rem} }
+
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;font-weight:500;letter-spacing:.11em;
+         text-transform:uppercase;color:var(--ink-muted);line-height:1.45}
+.meta{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.045em;line-height:1.55;
+      color:var(--ink-muted)}
+.data{font-family:var(--f-mono);font-size:1.0625rem;line-height:1.35;letter-spacing:-.01em;
+      font-variant-numeric:tabular-nums;color:var(--ink)}
+.caveat{font-family:var(--f-mono);font-size:.75rem;font-weight:500;letter-spacing:.09em;
+        text-transform:uppercase;color:var(--ember);line-height:1.4}
+.lede{font-size:1.125rem;line-height:1.6;max-width:var(--measure)}
+
+/* ---------- controls -------------------------------------------------- */
+.btn{
+  display:inline-flex;align-items:center;gap:.5em;min-height:44px;
+  padding:.7rem 1.35rem;border-radius:var(--r-control);border:2px solid transparent;
+  background:var(--ember);color:var(--paper);
+  font-family:var(--f-body);font-weight:600;font-size:.9375rem;line-height:1.2;
+  text-decoration:none;cursor:pointer;
+  transition:background-color var(--dur) var(--ease);
+}
+.btn:hover{background:var(--ember-hover)}
+.btn:active{background:var(--ember-active)}
+.btn--sm{min-height:40px;padding:.5rem 1rem;font-size:.875rem}
+
+.tlink{
+  display:inline-flex;align-items:center;gap:.4em;min-height:44px;
+  font-weight:600;font-size:.9375rem;text-decoration:none;color:var(--ink);
+  border-bottom:2px solid var(--ember);
+  transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease);
+}
+.tlink:hover{color:var(--ember)}
+.on-plate .tlink{color:var(--paper);border-bottom-color:var(--amber)}
+.on-plate .tlink:hover{color:var(--amber)}
+
+/* ---------- header ---------------------------------------------------- */
+.hdr{
+  position:sticky;top:0;z-index:50;
+  background:#f4f0e8;
+  background:color-mix(in srgb,var(--paper) 94%,transparent);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border-bottom:var(--hairline) solid var(--rule);
+}
+.hdr__in{display:flex;align-items:center;gap:var(--s4) var(--s5);flex-wrap:wrap;
+         padding-block:.6rem;max-width:var(--content-max);margin-inline:auto;
+         padding-inline:var(--gutter)}
+@media (min-width:64rem){ .hdr__in{padding-inline:var(--gutter-lg);padding-block:.75rem} }
+
+.wordmark{font-family:var(--f-display);font-weight:500;font-size:1.375rem;letter-spacing:-.012em;
+          text-decoration:none;color:var(--ink);line-height:1;margin-right:auto;
+          display:inline-flex;align-items:center;min-height:44px}
+.nav{display:flex;flex-wrap:wrap;gap:0 var(--s5);order:3;width:100%;
+     border-top:var(--hairline) solid var(--rule);padding-top:.25rem;margin-top:.25rem}
+.nav a{font-size:.875rem;text-decoration:none;color:var(--ink);
+       display:inline-flex;align-items:center;min-height:40px;
+       border-bottom:2px solid transparent;
+       transition:border-color var(--dur) var(--ease)}
+.nav a:hover{border-bottom-color:var(--ember)}
+@media (min-width:64rem){
+  .nav{order:0;width:auto;border-top:0;padding-top:0;margin-top:0}
+  .nav a{min-height:44px}
+  .wordmark{margin-right:var(--s6)}
+  .switch{margin-left:auto}
+}
+
+.switch{display:flex;align-items:center;gap:var(--s3);font-family:var(--f-mono);
+        font-size:.6875rem;letter-spacing:.09em;text-transform:uppercase}
+.switch__label{color:var(--ink-muted);display:none}
+@media (min-width:40rem){ .switch__label{display:inline} }
+.switch a{display:inline-flex;align-items:center;min-height:44px;color:var(--ink);
+          text-decoration:none;border-bottom:2px solid transparent}
+.switch a:hover{border-bottom-color:var(--ember)}
+.switch__sep{color:var(--rule)}
+
+/* ---------- hero ------------------------------------------------------ */
+.hero{padding-top:var(--s7)}
+@media (min-width:64rem){ .hero{padding-top:var(--s9)} }
+.hero__rail{display:flex;flex-direction:column;gap:var(--s3);align-items:flex-start}
+@media (min-width:64rem){ .hero__rail{padding-top:1rem} }
+.hero__rule{border:0;border-top:2px solid var(--forest);width:4rem;margin:0}
+.hero h1{
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(2.25rem,6.4vw,5.25rem);line-height:1.02;letter-spacing:-.021em;
+  max-width:15ch;margin-block:var(--s4) var(--s5);
+}
+.hero h1 em{font-style:italic}
+.hero__ctas{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3) var(--s5);
+            margin-top:var(--s6)}
+
+/* ---------- image plates --------------------------------------------- */
+.plate-fig{margin-top:var(--s8)}
+.plate{position:relative;background:var(--plate-deep);
+       border:var(--hairline) solid var(--control-edge)}
+.plate__art{width:100%;height:auto}
+.plate__tag{position:absolute;top:0;left:0;background:var(--plate-deep);
+            padding:.45rem .7rem;
+            font-family:var(--f-mono);font-size:.6875rem;font-weight:500;letter-spacing:.11em;
+            text-transform:uppercase;color:var(--amber);line-height:1}
+.plate__cap{display:grid;gap:.3rem;padding-top:var(--s3);margin-top:var(--s3);
+            border-top:var(--hairline) solid var(--rule);max-width:38rem}
+.plate__cap b{font-family:var(--f-mono);font-size:.75rem;font-weight:500;letter-spacing:.09em;
+              text-transform:uppercase;color:var(--ember)}
+.plate__cap span{font-size:.875rem;line-height:1.55;color:var(--ink-muted)}
+.plate__cap code{font-family:var(--f-mono);font-size:.92em}
+
+/* ---------- trust strip ---------------------------------------------- */
+.trust{border-top:var(--hairline) solid var(--rule);
+       border-bottom:var(--hairline) solid var(--rule);
+       margin-top:var(--s9);padding-block:var(--s7)}
+.trust__grid{display:grid;grid-template-columns:1fr;gap:var(--s7)}
+@media (min-width:48rem){
+  .trust__grid{grid-template-columns:1fr 1fr;gap:var(--s8)}
+  .trust__grid>div+div{border-left:var(--hairline) solid var(--rule);padding-left:var(--s8)}
+}
+.trust__name{font-family:var(--f-display);font-weight:500;font-size:1.25rem;letter-spacing:-.01em;
+             text-decoration:none;color:var(--ink);display:inline-flex;align-items:center;
+             min-height:44px;border-bottom:2px solid transparent}
+.trust__name:hover{border-bottom-color:var(--ember)}
+.trust__hours{margin-top:var(--s2)}
+.trust__caveat{margin-top:var(--s3)}
+.trust__nap{margin-top:var(--s4);display:grid;gap:.2rem;justify-items:start}
+.trust__nap a{color:var(--ink-muted);text-decoration:none;font-size:.9375rem;
+              border-bottom:var(--hairline) solid var(--rule);padding-block:.6rem}
+.trust__nap a:hover{color:var(--ember);border-bottom-color:var(--ember)}
+.trust__nap .tel{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink);
+                 font-size:1rem}
+
+/* ---------- jobs list -------------------------------------------------- */
+.jobs{display:grid;grid-template-columns:1fr;border-top:2px solid var(--forest)}
+.jobs li{border-bottom:var(--hairline) solid var(--rule)}
+.job{display:block;text-decoration:none;color:var(--ink);padding-block:var(--s5)}
+.job h3{font-family:var(--f-display);font-weight:500;font-size:1.25rem;line-height:1.3;
+        display:flex;align-items:baseline;justify-content:space-between;gap:var(--s4)}
+.job p{font-size:.9375rem;line-height:1.6;color:var(--ink-muted);margin-top:.3rem;max-width:36ch}
+.job .arrow{font-family:var(--f-mono);color:var(--rule);
+            transition:color var(--dur) var(--ease)}
+.job:hover h3{text-decoration:underline;text-decoration-color:var(--ember);
+              text-underline-offset:.22em;text-decoration-thickness:2px}
+.job:hover .arrow{color:var(--ember)}
+/* the lead item — solves the five-into-three grid hole with hierarchy,
+   not with a filler card */
+.jobs li:first-child .job{padding-block:var(--s6)}
+.jobs li:first-child .job h3{font-size:clamp(1.75rem,3.4vw,2.375rem);letter-spacing:-.014em;
+                             font-weight:400}
+.jobs li:first-child .job p{font-size:1.0625rem;max-width:42ch}
+@media (min-width:48rem){
+  .jobs{grid-template-columns:1fr 1fr}
+  .jobs li:first-child{grid-column:1/-1}
+  .jobs li:nth-child(odd):not(:first-child){border-left:var(--hairline) solid var(--rule)}
+  .jobs li:nth-child(odd):not(:first-child) .job{padding-left:var(--s5)}
+  .job{padding-right:var(--s5)}
+}
+
+/* ---------- proof ----------------------------------------------------- */
+.proof{display:grid;grid-template-columns:1fr;gap:var(--s6)}
+@media (min-width:64rem){ .proof{grid-template-columns:1.55fr 1fr;gap:var(--s7)} }
+.qstack{display:grid;gap:var(--s6);align-content:start}
+.qslot{border-top:2px solid var(--forest);padding-top:var(--s4);display:grid;gap:var(--s4);
+       align-content:start}
+.qslot--sm{border-top:var(--hairline) solid var(--rule)}
+.qmark{font-family:var(--f-display);font-size:3.25rem;line-height:.62;color:var(--rule)}
+.qslot--sm .qmark{font-size:2.25rem}
+.lines{display:grid;gap:.6rem}
+.lines i{display:block;height:.7rem;background:var(--rule)}
+.qslot--sm .lines i{height:.55rem}
+.attrib i{display:block;height:.55rem;width:9rem;background:var(--rule)}
+.stub{margin-top:var(--s7);border-left:2px solid var(--control-edge);padding-left:var(--s5);
+      max-width:var(--measure)}
+.stub p{font-size:.9375rem;line-height:1.6;color:var(--ink-muted);font-style:italic}
+
+/* ---------- featured offer — the plate band --------------------------- */
+.band{background:var(--surface-plate);color:var(--ink-on-dark)}
+.band .mhead{color:var(--amber);border-top-color:var(--amber)}
+.band h2{font-family:var(--f-display);font-weight:400;
+         font-size:clamp(1.875rem,4vw,3rem);line-height:1.08;letter-spacing:-.015em;
+         max-width:16ch;margin-bottom:var(--s5)}
+.band p{max-width:var(--measure);color:var(--ink-muted-dark);font-size:1.0625rem;line-height:1.65}
+.band p+p{margin-top:var(--s4)}
+.band__cols{display:grid;grid-template-columns:1fr;gap:var(--s8)}
+@media (min-width:64rem){
+  .band__cols{grid-template-columns:minmax(0,1fr) 22.5rem;gap:var(--s9);align-items:start}
+}
+
+/* the waitlist is the differentiator — a paper coupon laid on the dark page,
+   not a newsletter box. On a plate an ember fill is 2.07:1, so the CTA cannot
+   sit on the dark; the whole block inverts to paper instead. */
+.coupon{background:var(--paper);color:var(--ink);padding:var(--s6);
+        border-top:3px solid var(--ember)}
+.coupon h3{font-family:var(--f-display);font-weight:500;font-size:1.375rem;line-height:1.2;
+           letter-spacing:-.01em}
+.coupon .blurb{font-size:.9375rem;color:var(--ink-muted);margin-top:.5rem;line-height:1.55}
+.coupon form{margin-top:var(--s5);display:grid;gap:var(--s3)}
+.coupon input[type=text],.coupon input[type=email]{
+  width:100%;background:var(--surface-inset);color:var(--ink);
+  border:var(--hairline) solid var(--control-edge);border-radius:var(--r-control);
+  padding:.75rem .8rem;min-height:44px;font-family:var(--f-body);font-size:1rem;
+}
+.coupon input::placeholder{color:var(--ink-muted);opacity:1}
+.coupon .btn{width:100%;justify-content:center;margin-top:.25rem}
+.coupon .note{margin-top:var(--s4);padding-top:var(--s3);
+              border-top:var(--hairline) solid var(--rule)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+/* ---------- venues ----------------------------------------------------- */
+.venue{display:grid;grid-template-columns:1fr;gap:var(--s5);align-items:start}
+@media (min-width:64rem){
+  .venue{grid-template-columns:1.15fr 1fr;gap:var(--s8);align-items:center}
+  .venue--flip .venue__art{order:2}
+  .venue--flip .venue__txt{order:1}
+}
+.venue+.venue{margin-top:var(--s9);padding-top:var(--s9);
+              border-top:var(--hairline) solid var(--rule)}
+.venue .plate-fig{margin-top:0}
+.venue h3{font-family:var(--f-display);font-weight:500;
+          font-size:clamp(1.5rem,2.4vw,1.875rem);line-height:1.15;letter-spacing:-.01em}
+.venue p{margin-top:var(--s4);font-size:1rem;line-height:1.65;color:var(--ink-muted);
+         max-width:38ch}
+.venue__meta{margin-top:var(--s5);padding-top:var(--s3);
+             border-top:var(--hairline) solid var(--rule);
+             font-family:var(--f-mono);font-size:.75rem;letter-spacing:.09em;
+             text-transform:uppercase;color:var(--ink)}
+.venue__ctas{margin-top:var(--s5);display:flex;flex-wrap:wrap;align-items:center;
+             gap:var(--s3) var(--s5)}
+
+/* ---------- footer ----------------------------------------------------- */
+.ftr{background:var(--surface-plate);color:var(--ink-on-dark);padding-block:var(--s8)}
+.ftr__grid{display:grid;grid-template-columns:1fr;gap:var(--s7)}
+@media (min-width:48rem){ .ftr__grid{grid-template-columns:1fr 1fr} }
+@media (min-width:64rem){ .ftr__grid{grid-template-columns:1.2fr 1.2fr .8fr .8fr;gap:var(--s6)} }
+
+/* the endorsement lockup, typeset — one mark, a rule, a venue line
+   (brand-direction §4.2). Typeset only: no new logo is drawn here. */
+.lockup{display:inline-grid;gap:.35rem;justify-items:start;margin-bottom:var(--s4)}
+.lockup .lk-mark{font-family:var(--f-display);font-weight:500;font-size:1.0625rem;
+                 letter-spacing:.15em;text-transform:uppercase;color:var(--paper);line-height:1}
+.lockup .lk-rule{display:block;width:100%;height:1px;background:var(--amber)}
+.lockup .lk-venue{font-family:var(--f-body);font-weight:600;font-size:.75rem;
+                  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-muted-dark)}
+.ftr address{font-size:.9375rem;line-height:1.6;color:var(--ink-muted-dark)}
+.ftr .meta{color:var(--ink-muted-dark)}
+.ftr h2{font-family:var(--f-mono);font-size:.75rem;font-weight:500;letter-spacing:.11em;
+        text-transform:uppercase;color:var(--amber);margin-bottom:var(--s3)}
+.ftr li a{color:var(--ink-muted-dark);text-decoration:none;font-size:.9375rem;
+          display:inline-flex;align-items:center;min-height:44px;
+          border-bottom:2px solid transparent}
+.ftr address a{color:var(--ink-muted-dark);text-decoration:none;
+               display:inline-block;padding-block:.35rem;
+               border-bottom:2px solid transparent}
+.ftr li a:hover,.ftr address a:hover{color:var(--paper);border-bottom-color:var(--amber)}
+.ftr__legal{margin-top:var(--s8);padding-top:var(--s5);
+            border-top:var(--hairline) solid var(--rule-dark);
+            display:flex;flex-wrap:wrap;gap:0 var(--s5);align-items:center}
+.ftr__legal p,.ftr__legal a{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.05em;
+            color:var(--ink-muted-dark);text-decoration:none}
+.ftr__legal a{border-bottom:2px solid transparent;display:inline-flex;align-items:center;
+              min-height:44px}
+.ftr__legal a:hover{color:var(--paper);border-bottom-color:var(--amber)}
+
+/* ---------- mobile tightening — the trust strip must stay reachable
+   within roughly one screen-height of hero on a 390×844 phone ----------- */
+@media (max-width:47.99rem){
+  .hero{padding-top:var(--s6)}
+  .hero h1{font-size:clamp(2rem,8.4vw,2.5rem);line-height:1.05;margin-block:var(--s3) var(--s4)}
+  .hero .lede{font-size:1rem}
+  .hero__ctas{margin-top:var(--s5)}
+  .plate-fig{margin-top:var(--s5)}
+  .plate__cap span{font-size:.8125rem}
+  .trust{margin-top:var(--s7)}
+}
+
+/* ---------- preview note (not part of the design) ---------------------- */
+.pnote{background:var(--plate-deep);color:var(--ink-muted-dark);padding-block:var(--s5);
+       border-top:var(--hairline) solid var(--rule-dark)}
+.pnote p{font-family:var(--f-mono);font-size:.75rem;line-height:1.75;letter-spacing:.02em;
+         max-width:62rem}
+.pnote b{color:var(--amber);font-weight:500}
+
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ================= SVG plate artwork (symbols, no network) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="pool" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#f3b268" stop-opacity=".55"/>
+      <stop offset="45%"  stop-color="#c47a2c" stop-opacity=".20"/>
+      <stop offset="100%" stop-color="#8a400a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#7fa8be" stop-opacity=".40"/>
+      <stop offset="100%" stop-color="#2e5a6e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="proj" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#9dc0d1"/>
+      <stop offset="52%"  stop-color="#7fa8be"/>
+      <stop offset="53%"  stop-color="#2f6a52"/>
+      <stop offset="100%" stop-color="#1c4433"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#0b2a1a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#12331f" stop-opacity=".9"/>
+    </linearGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+
+    <!-- Wide interior, evening, occupied. 21:9 -->
+    <symbol id="plate-wide" viewBox="0 0 1680 720" preserveAspectRatio="xMidYMid slice">
+      <rect width="1680" height="720" fill="#071a10"/>
+      <rect y="470" width="1680" height="250" fill="url(#floor)"/>
+      <ellipse cx="300" cy="250" rx="290" ry="215" fill="url(#pool)"/>
+      <ellipse cx="620" cy="285" rx="235" ry="180" fill="url(#pool)" opacity=".8"/>
+      <ellipse cx="880" cy="235" rx="180" ry="140" fill="url(#pool)" opacity=".5"/>
+      <g fill="#f3b268">
+        <rect x="298" y="96"  width="4" height="52" opacity=".5"/><circle cx="300" cy="158" r="11" opacity=".95"/>
+        <rect x="618" y="112" width="4" height="52" opacity=".5"/><circle cx="620" cy="174" r="9"  opacity=".85"/>
+        <rect x="878" y="88"  width="4" height="46" opacity=".4"/><circle cx="880" cy="142" r="7"  opacity=".7"/>
+      </g>
+      <rect x="120" y="430" width="820" height="26"  fill="#a6702f" opacity=".5"/>
+      <rect x="120" y="456" width="820" height="120" fill="#0d2417"/>
+      <g fill="#04120a">
+        <circle cx="330" cy="392" r="34"/><rect x="292" y="424" width="76" height="90" rx="14"/>
+        <circle cx="470" cy="404" r="30"/><rect x="437" y="432" width="68" height="82" rx="13"/>
+        <circle cx="742" cy="398" r="32"/><rect x="707" y="428" width="72" height="86" rx="13"/>
+      </g>
+      <ellipse cx="1330" cy="330" rx="430" ry="330" fill="url(#glow)"/>
+      <rect x="1112" y="150" width="440" height="330" fill="url(#proj)"/>
+      <rect x="1112" y="150" width="440" height="330" fill="none" stroke="#0b2a1a" stroke-width="8"/>
+      <rect x="1090" y="556" width="486" height="16" fill="#1c4433" opacity=".85"/>
+      <g fill="#04120a">
+        <circle cx="1230" cy="440" r="30"/><rect x="1198" y="468" width="66" height="96" rx="14"/>
+        <rect x="1256" y="452" width="120" height="7" rx="3" transform="rotate(-28 1256 452)"/>
+      </g>
+      <rect x="1040" y="60" width="34" height="520" fill="#05150c"/>
+      <rect x="1592" y="60" width="34" height="520" fill="#05150c"/>
+      <rect width="1680" height="720" filter="url(#grain)" opacity=".05"/>
+    </symbol>
+
+    <!-- A bay with the projection lit, mid-swing. 4:3 -->
+    <symbol id="plate-bay" viewBox="0 0 960 720" preserveAspectRatio="xMidYMid slice">
+      <rect width="960" height="720" fill="#071a10"/>
+      <ellipse cx="150" cy="180" rx="215" ry="175" fill="url(#pool)" opacity=".75"/>
+      <g fill="#f3b268">
+        <rect x="148" y="52" width="4" height="44" opacity=".5"/><circle cx="150" cy="106" r="9" opacity=".9"/>
+      </g>
+      <ellipse cx="600" cy="330" rx="360" ry="290" fill="url(#glow)"/>
+      <rect x="392" y="152" width="440" height="330" fill="url(#proj)"/>
+      <rect x="392" y="152" width="440" height="330" fill="none" stroke="#0b2a1a" stroke-width="8"/>
+      <rect x="330" y="86" width="30" height="470" fill="#05150c"/>
+      <rect x="864" y="86" width="30" height="470" fill="#05150c"/>
+      <rect y="500" width="960" height="220" fill="url(#floor)"/>
+      <rect x="352" y="556" width="520" height="16" fill="#1c4433" opacity=".85"/>
+      <g fill="#04120a">
+        <circle cx="470" cy="430" r="33"/><rect x="435" y="460" width="72" height="104" rx="15"/>
+        <rect x="500" y="442" width="132" height="8" rx="4" transform="rotate(-32 500 442)"/>
+      </g>
+      <rect x="60" y="430" width="230" height="20"  fill="#a6702f" opacity=".45"/>
+      <rect x="60" y="450" width="230" height="120" fill="#0d2417"/>
+      <rect width="960" height="720" filter="url(#grain)" opacity=".05"/>
+    </symbol>
+
+    <!-- Not yet shot. Same size, no exposure. 4:3 -->
+    <symbol id="plate-unshot" viewBox="0 0 960 720" preserveAspectRatio="xMidYMid slice">
+      <rect width="960" height="720" fill="#071a10"/>
+      <g stroke="#2f4a3b" stroke-width="1.5" fill="none">
+        <path d="M320 0V720M640 0V720M0 240H960M0 480H960"/>
+        <path d="M0 0L960 720M960 0L0 720" opacity=".35"/>
+      </g>
+      <g stroke="#7d7768" stroke-width="3" fill="none">
+        <path d="M28 76V28H76M884 28H932V76M932 644V692H884M76 692H28V644"/>
+      </g>
+      <rect width="960" height="720" filter="url(#grain)" opacity=".05"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============================== HEADER ============================== -->
+<header class="hdr">
+  <div class="hdr__in">
+    <a class="wordmark" href="/">The Links</a>
+
+    <nav class="nav" aria-label="Main">
+      <a href="/book/">Book</a>
+      <a href="/rates/">Rates &amp; Hours</a>
+      <a href="/leagues/">Leagues</a>
+      <a href="/memberships/">Memberships</a>
+      <a href="/events/">Events</a>
+      <a href="/food-and-drink/">Food &amp; Drink</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+
+    <div class="switch">
+      <span class="switch__label">Visiting</span>
+      <a href="/locations/lakeville/">Lakeville</a>
+      <span class="switch__sep" aria-hidden="true">/</span>
+      <a href="/locations/stillwater/">Stillwater</a>
+    </div>
+
+    <a class="btn btn--sm" href="/book/" data-analytics="book:chooser">Book a Bay</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================ 3.1 HERO ============================ -->
+  <section class="hero">
+    <div class="wrap grid">
+      <div class="hero__rail">
+        <hr class="hero__rule">
+        <p class="eyebrow">Lakeville &amp; Stillwater, Minnesota</p>
+      </div>
+      <div>
+        <h1>Indoor golf that&rsquo;s actually <em>a night out.</em></h1>
+        <p class="lede">Ten GolfZon NX bays across two Twin Cities venues. Book by the hour, bring
+          up to five friends for the same price, and let the simulator keep score while you order
+          another round.</p>
+        <div class="hero__ctas">
+          <a class="btn" href="/book/" data-analytics="book:chooser">Book a Bay</a>
+          <a class="tlink" href="/rates/">See rates &amp; hours</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <figure class="plate-fig">
+        <div class="plate">
+          <svg class="plate__art" viewBox="0 0 1680 720" role="img"
+               aria-label="Image slot: a wide interior frame, evening, occupied — warm dark room, one bright simulator screen. Awaiting photography.">
+            <use href="#plate-wide"/>
+          </svg>
+          <span class="plate__tag">Image slot &middot; 21:9 &middot; awaiting photography</span>
+        </div>
+        <figcaption class="plate__cap">
+          <b>Wide interior, evening, occupied</b>
+          <span>The frame that answers &ldquo;what is this room.&rdquo; The Lakeville shoot exists —
+            warm, dark, pendant-lit, with the cool simulator projection as the only counterpoint —
+            but it is not in this build: <code>public/</code> holds a favicon and six font files and
+            nothing else. This slot holds the crop and the tone until the frames land. No stock.</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ========================= 3.2 TRUST STRIP ======================== -->
+  <section class="trust" aria-labelledby="hours-head">
+    <div class="wrap grid">
+      <div><h2 class="mhead" id="hours-head">Hours and locations</h2></div>
+      <div class="trust__grid">
+
+        <div>
+          <a class="trust__name" href="/locations/lakeville/">The Links of Lakeville</a>
+          <p class="data trust__hours">Mon&ndash;Sun 11am&ndash;9pm</p>
+          <p class="caveat trust__caveat">(hours being confirmed)</p>
+          <div class="trust__nap">
+            <a href="https://maps.google.com/?q=17630+Juniper+Path+Suite+H,+Lakeville,+MN+55044"
+               target="_blank" rel="noopener">17630 Juniper Path Suite H, Lakeville, MN 55044</a>
+            <a class="tel" href="tel:+16126990526">612-699-0526</a>
+          </div>
+        </div>
+
+        <div>
+          <a class="trust__name" href="/locations/stillwater/">The Links of Stillwater</a>
+          <p class="data trust__hours">Mon 12pm&ndash;9pm &middot; Tue&ndash;Fri 3pm&ndash;9pm &middot;
+            Sat 10am&ndash;10pm &middot; Sun 12pm&ndash;7pm</p>
+          <p class="caveat trust__caveat">(hours being confirmed)</p>
+          <div class="trust__nap">
+            <a href="https://maps.google.com/?q=5862+Omaha+Ave+N,+Stillwater,+MN+55082"
+               target="_blank" rel="noopener">5862 Omaha Ave N, Stillwater, MN 55082</a>
+            <a class="tel" href="tel:+16126990527">612-699-0527</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3.3 WHAT YOU CAN DO HERE ==================== -->
+  <section class="sec">
+    <div class="wrap grid">
+      <div><h2 class="mhead">What you can do here</h2></div>
+      <div>
+        <ul class="jobs">
+          <li><a class="job" href="/book/">
+            <h3>Play <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+            <p>Book a bay by the hour. Up to five of you, same price.</p></a></li>
+          <li><a class="job" href="/leagues/">
+            <h3>Compete <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+            <p>Fall and winter leagues at both venues.</p></a></li>
+          <li><a class="job" href="/events/">
+            <h3>Celebrate <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+            <p>Work parties, birthdays, bachelor parties.</p></a></li>
+          <li><a class="job" href="/lessons/">
+            <h3>Improve <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+            <p>Lessons and practice on a real launch monitor.</p></a></li>
+          <li><a class="job" href="/food-and-drink/">
+            <h3>Eat &amp; drink <span class="arrow" aria-hidden="true">&rarr;</span></h3>
+            <p>Full bar, real food, nine screens.</p></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ 3.4 PROOF =========================== -->
+  <section class="sec sec--flush">
+    <div class="wrap grid">
+      <div><h2 class="mhead">What players say</h2></div>
+      <div>
+        <div class="proof">
+
+          <div class="qslot">
+            <span class="qmark" aria-hidden="true">&ldquo;</span>
+            <div class="lines" aria-hidden="true">
+              <i style="width:97%"></i><i style="width:92%"></i><i style="width:88%"></i><i style="width:54%"></i>
+            </div>
+            <div class="attrib" aria-hidden="true"><i></i></div>
+            <p class="caveat">Awaiting a real, attributed review</p>
+          </div>
+
+          <div class="qstack">
+            <div class="qslot qslot--sm">
+              <span class="qmark" aria-hidden="true">&ldquo;</span>
+              <div class="lines" aria-hidden="true">
+                <i style="width:96%"></i><i style="width:90%"></i><i style="width:61%"></i>
+              </div>
+              <div class="attrib" aria-hidden="true"><i style="width:7rem"></i></div>
+              <p class="caveat">Awaiting a real, attributed review</p>
+            </div>
+            <div class="qslot qslot--sm">
+              <span class="qmark" aria-hidden="true">&ldquo;</span>
+              <div class="lines" aria-hidden="true">
+                <i style="width:94%"></i><i style="width:83%"></i><i style="width:47%"></i>
+              </div>
+              <div class="attrib" aria-hidden="true"><i style="width:8rem"></i></div>
+              <p class="caveat">Awaiting a real, attributed review</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="stub">
+          <p>STUB &mdash; awaiting real, attributed reviews and the Google Business Profile links
+             for both venues. Unsourced quotes are not shipped.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= 3.5 FEATURED OFFER ======================= -->
+  <section class="band on-plate">
+    <div class="wrap grid sec">
+      <div><p class="mhead">This season</p></div>
+      <div class="band__cols">
+
+        <div>
+          <h2>Fall &amp; winter leagues</h2>
+          <p>League nights are the reason winter is our busiest season. Teams, handicaps, a live
+             leaderboard and a bar tab. Registration for Fall/Winter 2026-27 opens soon at both
+             venues.</p>
+          <p>Never played in one? Most of our league players hadn&rsquo;t either. Handicaps keep it
+             fair.</p>
+          <p style="margin-top:var(--s6)"><a class="tlink" href="/leagues/">See how leagues work</a></p>
+        </div>
+
+        <div class="coupon">
+          <h3>Get first word on league sign-ups</h3>
+          <p class="blurb">One email when registration opens. Nothing else.</p>
+          <form action="mailto:info@lakevillelinks.com" method="GET">
+            <input type="hidden" name="list" value="league-general">
+            <input type="hidden" name="venue" value="">
+            <input class="hp" type="text" name="_hp" tabindex="-1" aria-hidden="true" autocomplete="off">
+            <label class="sr" for="wl-name">Your name</label>
+            <input id="wl-name" type="text" name="name" placeholder="Your name" required>
+            <label class="sr" for="wl-email">Your email</label>
+            <input id="wl-email" type="email" name="email" placeholder="you@example.com" required>
+            <button class="btn" type="submit">Notify me</button>
+          </form>
+          <p class="meta note">Lead endpoint not configured &mdash; this form opens an email instead.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== 3.6 TWO VENUES ======================== -->
+  <section class="sec">
+    <div class="wrap grid">
+      <div><h2 class="mhead">Two venues</h2></div>
+      <div>
+
+        <article class="venue">
+          <figure class="venue__art plate-fig">
+            <div class="plate">
+              <svg class="plate__art" viewBox="0 0 960 720" role="img"
+                   aria-label="Image slot: a Lakeville bay with the projection lit, mid-swing. Awaiting photography.">
+                <use href="#plate-bay"/>
+              </svg>
+              <span class="plate__tag">Image slot &middot; shoot exists, not in build</span>
+            </div>
+            <figcaption class="plate__cap">
+              <b>A bay with the projection lit, mid-swing</b>
+              <span>The warm/cool frame — the single most important shot in the set. Lakeville has
+                it from the 2022 series; it needs bringing into the build.</span>
+            </figcaption>
+          </figure>
+          <div class="venue__txt">
+            <h3>The Links of Lakeville</h3>
+            <p>Six GolfZon NX bays, a full bar and nine screens in the south metro. Five bays play
+               both-handed; one is right-handed only.</p>
+            <p class="venue__meta">6 bays &middot; GolfZon NX</p>
+            <div class="venue__ctas">
+              <a class="btn"
+                 href="https://app.whoosh.io/patron/club/the-links-indoor-golf/agenda/simulators/today"
+                 target="_blank" rel="noopener" data-analytics="book:lakeville">Book at Lakeville
+                 <span aria-hidden="true">&rarr;</span>
+                 <span class="sr">(opens Whoosh booking in a new tab)</span></a>
+              <a class="tlink" href="/locations/lakeville/">Venue details</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="venue venue--flip">
+          <figure class="venue__art plate-fig">
+            <div class="plate">
+              <svg class="plate__art" viewBox="0 0 960 720" role="img"
+                   aria-label="Image slot: Stillwater has no photography. This frame has not been shot.">
+                <use href="#plate-unshot"/>
+              </svg>
+              <span class="plate__tag">Image slot &middot; not yet shot</span>
+            </div>
+            <figcaption class="plate__cap">
+              <b>The lounge as it actually is</b>
+              <span>Stillwater has zero professional photography — leather sofas, the marble-top
+                round table, four bays behind black curtains. Shoot the difference from Lakeville;
+                never illustrate one venue with the other&rsquo;s frames.</span>
+            </figcaption>
+          </figure>
+          <div class="venue__txt">
+            <h3>The Links of Stillwater</h3>
+            <p>Four GolfZon NX bays in the east metro, inside Stillwater Bowl &amp; Lounge. Opened
+               early 2026.</p>
+            <p class="venue__meta">4 bays &middot; GolfZon NX</p>
+            <div class="venue__ctas">
+              <a class="btn"
+                 href="https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today"
+                 target="_blank" rel="noopener" data-analytics="book:stillwater">Book at Stillwater
+                 <span aria-hidden="true">&rarr;</span>
+                 <span class="sr">(opens Whoosh booking in a new tab)</span></a>
+              <a class="tlink" href="/locations/stillwater/">Venue details</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="ftr on-plate">
+  <div class="wrap">
+    <div class="ftr__grid">
+
+      <div>
+        <p class="lockup">
+          <span class="lk-mark">The Links</span>
+          <span class="lk-rule" aria-hidden="true"></span>
+          <span class="lk-venue">of Lakeville</span>
+        </p>
+        <address>
+          <a href="https://maps.google.com/?q=17630+Juniper+Path+Suite+H,+Lakeville,+MN+55044"
+             target="_blank" rel="noopener">17630 Juniper Path Suite H, Lakeville, MN 55044</a><br>
+          <a href="tel:+16126990526">612-699-0526</a><br>
+          <a href="mailto:info@lakevillelinks.com">info@lakevillelinks.com</a>
+        </address>
+        <p class="meta" style="margin-top:var(--s3)">Mon&ndash;Sun 11am&ndash;9pm</p>
+      </div>
+
+      <div>
+        <p class="lockup">
+          <span class="lk-mark">The Links</span>
+          <span class="lk-rule" aria-hidden="true"></span>
+          <span class="lk-venue">of Stillwater</span>
+        </p>
+        <address>
+          <a href="https://maps.google.com/?q=5862+Omaha+Ave+N,+Stillwater,+MN+55082"
+             target="_blank" rel="noopener">5862 Omaha Ave N, Stillwater, MN 55082</a><br>
+          <a href="tel:+16126990527">612-699-0527</a>
+        </address>
+        <p class="meta" style="margin-top:var(--s3)">Mon 12pm&ndash;9pm &middot; Tue&ndash;Fri 3pm&ndash;9pm
+          &middot; Sat 10am&ndash;10pm &middot; Sun 12pm&ndash;7pm</p>
+      </div>
+
+      <nav aria-labelledby="ftr-visit">
+        <h2 id="ftr-visit">Visit</h2>
+        <ul>
+          <li><a href="/book/">Book</a></li>
+          <li><a href="/rates/">Rates &amp; Hours</a></li>
+          <li><a href="/leagues/">Leagues</a></li>
+          <li><a href="/memberships/">Memberships</a></li>
+          <li><a href="/events/">Events</a></li>
+          <li><a href="/food-and-drink/">Food &amp; Drink</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="ftr-more">
+        <h2 id="ftr-more">More</h2>
+        <ul>
+          <li><a href="/lessons/">Lessons</a></li>
+          <li><a href="/juniors/">Juniors</a></li>
+          <li><a href="/the-bays/">The Bays</a></li>
+          <li><a href="/gift-cards/">Gift Cards</a></li>
+          <li><a href="/faq/">FAQ</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="https://facebook.com/lakevillelinks/" target="_blank" rel="noopener">Facebook &mdash; Lakeville</a></li>
+          <li><a href="https://facebook.com/linksofstillwater/" target="_blank" rel="noopener">Facebook &mdash; Stillwater</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <div class="ftr__legal">
+      <p>&copy; 2026 The Links. All rights reserved.</p>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/booking-policy/">Booking policy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= preview note — not part of the design ============= -->
+<aside class="pnote">
+  <div class="wrap">
+    <p><b>PREVIEW NOTE — not page content.</b>
+      Candidate <b>home-editorial</b>, register <b>editorial-minimal</b>, generated from
+      <b>design/token-sets/editorial.json</b>. This review surface loads nothing over the network,
+      so the type here is a SYSTEM-FONT APPROXIMATION: a system serif stands in for
+      <b>Fraunces</b> (display), the system UI sans for <b>Open Sans</b> (body, retained from the
+      current brand), the system mono for <b>IBM Plex Mono</b> (hours, addresses, meta). Judge the
+      letterforms as indicative; the overlay carries the real type proposal. The three dark
+      rectangles are <b>image slots</b>, not artwork — no photograph of this brand exists in the
+      build, so each slot is drawn to the shoot's measured register (near-black base, warm pendant
+      pools, one cool simulator screen) and captioned with the exact frame it is waiting for.
+      Stillwater's slot is deliberately unexposed: that venue has never been photographed, and the
+      honest rendering of that is an empty plate, not Lakeville's frames. No stock imagery, no
+      invented testimonial, no invented price, no invented hours — every string on this page is
+      verbatim from the screen spec's copy sheet.</p>
+  </div>
+</aside>
+
+</body>
+</html>

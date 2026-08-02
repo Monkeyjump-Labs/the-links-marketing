@@ -1,0 +1,311 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "The Links — BRUTALIST token overlay. Stance: the page is a scoreboard, not a brochure — every fact sits in a labelled cell of a visibly ruled grid, hierarchy comes only from weight, scale and ground inversion, and nothing is rounded, tinted or shadowed. It adds ZERO new colours: the diagnosis in brand-direction.md §10.5 is that the palette is designed and unspent, so this overlay spends it at full strength and changes the distribution rather than the values.",
+
+  "$extensions": {
+    "com.monkeyjumplabs.candidate": {
+      "id": "home-brutalist",
+      "register": "brutalist",
+      "surface": "homepage",
+      "divergenceAxis": "theme → token_set",
+      "base": "marketing/websites/the-links/design/tokens.json (v1.0.0-proposal)",
+      "date": "2026-08-02",
+      "status": "PROPOSAL — divergent candidate for a human gate. Not client-approved.",
+
+      "committedIdea": "The page is built as a ruled scoreboard: hard-cut alternating full-bleed grounds (night → white → night → white → EMBER → white → night), rules instead of cards, and one poster-scale display face doing every job that a border-radius, a shadow or an icon would otherwise do. A sibling register would soften one of those three; this candidate softens none of them.",
+
+      "whatASiblingWouldNotDo": "Give the single loudest field on the page — a full-bleed #8A400A ember band — to the waitlist form, the one component zero of 126 audited competitors have. Editorial-minimal would keep colour scarce, soft would tint it, technical-dense would compress it into a row. This candidate makes the differentiator the largest chromatic event on the page.",
+
+      "dials": { "variance": 6, "motion": 1, "density": 6 },
+
+      "confidenceHeldNotIntimidation": [
+        "Headings stay SENTENCE CASE. Caps + wide tracking are reserved for small labels and the wordmark only. brand-direction.md §3.2 is right that the segment is full of all-caps headings and they read as shouting; brutalism here comes from mass and structure, not from volume.",
+        "The register's loudness is spent on the REASSURANCE, not on the flex. 'Never played in one? Most of our league players hadn't either.' and 'Up to five of you, same price.' are set at display scale in amber on dark — bigger than the marketing claims around them. A first-timer meets the friendliest sentence at the largest size.",
+        "The trust strip (hours, address, phone) is promoted from fine print to the second-loudest block on the page, on a hard white cut straight out of the black hero. The least confident visitor's first question is 'is it open and can I just turn up', and this register answers it in 3rem figures.",
+        "No golf iconography, no handicap/score ornament, no jargon. The scoreboard motif is carried by REAL figures only (6 bays, 4 bays, published hours) — never by decorative index numbers, which is also the anti-slop rule on '01 / 4' labels."
+      ],
+
+      "typefaceProposal": {
+        "display": {
+          "family": "Archivo",
+          "source": "Omnibus-Type, OFL. Variable: weight 100–900, width 62–125.",
+          "weightsUsed": [600, 800, 900],
+          "widthsUsed": [100, 112],
+          "rationale": "One variable file gives a normal cut for labels and an expanded cut for scoreboard figures, so weight AND width become hierarchy tools — which is the whole hierarchy in this register. Archivo is a workhorse grotesque drawn for high-contrast display at both poster and caption size; it is the register of a bar sign and a transit board rather than a design-award entry.",
+          "replaces": "Bitter",
+          "costOfTheSwap": "brand-direction.md §3.2 chose Bitter to keep the slab genus shared with the wordmark. This overlay accepts the opposite trade: a grotesque page face makes the slab 'THE LINKS' wordmark read as a MARK rather than as the same font set larger — which is a gain for a brand whose §10.4 problem is that it has no mark at all. Byte budget is unchanged (one variable file for one variable file). This is the single most contestable call in this candidate and it belongs at the gate, exactly as the ember did."
+        },
+        "body": {
+          "family": "Open Sans",
+          "weightsUsed": [400, 600, 700],
+          "rationale": "RETAINED VERBATIM from the current direction and the live site. The warmth budget is spent on the ember band and the amber, not on a fourth typeface. Also carries tabular figures for the rates/hours numerals per brand-direction.md §3.2 rule 3."
+        },
+        "retiredByThisOverlay": {
+          "family": "Bitter",
+          "note": "Retired from the web build only. It survives, as Alfa Slab One does, inside the drawn wordmark — the same argument brand-direction.md §3.1 made, applied one step further."
+        },
+        "previewApproximation": "The wisplet preview loads no network resources. Open Sans is base64-embedded from public/fonts/open-sans-normal-latin.woff2 (real). Archivo is NOT available and is approximated by the system grotesque stack (SF Pro / Segoe UI / Helvetica Neue) at weight 800–900 with negative tracking. Judge the preview's display type as an approximation; judge this declaration as the proposal."
+      },
+
+      "photographyHandling": "There is no photography in the repo and none is faked. Two moves: (1) the DARK GROUNDS ARE THE PHOTOGRAPH'S JOB — the hero is a flat near-black field because the room is a near-black room (measured: 33–38% of every professional frame), so the page reads as the venue's register without a hero image slot pretending to hold one; (2) where the playbook actually demands frames (§3.6, 'the space'), the slot is drawn ENTIRELY from palette values that were themselves derived from the photography — a night ground, a bright panel for the simulator projection, amber points for the pendants — at the real 3:2 aspect, hard-ruled, and captioned with the specific frame that is missing per venue. Lakeville's caption says the shoot exists and is not in the repo; Stillwater's says no professional frame exists at all. Asymmetric because the truth is asymmetric.",
+
+      "tokenGaps": [
+        "NO BRIGHT COOL VALUE. The palette cannot render its own photography brief. brand-direction.md §5.1 says the signature is 'a warm dark room with one bright screen in it', but `palette.screen` #2E5A6E was darkened until white text passed, so it is 1.81:1 against `palette.night` — a simulator projection painted in it is invisible on the dark ground it is supposed to punch out of. This overlay works around it (bright panel in `palette.greige` 10.46:1, cool horizon band in `palette.screen`) and FLAGS the gap rather than inventing a value. Proposed name if the gate wants one: `palette.screenLight`, a light 210–240° blue, decorative/media only, never text-bearing.",
+        "NO RADIUS, BORDER, ELEVATION, TYPE-SCALE, TRACKING or LINE-HEIGHT CATEGORIES EXIST in the canonical tokens.json — it carries colour, font family/weight, four spacing values and two widths. Every one of those categories is load-bearing for THIS register (radius 0, four rule weights, elevation none) and for every sibling. They are declared below as additions; the convergent phase should promote the winning set into the canonical file rather than leaving them per-candidate.",
+        "NO WARNING/CAUTION ROLE. `(hours being confirmed)` is neither an error nor a success — it is unverified data. This overlay uses `role.accent.default` (#2E5A6E screen blue, 7.49:1 on white), which is the declared informational/status colour and fits, but a distinct `role.state.unverified` would stop that badge competing with league 'Full' pills.",
+        "COPY GAP, NOT INVENTED: the register wants the published rate ($35 / hour, real, current through 2026-10-03) on the scoreboard. screen-spec-home.md §7 forbids any string not on the copy sheet, and no homepage section carries a price. Flagged for the convergent phase as a one-string copy request, NOT added to this candidate."
+      ]
+    }
+  },
+
+  "role": {
+    "$type": "color",
+    "$description": "Additions and re-pointings only. No palette value is added, removed or altered by this overlay — every reference below resolves into the canonical tokens.json.",
+
+    "ground": {
+      "$description": "NEW CATEGORY. The band sequence IS the committed idea, so it is expressed as tokens rather than left to the composition. Hard cuts, no transitions, no gradients — a band ends at a rule and the next one begins.",
+      "chrome":  { "$value": "{palette.night}",  "$description": "Sticky header + footer. Merges with the hero into one unbroken dark field at the top of the page." },
+      "hero":    { "$value": "{palette.night}",  "$description": "REPLACES the current forest #124B2E hero. Night is the value brand-direction.md §2 added specifically to sit beside the photography (33–38% near-black); on this register it stands in FOR the photography. paper on it 12.48:1 vs forest's 9.32:1 — the type gets louder for free." },
+      "trust":   { "$value": "{palette.white}",  "$description": "HARD CUT out of the black. Maximum figure/ground so the highest-leverage block on the page (screen-spec §3.2) stops being fine print. night on it 13.57:1." },
+      "jobs":    { "$value": "{palette.night}",  "$description": "'What you can do here'. Dark again — the alternation is the answer to §10.2 ('one dark hero, then eleven feet of white')." },
+      "proof":   { "$value": "{palette.white}",  "$description": "'What players say'. Light, so the three empty quote cells read as blank ruled paper awaiting content." },
+      "offer":   { "$value": "{palette.ember}",  "$description": "THE ONE ACCENT, USED ONCE, AT FULL STRENGTH — the register's rule, spent on the featured offer + waitlist band. This is the fix for §10.5 (action colour unspent) and §10.9 (differentiator styled as a newsletter box) in one move. white on it 7.45:1, paper 6.85:1, greige 5.74:1." },
+      "venues":  { "$value": "{palette.white}",  "$description": "'Two venues'. Light, so the near-black media slots read as windows punched into the page." },
+      "footer":  { "$value": "{palette.night}",  "$description": "Closes the page on the same field it opened on." }
+    },
+
+    "ink": {
+      "$description": "Additions for dark-field text. Opacity is never used as a ramp (tokens.json role.ink.muted records why: ink/70 over white is 4.39:1 and fails).",
+      "onDarkStrong": { "$value": "{palette.white}", "$description": "Display headings on night. 13.57:1 (AA ✓). The maximum-contrast end of the ramp, which is where this register lives." },
+      "onDark":       { "$value": "{palette.paper}", "$description": "KEPT from base. Body on night 12.48:1 (AA ✓)." },
+      "mutedOnDark":  { "$value": "{palette.sage}",  "$description": "PROMOTION, NOT INVENTION. Secondary text and captions on dark fields. Sage was retained-but-demoted to 'a light field carrying forest text' and does almost nothing in the current system; here it becomes the muted-on-dark role the palette never had. on night 6.71:1, on forest 5.01:1 (AA ✓ body both)." },
+      "displayOnLight": { "$value": "{palette.night}", "$description": "Display headings on white/paper use NIGHT, not forest — 13.57:1 on white vs forest's 10.14:1. A real darkness step between heading and body, which is hierarchy by weight+colour rather than by raw scale (anti-slop typography rule)." },
+      "bodyOnLight":  { "$value": "{palette.forest}", "$description": "KEPT from base. on white 10.14:1 (AA ✓)." },
+      "mutedOnLight": { "$value": "#456052",          "$description": "KEPT VERBATIM from base role.ink.muted. on white 6.89:1, on paper 6.34:1, on greige 5.31:1 (AA ✓)." }
+    },
+
+    "primary": {
+      "$description": "The action colour is unchanged. What changes is that it is finally used at scale.",
+      "default":  { "$value": "{palette.ember}", "$description": "KEPT. Solid CTA fill on LIGHT grounds only. paper on it 6.85:1, white 7.45:1; boundary vs white 7.45:1 (non-text 3:1 ✓)." },
+      "hover":    { "$value": "#ad500d",         "$description": "KEPT VERBATIM. paper on it 4.91:1 (AA ✓)." },
+      "active":   { "$value": "#6d3308",         "$description": "KEPT VERBATIM. paper on it 9.08:1 (AA ✓)." },
+      "on":       { "$value": "{palette.paper}", "$description": "KEPT. 6.85:1 (AA ✓)." },
+      "onDarkFill": {
+        "$value": "{palette.amber}",
+        "$description": "NEW ROLE, NO NEW VALUE. On night/forest the CTA takes an AMBER fill with NIGHT text: night on amber 7.35:1 (AA ✓ body) and the amber-vs-night boundary is 7.35:1 (non-text 3:1 ✓). This is a third solution to the arithmetic brand-direction.md §2.4.2 sets out — the base offered only 'paper fill with forest text' or 'paper outline', both of which make the primary action on the darkest, most-seen band of the page colourless. It does NOT violate the rule: a solid EMBER button on night is still 1.82:1 and is still banned."
+      },
+      "onDarkFillInk": { "$value": "{palette.night}", "$description": "Label on the amber CTA. 7.35:1 (AA ✓)." },
+      "onEmberBand": {
+        "$value": "{palette.paper}",
+        "$description": "RULE, not a colour. On the ember band the ARITHMETIC INVERTS and traps you the other way: night on ember is 1.82:1 and forest on ember is 1.36:1, so a dark-green button on the ember field fails the 3:1 non-text gate exactly as an ember button on forest does. The waitlist therefore sits inside a PAPER SLAB punched out of the ember (paper vs ember 6.85:1 ✓), and the submit button reverts to a normal ember-on-light CTA inside that slab. Recorded because it is the same trap as the base file's and it is not written down anywhere yet."
+      }
+    },
+
+    "accent": {
+      "highlight": { "$value": "{palette.amber}", "$description": "KEPT, and heavily used. The score rules, the eyebrows, the CTA fill on dark, the reassurance lines. on night 7.35:1, on forest 5.49:1 (AA ✓). NEVER on light — 1.85:1 on white. NEVER on the ember band — 4.04:1, which clears large-text 3:1 but fails body 4.5:1, so it is banned there outright rather than conditionally." },
+      "default":   { "$value": "{palette.screen}", "$description": "KEPT. Informational/status. Carries the `(hours being confirmed)` badge on white: 7.49:1 as text, 7.49:1 as a border (non-text 3:1 ✓). Doing its declared job." }
+    },
+
+    "rule": {
+      "$description": "NEW CATEGORY, and the load-bearing one. This register has no cards, no shadows and no radii, so RULES carry every boundary the page has. Colour by ground; weight by job (see `border.*`).",
+      "onDark":        { "$value": "{palette.paper}", "$description": "Hairline and cell rules on night. 12.48:1 — stark on purpose; the grid is meant to be visible." },
+      "onDarkQuiet":   { "$value": "{palette.sage}",  "$description": "Sub-cell rules on night where a paper hairline would be noise. 6.71:1." },
+      "onLight":       { "$value": "{palette.night}", "$description": "Hairline and cell rules on white/paper. 13.57:1." },
+      "onLightQuiet":  { "$value": "#456052",         "$description": "Sub-cell rules on white. 6.89:1." },
+      "onEmber":       { "$value": "{palette.white}", "$description": "Rules on the ember band. 7.45:1." },
+      "scoreOnDark":   { "$value": "{palette.amber}", "$description": "The heavy band separator on dark. 7.35:1 — the one recurring graphic device on the page, so a fragment of it is recognisable (the §10.10 complaint)." },
+      "scoreOnLight":  { "$value": "{palette.ember}", "$description": "The heavy band separator on light. 7.45:1 vs white (non-text 3:1 ✓)." }
+    },
+
+    "state": {
+      "focus":       { "$value": "{palette.emberMid}", "$description": "KEPT VERBATIM. vs white 4.76:1, vs paper 4.37:1, vs greige 3.66:1 (non-text 3:1 ✓). Rendered as a 4px offset slab, never a soft glow." },
+      "focusOnDark": { "$value": "{palette.amber}",    "$description": "KEPT VERBATIM. vs night 7.35:1, vs forest 5.49:1 (✓)." },
+      "focusOnEmber":{ "$value": "{palette.white}",    "$description": "NEW ROLE, NO NEW VALUE. The base has no focus colour that works on an ember field — emberMid vs ember is 1.73:1. White vs ember is 7.45:1 (✓)." },
+      "error":       { "$value": "{palette.clay}",     "$description": "KEPT VERBATIM. on white 7.19:1 (AA ✓)." },
+      "success":     { "$value": "{palette.moss}",     "$description": "KEPT VERBATIM. on white 7.82:1 (AA ✓)." }
+    },
+
+    "media": {
+      "$description": "NEW CATEGORY — the photo-slot system. Every value here is an existing palette colour chosen because that colour was itself derived from a measurement of the real photography (brand-direction.md §5.1). The slot is a diagram of the frame's own numbers, not a decorative illustration.",
+      "slotGround":  { "$value": "{palette.night}",  "$description": "The near-black room. Measured target: 33–38% of frame near-black, mean luminance 54–74/255." },
+      "slotPanel":   { "$value": "{palette.greige}", "$description": "The simulator projection — the one bright thing in the frame. 10.46:1 against the night ground so it punches out. Using greige rather than `palette.screen` (1.81:1, invisible) is the workaround for the flagged token gap." },
+      "slotPanelCool": { "$value": "{palette.screen}", "$description": "The cool horizon band inside the projection — the measured 7–8% of saturated pixels in the 210–240° band. 5.77:1 against the greige panel." },
+      "slotPendant": { "$value": "{palette.amber}",  "$description": "The warm in-frame practical light. Measured: red channel exceeds blue by +15 to +19; no daylight, no flash. 7.35:1 on the night ground." },
+      "slotFrame":   { "$value": "{palette.paper}",  "$description": "The 2px rule around the slot. The slot is always visibly a SLOT — it never pretends to be a photograph." },
+      "slotLabel":   { "$value": "{palette.sage}",   "$description": "The caption naming the exact missing frame. 6.71:1 on night (AA ✓)." },
+      "slotRatio":   { "$type": "number", "$value": 1.5, "$description": "3:2. The existing shoot is full-frame (6000×4000, 5648×3765, 4549×3033) — the slot holds the aspect the real frames will arrive in." }
+    }
+  },
+
+  "font": {
+    "$type": "fontFamily",
+    "display": {
+      "$value": ["Archivo", "Archivo Expanded", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+      "$description": "REPLACES Bitter. Variable grotesque, weight 100–900 and width 62–125 in one file. See $extensions.typefaceProposal for the full rationale and the cost of the swap. Fallback stack deliberately stays grotesque so a swap does not change genus."
+    },
+    "body": {
+      "$value": ["Open Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+      "$description": "KEPT VERBATIM from base font.body."
+    },
+    "numeric": {
+      "$value": ["Archivo", "ui-sans-serif", "system-ui", "sans-serif"],
+      "$description": "NEW ROLE. Scoreboard figures only — bay counts, hours, the clock face of the page — set in the display face at expanded width with `font-variant-numeric: tabular-nums lining-nums`. Rates TABLES stay in the body face per brand-direction.md §3.2 rule 3; this role is for the display-scale figures that make the page read as a board, and it is only ever bound to numbers that exist in the content collections."
+    },
+    "retired": {
+      "$value": ["Bitter", "Alfa Slab One", "Poppins"],
+      "$description": "Bitter joins the retired list for the WEB BUILD in this candidate only. It survives in the drawn wordmark alongside the slab it inherits from."
+    }
+  },
+
+  "fontWeight": {
+    "$type": "fontWeight",
+    "displayBlack":   { "$value": 900, "$description": "The h1 and the scoreboard figures. Weight is the hierarchy in this register, so the top of the ramp is genuinely the top." },
+    "displayBold":    { "$value": 800, "$description": "h2, h3, CTA labels." },
+    "displaySemi":    { "$value": 600, "$description": "Caps labels, eyebrows, table heads." },
+    "bodyRegular":    { "$value": 400 },
+    "bodyMedium":     { "$value": 600 },
+    "bodyBold":       { "$value": 700 }
+  },
+
+  "fontWidth": {
+    "$type": "number",
+    "$description": "NEW CATEGORY, only meaningful because the proposed display face is width-variable. The second hierarchy axis after weight.",
+    "displayNormal":   { "$value": 100, "$description": "Headings and labels." },
+    "displayExpanded": { "$value": 112, "$description": "Scoreboard figures only. An expanded numeral reads as a board rather than as prose, at no extra byte cost." }
+  },
+
+  "typeScale": {
+    "$type": "dimension",
+    "$description": "NEW CATEGORY — the canonical tokens.json has no type scale at all. Big jumps, few steps: brutalist hierarchy is 'enormous, then small', not a smooth ladder. Fluid clamps so the h1 fills its measure at every width instead of wrapping into a wall.",
+    "displayHero":    { "$value": "clamp(3rem, 10.5vw, 8.25rem)", "$description": "The one h1. Sized to fill the 75rem measure at desktop and to stay two-or-three lines on a 390px phone." },
+    "displaySection": { "$value": "clamp(2.125rem, 5.5vw, 4rem)", "$description": "h2." },
+    "displayRow":     { "$value": "clamp(1.5rem, 2.6vw, 2.125rem)", "$description": "h3 — the ruled row titles and the venue names." },
+    "displayCard":    { "$value": "1.375rem" },
+    "scoreboardXl":   { "$value": "clamp(1.875rem, 4.2vw, 3rem)", "$description": "Hours and bay counts. The trust strip's whole point." },
+    "scoreboardMd":   { "$value": "1.25rem" },
+    "bodyLead":       { "$value": "clamp(1.0625rem, 1.35vw, 1.1875rem)" },
+    "bodyBase":       { "$value": "1rem" },
+    "bodySmall":      { "$value": "0.9375rem", "$description": "Floor for anything a user must read. Nothing on this page carries information below this size except caps labels, which are tracked to compensate." },
+    "labelBase":      { "$value": "0.75rem" },
+    "labelSmall":     { "$value": "0.6875rem" }
+  },
+
+  "tracking": {
+    "$type": "dimension",
+    "$description": "NEW CATEGORY. The register's 'wide tracking on tiny caps' — and its opposite at display scale, where tight tracking is what makes big type read as a slab of mass rather than as a big sentence.",
+    "displayTight":  { "$value": "-0.035em", "$description": "h1 and scoreboard figures." },
+    "displayNormal": { "$value": "-0.02em",  "$description": "h2/h3." },
+    "bodyNormal":    { "$value": "0" },
+    "labelWide":     { "$value": "0.16em",   "$description": "Caps labels." },
+    "labelWider":    { "$value": "0.22em",   "$description": "The wordmark and band headers only." }
+  },
+
+  "lineHeight": {
+    "$type": "number",
+    "$description": "NEW CATEGORY. Display leading is set below 1 so a two-line h1 locks into a block.",
+    "displayHero":  { "$value": 0.9 },
+    "display":      { "$value": 0.98 },
+    "scoreboard":   { "$value": 1.0 },
+    "body":         { "$value": 1.55 },
+    "label":        { "$value": 1.2 }
+  },
+
+  "radius": {
+    "$type": "dimension",
+    "$description": "NEW CATEGORY. One value, and it is zero. Every corner on the page — buttons, inputs, media slots, badges, the venue-switcher pills — is square. This is the single cheapest, most visible expression of the register and it is where a soft or an editorial sibling will differ first.",
+    "none":    { "$value": "0" },
+    "control": { "$value": "0" },
+    "surface": { "$value": "0" },
+    "pill":    { "$value": "0", "$description": "Declared explicitly so nobody reintroduces a rounded pill for the venue switcher or a status badge." }
+  },
+
+  "border": {
+    "$type": "dimension",
+    "$description": "NEW CATEGORY, and this register's replacement for elevation. Four weights, each with one job. Colour comes from `role.rule.*`.",
+    "hairline": { "$value": "1px", "$description": "Cell dividers inside a block — the ledger rules." },
+    "rule":     { "$value": "2px", "$description": "Component boundaries: inputs, media slots, badges, outline buttons." },
+    "score":    { "$value": "4px", "$description": "The band separator and the focus slab. The recurring graphic device." },
+    "slab":     { "$value": "8px", "$description": "The lead rule above a section heading and above the featured row of the jobs list — the only mechanism that gives one row more weight than its siblings." }
+  },
+
+  "elevation": {
+    "$description": "NEW CATEGORY, declared so it can be declared EMPTY. There are no shadows on this page. Depth is ground inversion and rule weight. A soft sibling will need real values here; this candidate needs the absence recorded so nothing drifts a `shadow-sm` back in.",
+    "none": { "$value": "none" }
+  },
+
+  "space": {
+    "$type": "dimension",
+    "$description": "sectionY / sectionYLg / gutterX / gutterXLg are KEPT VERBATIM from the base — they are layout, and layout is fixed on this axis. The ramp below is NEW: the base has no internal spacing scale, so 'every gap is a space.* step' was previously unenforceable.",
+    "sectionY":   { "$value": "4rem",   "$description": "KEPT VERBATIM." },
+    "sectionYLg": { "$value": "8rem",   "$description": "KEPT VERBATIM." },
+    "gutterX":    { "$value": "1.5rem", "$description": "KEPT VERBATIM." },
+    "gutterXLg":  { "$value": "4rem",   "$description": "KEPT VERBATIM." },
+    "s1":  { "$value": "0.25rem" },
+    "s2":  { "$value": "0.5rem" },
+    "s3":  { "$value": "0.75rem" },
+    "s4":  { "$value": "1rem" },
+    "s5":  { "$value": "1.5rem" },
+    "s6":  { "$value": "2rem" },
+    "s7":  { "$value": "2.5rem" },
+    "s8":  { "$value": "3.5rem" },
+    "s9":  { "$value": "5rem" },
+    "s10": { "$value": "7rem" }
+  },
+
+  "size": {
+    "$type": "dimension",
+    "contentMax": { "$value": "75rem",     "$description": "KEPT VERBATIM." },
+    "proseMax":   { "$value": "46.875rem", "$description": "KEPT VERBATIM. Body copy still respects it; display type deliberately does not — the h1 and the h2s run to the full 75rem measure, which is the register." },
+    "tapMin":     { "$value": "44px",      "$description": "NEW. Screen-spec §4 requires it and the base file has no token for it. Square, not rounded." }
+  },
+
+  "motion": {
+    "$description": "NEW CATEGORY. Dial setting 1 — hover and focus only, no transitions on layout, no scroll-driven anything. The site is zero-JS by default and this register has nothing to animate.",
+    "duration": { "$value": "0ms", "$description": "Colour and border changes are instant. A 150ms ease on a hard-edged slab reads as hesitation." }
+  },
+
+  "contrastAudit": {
+    "$description": "Every text and non-text pairing this candidate renders, computed from sRGB relative luminance per WCAG 2.1 §1.4.3. Body gate 4.5:1, large-text and non-text gate 3:1. Nothing below relies on the large-text allowance except where stated. NO PAIRING IN THIS CANDIDATE FAILS.",
+    "onNightGround": [
+      "white #FFFFFF on night #0D3520 — 13.57:1 ✓ (h1, h2, h3)",
+      "paper #F7F5F3 on night — 12.48:1 ✓ (body, nav, footer copy)",
+      "sage #9CBEAD on night — 6.71:1 ✓ (captions, slot labels, muted meta)",
+      "amber #F3B268 on night — 7.35:1 ✓ (eyebrows, reassurance lines, score rules, CTA fill boundary)",
+      "greige #E5E1E0 on night — 10.46:1 ✓ (media-slot bright panel boundary)",
+      "night #0D3520 on amber #F3B268 — 7.35:1 ✓ (label on the dark-field CTA)",
+      "BANNED HERE: ember #8A400A on night 1.82:1 ✗ · screen #2E5A6E on night 1.81:1 ✗ · emberMid #B85718 on night 2.85:1 ✗"
+    ],
+    "onWhiteGround": [
+      "night #0D3520 on white — 13.57:1 ✓ (display headings, scoreboard figures, rules)",
+      "forest #124B2E on white — 10.14:1 ✓ (body)",
+      "inkMuted #456052 on white — 6.89:1 ✓ (captions, sub-rules)",
+      "ember #8A400A on white — 7.45:1 ✓ (as text, as a fill boundary, as the heavy score rule)",
+      "screen #2E5A6E on white — 7.49:1 ✓ (the '(hours being confirmed)' badge, text and 2px border)",
+      "emberMid #B85718 on white — 4.76:1 ✓ 3:1 non-text (focus slab)",
+      "paper #F7F5F3 on ember #8A400A fill — 6.85:1 ✓ (CTA label)",
+      "paper on emberHover #AD500D — 4.91:1 ✓ · paper on emberActive #6D3308 — 9.08:1 ✓",
+      "BANNED HERE: amber on white 1.85:1 ✗ · sage on white 2.02:1 ✗ · emberTint on white 1.33:1 ✗"
+    ],
+    "onEmberBand": [
+      "white #FFFFFF on ember #8A400A — 7.45:1 ✓ (h2, eyebrow, rules)",
+      "paper #F7F5F3 on ember — 6.85:1 ✓ (body, link)",
+      "greige #E5E1E0 on ember — 5.74:1 ✓ (the lead-endpoint degradation note)",
+      "paper slab on ember — 6.85:1 ✓ non-text (the waitlist panel's own boundary)",
+      "inside the paper slab: night on paper 12.48:1 ✓ · forest on paper 9.32:1 ✓ · inkMuted on paper 6.34:1 ✓ (placeholders) · paper on ember fill 6.85:1 ✓ (submit) · emberMid on paper 4.37:1 ✓ 3:1 (focus)",
+      "BANNED HERE, and this is the trap: night on ember 1.82:1 ✗ · forest on ember 1.36:1 ✗ · amber on ember 4.04:1 ✗ body (clears 3:1 large only — banned outright) · sage on ember 3.68:1 ✗ body"
+    ],
+    "mediaSlot": [
+      "greige panel on night ground — 10.46:1 ✓ non-text",
+      "screen #2E5A6E horizon on greige panel — 5.77:1 ✓ non-text",
+      "amber pendant marks on night — 7.35:1 ✓ non-text",
+      "paper 2px frame on night — 12.48:1 ✓ non-text",
+      "sage caption on night — 6.71:1 ✓ body"
+    ],
+    "regressionsFixed": [
+      "The hero eyebrow currently ships at `opacity-70` on forest. Here it is amber on night at 7.35:1 — no opacity anywhere in this overlay.",
+      "The hero subhead currently ships at `opacity-80` on forest. Here it is paper on night at 12.48:1.",
+      "The trust strip currently ships entirely in inkMuted at text-sm. Here the hours are night on white at 13.57:1 in 3rem figures.",
+      "The '(hours being confirmed)' badge currently renders in the same muted grey as the hours it qualifies. Here it is a screen-blue 2px-ruled caps tag at 7.49:1 — legible, and visibly a different KIND of thing."
+    ]
+  }
+}

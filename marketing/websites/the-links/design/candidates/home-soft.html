@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indoor Golf &amp; Simulators — Lakeville &amp; Stillwater, MN</title>
+<meta name="description" content="Two indoor golf venues in the Twin Cities. Book a GolfZon NX bay by the hour, bring up to five friends, full bar and food. Lakeville and Stillwater, MN.">
+<style>
+/* ------------------------------------------------------------------ *
+ * home-soft — generated FROM design/token-sets/soft.json.
+ * Every value below is a token. Nothing is hand-tuned away from it.
+ * ------------------------------------------------------------------ */
+:root{
+  /* palette */
+  --forest:#124b2e; --night:#0d3520; --roomBlack:#17120e;
+  --ember:#8a400a; --emberHover:#ad500d; --emberActive:#6d3308; --emberMid:#b85718;
+  --emberTint:#f0dcc9; --amber:#f3b268; --amberHover:#ffc98a;
+  --linen:#fbf7f1; --oat:#f1e7da; --wheat:#e6d9c9;
+  --sandMuted:#c9bca8; --bark:#7f7261;
+  --screen:#2e5a6e; --screenLit:#a8cbdc;
+  --clay:#a22c22; --moss:#155e36;
+
+  /* role.surface */
+  --surface-base:var(--linen); --surface-raised:var(--oat); --surface-line:var(--wheat);
+  --surface-tintWarm:var(--emberTint); --surface-dark:var(--night);
+  --surface-darkAlt:var(--forest); --surface-room:var(--roomBlack);
+
+  /* role.ink */
+  --ink:var(--forest); --ink-muted:#4e5a46;
+  --ink-onDark:var(--linen); --ink-mutedOnDark:var(--sandMuted);
+
+  /* role.primary / accent / border / state */
+  --primary:var(--ember); --primary-hover:var(--emberHover); --primary-active:var(--emberActive);
+  --primary-on:var(--linen);
+  --primary-onDarkFill:var(--amber); --primary-onDarkFillHover:var(--amberHover);
+  --primary-onDarkFillOn:var(--night);
+  --accent:var(--screen); --accent-highlight:var(--amber); --accent-projection:var(--screenLit);
+  --border-hairline:var(--wheat); --border-control:var(--bark); --border-onDark:var(--sandMuted);
+  --focus:var(--emberMid); --focus-onDark:var(--amber);
+  --disabled-surface:var(--wheat); --disabled-ink:#6e6350;
+  --error:var(--clay); --success:var(--moss);
+
+  /* light.* — the committed idea */
+  --pendant:radial-gradient(120% 84% at 50% -14%, rgba(243,178,104,.20) 0%, rgba(243,178,104,.07) 38%, rgba(243,178,104,0) 68%);
+  --pendantWide:radial-gradient(90% 120% at 18% 0%, rgba(243,178,104,.16) 0%, rgba(243,178,104,0) 62%);
+  --sheen:linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 42%);
+
+  /* elevation.* — warm-tinted, never grey */
+  --lamp:0 1px 2px rgba(45,26,8,.06), 0 10px 24px -14px rgba(138,64,10,.28);
+  --lampLift:0 2px 4px rgba(45,26,8,.08), 0 22px 44px -20px rgba(138,64,10,.36);
+
+  /* radius.* */
+  --r-chip:999px; --r-control:999px; --r-field:.75rem;
+  --r-surface:1.25rem; --r-media:1.5rem; --r-band:2rem;
+
+  /* space.* */
+  --s-3xs:.25rem; --s-2xs:.5rem; --s-xs:.75rem; --s-sm:1rem; --s-md:1.5rem;
+  --s-lg:2rem; --s-xl:2.75rem; --s-2xl:3.5rem; --s-3xl:5rem;
+  --sectionY:3.5rem; --sectionYLg:6rem;
+  --cardPad:1.75rem; --cardPadLg:2.25rem;
+  --gutterX:1.5rem; --gutterXLg:4rem;
+
+  /* size.* */
+  --contentMax:75rem; --proseMax:40rem; --headlineMax:22ch; --mediaRatio:3/2;
+
+  /* font.* — PREVIEW APPROXIMATION. See the candidate note at the foot of the page. */
+  --font-display:ui-serif, Georgia, "Iowan Old Style", "Times New Roman", Times, serif;
+  --font-body:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* motion.* */
+  --quick:140ms; --settle:240ms; --ease:cubic-bezier(.22,.8,.3,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--surface-base); color:var(--ink);
+  font-family:var(--font-body); font-size:1.0625rem; line-height:1.65;
+  font-variant-numeric:tabular-nums;
+}
+h1,h2,h3{font-family:var(--font-display); margin:0; font-weight:600;}
+h1{font-size:clamp(2.5rem,6.2vw,4rem); line-height:1.06; letter-spacing:-.018em; max-width:var(--headlineMax);}
+h2{font-size:clamp(1.875rem,3.4vw,2.5rem); line-height:1.14; letter-spacing:-.012em;}
+h3{font-size:1.375rem; line-height:1.24; letter-spacing:-.006em; font-weight:700;}
+p{margin:0}
+a{color:inherit}
+img,svg{max-width:100%; display:block}
+ul{margin:0;padding:0;list-style:none}
+
+.wrap{max-width:var(--contentMax); margin-inline:auto; padding-inline:var(--gutterX)}
+@media(min-width:1024px){.wrap{padding-inline:var(--gutterXLg)}}
+.section{padding-block:var(--sectionY)}
+@media(min-width:1024px){.section{padding-block:var(--sectionYLg)}}
+.prose{max-width:var(--proseMax)}
+.lead{font-size:clamp(1.125rem,1.6vw,1.3125rem); line-height:1.6}
+.small{font-size:.9375rem; line-height:1.55}
+.eyebrow{font-size:.8125rem; line-height:1.2; letter-spacing:.14em; text-transform:uppercase; font-weight:600}
+.muted{color:var(--ink-muted)}
+.mutedOnDark{color:var(--ink-mutedOnDark)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* focus — currently absent on the live site; mandatory here */
+a:focus-visible,button:focus-visible,input:focus-visible{
+  outline:3px solid var(--focus); outline-offset:3px; border-radius:var(--r-3xs,.35rem);
+}
+.on-dark a:focus-visible,.on-dark button:focus-visible{outline-color:var(--focus-onDark)}
+
+/* ---- the motif: the lamp rule. One graphic device, repeated. ---- */
+.lamprule{display:flex;align-items:center;gap:var(--s-xs);margin-bottom:var(--s-md)}
+.lamprule::before{
+  content:"";width:.5rem;height:.5rem;border-radius:999px;background:var(--ember);
+  box-shadow:0 0 0 .3rem rgba(138,64,10,.13), 0 0 1.4rem .2rem rgba(243,178,104,.55);
+  flex:none;
+}
+.lamprule::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--border-hairline),transparent)}
+.on-dark .lamprule::before{background:var(--amber);box-shadow:0 0 0 .3rem rgba(243,178,104,.14),0 0 1.6rem .25rem rgba(243,178,104,.42)}
+.on-dark .lamprule::after{background:linear-gradient(90deg,rgba(201,188,168,.45),transparent)}
+
+/* ---- buttons ---- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  min-height:2.875rem;padding:.7rem 1.5rem;border-radius:var(--r-control);
+  font-family:var(--font-body);font-size:1rem;font-weight:600;letter-spacing:.01em;
+  text-decoration:none;border:2px solid transparent;cursor:pointer;
+  transition:background-color var(--quick) var(--ease),transform var(--quick) var(--ease),box-shadow var(--settle) var(--ease);
+}
+.btn--primary{background:var(--primary);color:var(--primary-on);box-shadow:var(--lamp)}
+.btn--primary:hover{background:var(--primary-hover);box-shadow:var(--lampLift);transform:translateY(-1px)}
+.btn--primary:active{background:var(--primary-active);transform:none}
+/* the rule change: on a dark field the action colour becomes the lamp itself */
+.btn--onDark{background:var(--primary-onDarkFill);color:var(--primary-onDarkFillOn);box-shadow:0 14px 34px -16px rgba(243,178,104,.55)}
+.btn--onDark:hover{background:var(--primary-onDarkFillHover);transform:translateY(-1px)}
+.btn--ghostDark{background:transparent;color:var(--ink-onDark);border-color:var(--border-onDark)}
+.btn--ghostDark:hover{background:rgba(251,247,241,.08)}
+.btn--outline{background:transparent;color:var(--ink);border-color:var(--border-control)}
+.btn--outline:hover{background:var(--surface-raised)}
+.btn--sm{min-height:2.75rem;padding:.55rem 1.1rem;font-size:.9375rem}
+
+/* ---- header ---- */
+.header{
+  position:sticky;top:0;z-index:50;
+  background:var(--linen);
+  background:color-mix(in srgb,var(--linen) 92%,transparent);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border-hairline);
+}
+@supports not (backdrop-filter:blur(2px)){.header{background:var(--linen)}}
+.header__top{display:flex;align-items:center;justify-content:space-between;gap:var(--s-md);padding-block:.85rem}
+.wordmark{font-family:var(--font-display);font-weight:700;font-size:1.4rem;letter-spacing:-.01em;text-decoration:none;display:inline-flex;align-items:center;min-height:2.75rem}
+.header__right{display:flex;align-items:center;gap:var(--s-sm)}
+.switcher{display:flex;align-items:center;gap:.4rem}
+.switcher__label{font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink-muted)}
+.switcher a{
+  display:inline-flex;align-items:center;min-height:2.75rem;padding:.35rem .8rem;border-radius:var(--r-chip);
+  font-size:.9375rem;font-weight:600;text-decoration:none;color:var(--ink-muted);
+  border:1px solid transparent;transition:background-color var(--quick) var(--ease);
+}
+.switcher a:hover{background:var(--surface-raised);color:var(--ink)}
+.switcher a[aria-current]{background:var(--surface-line);color:var(--ink);border-color:var(--border-hairline)}
+.nav{display:flex;flex-wrap:wrap;gap:.15rem .35rem;padding-bottom:.55rem}
+.nav a{
+  display:inline-flex;align-items:center;min-height:2.75rem;padding:.3rem .7rem;border-radius:var(--r-chip);
+  font-size:.9375rem;font-weight:600;text-decoration:none;color:var(--ink-muted);
+  transition:color var(--quick) var(--ease),background-color var(--quick) var(--ease);
+}
+.nav a:hover{color:var(--ink);background:var(--surface-raised)}
+.nav a[aria-current="page"]{color:var(--ink);background:var(--surface-line)}
+@media(min-width:1024px){
+  .header__inner{display:flex;align-items:center;gap:var(--s-lg);padding-block:.6rem}
+  .header__top{padding-block:0;flex:none;gap:var(--s-lg)}
+  .nav{padding-bottom:0;flex:1;justify-content:center}
+  .header__top--lg{flex:1;justify-content:flex-end}
+}
+@media(max-width:1023px){.switcher__label{display:none}}
+@media(max-width:479px){.switcher{display:none}}
+
+/* ---- hero ---- */
+.hero{position:relative;background:var(--surface-dark);color:var(--ink-onDark);overflow:hidden;border-bottom-left-radius:var(--r-band);border-bottom-right-radius:var(--r-band)}
+.hero::before{content:"";position:absolute;inset:0;background:var(--pendant);pointer-events:none}
+.hero__grid{position:relative;display:grid;gap:var(--s-2xl);align-items:center}
+@media(min-width:1024px){.hero__grid{grid-template-columns:1.15fr .85fr;gap:var(--s-3xl)}}
+.hero .eyebrow{color:var(--accent-highlight)}
+.hero h1{margin-block:var(--s-md) var(--s-md)}
+.hero__sub{color:var(--ink-mutedOnDark);max-width:34rem}
+.hero__cta{display:flex;flex-wrap:wrap;gap:var(--s-sm);margin-top:var(--s-xl)}
+.hero__media{display:none}
+@media(min-width:1024px){.hero__media{display:block}}
+.hero__floor{position:absolute;left:0;right:0;bottom:0;height:9rem;background:radial-gradient(70% 100% at 62% 100%,rgba(243,178,104,.16),transparent 70%);pointer-events:none}
+@media(min-width:1024px){.hero__floor{display:none}}
+
+/* ---- photo slot ---- */
+.slot{position:relative;border-radius:var(--r-media);overflow:hidden;background:var(--surface-room);aspect-ratio:var(--mediaRatio)}
+.slot svg{width:100%;height:100%;display:block}
+.slot__tag{
+  position:absolute;left:var(--s-sm);bottom:var(--s-sm);right:var(--s-sm);
+  display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;
+}
+.chip{
+  display:inline-flex;align-items:center;gap:.4rem;border-radius:var(--r-chip);
+  padding:.3rem .7rem;font-size:.8125rem;font-weight:600;letter-spacing:.02em;
+}
+.chip--slot{background:rgba(23,18,14,.78);color:var(--sandMuted);border:1px solid rgba(201,188,168,.35)}
+/* both chips carry a 3:1 border so they read on any warm field, not on a fill alone */
+.chip--awaiting{background:var(--surface-base);color:var(--accent);border:1px solid var(--border-control)}
+.chip--caveat{background:var(--surface-base);color:var(--accent);border:1px solid var(--border-control);
+  font-size:.8125rem;vertical-align:2px;margin-left:.35rem;font-weight:600;white-space:nowrap}
+.slot__caption{margin-top:var(--s-2xs);font-size:.875rem;color:var(--ink-mutedOnDark)}
+
+/* ---- trust strip ---- */
+.trust{background:var(--surface-base);padding-block:var(--s-xl)}
+.trust__panel{
+  background:var(--surface-raised);border-radius:var(--r-surface);box-shadow:var(--lamp);
+  border:1px solid var(--border-hairline);padding:var(--cardPad);position:relative;overflow:hidden;
+}
+.trust__panel::before{content:"";position:absolute;inset:0 0 auto 0;height:60%;background:var(--sheen);pointer-events:none}
+@media(min-width:1024px){.trust__panel{padding:var(--cardPadLg)}}
+.trust__grid{position:relative;display:grid;gap:var(--s-lg)}
+@media(min-width:640px){.trust__grid{grid-template-columns:1fr 1fr;gap:var(--s-xl)}}
+@media(min-width:640px){.trust__grid>li+li{border-left:1px solid var(--border-hairline);padding-left:var(--s-xl)}}
+.trust__name{font-family:var(--font-display);font-weight:700;font-size:1.25rem;text-decoration:none}
+.trust__name:hover{color:var(--ember)}
+.trust__hours{font-size:1.0625rem;font-weight:600;margin-top:var(--s-2xs)}
+.trust__row{margin-top:var(--s-xs);display:flex;flex-direction:column;gap:.15rem}
+.trust__row a{color:var(--ink-muted);text-decoration-color:var(--border-control);text-underline-offset:3px;min-height:2.75rem;display:flex;align-items:center}
+.trust__row a:hover{color:var(--ember)}
+
+/* ---- cards / things ---- */
+.things{display:grid;gap:var(--s-md);margin-top:var(--s-lg)}
+@media(min-width:768px){.things{grid-template-columns:1fr 1fr}.things>li:first-child{grid-column:span 2}}
+@media(min-width:1024px){
+  .things{grid-template-columns:1.5fr 1fr 1fr;grid-auto-rows:1fr}
+  .things>li:first-child{grid-column:auto;grid-row:span 2}
+}
+.card{
+  height:100%;display:flex;flex-direction:column;gap:var(--s-2xs);
+  background:var(--surface-raised);border:1px solid var(--border-hairline);
+  border-radius:var(--r-surface);box-shadow:var(--lamp);padding:var(--cardPad);
+  text-decoration:none;position:relative;overflow:hidden;
+  transition:box-shadow var(--settle) var(--ease),transform var(--settle) var(--ease);
+}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:55%;background:var(--sheen);pointer-events:none}
+.card:hover{box-shadow:var(--lampLift);transform:translateY(-2px)}
+.card>*{position:relative}
+.card__go{margin-top:auto;padding-top:var(--s-sm);font-weight:600;font-size:.9375rem;color:var(--ember)}
+.card--feature{background:var(--surface-tintWarm);justify-content:space-between}
+.card--feature h3{font-size:1.75rem}
+.stat{font-family:var(--font-display);font-size:2rem;line-height:1;font-weight:600;color:var(--ember)}
+.stat__note{font-size:.875rem;color:var(--ink-muted);margin-top:.35rem}
+.card__glyph{width:2.25rem;height:2.25rem;margin-bottom:var(--s-2xs)}
+
+/* ---- proof ---- */
+.proof{background:var(--surface-line)}
+.proof__stub{border-left:3px solid var(--ember);padding-left:var(--s-md);margin-block:var(--s-md) var(--s-lg);max-width:var(--proseMax)}
+.quotes{display:grid;gap:var(--s-md)}
+@media(min-width:768px){.quotes{grid-template-columns:repeat(3,1fr)}}
+.quote{
+  border:2px dashed var(--border-control);border-radius:var(--r-surface);
+  padding:var(--cardPad);background:transparent;display:flex;flex-direction:column;gap:var(--s-sm);
+}
+.quote__mark{font-family:var(--font-display);font-size:2.5rem;line-height:.7;color:var(--bark)}
+.quote__line{height:.6rem;border-radius:999px;background:var(--bark);opacity:.28}
+.quote__byline{margin-top:auto;font-size:.875rem;color:var(--ink-muted);font-weight:600}
+
+/* ---- featured offer ---- */
+.offer{background:var(--surface-tintWarm)}
+.offer__grid{display:grid;gap:var(--s-2xl);align-items:start}
+@media(min-width:1024px){.offer__grid{grid-template-columns:1fr 1fr;gap:var(--s-3xl)}}
+.offer .eyebrow{color:var(--ember)}
+.offer h2{margin-block:var(--s-2xs) var(--s-md)}
+.offer p+p{margin-top:var(--s-sm)}
+.offer__link{display:inline-flex;align-items:center;gap:.4rem;min-height:2.75rem;margin-top:var(--s-md);font-weight:600;color:var(--ember);text-underline-offset:4px}
+.waitlist{
+  background:var(--surface-raised);border-radius:var(--r-surface);box-shadow:var(--lampLift);
+  border:1px solid var(--border-hairline);padding:var(--cardPad);position:relative;overflow:hidden;
+}
+@media(min-width:768px){.waitlist{padding:var(--cardPadLg)}}
+.waitlist::before{content:"";position:absolute;inset:0 0 auto 0;height:50%;background:var(--sheen);pointer-events:none}
+.waitlist>*{position:relative}
+.waitlist__badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.8125rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ember)}
+.waitlist h3{margin-block:var(--s-2xs) var(--s-2xs)}
+.field{display:grid;gap:var(--s-2xs);margin-top:var(--s-sm)}
+input[type=text],input[type=email]{
+  font:inherit;font-size:1rem;padding:.8rem 1rem;border-radius:var(--r-field);
+  border:2px solid var(--border-control);background:var(--linen);color:var(--ink);width:100%;min-height:2.875rem;
+}
+input::placeholder{color:var(--disabled-ink)}
+.waitlist__rows{display:grid;gap:var(--s-2xs)}
+@media(min-width:640px){.waitlist__rows{grid-template-columns:1fr 1fr;gap:var(--s-2xs)}}
+.waitlist__submit{margin-top:var(--s-sm);width:100%}
+@media(min-width:640px){.waitlist__submit{width:auto}}
+.degrade{
+  margin-top:var(--s-sm);font-size:.875rem;color:var(--accent);
+  display:flex;gap:.5rem;align-items:flex-start;
+}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* ---- venues / the room ---- */
+.room{background:var(--surface-dark);color:var(--ink-onDark);position:relative;overflow:hidden;border-radius:var(--r-band)}
+.room::before{content:"";position:absolute;inset:0;background:var(--pendantWide);pointer-events:none}
+.room__inner{position:relative}
+.venues{display:grid;gap:var(--s-2xl);margin-top:var(--s-lg)}
+@media(min-width:768px){.venues{grid-template-columns:1fr 1fr;gap:var(--s-xl)}}
+.venue h3{font-size:1.5rem;margin-top:var(--s-md)}
+.venue__intro{color:var(--ink-mutedOnDark);margin-top:var(--s-2xs)}
+.venue__meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:var(--s-sm)}
+.metachip{border-radius:var(--r-chip);padding:.3rem .75rem;font-size:.875rem;font-weight:600;background:rgba(251,247,241,.08);color:var(--ink-onDark);border:1px solid rgba(201,188,168,.32)}
+.venue__cta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-sm);margin-top:var(--s-md)}
+.venue__details{color:var(--ink-mutedOnDark);font-weight:600;font-size:.9375rem;min-height:2.75rem;display:inline-flex;align-items:center;text-underline-offset:4px}
+.venue__details:hover{color:var(--accent-highlight)}
+
+/* ---- footer ---- */
+.footer{background:var(--surface-darkAlt);color:var(--ink-onDark);margin-top:var(--sectionY)}
+.footer__grid{display:grid;gap:var(--s-xl);padding-block:var(--s-2xl)}
+@media(min-width:640px){.footer__grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1024px){.footer__grid{grid-template-columns:1.2fr 1.2fr .8fr .8fr;gap:var(--s-lg)}}
+.lockup{font-family:var(--font-display);line-height:1.05}
+.lockup__mark{font-weight:700;font-size:1.2rem;letter-spacing:-.01em}
+.lockup__rule{height:1px;background:var(--accent-highlight);opacity:.65;margin-block:.4rem;max-width:8.5rem}
+.lockup__venue{font-family:var(--font-body);font-weight:600;font-size:.8125rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mutedOnDark)}
+.footer address{font-style:normal;color:var(--ink-mutedOnDark);font-size:.9375rem;margin-top:var(--s-sm);line-height:1.6}
+.footer address a{color:var(--ink-mutedOnDark);text-underline-offset:3px}
+.footer address a:hover{color:var(--accent-highlight)}
+.footer__hours{color:var(--ink-onDark);font-size:.9375rem;font-weight:600;margin-top:var(--s-2xs)}
+.footer__head{font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--accent-highlight)}
+.footer__links{margin-top:var(--s-sm);display:flex;flex-direction:column}
+.footer__links a{color:var(--ink-mutedOnDark);text-decoration:none;font-size:.9375rem;min-height:2.75rem;display:flex;align-items:center}
+.footer__links a:hover{color:var(--ink-onDark)}
+.footer__bar{border-top:1px solid rgba(201,188,168,.24);padding-block:var(--s-md);display:flex;flex-wrap:wrap;gap:.35rem var(--s-md);align-items:center;font-size:.875rem;color:var(--ink-mutedOnDark)}
+.footer__bar a{color:var(--ink-mutedOnDark);min-height:2.75rem;display:inline-flex;align-items:center;text-underline-offset:3px}
+.footer__bar a:hover{color:var(--ink-onDark)}
+
+/* ---- candidate note (review scaffolding, not part of the page) ---- */
+.note{background:var(--surface-base);border-top:2px dashed var(--border-control);margin-top:0}
+.note__inner{padding-block:var(--s-xl);font-size:.9375rem;color:var(--ink-muted);max-width:58rem}
+.note h4{font-family:var(--font-body);font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);margin:0 0 var(--s-2xs)}
+.note ul{list-style:disc;padding-left:1.15rem;display:grid;gap:.35rem}
+.note p+h4{margin-top:var(--s-md)}
+.note ul+h4{margin-top:var(--s-md)}
+.note code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85em;background:var(--surface-line);padding:.1em .35em;border-radius:.3rem}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:0ms !important;animation-duration:0ms !important}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <div class="header__inner">
+      <div class="header__top">
+        <a class="wordmark" href="/">The Links</a>
+        <div class="header__right">
+          <div class="switcher">
+            <span class="switcher__label">Visiting</span>
+            <a href="/locations/lakeville/">Lakeville</a>
+            <a href="/locations/stillwater/">Stillwater</a>
+          </div>
+          <a class="btn btn--primary btn--sm" href="/book/" data-analytics="book:chooser">Book a Bay</a>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Main">
+        <a href="/book/">Book</a>
+        <a href="/rates/">Rates &amp; Hours</a>
+        <a href="/leagues/">Leagues</a>
+        <a href="/memberships/">Memberships</a>
+        <a href="/events/">Events</a>
+        <a href="/food-and-drink/">Food &amp; Drink</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- 3.1 HERO -->
+  <section class="hero on-dark">
+    <div class="wrap section">
+      <div class="hero__grid">
+        <div>
+          <p class="eyebrow">Lakeville &amp; Stillwater, Minnesota</p>
+          <h1>Indoor golf that&rsquo;s actually a night out.</h1>
+          <p class="lead hero__sub">Ten GolfZon NX bays across two Twin Cities venues. Book by the hour, bring up to five friends for the same price, and let the simulator keep score while you order another round.</p>
+          <div class="hero__cta">
+            <a class="btn btn--onDark" href="/book/" data-analytics="book:chooser">Book a Bay</a>
+            <a class="btn btn--ghostDark" href="/rates/">See rates &amp; hours</a>
+          </div>
+        </div>
+        <div class="hero__media">
+          <div class="slot">
+            <svg viewBox="0 0 600 400" role="img" aria-label="Placeholder for the hero photograph: a wide interior of the venue at night, warm pendant light over the bar with one lit simulator screen.">
+              <defs>
+                <radialGradient id="h-lamp1" cx="30%" cy="2%" r="42%">
+                  <stop offset="0" stop-color="#F3B268" stop-opacity=".62"/>
+                  <stop offset="1" stop-color="#F3B268" stop-opacity="0"/>
+                </radialGradient>
+                <radialGradient id="h-lamp2" cx="62%" cy="4%" r="34%">
+                  <stop offset="0" stop-color="#F3B268" stop-opacity=".40"/>
+                  <stop offset="1" stop-color="#F3B268" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="h-screen" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#A8CBDC"/>
+                  <stop offset=".58" stop-color="#7FB0C6"/>
+                  <stop offset=".59" stop-color="#3E6B4A"/>
+                  <stop offset="1" stop-color="#2C4E36"/>
+                </linearGradient>
+                <radialGradient id="h-vig" cx="50%" cy="36%" r="78%">
+                  <stop offset=".45" stop-color="#17120E" stop-opacity="0"/>
+                  <stop offset="1" stop-color="#17120E" stop-opacity=".82"/>
+                </radialGradient>
+              </defs>
+              <rect width="600" height="400" fill="#17120E"/>
+              <rect x="330" y="86" width="212" height="150" rx="5" fill="url(#h-screen)"/>
+              <rect x="330" y="86" width="212" height="150" rx="5" fill="none" stroke="#A8CBDC" stroke-opacity=".35"/>
+              <ellipse cx="436" cy="252" rx="118" ry="16" fill="#A8CBDC" opacity=".10"/>
+              <path d="M0 0h600v96H0z" fill="url(#h-lamp1)"/>
+              <path d="M0 0h600v96H0z" fill="url(#h-lamp2)"/>
+              <g stroke="#C9BCA8" stroke-opacity=".30">
+                <path d="M108 0v42M196 0v54"/>
+              </g>
+              <g fill="#F3B268">
+                <circle cx="108" cy="48" r="7" opacity=".95"/>
+                <circle cx="196" cy="60" r="6" opacity=".9"/>
+                <circle cx="108" cy="48" r="26" opacity=".13"/>
+                <circle cx="196" cy="60" r="22" opacity=".11"/>
+              </g>
+              <rect x="0" y="248" width="290" height="14" rx="4" fill="#3A2A1A" opacity=".9"/>
+              <g fill="#241A11">
+                <rect x="34" y="262" width="16" height="70" rx="6"/>
+                <rect x="118" y="262" width="16" height="70" rx="6"/>
+                <rect x="202" y="262" width="16" height="70" rx="6"/>
+              </g>
+              <g fill="#F3B268" opacity=".22">
+                <ellipse cx="120" cy="252" rx="150" ry="40"/>
+              </g>
+              <rect width="600" height="400" fill="url(#h-vig)"/>
+            </svg>
+            <div class="slot__tag">
+              <span class="chip chip--slot">Photo slot · 3:2</span>
+              <span class="chip chip--slot">Wide interior, evening, occupied</span>
+            </div>
+          </div>
+          <p class="slot__caption">Reserved at the shoot&rsquo;s own ratio. The Lakeville frames exist; they are not yet in the build. Nothing here is a photograph.</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero__floor" aria-hidden="true"></div>
+  </section>
+
+  <!-- 3.2 TRUST STRIP -->
+  <section class="trust" aria-label="Hours and locations">
+    <div class="wrap">
+      <div class="trust__panel">
+        <ul class="trust__grid">
+          <li>
+            <a class="trust__name" href="/locations/lakeville/">The Links of Lakeville</a>
+            <p class="trust__hours">Mon&ndash;Sun 11am&ndash;9pm <span class="chip chip--caveat">(hours being confirmed)</span></p>
+            <div class="trust__row">
+              <a href="https://maps.google.com/?q=17630+Juniper+Path+Suite+H,+Lakeville,+MN+55044" target="_blank" rel="noopener">17630 Juniper Path Suite H, Lakeville, MN 55044</a>
+              <a href="tel:+16126990526">612-699-0526</a>
+            </div>
+          </li>
+          <li>
+            <a class="trust__name" href="/locations/stillwater/">The Links of Stillwater</a>
+            <p class="trust__hours">Mon 12pm&ndash;9pm &middot; Tue&ndash;Fri 3pm&ndash;9pm &middot; Sat 10am&ndash;10pm &middot; Sun 12pm&ndash;7pm <span class="chip chip--caveat">(hours being confirmed)</span></p>
+            <div class="trust__row">
+              <a href="https://maps.google.com/?q=5862+Omaha+Ave+N,+Stillwater,+MN+55082" target="_blank" rel="noopener">5862 Omaha Ave N, Stillwater, MN 55082</a>
+              <a href="tel:+16126990527">612-699-0527</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3.3 WHAT YOU CAN DO HERE -->
+  <section class="section">
+    <div class="wrap">
+      <div class="lamprule" aria-hidden="true"></div>
+      <h2>What you can do here</h2>
+      <ul class="things">
+        <li>
+          <a class="card card--feature" href="/book/">
+            <div>
+              <svg class="card__glyph" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#8a400a" stroke-width="1.8" stroke-linecap="round">
+                <path d="M6 27h20"/><path d="M16 27V7"/><path d="M16 7l9 4-9 4"/>
+              </svg>
+              <h3>Play</h3>
+              <p>Book a bay by the hour. Up to five of you, same price.</p>
+            </div>
+            <div>
+              <p class="stat">$35 / hour</p>
+              <p class="stat__note">Per bay, not per person &middot; Summer 2026 rate, published through 3 Oct 2026</p>
+              <p class="card__go">Book a Bay &rarr;</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="/leagues/">
+            <svg class="card__glyph" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#8a400a" stroke-width="1.8" stroke-linecap="round">
+              <path d="M5 27h22"/><path d="M9 27v-9"/><path d="M16 27V9"/><path d="M23 27v-13"/>
+            </svg>
+            <h3>Compete</h3>
+            <p>Fall and winter leagues at both venues.</p>
+            <p class="card__go">See leagues &rarr;</p>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="/events/">
+            <svg class="card__glyph" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#8a400a" stroke-width="1.8" stroke-linecap="round">
+              <path d="M11 5v6M21 5v6"/><path d="M8 14h16"/><path d="M9 11h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V13a2 2 0 0 1 2-2z"/>
+            </svg>
+            <h3>Celebrate</h3>
+            <p>Work parties, birthdays, bachelor parties.</p>
+            <p class="card__go">Plan an event &rarr;</p>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="/lessons/">
+            <svg class="card__glyph" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#8a400a" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="16" cy="16" r="10"/><path d="M16 6v4M16 22v4M6 16h4M22 16h4"/>
+            </svg>
+            <h3>Improve</h3>
+            <p>Lessons and practice on a real launch monitor.</p>
+            <p class="card__go">Book a lesson &rarr;</p>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="/food-and-drink/">
+            <svg class="card__glyph" viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#8a400a" stroke-width="1.8" stroke-linecap="round">
+              <path d="M7 6h18l-8 10v9"/><path d="M12 25h10"/>
+            </svg>
+            <h3>Eat &amp; drink</h3>
+            <p>Full bar, real food, nine screens.</p>
+            <p class="card__go">See the menu &rarr;</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3.4 PROOF -->
+  <section class="section proof">
+    <div class="wrap">
+      <div class="lamprule" aria-hidden="true"></div>
+      <h2>What players say</h2>
+      <p class="proof__stub"><span class="chip chip--awaiting">Awaiting content</span><br>
+        STUB &mdash; awaiting real, attributed reviews and the Google Business Profile links for both venues. Unsourced quotes are not shipped.</p>
+      <ul class="quotes">
+        <li class="quote">
+          <span class="quote__mark" aria-hidden="true">&ldquo;</span>
+          <div style="display:grid;gap:.5rem" aria-hidden="true">
+            <span class="quote__line" style="width:100%"></span>
+            <span class="quote__line" style="width:92%"></span>
+            <span class="quote__line" style="width:64%"></span>
+          </div>
+          <p class="quote__byline">Slot: reviewer name &middot; venue &middot; link to that venue&rsquo;s Google Business Profile</p>
+        </li>
+        <li class="quote">
+          <span class="quote__mark" aria-hidden="true">&ldquo;</span>
+          <div style="display:grid;gap:.5rem" aria-hidden="true">
+            <span class="quote__line" style="width:100%"></span>
+            <span class="quote__line" style="width:78%"></span>
+            <span class="quote__line" style="width:88%"></span>
+          </div>
+          <p class="quote__byline">Slot: reviewer name &middot; venue &middot; link to that venue&rsquo;s Google Business Profile</p>
+        </li>
+        <li class="quote">
+          <span class="quote__mark" aria-hidden="true">&ldquo;</span>
+          <div style="display:grid;gap:.5rem" aria-hidden="true">
+            <span class="quote__line" style="width:86%"></span>
+            <span class="quote__line" style="width:100%"></span>
+            <span class="quote__line" style="width:52%"></span>
+          </div>
+          <p class="quote__byline">Slot: reviewer name &middot; venue &middot; link to that venue&rsquo;s Google Business Profile</p>
+        </li>
+      </ul>
+      <p class="small muted" style="margin-top:1rem;max-width:40rem">Three attributed quotes drop into these frames unchanged. Stillwater appears to have no Google Business Profile yet &mdash; that is a launch blocker, not a design decision.</p>
+    </div>
+  </section>
+
+  <!-- 3.5 FEATURED OFFER + EMAIL CAPTURE -->
+  <section class="section offer">
+    <div class="wrap">
+      <div class="offer__grid">
+        <div>
+          <div class="lamprule" aria-hidden="true"></div>
+          <p class="eyebrow">This season</p>
+          <h2>Fall &amp; winter leagues</h2>
+          <div class="prose">
+            <p>League nights are the reason winter is our busiest season. Teams, handicaps, a live leaderboard and a bar tab. Registration for Fall/Winter 2026-27 opens soon at both venues.</p>
+            <p><strong style="font-weight:600">Never played in one? Most of our league players hadn&rsquo;t either. Handicaps keep it fair.</strong></p>
+          </div>
+          <a class="offer__link" href="/leagues/">See how leagues work <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <div class="waitlist">
+          <p class="waitlist__badge">
+            <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="#8a400a" stroke-width="1.6" stroke-linecap="round"><path d="M8 1.5v3M8 4.5a4 4 0 0 1 4 4v3l1.5 2h-11L4 11.5v-3a4 4 0 0 1 4-4z"/><path d="M6.5 13.5a1.5 1.5 0 0 0 3 0"/></svg>
+            Waitlist
+          </p>
+          <h3>Get first word on league sign-ups</h3>
+          <p class="muted">One email when registration opens. Nothing else.</p>
+
+          <form action="mailto:info@lakevillelinks.com" method="GET">
+            <input type="hidden" name="list" value="league-general">
+            <input type="hidden" name="venue" value="">
+            <div class="hp" aria-hidden="true"><input type="text" name="_hp" tabindex="-1" autocomplete="off"></div>
+
+            <div class="waitlist__rows">
+              <div class="field">
+                <label class="sr-only" for="wl-name">Your name</label>
+                <input id="wl-name" type="text" name="name" placeholder="Your name" required autocomplete="name">
+              </div>
+              <div class="field">
+                <label class="sr-only" for="wl-email">Email address</label>
+                <input id="wl-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+              </div>
+            </div>
+
+            <button class="btn btn--primary waitlist__submit" type="submit">Notify me</button>
+          </form>
+
+          <p class="degrade">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="#2e5a6e" stroke-width="1.6" stroke-linecap="round" style="flex:none;margin-top:.2rem"><circle cx="8" cy="8" r="6.5"/><path d="M8 7.5v4M8 4.8v.6"/></svg>
+            Lead endpoint not configured &mdash; this form opens an email instead.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3.6 THE SPACE / TWO VENUES -->
+  <section class="section">
+    <div class="wrap">
+      <div class="room on-dark">
+        <div class="wrap section room__inner">
+          <div class="lamprule" aria-hidden="true"></div>
+          <h2>Two venues</h2>
+
+          <ul class="venues">
+            <li class="venue">
+              <div class="slot">
+                <svg viewBox="0 0 600 400" role="img" aria-label="Placeholder for a Lakeville photograph: a bay with the simulator projection lit, warm pendant light over the bar.">
+                  <defs>
+                    <radialGradient id="l-lamp" cx="22%" cy="4%" r="46%">
+                      <stop offset="0" stop-color="#F3B268" stop-opacity=".58"/><stop offset="1" stop-color="#F3B268" stop-opacity="0"/>
+                    </radialGradient>
+                    <linearGradient id="l-screen" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#A8CBDC"/><stop offset=".55" stop-color="#7FB0C6"/>
+                      <stop offset=".56" stop-color="#3E6B4A"/><stop offset="1" stop-color="#2A4B33"/>
+                    </linearGradient>
+                    <radialGradient id="l-vig" cx="50%" cy="40%" r="76%">
+                      <stop offset=".42" stop-color="#17120E" stop-opacity="0"/><stop offset="1" stop-color="#17120E" stop-opacity=".8"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="600" height="400" fill="#17120E"/>
+                  <rect x="252" y="70" width="290" height="196" rx="6" fill="url(#l-screen)"/>
+                  <rect x="252" y="70" width="290" height="196" rx="6" fill="none" stroke="#A8CBDC" stroke-opacity=".4"/>
+                  <ellipse cx="397" cy="284" rx="160" ry="20" fill="#A8CBDC" opacity=".12"/>
+                  <g fill="#1D1611"><path d="M330 268h20l-6 92h-8z"/><ellipse cx="340" cy="360" rx="26" ry="6"/></g>
+                  <path d="M0 0h600v110H0z" fill="url(#l-lamp)"/>
+                  <path d="M92 0v46" stroke="#C9BCA8" stroke-opacity=".3"/>
+                  <circle cx="92" cy="52" r="8" fill="#F3B268"/>
+                  <circle cx="92" cy="52" r="30" fill="#F3B268" opacity=".14"/>
+                  <rect x="0" y="252" width="200" height="12" rx="4" fill="#3A2A1A"/>
+                  <ellipse cx="86" cy="256" rx="118" ry="34" fill="#F3B268" opacity=".2"/>
+                  <rect width="600" height="400" fill="url(#l-vig)"/>
+                </svg>
+                <div class="slot__tag">
+                  <span class="chip chip--slot">Photo slot · 3:2</span>
+                  <span class="chip chip--slot">Shoot exists &middot; not in the build</span>
+                </div>
+              </div>
+              <h3>The Links of Lakeville</h3>
+              <p class="venue__intro">Six GolfZon NX bays, a full bar and nine screens in the south metro. Five bays play both-handed; one is right-handed only.</p>
+              <div class="venue__meta">
+                <span class="metachip">6 bays</span>
+                <span class="metachip">GolfZon NX</span>
+                <span class="metachip">Open since 2022</span>
+              </div>
+              <div class="venue__cta">
+                <a class="btn btn--onDark btn--sm" href="https://app.whoosh.io/patron/club/the-links-indoor-golf/agenda/simulators/today" target="_blank" rel="noopener" data-analytics="book:lakeville">
+                  Book at Lakeville <span aria-hidden="true">&rarr;</span><span class="sr-only">(opens Whoosh booking in a new tab)</span>
+                </a>
+                <a class="venue__details" href="/locations/lakeville/">Venue details</a>
+              </div>
+            </li>
+
+            <li class="venue">
+              <div class="slot">
+                <svg viewBox="0 0 600 400" role="img" aria-label="Placeholder for a Stillwater photograph: the room as it will be shot, with the simulator screen unlit because no photography exists yet.">
+                  <defs>
+                    <radialGradient id="s-lamp" cx="24%" cy="4%" r="44%">
+                      <stop offset="0" stop-color="#F3B268" stop-opacity=".22"/><stop offset="1" stop-color="#F3B268" stop-opacity="0"/>
+                    </radialGradient>
+                    <radialGradient id="s-vig" cx="50%" cy="40%" r="76%">
+                      <stop offset=".42" stop-color="#17120E" stop-opacity="0"/><stop offset="1" stop-color="#17120E" stop-opacity=".86"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="600" height="400" fill="#17120E"/>
+                  <rect x="252" y="70" width="290" height="196" rx="6" fill="#1E2A2F"/>
+                  <rect x="252" y="70" width="290" height="196" rx="6" fill="none" stroke="#A8CBDC" stroke-opacity=".22" stroke-dasharray="7 7"/>
+                  <path d="M0 0h600v110H0z" fill="url(#s-lamp)"/>
+                  <path d="M92 0v46" stroke="#C9BCA8" stroke-opacity=".18"/>
+                  <circle cx="92" cy="52" r="8" fill="#C9BCA8" opacity=".3"/>
+                  <rect x="0" y="252" width="200" height="12" rx="4" fill="#2A2019"/>
+                  <g fill="#221A14"><rect x="34" y="286" width="120" height="46" rx="14"/><rect x="168" y="286" width="120" height="46" rx="14"/></g>
+                  <rect width="600" height="400" fill="url(#s-vig)"/>
+                </svg>
+                <div class="slot__tag">
+                  <span class="chip chip--slot">Photo slot · 3:2</span>
+                  <span class="chip chip--slot">Shoot not yet commissioned</span>
+                </div>
+              </div>
+              <h3>The Links of Stillwater</h3>
+              <p class="venue__intro">Four GolfZon NX bays in the east metro, inside Stillwater Bowl &amp; Lounge. Opened early 2026.</p>
+              <div class="venue__meta">
+                <span class="metachip">4 bays</span>
+                <span class="metachip">GolfZon NX</span>
+                <span class="metachip">Opened 2026</span>
+              </div>
+              <div class="venue__cta">
+                <a class="btn btn--onDark btn--sm" href="https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today" target="_blank" rel="noopener" data-analytics="book:stillwater">
+                  Book at Stillwater <span aria-hidden="true">&rarr;</span><span class="sr-only">(opens Whoosh booking in a new tab)</span>
+                </a>
+                <a class="venue__details" href="/locations/stillwater/">Venue details</a>
+              </div>
+            </li>
+          </ul>
+
+          <p class="small mutedOnDark" style="margin-top:2rem;max-width:44rem">The lamp is off in the Stillwater frame on purpose: that venue has no professional photography at all, and standing Lakeville&rsquo;s frames in for it is what the current site does.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer on-dark">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="lockup">
+          <div class="lockup__mark">The Links</div>
+          <div class="lockup__rule"></div>
+          <div class="lockup__venue">of Lakeville</div>
+        </div>
+        <p class="footer__hours">Mon&ndash;Sun 11am&ndash;9pm</p>
+        <address>
+          17630 Juniper Path Suite H<br>
+          Lakeville, MN 55044<br>
+          <a href="tel:+16126990526">612-699-0526</a><br>
+          <a href="mailto:info@lakevillelinks.com">info@lakevillelinks.com</a>
+        </address>
+      </div>
+      <div>
+        <div class="lockup">
+          <div class="lockup__mark">The Links</div>
+          <div class="lockup__rule"></div>
+          <div class="lockup__venue">of Stillwater</div>
+        </div>
+        <p class="footer__hours">Mon 12pm&ndash;9pm &middot; Tue&ndash;Fri 3pm&ndash;9pm<br>Sat 10am&ndash;10pm &middot; Sun 12pm&ndash;7pm</p>
+        <address>
+          5862 Omaha Ave N<br>
+          Stillwater, MN 55082<br>
+          <a href="tel:+16126990527">612-699-0527</a>
+        </address>
+      </div>
+      <div>
+        <p class="footer__head">Visit</p>
+        <div class="footer__links">
+          <a href="/book/">Book</a>
+          <a href="/rates/">Rates &amp; Hours</a>
+          <a href="/leagues/">Leagues</a>
+          <a href="/memberships/">Memberships</a>
+          <a href="/events/">Events</a>
+          <a href="/food-and-drink/">Food &amp; Drink</a>
+          <a href="/contact/">Contact</a>
+        </div>
+      </div>
+      <div>
+        <p class="footer__head">More</p>
+        <div class="footer__links">
+          <a href="/lessons/">Lessons</a>
+          <a href="/juniors/">Juniors</a>
+          <a href="/the-bays/">The Bays</a>
+          <a href="/gift-cards/">Gift Cards</a>
+          <a href="/faq/">FAQ</a>
+          <a href="/about/">About</a>
+          <a href="https://facebook.com/lakevillelinks/" target="_blank" rel="noopener">Facebook &mdash; Lakeville</a>
+          <a href="https://facebook.com/linksofstillwater/" target="_blank" rel="noopener">Facebook &mdash; Stillwater</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bar">
+      <span>&copy; 2026 The Links. All rights reserved.</span>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/booking-policy/">Booking policy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- review scaffolding — not part of the page -->
+<aside class="note">
+  <div class="wrap">
+    <div class="note__inner">
+      <h4>Candidate note &mdash; home-soft</h4>
+      <p><strong>The one committed idea:</strong> the page is <em>lit</em>, not tinted. Warmth arrives as a light source with a direction &mdash; a pendant pool on every dark band, a warm-tinted (never grey) shadow under every raised surface, a warm paper ground with no pure white anywhere &mdash; so the ink can stay at full strength. And <strong>the action colour is the light</strong>: ember on a lit field, amber on a dark one. That is why the hero CTA is not a white rectangle.</p>
+
+      <h4>Preview limitations, stated</h4>
+      <ul>
+        <li><strong>Type is an approximation.</strong> The proposal in <code>token-sets/soft.json</code> is <strong>Fraunces</strong> (variable, opsz + SOFT axes, 400/600/700) for display, replacing Bitter, with <strong>Open Sans</strong> retained for body and promoted to 17px&thinsp;/&thinsp;1.65. This review surface loads no network resources, so display renders in the system serif and body in the system humanist sans. Judge the overlay&rsquo;s declaration, not this rendering.</li>
+        <li><strong>Nothing here is a photograph.</strong> Three slots are drawn as inline SVG at the shoot&rsquo;s own 3:2 ratio, in the measured register (warm near-black room, warm pendant, one cool lit screen). No stock imagery, no AI imagery, no Lakeville frame standing in for Stillwater.</li>
+        <li><strong>The hero slot is desktop-only.</strong> Below 1024px the hero photograph becomes the section&rsquo;s own light rather than a separate frame, so the trust strip stays reachable within roughly one hero screen-height on a 390&times;844 phone.</li>
+      </ul>
+
+      <h4>One string added beyond the §7 copy sheet &mdash; flag it or keep it</h4>
+      <ul>
+        <li><code>$35 / hour &middot; per bay, not per person &middot; Summer 2026 rate, published through 3 Oct 2026</code> on the Play card. Every value is verbatim from the spec&rsquo;s §8 data sheet, and it is what gives Play visual seniority over Improve. It is one block to delete if the copy sheet is treated as closed.</li>
+      </ul>
+
+      <h4>Contrast, computed &mdash; not estimated</h4>
+      <ul>
+        <li>forest ink on linen page <strong>9.50:1</strong> &middot; on oat card <strong>8.29:1</strong> &middot; on wheat band <strong>7.31:1</strong> &middot; on ember tint <strong>7.62:1</strong></li>
+        <li>warm muted ink <code>#4E5A46</code> on linen <strong>6.84:1</strong> &middot; on oat <strong>5.98:1</strong> &middot; on tint <strong>5.49:1</strong></li>
+        <li>linen on night <strong>12.72:1</strong> &middot; on forest <strong>9.50:1</strong> &middot; on the room black <strong>17.42:1</strong>; sand muted on night <strong>7.27:1</strong> &middot; on forest <strong>5.43:1</strong></li>
+        <li>hero CTA &mdash; night-green label on the amber fill <strong>7.35:1</strong>; the fill against the night field <strong>7.35:1</strong> (3:1 gate)</li>
+        <li>light-field CTA &mdash; linen on ember <strong>6.98:1</strong>, on hover <strong>5.01:1</strong>, on pressed <strong>9.25:1</strong></li>
+        <li>focus ring <code>#B85718</code> vs linen <strong>4.46:1</strong>, oat <strong>3.89:1</strong>, tint <strong>3.58:1</strong>; amber ring on night <strong>7.35:1</strong></li>
+        <li>input border <code>#7F7261</code> vs linen <strong>4.39:1</strong>, oat <strong>3.83:1</strong>, tint <strong>3.52:1</strong> &mdash; replaces <code>border-ink/15</code> at ~1.4:1, which cannot identify a control</li>
+        <li>the pendant gradient at its brightest point over night resolves to <code>#3B4E2E</code>: linen <strong>8.50:1</strong>, sand muted <strong>4.86:1</strong>, amber <strong>4.91:1</strong>. The same glow over <em>forest</em> would drop sand muted to 3.82:1, so the overlay forbids it there.</li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+</body>
+</html>
