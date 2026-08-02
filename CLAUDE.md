@@ -4,15 +4,94 @@ Guidance for Claude Code when working in this repository.
 
 ## What this is
 
-`appletron-site-starter` is a **reusable, brand-neutral marketing-website starter
-template** (Astro 5 + React 18 + Tailwind CSS v4 + TinaCMS). It is forked to
-create individual client marketing sites. Content is placeholder and intentionally
-generic — do not reintroduce brand-specific copy, assets, or colors into the
-starter itself.
+The marketing website for **The Links** — indoor golf simulator venues at **two**
+Minnesota locations: The Links of Lakeville (6 GolfZon NX bays, full bar, open
+since 2022) and The Links of Stillwater (4 bays, inside Stillwater Bowl & Lounge,
+opened early 2026).
 
-Read `README.md` first — it documents the block model, the token contract, the
-Tina setup, forking, and deploy. This file adds working conventions and the
-non-obvious rules.
+Forked from `Monkeyjump-Labs/appletron-site-starter` (Astro 5 + React 18 +
+Tailwind v4 + TinaCMS). Built as the first external test of the appletron website
+factory — ClickUp `868kk6pr1`.
+
+**Read `marketing/websites/the-links/` before changing anything substantive.** It
+holds the ingest of the old site, the audit, the brief, the strategy, the IA and
+the SEO map — the reasoning behind every structural decision here. `EDITING.md` is
+the client-facing guide.
+
+## The two rules that shape this codebase
+
+**1. Venue is a dimension, not a fork.** There is ONE set of topic pages; each
+carries a venue column (`/rates`) or a venue-prefixed row (`/leagues`). Do not
+create `/lakeville/rates` and `/stillwater/rates`. The only per-venue pages are
+`/locations/lakeville` and `/locations/stillwater`, which exist to be the local-SEO
+anchors and to carry per-venue `LocalBusiness` schema. Venue is chosen at the
+booking click, not the front door. Rationale: `marketing/websites/the-links/sitemap.md` §1.
+
+**2. Never publish an unverified fact.** The client has not supplied winter rates,
+winter hours, Stillwater's real hours, the league lineup, group pricing, lesson
+pricing, or the cancellation window. Everywhere those are missing the site renders
+a visible `STUB —` note saying what is needed. **Do not replace a stub with a
+plausible guess.** A visible gap is recoverable; a wrong price on the internet is
+not. `verified: false` on a venue record surfaces a pre-launch banner on its page.
+
+## The playbook governs page structure
+
+`fareway-brain/marketing/websites/_playbook/` is the evidence base — measured from
+**126 live simulator-venue and golf-course sites**. It is authoritative on IA and
+page content. Where generic instinct conflicts with it, the playbook wins. The
+rules most load-bearing here:
+
+- **Leagues carry a waitlist in all three registration states** (`open` / `full` /
+  `between`) and never dead-end. Zero of the 126 sites audited had one. This is the
+  highest-value component on the site.
+- **Rates and hours live on ONE page** — the same decision moment.
+- **Seasonality is a field, not a second page.** Never ship `/rates` and
+  `/rates-winter`; add a rate card and flip `current`.
+- **Prices, menus and rate cards are HTML text, never images or PDFs.**
+- **Hours belong on the homepage** (the `TrustStrip`), not just `/contact`.
+- **Name the simulator technology.** 42% of the segment doesn't.
+- **Write to the least confident visitor** — the buyer is often not a golfer.
+- Banned words: "premier", "state-of-the-art", "ultimate".
+
+## Content model
+
+Venue data lives in content collections so the client can edit it in Tina, NOT in
+`src/data/global.ts`:
+
+| Collection | Path | Holds |
+|---|---|---|
+| `venues` | `src/content/venues/` | address, phone, per-day hours, bays, booking URL, schema types |
+| `leagues` | `src/content/leagues/` | one per league; `state` drives the three registration behaviours |
+| `rates` | `src/content/rates/` | one card per season; `current: true` on the live one |
+| `menu` | `src/content/menu/` | menu sections and items |
+| `faq` | `src/content/faq/` | the AEO surface; renders `FAQPage` schema |
+
+`src/lib/venues.ts` has the helpers — `getVenues`, `summariseHours`,
+`schemaOpeningHours`, `formatAddress`, `telHref`. Use them rather than
+re-formatting venue data inline.
+
+## Structured data
+
+`src/components/venue/*Schema.astro`. One `Organization` (no address — the parent
+brand is not a place; putting Lakeville's address on the org is exactly the bug we
+are fixing) with two `subOrganization` venues, each declared once on its own
+location page. `Event` schema on dated leagues only — a stub league emits nothing
+rather than invalid markup.
+
+## Deploy, domain and staging
+
+- Canonical host is **`thelinks.golf`**. ⚠️ Today `thelinks.golf` 301s INTO
+  `lakevillelinks.com`. **Delete that rule before pointing the domain here** or the
+  two form a redirect loop. Ordered cutover: `marketing/websites/the-links/seo-map.md` §4.1.
+- `vercel.json` carries 29 permanent redirects from the old site. The five dated
+  pages (`/cazopen`, `/vikings-game-day-special`, three `/news/*`) are deliberately
+  left to 404 — Vercel's redirects cannot emit 410.
+- **Staging must set `PUBLIC_SITE_NOINDEX=true`.** That makes every page emit
+  `noindex` and serves a `Disallow: /` robots.txt. Unset it in production.
+- `robots.txt` is generated by `src/pages/robots.txt.ts`. **Never add an
+  AI-crawler `Disallow`.** The old site doesn't block them, and being absent from
+  AI answers is a real acquisition cost. 19–22% of the audited corpus blocks
+  GPTBot/ClaudeBot by accident because a site builder did it by default.
 
 ## Tech stack
 
@@ -109,18 +188,25 @@ and commit `tina/tina-lock.json`.
 
 ## Branching & PRs
 
-`master` is **branch-protected**: no direct pushes. All changes go through a PR that
+`main` is the default branch: no direct pushes. All changes go through a PR that
 must pass the `✅ Quality` check (which includes the Tina lock gate) before merge.
 Approvals aren't required (0), so you can self-merge once CI is green. Work on a
 branch → open a PR → let CI pass → merge (`strict` is on, so update the branch on
-`master` first). Sites forked from this starter should keep the same convention.
+`master` first). Branch protection is not yet enabled on this repo — turn it on at handoff.
 
 ## Deploy
 
 Vercel via its Git integration (`vercel.json` present). No GitHub deploy workflow.
 Set `site` in `astro.config.mjs` and `PUBLIC_LEAD_ENDPOINT` in the host env.
 
-## Inherited reference
+## Where the reasoning lives
 
-`docs-handoff/` is historical build-handoff documentation from the source project.
-It predates the Tailwind + TinaCMS changes — useful background, not current truth.
+| File | What it answers |
+|---|---|
+| `marketing/websites/the-links/brief.md` | what we're building and the decisions log |
+| `marketing/websites/the-links/current-site-audit.md` | what was wrong with the old site |
+| `marketing/websites/the-links/strategy.md` | positioning, funnel, seasonality |
+| `marketing/websites/the-links/sitemap.md` | the IA and per-page acceptance criteria |
+| `marketing/websites/the-links/seo-map.md` | keywords, metadata, schema, the redirect table |
+| `marketing/websites/the-links/brand-inventory.md` | what the old brand actually was, verified |
+| `marketing/websites/the-links/_ingest/_corrections.md` | **subagent findings that were wrong — read before citing the ingest** |
