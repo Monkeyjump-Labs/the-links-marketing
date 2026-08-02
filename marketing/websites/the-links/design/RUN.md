@@ -95,6 +95,30 @@ Applied to `brutalist.json` / `home-brutalist.html` as the base composition:
    candidates should each say what they do with green — retire it, demote it to an accent, or
    keep it as a secondary — rather than silently deleting it.
 
+## Round 2 decision — **Navy** (2026-08-02)
+
+Picked by Daran Han on `rv_TPEdpfhufWV9Me`, variant `var_m5Ht7Z`. Submission `sub_6CC2MLMu`
+acknowledged after acting.
+
+### ⚠️ wisplet gotcha — a variant PICK does not surface in `pull` / `wait` / `submissions`
+
+The pick is recorded in a **top-level `picks` array**, readable only via
+`wisplet show <id> --json`:
+
+```json
+"picks": [{ "variantId": "var_m5Ht7Z", "author": "Daran Han", "at": "..." }]
+```
+
+`wisplet wait` reported *"1 submission — 0 comment(s), 0 change(s), 0 message(s)"*, `pull`
+printed "(none)" for both sections, and `submissions` showed the same three zeros. Following
+the documented loop (`wait` → `pull` → act) therefore loses the human's decision entirely and
+reads as an accidental empty submit.
+
+**Rule for this repo:** after any `wait` that reports a submission, check
+`wisplet show <id> --json | jq .picks` **before** concluding there was no signal. A design
+gallery's whole purpose is the pick, and the pick is the one thing the feedback commands
+don't print.
+
 ### ⚠️ Verification gotcha — headless Chrome's 500px floor
 
 Headless Chrome on macOS enforces a **500px minimum window width**. `--window-size=390` does
