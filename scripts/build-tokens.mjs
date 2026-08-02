@@ -101,7 +101,15 @@ if (failures.length) {
 }
 
 // ── emit ─────────────────────────────────────────────────────────────────────
-const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+// Handles consecutive capitals: gutterXLg -> gutter-x-lg, not gutter-xlg.
+// The naive form silently produced --brand-space-gutter-xlg while the aliases
+// referenced --brand-space-gutter-x-lg, so every `-lg` spacing utility on the
+// site computed to nothing — no desktop gutters, no large section spacing.
+const kebab = (s) =>
+  s
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
 const meta = tokens.$extensions['com.monkeyjumplabs.meta'];
 
 const line = (name, value, comment) =>
