@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-# Update this to your production domain (must match `site` in astro.config.mjs).
-Sitemap: https://example.com/sitemap-index.xml

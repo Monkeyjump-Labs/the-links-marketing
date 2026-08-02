@@ -13,6 +13,10 @@ interface Props {
 }
 
 const { metadata = {}, chrome = true } = Astro.props;
+
+// Staging deploys are noindex site-wide regardless of per-page metadata.
+// Set PUBLIC_SITE_NOINDEX=true in the Vercel preview environment.
+const noIndex = metadata.noIndex || import.meta.env.PUBLIC_SITE_NOINDEX === 'true';
 ---
 
 <!doctype html>
@@ -26,7 +30,7 @@ const { metadata = {}, chrome = true } = Astro.props;
       description={metadata.metaDescription}
       shareImage={metadata.shareImage}
       twitterCardType={metadata.twitterCardType}
-      noIndex={metadata.noIndex}
+      noIndex={noIndex}
     />
   </head>
   <body class="flex min-h-screen flex-col">

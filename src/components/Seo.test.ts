@@ -1,6 +1,11 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { describe, expect, it } from 'vitest';
 import Seo from './Seo.astro';
+import { globalData } from '../data/global';
+
+// Assert the SUFFIX BEHAVIOUR, not a literal brand name — a forked site renames
+// the brand and these tests must survive that.
+const suffix = globalData.metaTitleSuffix;
 
 const baseProps = {
   canonical: 'https://example.com/work/',
@@ -13,15 +18,15 @@ describe('Seo', () => {
     const container = await AstroContainer.create();
     const result = await container.renderToString(Seo, { props: { ...baseProps, title: 'Our Work' } });
     expect(result).toContain('<title>Our Work');
-    expect(result).toContain('Your Company</title>');
+    expect(result).toContain(`${suffix}</title>`);
   });
 
   it('does not double-append the suffix when the title already includes the brand', async () => {
     const container = await AstroContainer.create();
     const result = await container.renderToString(Seo, {
-      props: { ...baseProps, title: 'Contact | Your Company' },
+      props: { ...baseProps, title: `Contact ${suffix}` },
     });
-    expect(result).toContain('<title>Contact | Your Company</title>');
+    expect(result).toContain(`<title>Contact ${suffix}</title>`);
   });
 
   it('renders Open Graph and Twitter tags from props', async () => {

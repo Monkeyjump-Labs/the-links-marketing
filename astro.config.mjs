@@ -5,10 +5,14 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { redirects } from './src/data/redirects';
 
-// Update `site` to your production URL. It drives canonical URLs, the sitemap,
-// and absolute Open Graph image URLs.
+// Canonical production host. Drives canonical URLs, the sitemap, and absolute
+// Open Graph image URLs.
+//
+// NOTE: today `thelinks.golf` 301s INTO `lakevillelinks.com`. That rule must be
+// DELETED before this domain is pointed here, or the two rules form a loop.
+// See marketing/websites/the-links/seo-map.md §4.1 for the ordered cutover.
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://thelinks.golf',
   output: 'static',
   trailingSlash: 'always',
   integrations: [mdx(), react(), sitemap()],

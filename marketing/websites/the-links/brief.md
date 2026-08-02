@@ -95,7 +95,7 @@ accessibility fix.
 five named local bay sponsors (Align, Thor, Von Hanson, Miller, Kretsch) · multiple TwinCitiesGolf
 press features · an operating history since Oct 2022.
 
-**Not available — do not fabricate:** Stillwater photography (**none exists**) · any customer
+**Not available — do not fabricate:** Stillwater photography (one pre-opening phone night shot, on `/our-story` — not usable as a venue hero) · any customer
 testimonial *(the reference competitor runs three unsourced quotes — we will not copy that)* ·
 Google review counts/ratings per venue **[unverified — needs pulling]** · any outcome metric.
 
@@ -123,7 +123,7 @@ Ranked by how much of the build they block:
 - [ ] **Adult league lineup, format, nights, price, season dates, per venue.** *Blocks `/leagues`, the highest-value page.*
 - [ ] **Group/event packages + pricing + minimums.** *Blocks `/groups`.*
 - [ ] **Instruction pricing** (4 coaches, currently 4 personal emails). *Blocks `/instruction`.*
-- [ ] **Stillwater photography** — a shoot is required; nothing exists. *Blocks the venue page and the hero rotation.*
+- [ ] **Stillwater photography** — a shoot is required; the one existing frame is a pre-opening phone shot. *Blocks the venue page and the hero rotation.*
 - [ ] **Which sim tech is in which venue** — NX vs TwoVision contradict across live pages.
 - [ ] **Which phone number is which** — three numbers in circulation, one `tel:` mismatch.
 - [ ] **Correct legal entity per venue** — three names across the legal pages, no Stillwater entity.

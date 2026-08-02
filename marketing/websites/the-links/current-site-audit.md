@@ -28,8 +28,10 @@ with two venues under it — `/our-story` even has a section titled "The Rebrand
 
 Stillwater — a venue that opened six months ago — is one untitled, meta-less page reached by a
 homepage "Learn more," with a button whose `href` is empty, the wrong phone number, a hero
-cropped from a Facebook graphic, and **zero photography of the actual venue**. The parent brand
-exists only in the footer and one story section.
+cropped from a Facebook graphic, and **no photography of the venue on either Stillwater page**.
+Site-wide there is exactly one usable Stillwater interior — a phone night shot taken six days
+before opening — and it sits on `/our-story`. The parent brand exists only in the footer and one
+story section.
 
 **The site describes; it doesn't sell.** The commercial content is real but locked in images:
 `/menu` is 72 characters of text and one PNG with `alt=""`; the membership card is a JPEG;
@@ -61,7 +63,7 @@ email addresses), and *no* league pricing.
 
 - **The photography is real and professional** — a proper shoot (`JWAT####.jpg`) plus honest phone
   photos. Only one AI-generated image found on the whole site. This is the most valuable asset
-  they own and the rebuild should lean on it hard. *(Gap: none of it is Stillwater.)*
+  they own and the rebuild should lean on it hard. *(Gap: the shoot is entirely Lakeville — Stillwater has one phone night shot, on the wrong page.)*
 - **`GolfZon NX` is the top-tier sim** and a legitimate differentiator against peers running older
   or mixed kit. It is currently buried.
 - **LinksFlex is a genuinely good product** — prepaid hour banks that never expire (12/24/48 hrs).
