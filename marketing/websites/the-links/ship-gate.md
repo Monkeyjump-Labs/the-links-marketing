@@ -59,7 +59,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 ## Not covered by the playbook — test independently
 
 - ⬜ Core Web Vitals / Lighthouse pass
-- ⬜ WCAG AA contrast and keyboard navigation *(the brand pass computes contrast at token level; the assembled pages still need an audit)*
+- 🟡 WCAG AA contrast — **token-level pairings verified by recomputation** (body 10.14:1, secondary text 6.89:1, solid CTA 6.85:1, dark-field CTA 9.32:1; 184 failing `text-ink/70` instances fixed). Keyboard navigation and focus-visible styling still need a pass.
 - ⬜ Mobile rendering on a real device
 
 ---
@@ -84,6 +84,20 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 9. **Legal entity per venue** — three names across the old legal pages; no Stillwater entity named.
 10. **The domain cutover**, in the order set out in `seo-map.md` §4.1. The existing
     `thelinks.golf` → `lakevillelinks.com` rule must be deleted *first* or the two form a loop.
+
+## Access to the staging site
+
+**Vercel SSO protection is ON** (`all_except_custom_domains`), so the staging URL returns a 302
+to anyone who is not signed in to the Vercel account. **The client cannot review it in this
+state** — disable Vercel Authentication on the project, or add password protection, before
+sharing. Attempting to disable it programmatically was blocked.
+
+The project also currently lives under the personal Vercel team `daran-7928's projects` while the
+repo is in the `Monkeyjump-Labs` GitHub org. Worth moving before handoff.
+
+`PUBLIC_SITE_NOINDEX=true` is set on **both** preview and production environments — deliberate,
+because even the `.vercel.app` production deploy is staging until the real domain cuts over.
+**Removing it is a launch step.**
 
 ## Deferred, logged deliberately
 
