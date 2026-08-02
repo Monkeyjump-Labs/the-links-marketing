@@ -1,219 +1,223 @@
 /* =============================================================================
- * tokens.css — DESIGN TOKEN OVERRIDE TARGET
+ * tokens.css — GENERATED. DO NOT EDIT.
  * -----------------------------------------------------------------------------
- * This file is the single drop-in point for a forked site's brand.
+ * Source:    marketing/websites/the-links/design/tokens.json  (canonical DTCG)
+ * Regenerate: npm run tokens:build
+ * CI gate:    npm run tokens:check   (fails if this file is stale)
  *
- * CONTRACT:
- *   Replace the values below with your brand's compiled DTCG output
- *   (Design Tokens Community Group JSON -> CSS custom properties). The
- *   kiwitron design-factory emits exactly this shape: raw brand primitives
- *   as CSS custom properties on :root.
+ * The Links · v2.0.0 · 2026-08-02
+ * Register: softened brutalist — a scoreboard, not a brochure
  *
- *   Do NOT rename the custom property KEYS unless you also update the
- *   `@theme` mapping in `global.css` — that block is what turns these raw
- *   vars into Tailwind theme tokens (so `bg-grape`, `text-ink`, `font-mono`,
- *   the section spacing utilities, etc. all resolve to these values).
- *
- * -----------------------------------------------------------------------------
- * BRAND: The Links — indoor golf, Lakeville + Stillwater, Minnesota.
- * Source of truth: marketing/websites/the-links/brand-direction.md
- * Machine-readable source: marketing/websites/the-links/design/tokens.json (DTCG)
- *
- * The slot names below (watermelon, grape, banana …) are inherited from the
- * starter's BrandColor union and are NEUTRAL. They have been remapped to The
- * Links' palette; the slot name no longer describes the hue. Read the comment,
- * not the key.
- *
- * Every foreground/background pairing named below has a computed WCAG 2.1
- * contrast ratio. Body text pairings are >= 4.5:1 (AA). Non-text pairings
- * (focus rings, borders, disabled fills) are >= 3:1 or explicitly marked as
- * decorative-only.
+ * Every text pairing in the source records a measured WCAG ratio, and the build
+ * re-measures them: a palette edit that drops a text role below 4.5:1 fails the
+ * build rather than shipping. The old site ran a 3.20:1 button on all 41 pages.
  * ========================================================================== */
 
-/* -- Self-hosted web fonts -------------------------------------------------
- * No external CDN request is made. Files live in `public/fonts/` and are
- * served from this origin. Both families are VARIABLE fonts: one file covers
- * the whole weight range, so adding a weight costs zero bytes.
- * `font-display: swap` — text paints immediately in the fallback and reflows
- * when the face lands; the HTML is never blocked on a font.
- * Critical path (latin only): 33 KB display + 42 KB body = 75 KB.
- * ------------------------------------------------------------------------- */
-
-/* Bitter — display / headings. Variable, 300–800. */
-@font-face {
-  font-family: 'Bitter';
-  font-style: normal;
-  font-weight: 300 800;
-  font-display: swap;
-  src: url('/fonts/bitter-normal-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
-    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Bitter';
-  font-style: normal;
-  font-weight: 300 800;
-  font-display: swap;
-  src: url('/fonts/bitter-normal-latin-ext.woff2') format('woff2');
-  unicode-range:
-    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
-    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-/* Open Sans — body / UI. Variable, 400–700, roman + italic. */
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/open-sans-normal-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
-    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/open-sans-normal-latin-ext.woff2') format('woff2');
-  unicode-range:
-    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
-    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/open-sans-italic-latin.woff2') format('woff2');
-  unicode-range:
-    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
-    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/open-sans-italic-latin-ext.woff2') format('woff2');
-  unicode-range:
-    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
-    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
 :root {
-  /* -- Color primitives ---------------------------------------------------- */
-  /* Palette "slot" names are inherited from the block model's BrandColor union.
-     Treat them as neutral, swappable slots — remapped here to The Links.
-     Ratios in the comments are computed WCAG 2.1 relative-luminance ratios. */
+  /* ── Palette primitives — never reference directly, use the aliases ──── */
+  --brand-midnight: #0a1a2e;
+  --brand-navy: #12314f;
+  --brand-navy-mid: #1e4470;
+  --brand-ink-muted-cool: #4a5c70;
+  --brand-slate: #7794a6;
+  --brand-screen-light: #a9d3f2;
+  --brand-forest: #124b2e;
+  --brand-ember: #8a400a;
+  --brand-ember-hover: #ad500d;
+  --brand-ember-active: #6d3308;
+  --brand-ember-mid: #b85718;
+  --brand-amber: #f3b268;
+  --brand-ember-tint: #f0dcc9;
+  --brand-paper: #f7f5f3;
+  --brand-white: #ffffff;
+  --brand-greige: #e5e1e0;
+  --brand-clay: #a22c22;
+  --brand-error-on-dark: #f2a2a2;
+  --brand-success-on-dark: #a8e0c0;
+  --brand-disabled-ink: #556372;
 
-  /* CLAY RED — the error / alert tone. The only red in the system.
-     text on #FFFFFF 7.19:1 · on #F7F5F3 6.61:1 · #F7F5F3 text on it 6.61:1 */
-  --brand-watermelon: #a22c22;
+  /* ── Semantic colour roles — what components reference ───────────────── */
+  --brand-ground-chrome: #0a1a2e;
+  --brand-ground-hero: #0a1a2e;
+  --brand-ground-base: #ffffff;
+  --brand-ground-raised: #f7f5f3;
+  --brand-ground-alt: #e5e1e0;
+  --brand-ground-accent-band: #8a400a;
+  --brand-ground-row-hover: #12314f;
+  --brand-ground-media: #0a1a2e;
+  --brand-ink-on-dark-strong: #ffffff;
+  --brand-ink-on-dark: #f7f5f3;
+  --brand-ink-muted-on-dark: #7794a6;
+  --brand-ink-display-on-light: #12314f;
+  --brand-ink-body-on-light: #1e4470;
+  --brand-ink-muted-on-light: #4a5c70;
+  --brand-ink-on-accent-band: #f7f5f3;
+  --brand-primary-default: #8a400a;
+  --brand-primary-hover: #ad500d;
+  --brand-primary-active: #6d3308;
+  --brand-primary-on: #f7f5f3;
+  --brand-primary-on-dark-fill: #f3b268;
+  --brand-primary-on-dark-fill-ink: #0a1a2e;
+  --brand-primary-on-dark-fill-hover: #ffffff;
+  --brand-accent-highlight: #f3b268;
+  --brand-accent-caution: #b85718;
+  --brand-accent-screen: #a9d3f2;
+  --brand-rule-on-dark: #f7f5f3;
+  --brand-rule-on-dark-quiet: #7794a6;
+  --brand-rule-on-light: #12314f;
+  --brand-rule-on-light-quiet: #4a5c70;
+  --brand-rule-on-accent-band: #ffffff;
+  --brand-rule-score-on-dark: #f3b268;
+  --brand-rule-score-on-light: #8a400a;
+  --brand-state-focus: #8a400a;
+  --brand-state-focus-on-dark: #f3b268;
+  --brand-state-focus-on-accent-band: #ffffff;
+  --brand-state-error: #a22c22;
+  --brand-state-error-on-dark: #f2a2a2;
+  --brand-state-warning: #b85718;
+  --brand-state-success: #124b2e;
+  --brand-state-success-on-dark: #a8e0c0;
+  --brand-state-info: #1e4470;
+  --brand-state-info-on-dark: #a9d3f2;
+  --brand-state-disabled-surface: #e5e1e0;
+  --brand-state-disabled-ink: #556372;
+  --brand-media-slot-ground: #0a1a2e;
+  --brand-media-slot-screen: #a9d3f2;
+  --brand-media-slot-fairway: #124b2e;
+  --brand-media-slot-pendant: #f3b268;
+  --brand-media-slot-mass: #12314f;
+  --brand-media-slot-frame: #f7f5f3;
+  --brand-media-slot-label: #7794a6;
 
-  /* GREIGE — retained verbatim from the existing theme (`--lightAccent`).
-     Secondary light field; 54 sections use it today.
-     #124B2E ink on it 7.81:1 · #8A400A ember on it 5.74:1 */
-  --brand-pink: #e5e1e0;
+  /* ── Starter-contract aliases — the names global.css @theme maps ─────── */
+  --brand-ink: var(--brand-navy); /* display + default ink, 13.31:1 on white */
+  --brand-ink-muted: var(--brand-ink-muted-cool); /* secondary text, 6.87:1 — never ink at an opacity */
+  --brand-ink-body: var(--brand-navy-mid); /* long-form body, 9.92:1 on white */
+  --brand-surface: var(--brand-paper); /* raised light ground / text on dark */
+  --brand-primary: var(--brand-ember); /* the action colour */
+  --brand-accent: var(--brand-ember-mid); /* caution/warning — NOT amber, which is 1.85:1 on white */
 
-  /* EMBER — THE ACTION COLOUR. Replaces the accidental slate blue #7794A6,
-     which fails AA at 3.20:1 with white text. Warm, drawn from the pendant
-     light measured in the venue photography (every frame R−B +15..+19).
-     #FFFFFF text on it 7.45:1 · #F7F5F3 text on it 6.85:1
-     survives the starter's `hover:brightness-125` at 4.91:1 (still AA)
-     and `hover:opacity-90` at 5.43:1. As text on #FFFFFF 7.45:1. */
-  --brand-grape: #8a400a;
+  /* ── Typography ──────────────────────────────────────────────────────── */
+  --brand-font-display:
+    Archivo, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --brand-font-body:
+    'Open Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --brand-font-numeric: Archivo, ui-sans-serif, system-ui, sans-serif;
+  --brand-font-weight-display-heavy: 800;
+  --brand-font-weight-display-bold: 700;
+  --brand-font-weight-display-semi: 600;
+  --brand-font-weight-body-regular: 400;
+  --brand-font-weight-body-medium: 600;
+  --brand-font-weight-body-bold: 700;
+  --brand-font-width-display-normal: 100;
+  --brand-font-width-display-expanded: 112;
+  --brand-type-scale-display-hero: clamp(3rem, 10.5vw, 8.25rem);
+  --brand-type-scale-display-section: clamp(2.125rem, 5.5vw, 4rem);
+  --brand-type-scale-display-row: clamp(1.5rem, 2.6vw, 2.125rem);
+  --brand-type-scale-display-card: 1.375rem;
+  --brand-type-scale-scoreboard-xl: clamp(1.875rem, 4.2vw, 3rem);
+  --brand-type-scale-scoreboard-md: 1.25rem;
+  --brand-type-scale-body-lead: clamp(1.0625rem, 1.35vw, 1.1875rem);
+  --brand-type-scale-body-base: 1rem;
+  --brand-type-scale-body-small: 0.9375rem;
+  --brand-type-scale-label-base: 0.75rem;
+  --brand-type-scale-label-small: 0.6875rem;
+  --brand-tracking-display-tight: -0.035em;
+  --brand-tracking-display-normal: -0.02em;
+  --brand-tracking-body-normal: 0;
+  --brand-tracking-label-wide: 0.16em;
+  --brand-tracking-label-wider: 0.22em;
+  --brand-line-height-display-hero: 0.9;
+  --brand-line-height-display: 0.98;
+  --brand-line-height-scoreboard: 1;
+  --brand-line-height-body: 1.55;
+  --brand-line-height-label: 1.2;
 
-  /* EMBER TINT — light warm field for callouts / featured-offer blocks.
-     #124B2E ink on it 7.62:1. Decorative fill only — never text-bearing. */
-  --brand-lavender: #f0dcc9;
+  /* ── Space, size, radius, border ─────────────────────────────────────── */
+  --brand-space-s1: 0.25rem;
+  --brand-space-s2: 0.5rem;
+  --brand-space-s3: 0.75rem;
+  --brand-space-s4: 1rem;
+  --brand-space-s5: 1.5rem;
+  --brand-space-s6: 2rem;
+  --brand-space-s7: 2.5rem;
+  --brand-space-s8: 3.5rem;
+  --brand-space-s9: 5rem;
+  --brand-space-s10: 7rem;
+  --brand-space-section-y: 4rem;
+  --brand-space-section-ylg: 8rem;
+  --brand-space-gutter-x: 1.5rem;
+  --brand-space-gutter-xlg: 4rem;
+  --brand-space-cell-padding: 2rem;
+  --brand-space-cell-padding-lg: 2.5rem;
+  --brand-space-row-padding-block: 2rem;
+  --brand-size-content-max: 75rem;
+  --brand-size-prose-max: 46.875rem;
+  --brand-size-tap-min: 44px;
+  --brand-size-control-sm: 2.25rem;
+  --brand-size-control-md: 2.75rem;
+  --brand-size-control-lg: 3.25rem;
+  --brand-size-icon-sm: 1rem;
+  --brand-size-icon-md: 1.25rem;
+  --brand-size-icon-lg: 1.5rem;
+  --brand-size-media-ratio: 1.5;
+  --brand-radius-none: 0;
+  --brand-radius-control: 3px;
+  --brand-radius-surface: 0;
+  --brand-radius-badge: 0;
+  --brand-border-hairline: 1px;
+  --brand-border-rule-quiet: 1px;
+  --brand-border-rule: 2px;
+  --brand-border-score: 4px;
+  --brand-border-slab: 8px;
 
-  /* AMBER — the pendant light itself. Lives on DARK fields only.
-     on #124B2E 5.49:1 · on #0D3520 7.35:1 · on #FFFFFF 1.85:1 ✗ (never do this) */
-  --brand-banana: #f3b268;
+  /* ── Motion, z-index, opacity, focus ─────────────────────────────────── */
+  --brand-duration-instant: 0ms;
+  --brand-duration-fast: 90ms;
+  --brand-duration-slow: 180ms;
+  --brand-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --brand-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --brand-z-base: 0;
+  --brand-z-raised: 10;
+  --brand-z-sticky: 50;
+  --brand-z-overlay: 100;
+  --brand-z-modal: 200;
+  --brand-z-toast: 300;
+  --brand-opacity-scrim: 0.72;
+  --brand-opacity-disabled: 1;
+  --brand-focus-width: 4px;
+  --brand-focus-offset: 2px;
 
-  /* EMBER MID — the focus / state ember (`focus:border-gold`).
-     vs #F7F5F3 4.37:1 and vs #FFFFFF 4.76:1 — clears the 3:1 non-text gate.
-     Border and ring use only: do NOT use as a text-bearing fill (white on it
-     is 4.76:1 at rest but 3.20:1 after `hover:brightness-125`). */
-  --brand-gold: #b85718;
+  /* ── Legacy starter names (kept so @theme mappings resolve) ──────────── */
+  --brand-section-y: var(--brand-space-section-y);
+  --brand-section-y-lg: var(--brand-space-section-y-lg);
+  --brand-gutter-x: var(--brand-space-gutter-x);
+  --brand-gutter-x-lg: var(--brand-space-gutter-x-lg);
+  --brand-content-max: var(--brand-size-content-max);
+  --brand-prose-max: var(--brand-size-prose-max);
+  --brand-font-sans: var(--brand-font-body);
+  --brand-font-mono: var(
+    --brand-font-display
+  ); /* the starter maps font-mono to the DISPLAY slot — it is not monospace here */
 
-  /* SAGE — retained verbatim from the existing theme (`--darkAccent`).
-     Demoted from "dark section background" (where white text scored 2.02:1)
-     to a LIGHT field. #124B2E ink on it 5.01:1 · white on it 2.02:1 ✗ */
-  --brand-mint: #9cbead;
-
-  /* SCREEN BLUE — the informational / status tone. The surviving trace of the
-     old slate #7794A6, darkened until it passes: the only cool element in the
-     photography is the simulator projection, so the hue keeps one job.
-     #FFFFFF text on it 7.49:1 · #F7F5F3 text on it 6.89:1 */
-  --brand-teal: #2e5a6e;
-
-  /* NIGHT GREEN — the deepest field, for sections that sit over or beside the
-     near-black interior photography (33–38% of every frame is near-black).
-     #FFFFFF on it 13.57:1 · #E5E1E0 on it 10.46:1 · #F3B268 amber on it 7.35:1 */
-  --brand-blue: #0d3520;
-
-  /* OFF-WHITE — the raised light surface, and the "white" text colour used on
-     every dark fill (`text-surface`). Barely warm, so it reads as paper rather
-     than screen next to the warm photography.
-     #124B2E ink on it 9.32:1 · on #8A400A ember 6.85:1 · on #124B2E 9.32:1 */
-  --brand-off-white: #f7f5f3;
-
-  /* FOREST — the brand's real equity. Verbatim from the existing theme, where
-     it is declared as the theme "black" (`--black-hsl: 149.47,61.29%,18.24%`).
-     Serves as both ink and dark field.
-     on #FFFFFF 10.14:1 · on #F7F5F3 9.32:1 · on #E5E1E0 7.81:1 · on #9CBEAD 5.01:1 */
-  --brand-soft-black: #124b2e;
-
-  /* Semantic aliases (prefer these in new components) */
-  --brand-ink: var(--brand-soft-black); /* #124B2E */
-  --brand-surface: var(--brand-off-white); /* #F7F5F3 */
-  --brand-primary: var(--brand-grape); /* #8A400A */
-  --brand-accent: var(--brand-teal); /* #2E5A6E */
-
-  /* -- State tokens --------------------------------------------------------
-   * Additive keys (not mapped into Tailwind's @theme — reach for them with an
-   * arbitrary value, e.g. `text-[color:var(--brand-state-success)]`).
-   * They exist so the state palette has one home rather than being re-invented
-   * per component. */
-  --brand-ink-muted: #456052; /* secondary text — on #FFFFFF 6.89:1, on #E5E1E0 5.31:1 */
-  --brand-state-focus: var(--brand-gold); /* #B85718 — 4.37:1 vs #F7F5F3 (non-text gate 3:1) */
-  --brand-state-error: var(--brand-watermelon); /* #A22C22 — 7.19:1 on #FFFFFF */
-  --brand-state-error-on-dark: #f2a2a2; /* 5.05:1 on #124B2E */
-  --brand-state-success: #155e36; /* 7.82:1 on #FFFFFF, 6.02:1 on #E5E1E0 */
-  --brand-state-success-on-dark: #a8e0c0; /* 6.80:1 on #124B2E */
-  --brand-state-disabled-surface: #e5e1e0; /* greige fill */
-  --brand-state-disabled-ink: #52685b; /* 4.64:1 on #E5E1E0, 6.02:1 on #FFFFFF — disabled stays readable */
-
-  /* -- Typography ----------------------------------------------------------
-   * TWO families, down from three. Alfa Slab One (single weight, display-only,
-   * clogs below ~24px) is retired from the web build and retained only inside
-   * the drawn wordmark. Poppins — loaded on 41 pages to set one button — is
-   * deleted outright.
-   *
-   * `--brand-font-mono` is the starter's DISPLAY slot: global.css maps it to
-   * `font-mono`, which is what every heading and button label in this codebase
-   * uses. It is not a monospace slot on this site. Do not put code in it.
-   * ---------------------------------------------------------------------- */
-
-  /* Body / UI — Open Sans, retained from the existing site. 400 / 600 / 700. */
-  --brand-font-sans:
-    'Open Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-
-  /* Display / headings / button labels — Bitter. 500 / 700 / 800.
-     Fallback is a slab-ish serif stack so the swap does not change genus. */
-  --brand-font-mono: 'Bitter', ui-serif, Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif;
-
-  /* -- Spacing rhythm (vertical section spacing) --------------------------- */
-  --brand-section-y: 4rem;
-  --brand-section-y-lg: 8rem;
-  --brand-gutter-x: 1.5rem;
-  --brand-gutter-x-lg: 4rem;
-
-  /* -- Content measure ----------------------------------------------------- */
-  --brand-content-max: 75rem;
-  --brand-prose-max: 46.875rem;
+  /* ── DEPRECATED 1.x slot names — do not use in new work ──────────────── */
+  --brand-watermelon: var(--brand-clay);
+  --brand-pink: var(--brand-ember-mid);
+  --brand-grape: var(--brand-ember);
+  --brand-lavender: var(--brand-slate);
+  --brand-banana: var(--brand-amber);
+  --brand-gold: var(--brand-amber);
+  --brand-mint: var(--brand-screen-light);
+  --brand-teal: var(--brand-navy-mid);
+  --brand-blue: var(--brand-navy);
+  --brand-off-white: var(--brand-paper);
+  --brand-soft-black: var(--brand-midnight);
 }
+
+/* Breakpoints are not usable as custom properties inside @media, so they live in
+   global.css. Keep them in sync with the token file:
+     sm: 540px  — The venue switcher leaves the header's first row.
+     md: 640px  — Hour cells stop stacking.
+     lg: 900px  — Two-column venue and offer grids.
+     xl: 1200px  — Full section gutters.
+*/

@@ -1,0 +1,276 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "The Links — design tokens (DTCG). Hand-authored per the playbook intake.md §5 known manual step: no converter exists from the campaign brand-kit format. Evidence base: marketing/websites/the-links/brand-inventory.md. Rationale: marketing/websites/the-links/brand-direction.md. Compiled target: src/styles/tokens.css. Every ratio recorded here is a computed WCAG 2.1 contrast ratio, not an estimate.",
+  "$extensions": {
+    "com.monkeyjumplabs.meta": {
+      "brand": "The Links",
+      "venues": ["The Links of Lakeville", "The Links of Stillwater"],
+      "slug": "the-links",
+      "version": "1.0.0-proposal",
+      "date": "2026-08-02",
+      "status": "PROPOSAL — not client-approved. This is the input to a human gate.",
+      "authoredBy": "brand track, Website Studio Phase 1"
+    }
+  },
+
+  "palette": {
+    "$type": "color",
+    "$description": "Raw primitives. Nine values. Do not reference these directly in components — use `role.*`.",
+
+    "forest": {
+      "$value": "#124b2e",
+      "$description": "Deep forest green. RETAINED VERBATIM from the live theme, where it is declared as the theme black (--black-hsl: 149.47, 61.29%, 18.24%) and backs 66 sections. The brand's single strongest colour equity."
+    },
+    "night": {
+      "$value": "#0d3520",
+      "$description": "NEW. A deeper forest for fields that sit against the interior photography (measured: 33–38% of every professional frame is near-black). Not a hue change — the same 150° hue, darker."
+    },
+    "ember": {
+      "$value": "#8a400a",
+      "$description": "NEW. Hue 25°. The action colour. Derived from the venue's own warm pendant light (every measured frame is red-dominant over blue by +15 to +19) and loosely anchored to the orange #F49C4C already present in the LL Icon raster. Chosen at this exact darkness so white text clears AA both at rest and after the codebase's brightness-125 hover."
+    },
+    "emberMid": {
+      "$value": "#b85718",
+      "$description": "NEW. Focus and state ember. Border/ring use only — not a text-bearing fill."
+    },
+    "emberTint": {
+      "$value": "#f0dcc9",
+      "$description": "NEW. Light warm field for callouts and the seasonal featured-offer block."
+    },
+    "amber": {
+      "$value": "#f3b268",
+      "$description": "NEW. Hue 32°. The pendant light itself. DARK FIELDS ONLY — 1.85:1 on white."
+    },
+    "greige": {
+      "$value": "#e5e1e0",
+      "$description": "RETAINED VERBATIM from the live theme (--lightAccent). Secondary light field; 54 sections use it today."
+    },
+    "sage": {
+      "$value": "#9cbead",
+      "$description": "RETAINED VERBATIM from the live theme (--darkAccent), but DEMOTED. Squarespace serves it as a 'dark' section background with white text at 2.02:1 — a hard AA failure. It survives only as a light field carrying forest-green text."
+    },
+    "screen": {
+      "$value": "#2e5a6e",
+      "$description": "NEW, but the surviving trace of the retired slate #7794A6 — same 203° hue family, darkened until white text passes. Justified by the one cool element in every frame of the photography: the simulator projection. Informational/status only, never action."
+    },
+    "clay": {
+      "$value": "#a22c22",
+      "$description": "NEW. The only red in the system. Error and destructive states."
+    },
+    "moss": {
+      "$value": "#155e36",
+      "$description": "NEW. Success states. A brighter sibling of forest so success does not read as body text."
+    },
+    "paper": {
+      "$value": "#f7f5f3",
+      "$description": "NEW. Barely-warm off-white. Reads as paper rather than screen beside the warm photography. Doubles as the 'white' text colour on every dark fill."
+    },
+    "white": {
+      "$value": "#ffffff",
+      "$description": "RETAINED. The dominant background across 155 sections."
+    }
+  },
+
+  "retired": {
+    "$type": "color",
+    "$description": "Values present in the live site that this direction removes. Recorded so nobody reintroduces them by accident.",
+    "slate": {
+      "$value": "#7794a6",
+      "$description": "RETIRED as the action colour. It is the de-facto colour of every button on all 41 pages, but only because Squarespace aliases --safeLightAccent and --safeDarkAccent to --accent — nobody chose it. White text on it is 3.20:1, which FAILS WCAG AA (4.5:1) sitewide. It is also the only cool colour in a measurably warm brand."
+    },
+    "rogueGreen": {
+      "$value": "#3c4741",
+      "$description": "RETIRED. A hand-picked desaturated green on two homepage H4s — the site's only author-set literal hex. hsl(147°, 8%, 26%) against the brand's hsl(150°, 61%, 18%). Someone reached for the colour picker instead of the palette swatch."
+    },
+    "iconOrange": {
+      "$value": "#f49c4c",
+      "$description": "RETIRED as-is. Exists only inside one 600×600 PNG on one page. Its warmth is correct and is carried forward by palette.amber and palette.ember; the value itself is 2.16:1 on white and cannot carry text."
+    },
+    "logoInk": {
+      "$value": "#231f20",
+      "$description": "RETIRED. The ink of the old ornate 'Lakeville Links' lockup — the mark that still ships as the favicon and the Open Graph image on all 41 pages. It goes when those two assets are replaced."
+    }
+  },
+
+  "role": {
+    "$type": "color",
+    "$description": "The semantic layer. Components reference ONLY these. Every pairing below carries its computed ratio and its WCAG verdict.",
+
+    "surface": {
+      "base": {
+        "$value": "{palette.white}",
+        "$description": "Page background."
+      },
+      "raised": {
+        "$value": "{palette.paper}",
+        "$description": "Cards, raised sections. ink on it 9.32:1 (AA ✓)."
+      },
+      "alt": {
+        "$value": "{palette.greige}",
+        "$description": "Alternating light band. ink on it 7.81:1 (AA ✓)."
+      },
+      "tintWarm": {
+        "$value": "{palette.emberTint}",
+        "$description": "Callout / featured offer. ink on it 7.62:1 (AA ✓)."
+      },
+      "tintCool": {
+        "$value": "{palette.sage}",
+        "$description": "Light decorative field. ink on it 5.01:1 (AA ✓). NEVER white text — 2.02:1 (FAIL)."
+      },
+      "dark": {
+        "$value": "{palette.forest}",
+        "$description": "The dark field. paper on it 9.32:1 (AA ✓), white 10.14:1, greige 7.81:1, sage 5.01:1, amber 5.49:1."
+      },
+      "darkest": {
+        "$value": "{palette.night}",
+        "$description": "Over/beside photography. white on it 13.57:1, greige 10.46:1, amber 7.35:1 (all AA ✓)."
+      }
+    },
+
+    "ink": {
+      "default": {
+        "$value": "{palette.forest}",
+        "$description": "Body and headings on light. on white 10.14:1, on paper 9.32:1, on greige 7.81:1 (AA ✓ everywhere)."
+      },
+      "muted": {
+        "$value": "#456052",
+        "$description": "Secondary text, captions, table meta. on white 6.89:1, on greige 5.31:1 (AA ✓). Use this instead of an opacity on ink — ink/70 over white computes to 4.39:1, which FAILS AA."
+      },
+      "onDark": {
+        "$value": "{palette.paper}",
+        "$description": "Text on any dark field. on forest 9.32:1, on night 12.48:1 (AA ✓)."
+      },
+      "inverse": {
+        "$value": "{palette.white}",
+        "$description": "Maximum-contrast text on dark. on forest 10.14:1 (AA ✓)."
+      }
+    },
+
+    "primary": {
+      "default": {
+        "$value": "{palette.ember}",
+        "$description": "THE ACTION COLOUR. Fill for every primary CTA. paper text on it 6.85:1, white text on it 7.45:1 (AA ✓). As a fill against white the boundary is 7.45:1 (non-text gate 3:1 ✓)."
+      },
+      "hover": {
+        "$value": "#ad500d",
+        "$description": "Explicit hover fill, equivalent to the codebase's brightness-125. paper text on it 4.91:1 (AA ✓ — the value of ember was chosen so this stays above 4.5)."
+      },
+      "active": {
+        "$value": "#6d3308",
+        "$description": "Pressed. paper text on it 9.08:1 (AA ✓)."
+      },
+      "on": {
+        "$value": "{palette.paper}",
+        "$description": "Foreground on a primary fill. 6.85:1 (AA ✓)."
+      },
+      "onDarkField": {
+        "$value": "{palette.paper}",
+        "$description": "RULE, not a colour: a solid ember button on a forest or night field is 1.36:1 / 1.82:1 against its own background and FAILS the 3:1 non-text gate. It is mathematically impossible for one fill to carry white text at 4.5:1 AND clear 3:1 against a near-black green. On dark fields the CTA MUST invert to a paper fill with forest text (9.32:1) or use an outline in paper."
+      }
+    },
+
+    "accent": {
+      "default": {
+        "$value": "{palette.screen}",
+        "$description": "Informational / status (e.g. a league's 'Full' badge). paper on it 6.89:1, white on it 7.49:1 (AA ✓)."
+      },
+      "highlight": {
+        "$value": "{palette.amber}",
+        "$description": "Warm highlight — rules, eyebrows, icon fills, stats. DARK FIELDS ONLY: on forest 5.49:1, on night 7.35:1 (AA ✓); on white 1.85:1 (FAIL — never)."
+      },
+      "on": {
+        "$value": "{palette.paper}",
+        "$description": "Foreground on accent.default. 6.89:1 (AA ✓)."
+      }
+    },
+
+    "state": {
+      "focus": {
+        "$value": "{palette.emberMid}",
+        "$description": "Focus ring / focused border. vs paper 4.37:1, vs white 4.76:1, vs greige 3.66:1 — all clear the 3:1 non-text gate (WCAG 2.1 1.4.11). Must be a visible ring, never `outline: none`."
+      },
+      "focusOnDark": {
+        "$value": "{palette.amber}",
+        "$description": "Focus ring on dark fields. vs forest 5.49:1, vs night 7.35:1 (non-text gate 3:1 ✓)."
+      },
+      "disabledSurface": {
+        "$value": "{palette.greige}",
+        "$description": "Disabled fill."
+      },
+      "disabledInk": {
+        "$value": "#52685b",
+        "$description": "Disabled label. on greige 4.64:1, on white 6.02:1 (AA ✓). WCAG 1.4.3 exempts inactive controls; we clear it anyway so a disabled 'Sold out' button is still readable."
+      },
+      "error": {
+        "$value": "{palette.clay}",
+        "$description": "Error text and border on light. on white 7.19:1, on paper 6.61:1 (AA ✓). paper text on a clay fill 6.61:1 (AA ✓)."
+      },
+      "errorOnDark": {
+        "$value": "#f2a2a2",
+        "$description": "Error text on a forest field. 5.05:1 (AA ✓)."
+      },
+      "success": {
+        "$value": "{palette.moss}",
+        "$description": "Success text on light. on white 7.82:1, on greige 6.02:1 (AA ✓)."
+      },
+      "successOnDark": {
+        "$value": "#a8e0c0",
+        "$description": "Success text on a forest field. 6.80:1 (AA ✓)."
+      }
+    }
+  },
+
+  "font": {
+    "$type": "fontFamily",
+    "display": {
+      "$value": ["Bitter", "ui-serif", "Georgia", "Iowan Old Style", "Times New Roman", "Times", "serif"],
+      "$description": "Headings and button labels. Replaces Alfa Slab One, which ships a single weight (400), has no italic, and closes its counters below roughly 24px — the live site sets it at h4 1.4rem. Bitter keeps the slab genus so the change reads as a correction, not a new brand, and is a variable font (300–800) so the whole heading ladder plus button labels come from one file. NOTE: in this codebase the display face is bound to the `--brand-font-mono` slot, because global.css maps that slot to `font-mono`, which is what every heading and button uses. It is not a monospace slot."
+    },
+    "body": {
+      "$value": [
+        "Open Sans",
+        "ui-sans-serif",
+        "system-ui",
+        "-apple-system",
+        "Segoe UI",
+        "Roboto",
+        "Helvetica",
+        "Arial",
+        "sans-serif"
+      ],
+      "$description": "Body, navigation, forms, tables. RETAINED from the live site — it works, it is on all 41 pages, and the brand's warmth budget is better spent on the display face and the photography. Trimmed from 5 weights + 3 italics to 400/600/700 + one italic."
+    },
+    "retired": {
+      "$value": ["Alfa Slab One", "Poppins"],
+      "$description": "Alfa Slab One survives only inside the drawn wordmark. Poppins 500 is deleted outright: it is loaded on all 41 pages to set exactly one element, the header BOOK NOW! button."
+    }
+  },
+
+  "fontWeight": {
+    "$type": "fontWeight",
+    "displayRegular": { "$value": 500 },
+    "displayBold": { "$value": 700 },
+    "displayHeavy": { "$value": 800, "$description": "Hero h1 only." },
+    "bodyRegular": { "$value": 400 },
+    "bodyMedium": { "$value": 600 },
+    "bodyBold": { "$value": 700 }
+  },
+
+  "fontLoading": {
+    "$description": "Self-hosted from public/fonts/. No external CDN request at any point — the live site's fonts are already self-hosted by Squarespace and that property is preserved. font-display: swap on every face, so the HTML paints before the fonts land and stays crawlable. Latin critical path: 33 KB display + 42 KB body = 75 KB across two files. Latin-ext and italic are separate unicode-range slices and are fetched only if a page needs them."
+  },
+
+  "space": {
+    "$type": "dimension",
+    "sectionY": { "$value": "4rem" },
+    "sectionYLg": { "$value": "8rem" },
+    "gutterX": { "$value": "1.5rem" },
+    "gutterXLg": { "$value": "4rem" }
+  },
+
+  "size": {
+    "$type": "dimension",
+    "contentMax": { "$value": "75rem" },
+    "proseMax": { "$value": "46.875rem" }
+  }
+}

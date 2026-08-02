@@ -16,7 +16,9 @@
     "test:watch": "vitest",
     "lint": "eslint src --ext .ts,.tsx,.astro",
     "format": "prettier --write src",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "tokens:build": "node scripts/build-tokens.mjs",
+    "tokens:check": "node scripts/build-tokens.mjs --check"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",

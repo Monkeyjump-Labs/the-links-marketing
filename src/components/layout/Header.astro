@@ -12,12 +12,27 @@ const { nav, siteName } = globalData;
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-50 border-b border-ink/15 bg-white/95 backdrop-blur">
-  <div class="mx-auto flex max-w-content flex-wrap items-center gap-x-6 gap-y-3 px-gutter py-3 lg:px-gutter-lg">
-    <a href="/" class="text-xl font-bold tracking-tight">{siteName}</a>
+{
+  /*
+   * Layout note — this is the header-wrap bug the design sprint found.
+   * The container is flex-wrap so the nav can drop to its own row on mobile.
+   * At desktop that same wrap let the venue switcher + Book button fall to a
+   * SECOND ROW once the 7-item nav and the switcher together outgrew the
+   * container, which read as a broken sticky header at ~1440px.
+   *
+   * Fix: wrapping is now mobile-only (`lg:flex-nowrap`), the nav is allowed to
+   * shrink instead of pushing (`lg:min-w-0`), and the nav's own gap tightens a
+   * step at lg and relaxes again at xl. The right-hand cluster never wraps.
+   */
+}
+<header class="sticky top-0 z-sticky border-b border-ink/20 bg-white/95 backdrop-blur">
+  <div
+    class="mx-auto flex max-w-content flex-wrap items-center gap-x-6 gap-y-3 px-gutter py-3 lg:flex-nowrap lg:px-gutter-lg"
+  >
+    <a href="/" class="shrink-0 text-xl font-bold tracking-tight">{siteName}</a>
 
-    <nav aria-label="Main" class="order-3 w-full lg:order-none lg:w-auto lg:flex-1">
-      <ul class="flex flex-wrap gap-x-5 gap-y-2">
+    <nav aria-label="Main" class="order-3 w-full lg:order-none lg:w-auto lg:min-w-0 lg:flex-1">
+      <ul class="flex flex-wrap gap-x-5 gap-y-2 lg:flex-nowrap lg:gap-x-4 xl:gap-x-5">
         {
           nav.map((link) => (
             <li>
@@ -25,7 +40,7 @@ const currentPath = Astro.url.pathname;
                 href={link.href}
                 aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
                 class:list={[
-                  'text-sm transition hover:text-primary',
+                  'text-sm whitespace-nowrap transition hover:text-primary',
                   currentPath.startsWith(link.href) ? 'font-semibold text-ink' : 'text-inkMuted',
                 ]}
               >
@@ -37,7 +52,7 @@ const currentPath = Astro.url.pathname;
       </ul>
     </nav>
 
-    <div class="ml-auto flex items-center gap-4">
+    <div class="ml-auto flex shrink-0 items-center gap-4">
       <VenueSwitcher />
       <BookButton size="sm" />
     </div>

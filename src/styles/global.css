@@ -39,6 +39,36 @@
   /* Secondary text. Use `text-inkMuted` — NOT `text-ink/70`, which computes to
      4.39:1 on white and misses WCAG AA. Any ink opacity below /75 fails. */
   --color-inkMuted: var(--brand-ink-muted);
+  --color-inkBody: var(--brand-ink-body);
+
+  /* -- Brand palette, addressable directly where a role isn't the right fit -- */
+  --color-midnight: var(--brand-midnight);
+  --color-navy: var(--brand-navy);
+  --color-slate: var(--brand-slate);
+  --color-screen: var(--brand-screen-light);
+  --color-amber: var(--brand-amber);
+  --color-ember: var(--brand-ember);
+  --color-paper: var(--brand-paper);
+  --color-greige: var(--brand-greige);
+  --color-forest: var(--brand-forest);
+
+  /* -- State ------------------------------------------------------------- */
+  --color-error: var(--brand-state-error);
+  --color-warning: var(--brand-state-warning);
+  --color-success: var(--brand-state-success);
+  --color-info: var(--brand-state-info);
+
+  /* -- Structure --------------------------------------------------------- */
+  --radius-control: var(--brand-radius-control);
+  --radius-surface: var(--brand-radius-surface);
+
+  /* z-* utilities, so layering is a token rather than a magic number */
+  --z-index-base: var(--brand-z-base);
+  --z-index-raised: var(--brand-z-raised);
+  --z-index-sticky: var(--brand-z-sticky);
+  --z-index-overlay: var(--brand-z-overlay);
+  --z-index-modal: var(--brand-z-modal);
+  --z-index-toast: var(--brand-z-toast);
 
   /* -- Fonts (font-sans, font-mono) -------------------------------------- */
   --font-sans: var(--brand-font-sans);
