@@ -9,10 +9,14 @@
 /* ==========================================================================
    home-technical — register: technical-dense
    Generated FROM design/token-sets/technical.json. Every value below is a
-   token from that overlay. Nothing here is hand-tuned away from it.
-   Preview type: system stack + system mono (a wisplet design variant loads
-   no network resources). The production proposal is IBM Plex Sans + IBM Plex
-   Mono — see the overlay's `font` group.
+   token from that overlay; nothing is hand-tuned away from it.
+
+   Preview type is the system sans + system mono, because a wisplet design
+   variant loads no network resources. The production proposal in the overlay
+   is IBM Plex Sans + IBM Plex Mono.
+
+   Dense-UI contrast rule enforced throughout: no text below 14px uses a
+   pairing under 6.5:1.
    ========================================================================== */
 
 :root{
@@ -70,13 +74,13 @@ body{
   font:var(--w-regular) var(--fs-body)/var(--lh-prose) var(--f-sans);
   font-variant-numeric:tabular-nums;
 }
-img,svg{max-width:100%}
+svg{max-width:100%}
 a{color:inherit}
-h1,h2,h3,h4,p,ul,ol,figure{margin:0}
+h1,h2,h3,h4,p,ul,figure{margin:0}
 ul{list-style:none;padding:0}
 
 :focus-visible{outline:var(--ring-w) solid var(--focus);outline-offset:var(--ring-off)}
-.on-dark :focus-visible,.on-dark:focus-visible{outline-color:var(--focus-dark)}
+.on-dark :focus-visible,.on-darkest :focus-visible{outline-color:var(--focus-dark)}
 
 .wrap{max-width:var(--content-max);margin-inline:auto;padding-inline:var(--gutter)}
 @media(min-width:1024px){.wrap{padding-inline:var(--gutter-lg)}}
@@ -96,14 +100,16 @@ ul{list-style:none;padding:0}
 .rd{display:grid;grid-template-columns:var(--lane) minmax(0,1fr);gap:0 var(--s4);
     align-items:baseline;min-height:var(--row-min);padding-block:var(--row-y);
     border-top:var(--hairline-w) solid var(--hairline)}
-.rd:first-of-type{border-top:0}
+.rd--first{border-top:0}
+.rd--tight{border-top:0;padding-top:0;min-height:0}
 .k{font:var(--w-medium) var(--fs-label)/var(--lh-readout) var(--f-mono);
    letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--label-light)}
 .v{font:var(--w-medium) var(--fs-value)/var(--lh-readout) var(--f-mono);
    font-variant-numeric:tabular-nums;color:var(--value-light)}
-.on-dark .rd{border-top-color:var(--hairline-dark)}
-.on-dark .k{color:var(--label-dark)}
-.on-dark .v{color:var(--value-dark)}
+.v--sm{font-size:var(--fs-dense);line-height:var(--lh-dense)}
+.on-dark .rd,.on-darkest .rd{border-top-color:var(--hairline-dark)}
+.on-dark .k,.on-darkest .k{color:var(--label-dark)}
+.on-dark .v,.on-darkest .v{color:var(--value-dark)}
 a.v{text-decoration:none;text-underline-offset:3px}
 a.v:hover{text-decoration:underline}
 
@@ -122,23 +128,24 @@ a.v:hover{text-decoration:underline}
 .btn--on-dark:hover{background:var(--white)}
 .btn--ghost-dark{background:transparent;color:var(--paper);border-color:var(--sage)}
 .btn--ghost-dark:hover{border-color:var(--paper)}
-.btn--sm{min-height:var(--row-min);padding:0 var(--s4);font-size:var(--fs-dense)}
+.btn--sm{padding:0 var(--s4);font-size:var(--fs-dense)}
 
 /* --- header ------------------------------------------------------------- */
 .hdr{position:sticky;top:0;z-index:50;background:var(--surface-raised);
      border-bottom:var(--hairline-w) solid var(--rule)}
 .hdr__bar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3) var(--s5);
           padding-block:var(--s2)}
-.mark{display:inline-flex;align-items:baseline;gap:.35em;text-decoration:none;
+.mark{display:inline-flex;align-items:center;min-height:var(--row-min);text-decoration:none;
   font:var(--w-bold) 1.1875rem/1 var(--f-sans);letter-spacing:var(--ls-word);
-  color:var(--ink);text-transform:uppercase;min-height:var(--row-min);align-items:center}
-.mark::after{content:"";width:6px;height:6px;background:var(--primary);align-self:center}
-.nav{order:3;flex:1 0 100%;display:flex;flex-wrap:wrap;gap:0 var(--s5);
-     border-top:var(--hairline-w) solid var(--hairline);padding-top:var(--s1)}
+  color:var(--ink);text-transform:uppercase}
+/* Below lg the nav takes its own full-width row, as the shipped Header does.
+   Gap and size are tightened there so 7 items land in two 44px rows, not four
+   — the header is sticky, and a tall one eats the fold the trust strip needs. */
+.nav{order:3;flex:1 0 100%;display:flex;flex-wrap:wrap;gap:0 var(--s4);
+     border-top:var(--hairline-w) solid var(--hairline)}
 .nav a{display:inline-flex;align-items:center;min-height:var(--row-min);
-  font:var(--w-medium) var(--fs-dense)/1 var(--f-sans);text-decoration:none;color:var(--ink)}
+  font:var(--w-medium) .875rem/1 var(--f-sans);text-decoration:none;color:var(--ink)}
 .nav a:hover{color:var(--primary)}
-.nav a[aria-current="page"]{color:var(--primary);box-shadow:inset 0 -2px 0 var(--primary)}
 .hdr__end{margin-left:auto;display:flex;align-items:center;gap:var(--s3)}
 .switch{display:flex;align-items:center;gap:var(--s2)}
 .switch__lab{font:var(--w-medium) var(--fs-micro)/1 var(--f-mono);letter-spacing:var(--ls-micro);
@@ -148,10 +155,14 @@ a.v:hover{text-decoration:underline}
   font:var(--w-medium) var(--fs-dense)/1 var(--f-sans);text-decoration:none;color:var(--ink)}
 .switch a:hover{border-color:var(--primary);color:var(--primary)}
 @media(min-width:1024px){
-  .nav{order:0;flex:0 1 auto;border-top:0;padding-top:0}
-  .switch__lab{display:inline}
+  .nav{order:0;flex:0 1 auto;border-top:0;gap:0 var(--s5)}
+  .nav a{font-size:var(--fs-dense)}
 }
-@media(max-width:639px){.switch__lab{display:none}}
+@media(max-width:639px){
+  .switch__lab{display:none}
+  .switch a{padding:0 var(--s2);font-size:.875rem}
+  .hdr__bar{gap:var(--s2) var(--s3)}
+}
 
 /* --- sections ----------------------------------------------------------- */
 section{padding-block:var(--section-y)}
@@ -160,74 +171,93 @@ section{padding-block:var(--section-y)}
 .on-darkest{background:var(--surface-darkest);color:var(--on-dark)}
 h2{font:var(--w-semibold) var(--fs-h2)/var(--lh-heading) var(--f-sans);letter-spacing:var(--ls-heading)}
 h3{font:var(--w-semibold) var(--fs-h3)/var(--lh-heading) var(--f-sans)}
-h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
 .eyebrow{font:var(--w-medium) var(--fs-micro)/1 var(--f-mono);letter-spacing:var(--ls-micro);
   text-transform:uppercase;color:var(--label-light);display:block}
 .on-dark .eyebrow,.on-darkest .eyebrow{color:var(--label-dark)}
-.prose{max-width:var(--prose-max);font-size:var(--fs-body-lg);line-height:var(--lh-prose)}
 
-/* --- hero --------------------------------------------------------------- */
-.hero{padding-block:var(--s6) var(--s7)}
-@media(min-width:1024px){.hero{padding-block:var(--s8) var(--s9)}}
+/* --- hero + trust strip: one continuous instrument header --------------- */
+.hero{padding-block:var(--s5) 0}
+@media(min-width:1024px){.hero{padding-block:var(--s8) 0}}
 .hero__grid{display:grid;gap:var(--s6);align-items:start}
 @media(min-width:1024px){.hero__grid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--s7)}}
 .hero h1{font:var(--w-semibold) var(--fs-h1)/var(--lh-display) var(--f-sans);
   letter-spacing:var(--ls-display);color:var(--on-dark);margin-block:var(--s3) var(--s4);
-  max-width:16ch}
+  max-width:18ch}
 .hero__sub{color:var(--on-dark-2);font-size:var(--fs-body-lg);line-height:var(--lh-prose);max-width:52ch}
 .hero__cta{display:flex;flex-wrap:wrap;gap:var(--s3);margin-top:var(--s5)}
 .mono-hl{font-family:var(--f-mono);font-weight:var(--w-medium);color:var(--amber)}
+
+.strip{padding-block:var(--s6) var(--s7)}
+@media(min-width:1024px){.strip{padding-block:var(--s7) var(--s8)}}
+.strip__grid{display:grid;gap:var(--s6)}
+@media(min-width:640px){.strip__grid{grid-template-columns:1fr 1fr;gap:var(--s6) var(--s7)}}
+.strip__name{display:inline-flex;align-items:center;min-height:var(--row-min);
+  font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans);
+  color:var(--on-dark);text-decoration:none}
+.strip__name:hover{text-decoration:underline;text-underline-offset:4px}
+.caveat{display:inline-flex;align-items:center;border:var(--hairline-w) solid var(--sage);
+  border-left:var(--emphasis-w) solid var(--amber);border-radius:var(--r-control);
+  padding:var(--s1) var(--s2);font:var(--w-regular) .8125rem/1.3 var(--f-mono);color:var(--paper)}
 
 /* --- image slot: the photography stand-in ------------------------------- */
 .slot{background:var(--surface-photo);border-radius:var(--r-surface);overflow:hidden;
       border:var(--hairline-w) solid var(--rule)}
 .on-dark .slot,.on-darkest .slot{border-color:var(--sage)}
-.slot__img{display:block;width:100%;aspect-ratio:16/5;object-fit:cover}
+.slot__img{display:block;width:100%;aspect-ratio:16/5}
 @media(min-width:640px){.slot__img{aspect-ratio:16/7}}
 @media(min-width:1024px){.slot__img{aspect-ratio:3/2}}
+.slot--fixed .slot__img{aspect-ratio:3/2}
 .slot__cap{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:baseline;
   padding:var(--s3) var(--s4);border-top:var(--hairline-w) solid var(--screen-trace)}
 .slot__tag{font:var(--w-medium) var(--fs-micro)/1.3 var(--f-mono);letter-spacing:var(--ls-micro);
   text-transform:uppercase;color:var(--amber)}
-.slot__note{font:var(--w-regular) .8125rem/1.35 var(--f-mono);color:var(--paper)}
+.slot__note{font:var(--w-regular) .8125rem/1.35 var(--f-mono);color:var(--paper);flex:1 1 16rem}
 
 /* --- jobs list (What you can do here) ----------------------------------- */
 .jobs{border-top:var(--hairline-w) solid var(--rule);border-bottom:var(--hairline-w) solid var(--rule)}
 .jobs li + li{border-top:var(--hairline-w) solid var(--hairline)}
-.jobs a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s1) var(--s5);
-  align-items:baseline;min-height:var(--row-min);padding:var(--s4) var(--s4) var(--s4) var(--s5);
+.jobs a{display:grid;grid-template-columns:minmax(0,1fr) 1.5rem;gap:var(--s1) var(--s5);
+  min-height:var(--row-min);padding:var(--s4) var(--s4) var(--s4) var(--s5);
   text-decoration:none;border-left:var(--emphasis-w) solid transparent;
   transition:background-color var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+.jobs__t{grid-column:1;grid-row:1;font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans);color:var(--ink)}
+.jobs__b{grid-column:1;grid-row:2;color:var(--ink-2);font-size:var(--fs-dense);line-height:var(--lh-dense)}
+.jobs__go{grid-column:2;grid-row:1/3;align-self:center;justify-self:end;
+  font-family:var(--f-mono);color:var(--primary)}
 @media(min-width:768px){
   .jobs a{grid-template-columns:11rem minmax(0,1fr) 1.5rem;align-items:baseline}
+  .jobs__t{grid-row:1}
+  .jobs__b{grid-column:2;grid-row:1}
+  .jobs__go{grid-column:3;grid-row:1}
 }
 .jobs a:hover{background:var(--chalk);border-left-color:var(--primary)}
-.jobs__t{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans);color:var(--ink)}
-.jobs__b{color:var(--ink-2);font-size:var(--fs-dense);line-height:var(--lh-dense)}
-.jobs__go{font-family:var(--f-mono);color:var(--primary);justify-self:end;align-self:center}
 .jobs .is-feature a{background:var(--surface-inset);border-left-color:var(--primary)}
 .jobs .is-feature .jobs__t{color:var(--primary)}
 
 /* --- proof -------------------------------------------------------------- */
+/* Field is chalk, where `label.onLight` (screen, 6.27:1) drops under this
+   overlay's 6.5:1 floor for sub-14px type. Labels here use ink (8.48:1)
+   and screen survives as the non-text status marker. */
 .proof{background:var(--surface-inset)}
-.chip{display:inline-flex;align-items:center;gap:var(--s2);padding:var(--s1) var(--s2);
-  border:var(--hairline-w) solid currentColor;border-radius:var(--r-control);
+.proof .k{color:var(--ink)}
+.chip{display:inline-flex;align-items:center;padding:var(--s1) var(--s2);
+  border:var(--hairline-w) solid var(--pending);border-radius:var(--r-control);
   font:var(--w-medium) var(--fs-micro)/1.4 var(--f-mono);letter-spacing:var(--ls-micro);
-  text-transform:uppercase;color:var(--pending)}
-.chip--dark{color:var(--pending-dark)}
+  text-transform:uppercase;color:var(--ink)}
 .hd-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3) var(--s4)}
-.stub{margin-top:var(--s4);max-width:var(--prose-max);color:var(--ink-2);
+.stub{margin-top:0;max-width:var(--prose-max);color:var(--ink-2);
   font-size:var(--fs-dense);line-height:var(--lh-dense)}
 .qslots{margin-top:var(--s6);border-top:var(--hairline-w) solid var(--rule)}
 .qslot{border-bottom:var(--hairline-w) solid var(--hairline);padding-block:var(--s5)}
 .qslot__lines{display:grid;gap:var(--s3);max-width:46rem}
 .qslot__ln{height:0;border-bottom:var(--hairline-w) dashed var(--rule)}
 .qslot__ln--short{max-width:58%}
-.qslot__meta{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s6);margin-top:var(--s4);align-items:baseline}
+.qslot__meta{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s6);margin-top:var(--s5);align-items:baseline}
 .qslot__pair{display:flex;align-items:baseline;gap:var(--s3)}
 .ph{font:var(--w-regular) var(--fs-dense)/1.3 var(--f-mono);color:var(--ink-2);
   border-bottom:var(--hairline-w) dashed var(--rule);padding-bottom:2px}
 .src{margin-top:var(--s5);border-top:var(--hairline-w) solid var(--rule)}
+.src .v{color:var(--pending)}
 
 /* --- featured offer ----------------------------------------------------- */
 .offer__grid{display:grid;gap:var(--s7)}
@@ -247,13 +277,13 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
 .inp{width:100%;min-height:var(--row-min);padding:0 var(--s3);
   background:transparent;color:var(--paper);border:var(--hairline-w) solid var(--field-on-dark);
   border-radius:var(--r-control);font:var(--w-regular) var(--fs-body)/1 var(--f-mono);
-  box-shadow:inset 0 1px 0 rgba(18,75,46,.4)}
+  box-shadow:inset 0 1px 0 rgba(18,75,46,.45)}
 .inp::placeholder{color:var(--on-dark-2);opacity:1}
 .inp:focus-visible{border-color:var(--amber)}
 .form .btn{width:100%;margin-top:var(--s3)}
-.note{display:flex;gap:var(--s3);margin-top:var(--s4);padding-left:var(--s3);
-  border-left:var(--emphasis-w) solid var(--screen-on-dark);
-  font:var(--w-regular) .8125rem/1.4 var(--f-mono);color:var(--screen-on-dark)}
+.note{display:block;margin-top:var(--s4);padding-left:var(--s3);
+  border-left:var(--emphasis-w) solid var(--pending-dark);
+  font:var(--w-regular) .8125rem/1.4 var(--f-mono);color:var(--pending-dark)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 /* --- venues ------------------------------------------------------------- */
@@ -264,7 +294,7 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
   .venue{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:var(--s7);align-items:start}
 }
 .venue h3{margin-bottom:var(--s4)}
-.spec{display:flex;flex-wrap:wrap;gap:var(--s6);padding-block:var(--s4);
+.spec{display:flex;flex-wrap:wrap;gap:var(--s7);padding-block:var(--s4);
   border-block:var(--hairline-w) solid var(--hairline)}
 .spec__cell{display:grid;gap:var(--s1)}
 .spec__v{font:var(--w-medium) var(--fs-value-lg)/1 var(--f-mono);
@@ -283,37 +313,42 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
 .ftr__grid{display:grid;gap:var(--s7)}
 @media(min-width:640px){.ftr__grid{grid-template-columns:1fr 1fr}}
 @media(min-width:1024px){.ftr__grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s6)}}
-.lockup{display:grid;gap:var(--s1);margin-bottom:var(--s4)}
+.lockup{display:grid;gap:var(--s1);margin-bottom:var(--s4);justify-items:start}
 .lockup__mark{font:var(--w-bold) 1.0625rem/1 var(--f-sans);letter-spacing:var(--ls-word);
   text-transform:uppercase;color:var(--paper)}
-.lockup__rule{height:var(--hairline-w);background:var(--sage);width:100%;max-width:11rem}
+.lockup__rule{height:var(--hairline-w);background:var(--sage);width:100%;min-width:9rem;max-width:11rem}
 .lockup__venue{font:var(--w-semibold) var(--fs-micro)/1 var(--f-sans);letter-spacing:.14em;
   text-transform:uppercase;color:var(--paper)}
 .ftr__nap{display:grid;gap:var(--s2);font:var(--w-regular) .875rem/1.5 var(--f-mono);color:var(--paper)}
 .ftr__nap a{text-decoration:none;text-underline-offset:3px}
 .ftr__nap a:hover{text-decoration:underline}
-.ftr__hd{font:var(--w-medium) var(--fs-micro)/1 var(--f-mono);letter-spacing:var(--ls-micro);
-  text-transform:uppercase;color:var(--amber);margin-bottom:var(--s3);display:block}
+.ftr__hd{display:inline-block;font:var(--w-medium) var(--fs-micro)/1 var(--f-mono);
+  letter-spacing:var(--ls-micro);text-transform:uppercase;color:var(--paper);
+  border-bottom:var(--emphasis-w) solid var(--amber);padding-bottom:var(--s2);margin-bottom:var(--s3)}
 .ftr__list{display:grid}
 .ftr__list a{display:inline-flex;align-items:center;min-height:var(--row-min);
-  font-size:var(--fs-dense);color:var(--paper);text-decoration:none}
+  font-size:var(--fs-dense);color:var(--paper);text-decoration:none;justify-self:start}
 .ftr__list a:hover{text-decoration:underline;text-underline-offset:3px}
 .ftr__legal{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s5);align-items:center;
-  margin-top:var(--s6);padding-top:var(--s4);
-  font:var(--w-regular) .8125rem/1.5 var(--f-mono);color:var(--paper)}
+  padding-top:var(--s4);font:var(--w-regular) .8125rem/1.5 var(--f-mono);color:var(--paper)}
 .ftr__legal a{text-underline-offset:3px}
 
-/* --- preview note ------------------------------------------------------- */
+/* --- preview note (not part of the design) ------------------------------ */
 .pv{background:var(--surface-inset);border-top:var(--hairline-w) solid var(--rule);
     padding-block:var(--s5)}
-.pv p{font:var(--w-regular) .8125rem/1.5 var(--f-mono);color:var(--ink);max-width:70ch}
+.pv p{font:var(--w-regular) .8125rem/1.55 var(--f-mono);color:var(--ink);max-width:74ch}
 
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 
-<!-- ===== schematic symbols (image-slot content) ========================= -->
+<!-- ===== schematic symbols (image-slot content) =========================
+     A bay in section: dark warm room, one bright cool screen, one warm
+     pendant, one ball-flight arc sampled on a tick scale. NO numeric value
+     is drawn anywhere, so nothing here can be read as a measurement taken
+     at this venue.
+     ====================================================================== -->
 <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
   <defs>
     <linearGradient id="proj" x1="0" y1="0" x2="0" y2="1">
@@ -323,23 +358,21 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
       <stop offset="1" stop-color="#3f7391"/>
     </linearGradient>
     <radialGradient id="pend" cx=".5" cy=".5" r=".5">
-      <stop offset="0" stop-color="#f3b268" stop-opacity=".38"/>
+      <stop offset="0" stop-color="#f3b268" stop-opacity=".40"/>
       <stop offset="1" stop-color="#f3b268" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
-  <!-- A bay in section: dark room, one bright screen, one warm pendant,
-       one ball-flight arc on a tick scale. No numeric values are drawn. -->
   <symbol id="bay" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
     <rect width="600" height="400" fill="#1b1409"/>
-    <ellipse cx="452" cy="52" rx="150" ry="105" fill="url(#pend)"/>
+    <ellipse cx="452" cy="60" rx="160" ry="118" fill="url(#pend)"/>
     <rect x="46" y="58" width="286" height="196" fill="url(#proj)"/>
-    <path d="M46 190h286" stroke="#1b1409" stroke-opacity=".28" stroke-width="1"/>
-    <path d="M92 254v-30l46-14 52 20 44-26 52 18" stroke="#1b1409" stroke-opacity=".22"
+    <path d="M46 190h286" stroke="#1b1409" stroke-opacity=".3" stroke-width="1"/>
+    <path d="M92 254v-32l46-14 52 20 44-26 52 18" stroke="#1b1409" stroke-opacity=".24"
           stroke-width="2" fill="none"/>
-    <rect x="46" y="58" width="286" height="196" fill="none" stroke="#8fc0d8" stroke-opacity=".5"/>
-    <path d="M452 30v34" stroke="#f3b268" stroke-width="1.5"/>
-    <circle cx="452" cy="70" r="7" fill="#f3b268"/>
+    <rect x="46" y="58" width="286" height="196" fill="none" stroke="#8fc0d8" stroke-opacity=".55"/>
+    <path d="M452 24v38" stroke="#f3b268" stroke-width="1.5"/>
+    <circle cx="452" cy="70" r="7.5" fill="#f3b268"/>
     <path d="M0 300h600" stroke="#5e93ae" stroke-opacity=".35" stroke-width="1"/>
     <path d="M392 316h132l-26 26H366z" fill="none" stroke="#5e93ae" stroke-width="1.5"/>
     <circle cx="446" cy="330" r="3.5" fill="#f3b268"/>
@@ -353,8 +386,8 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
       <path d="M572 60v280"/>
       <path d="M562 60h10M562 116h10M562 172h10M562 228h10M562 284h10M562 340h10"/>
     </g>
-    <g stroke="#5e93ae" stroke-opacity=".55" stroke-width="1.5">
-      <path d="M12 44v312"/><path d="M356 44v312"/>
+    <g stroke="#5e93ae" stroke-opacity=".5" stroke-width="1.5">
+      <path d="M12 40v320"/><path d="M356 40v320"/>
     </g>
   </symbol>
 
@@ -370,7 +403,7 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
     <g stroke="#5e93ae" stroke-opacity=".45" stroke-width="1.5">
       <path d="M572 60v280"/>
       <path d="M562 60h10M562 116h10M562 172h10M562 228h10M562 284h10M562 340h10"/>
-      <path d="M12 44v312"/><path d="M356 44v312"/>
+      <path d="M12 40v320"/><path d="M356 40v320"/>
     </g>
   </symbol>
 </svg>
@@ -380,7 +413,7 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
   <div class="wrap hdr__bar">
     <a class="mark" href="/">The Links</a>
     <nav class="nav" aria-label="Main">
-      <a href="/book/" aria-current="page">Book</a>
+      <a href="/book/">Book</a>
       <a href="/rates/">Rates &amp; Hours</a>
       <a href="/leagues/">Leagues</a>
       <a href="/memberships/">Memberships</a>
@@ -418,8 +451,8 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
       </div>
 
       <figure class="slot">
-        <svg class="slot__img" role="img" aria-label="Schematic of a simulator bay: a dark room, a lit projection screen, a pendant light and an illustrative ball-flight arc. This is a placeholder for photography.">
-          <use href="#bay"/>
+        <svg class="slot__img" role="img" aria-label="Schematic of a simulator bay: a dark room, a lit projection screen, a pendant light and an illustrative ball-flight arc. A placeholder for photography.">
+          <use href="#bay" width="100%" height="100%"/>
         </svg>
         <figcaption class="slot__cap">
           <span class="slot__tag">Photo slot &middot; 3:2</span>
@@ -428,48 +461,32 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
         </figcaption>
       </figure>
     </div>
-    <div class="tick tick--dark" aria-hidden="true"></div>
+    <div class="tick tick--dark" aria-hidden="true" style="margin-block:var(--s7) 0"></div>
   </div>
 </section>
 
-<!-- ===== 3.2 trust strip ================================================ -->
-<section class="on-dark" aria-label="Hours and locations" style="padding-block:var(--s7)">
+<!-- ===== 3.2 trust strip: the hero's own readout rail ==================== -->
+<section class="strip on-darkest" aria-label="Hours and locations">
   <div class="wrap">
-    <div style="display:grid;gap:var(--s7)" class="ts">
+    <div class="strip__grid">
       <div>
-        <h2 style="font-size:var(--fs-h4);color:var(--on-dark)">
-          <a href="/locations/lakeville/" style="text-decoration:none">The Links of Lakeville</a>
-        </h2>
-        <div class="rd"><span class="k">Hours</span><span class="v">Mon&ndash;Sun 11am&ndash;9pm</span></div>
-        <div class="rd" style="border-top:0;padding-top:0;min-height:0">
-          <span></span>
-          <span style="display:inline-flex;align-items:center;gap:var(--s2);
-            border:1px solid var(--sage);border-left:2px solid var(--amber);
-            border-radius:var(--r-control);padding:var(--s1) var(--s2);
-            font:var(--w-regular) .8125rem/1.3 var(--f-mono);color:var(--paper)">(hours being confirmed)</span>
-        </div>
+        <a class="strip__name" href="/locations/lakeville/">The Links of Lakeville</a>
+        <div class="rd rd--first"><span class="k">Hours</span><span class="v">Mon&ndash;Sun 11am&ndash;9pm</span></div>
+        <div class="rd rd--tight"><span></span><span class="caveat">(hours being confirmed)</span></div>
         <div class="rd"><span class="k">Address</span>
-          <a class="v" style="font-size:.9375rem" target="_blank" rel="noopener"
+          <a class="v v--sm" target="_blank" rel="noopener"
              href="https://maps.google.com/?q=17630+Juniper+Path+Suite+H,+Lakeville,+MN+55044">17630 Juniper Path Suite H, Lakeville, MN 55044</a></div>
         <div class="rd"><span class="k">Phone</span>
           <a class="v" href="tel:+16126990526">612-699-0526</a></div>
       </div>
 
       <div>
-        <h2 style="font-size:var(--fs-h4);color:var(--on-dark)">
-          <a href="/locations/stillwater/" style="text-decoration:none">The Links of Stillwater</a>
-        </h2>
-        <div class="rd"><span class="k">Hours</span>
-          <span class="v" style="font-size:.9375rem;line-height:1.45">Mon 12pm&ndash;9pm &middot; Tue&ndash;Fri 3pm&ndash;9pm &middot; Sat 10am&ndash;10pm &middot; Sun 12pm&ndash;7pm</span></div>
-        <div class="rd" style="border-top:0;padding-top:0;min-height:0">
-          <span></span>
-          <span style="display:inline-flex;align-items:center;gap:var(--s2);
-            border:1px solid var(--sage);border-left:2px solid var(--amber);
-            border-radius:var(--r-control);padding:var(--s1) var(--s2);
-            font:var(--w-regular) .8125rem/1.3 var(--f-mono);color:var(--paper)">(hours being confirmed)</span>
-        </div>
+        <a class="strip__name" href="/locations/stillwater/">The Links of Stillwater</a>
+        <div class="rd rd--first"><span class="k">Hours</span>
+          <span class="v v--sm">Mon 12pm&ndash;9pm &middot; Tue&ndash;Fri 3pm&ndash;9pm &middot; Sat 10am&ndash;10pm &middot; Sun 12pm&ndash;7pm</span></div>
+        <div class="rd rd--tight"><span></span><span class="caveat">(hours being confirmed)</span></div>
         <div class="rd"><span class="k">Address</span>
-          <a class="v" style="font-size:.9375rem" target="_blank" rel="noopener"
+          <a class="v v--sm" target="_blank" rel="noopener"
              href="https://maps.google.com/?q=5862+Omaha+Ave+N,+Stillwater,+MN+55082">5862 Omaha Ave N, Stillwater, MN 55082</a></div>
         <div class="rd"><span class="k">Phone</span>
           <a class="v" href="tel:+16126990527">612-699-0527</a></div>
@@ -513,7 +530,7 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
   </div>
 </section>
 
-<!-- ===== 3.4 proof ====================================================== -->
+<!-- ===== 3.4 proof (stub state, honestly rendered) ====================== -->
 <section class="proof">
   <div class="wrap">
     <div class="hd-row">
@@ -561,10 +578,10 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
     </ul>
 
     <div class="src">
-      <div class="rd"><span class="k">GBP &middot; Lakeville</span>
-        <span class="v" style="font-size:.9375rem;color:var(--pending)">URL not yet supplied</span></div>
+      <div class="rd rd--first"><span class="k">GBP &middot; Lakeville</span>
+        <span class="v v--sm">URL not yet supplied</span></div>
       <div class="rd"><span class="k">GBP &middot; Stillwater</span>
-        <span class="v" style="font-size:.9375rem;color:var(--pending)">No profile found</span></div>
+        <span class="v v--sm">No profile found</span></div>
     </div>
   </div>
 </section>
@@ -614,13 +631,13 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
 
     <div class="venues">
       <article class="venue">
-        <figure class="slot">
-          <svg class="slot__img" style="aspect-ratio:3/2" role="img" aria-label="Schematic of a Lakeville simulator bay: a dark room, a lit projection screen, a pendant light and an illustrative ball-flight arc. This is a placeholder for photography.">
-            <use href="#bay"/>
+        <figure class="slot slot--fixed">
+          <svg class="slot__img" role="img" aria-label="Schematic of a Lakeville simulator bay: a dark room, a lit projection screen, a pendant light and an illustrative ball-flight arc. A placeholder for photography.">
+            <use href="#bay" width="100%" height="100%"/>
           </svg>
           <figcaption class="slot__cap">
             <span class="slot__tag">Photo slot &middot; 3:2</span>
-            <span class="slot__note">Professional shoot exists (2022, warm/dark/pendant-lit).
+            <span class="slot__note">Professional shoot exists (2022 &mdash; warm, dark, pendant-lit).
               Not in this repo.</span>
           </figcaption>
         </figure>
@@ -635,17 +652,16 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
           <div class="venue__act">
             <a class="btn btn--primary" target="_blank" rel="noopener" data-analytics="book:lakeville"
                href="https://app.whoosh.io/patron/club/the-links-indoor-golf/agenda/simulators/today">
-              Book at Lakeville <span aria-hidden="true">&rarr;</span>
-              <span class="sr">(opens Whoosh booking in a new tab)</span></a>
+              Book at Lakeville <span aria-hidden="true">&rarr;</span><span class="sr"> (opens Whoosh booking in a new tab)</span></a>
             <a class="lnk" href="/locations/lakeville/">Venue details</a>
           </div>
         </div>
       </article>
 
       <article class="venue">
-        <figure class="slot">
-          <svg class="slot__img" style="aspect-ratio:3/2" role="img" aria-label="Empty photo slot for Stillwater: the outline of a bay, unfilled, because no professional photography of this venue exists yet.">
-            <use href="#bay-empty"/>
+        <figure class="slot slot--fixed">
+          <svg class="slot__img" role="img" aria-label="Empty photo slot for Stillwater: the outline of a bay, unfilled, because no professional photography of this venue exists yet.">
+            <use href="#bay-empty" width="100%" height="100%"/>
           </svg>
           <figcaption class="slot__cap">
             <span class="slot__tag">Photo slot &middot; 3:2 &middot; empty</span>
@@ -664,8 +680,7 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
           <div class="venue__act">
             <a class="btn btn--primary" target="_blank" rel="noopener" data-analytics="book:stillwater"
                href="https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today">
-              Book at Stillwater <span aria-hidden="true">&rarr;</span>
-              <span class="sr">(opens Whoosh booking in a new tab)</span></a>
+              Book at Stillwater <span aria-hidden="true">&rarr;</span><span class="sr"> (opens Whoosh booking in a new tab)</span></a>
             <a class="lnk" href="/locations/stillwater/">Venue details</a>
           </div>
         </div>
@@ -749,19 +764,15 @@ h4{font:var(--w-semibold) var(--fs-h4)/var(--lh-heading) var(--f-sans)}
 <!-- ===== preview note (not part of the design) ========================== -->
 <div class="pv">
   <div class="wrap">
-    <p>PREVIEW NOTE &mdash; this file loads nothing over the network. Type is the system sans and the
-      system mono; the real proposal in <code>token-sets/technical.json</code> is IBM Plex Sans + IBM
-      Plex Mono, a superfamily whose sans and mono share cap height and skeleton so a label and its
-      value align in a lane. The image slots are labelled schematics standing in for the photography
-      that does not exist in this repo; they carry no numbers and are not measurements from either
-      venue. Wordmark is typeset, not drawn &mdash; the production mark is the redrawn slab SVG in
+    <p>PREVIEW NOTE &mdash; this file loads nothing over the network. Type here is the system sans and
+      the system mono; the real proposal in <code>token-sets/technical.json</code> is IBM Plex Sans +
+      IBM Plex Mono, a superfamily whose sans and mono share cap height and skeleton so a label and
+      its value align in a lane. The image slots are labelled schematics standing in for photography
+      that is not in this repo &mdash; they carry no numbers and are not measurements from either
+      venue. The wordmark is typeset, not drawn; the production mark is the redrawn slab SVG in
       brand-direction &sect;4.2.</p>
   </div>
 </div>
 
-<style>
-/* trust strip becomes two columns at sm, as the shipped component does */
-@media(min-width:640px){.ts{grid-template-columns:1fr 1fr;gap:var(--s6) var(--s7)!important}}
-</style>
 </body>
 </html>

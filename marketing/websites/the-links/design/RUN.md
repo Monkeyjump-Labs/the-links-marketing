@@ -55,7 +55,38 @@ either a system font stack or one of the two families already self-hosted in thi
 (Bitter, Open Sans), base64-embedded if it wants them. **Judge the preview's type as an
 approximation; judge the overlay's type declaration as the real proposal.**
 
+## Findings from divergence that outlive this run
+
+Things the explorers surfaced that are true regardless of which direction wins.
+
+1. **The canonical `tokens.json` has no structural vocabulary at all** — no type scale, no
+   radius, no border, no elevation, no tracking, no line-height, no internal spacing scale.
+   All four candidates had to declare their own, which means they currently carry four private
+   structural languages. **The convergent phase must promote the winning set into the canonical
+   file** rather than leaving that gap open; otherwise the next surface re-invents it.
+2. **The palette cannot render its own brief.** The brand's stated visual idea is "a warm dark
+   room with one bright screen in it", but `screen` measures **1.81:1 on night** — there is no
+   bright cool value in the palette, so the one thing that makes the photography distinctive
+   cannot be expressed in UI. A `palette.screenLight` was *proposed, not added*. This is the
+   single most useful gap the sprint found.
+3. **The dark-field CTA has a third option nobody had written down.** `brand-direction.md`
+   §2.4.2 offered only paper-fill or paper-outline on dark, which leaves the primary action
+   colourless on the most-seen band. **Amber fill + night text measures 7.35:1 both
+   directions** and keeps the action colour present. The ember-on-dark ban is untouched.
+4. **The ember band traps you in mirror image.** On an ember ground, night text is 1.82:1 and
+   forest 1.36:1 — so a dark button on ember fails exactly as an ember button on forest does.
+   Not recorded in the base file; worth adding as an explicit prohibition.
+
 ## Step 3 · Gallery — human gate
 
-Pushed to wisplet for the human's steer: select / reject / edit / freeform. Nothing converges
-until then.
+Pushed to wisplet as `rv_RPegEabiyFaa8c` for the human's steer: select / reject / edit /
+freeform. Nothing converges until then.
+
+**Verification status.** All four: zero external asset loads (every `url()` is an internal SVG
+fragment; the one `@font-face` is a `data:` URI), exactly one `<h1>`, wisplet design-lint clean
+(51 findings, all the same benign "link is inert in the sandbox" advisory). The `brutalist`
+explorer additionally rendered its own candidate in headless Chrome at 1440px and 390px and
+fixed two real bugs it found that way — paper-on-paper text in the offer block, and a mobile
+header flex-order error. The other three were verified structurally, not visually; the
+orchestrator could not screenshot them (the browser extension times out in this environment),
+so **wisplet is the first real visual check for `editorial`, `soft` and `technical`.**

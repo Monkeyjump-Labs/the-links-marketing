@@ -111,8 +111,8 @@
       "raised": { "$value": "{palette.paper}", "$description": "Header chrome, footer legal bar. KEPT. ink on it 9.32:1." },
       "inset": { "$value": "{palette.chalk}", "$description": "NEW ROLE. The dense inset row — the featured 'Play' row (§3.3) and the proof section's field (§3.4). ink 8.48:1, screen 6.27:1, ember 6.23:1." },
       "alt": { "$value": "{palette.greige}", "$description": "Alternating light band. KEPT. ink 7.81:1." },
-      "dark": { "$value": "{palette.forest}", "$description": "The trust strip and the footer. paper on it 9.32:1, amber 5.49:1, sage 5.01:1, onDarkMuted 4.57:1." },
-      "darkest": { "$value": "{palette.night}", "$description": "The hero AND the featured offer. paper 12.48:1, amber 7.35:1, sage 6.71:1, screenOnDark 6.92:1, onDarkMuted 6.12:1." },
+      "dark": { "$value": "{palette.forest}", "$description": "The FOOTER only in this candidate. paper on it 9.32:1, sage 5.01:1, onDarkMuted 4.57:1 — note amber is 5.49:1 here, which is fine for 15px+ but under this set's 6.5:1 dense floor, so no 11–12px label is set on forest." },
+      "darkest": { "$value": "{palette.night}", "$description": "The HERO, the TRUST STRIP, and the FEATURED OFFER. The hero and the strip share one continuous night field separated by the tick rule — that is the committed idea made structural: the readout rail is part of the hero, not a fine-print bar beneath it. paper 12.48:1, amber 7.35:1, sage 6.71:1, screenOnDark 6.92:1, onDarkMuted 6.12:1." },
       "photo": { "$value": "{palette.room}", "$description": "NEW ROLE. Image-slot ground ONLY. Never a section background — the register's whole point is that this rectangle stands in for a photograph. paper 16.78:1, amber 9.89:1, screenOnDark 9.30:1, screenTrace 5.44:1, sage 9.02:1." }
     },
 
@@ -125,8 +125,14 @@
 
     "label": {
       "$description": "NEW ROLE FAMILY — the readout label. This is what makes the candidate the candidate: a fact is a mono label plus a tabular value, and the label has its own colour role so it can never be set in a low-contrast grey. Both values clear 6.5:1, which is this overlay's floor for the 11–12px sizes labels are set at.",
-      "onLight": { "$value": "{palette.screen}", "$description": "Field labels on white / paper / chalk. 7.49:1 / 6.89:1 / 6.27:1 (AA ✓). NOT approved on greige at 11px (5.77:1 — under the dense floor); use ink.default there." },
-      "onDark": { "$value": "{palette.amber}", "$description": "Field labels on forest / night / room. 5.49:1 / 7.35:1 / 9.89:1 (AA ✓)." }
+      "onLight": {
+        "$value": "{palette.screen}",
+        "$description": "Field labels on WHITE (7.49:1) and PAPER (6.89:1) — both clear this overlay's 6.5:1 floor for 11–12px type. NOT APPROVED at label sizes on chalk (6.27:1) or greige (5.77:1): on those two fields a label uses `ink.default` (8.48:1 / 7.81:1) and `accent.measure` stays as the non-text status marker (the chip border). This restriction is enforced in the rendered candidate — see the `.proof .k` override."
+      },
+      "onDark": {
+        "$value": "{palette.amber}",
+        "$description": "Field labels on NIGHT (7.35:1) and ROOM (9.89:1) — both clear the 6.5:1 dense floor. NOT APPROVED at label sizes on forest (5.49:1). This is why the trust strip sits on `surface.darkest` alongside the hero rather than on `surface.dark`: at 12px, amber on forest is under the floor. In the footer — the one forest field — column heads are set in paper (9.32:1) with an amber 2px underline doing the marking as a non-text rule (5.49:1, past the 3:1 gate)."
+      }
     },
 
     "value": {
