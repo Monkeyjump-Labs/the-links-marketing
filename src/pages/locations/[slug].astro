@@ -32,11 +32,11 @@ const metadata = {
 <BaseLayout metadata={metadata}>
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">{d.name}</h1>
-    {d.intro && <p class="mt-4 max-w-2xl text-lg text-ink/70">{d.intro}</p>}
+    {d.intro && <p class="mt-4 max-w-2xl text-lg text-inkMuted">{d.intro}</p>}
 
     {
       !d.verified && (
-        <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
           <strong>Pre-launch note:</strong> some details on this page are inherited from the old site and not yet
           confirmed by the venue. See the venue record in the CMS for the outstanding list.
         </p>
@@ -51,7 +51,7 @@ const metadata = {
 
       <div>
         <h2 class="text-2xl font-bold">Find us</h2>
-        <address class="mt-4 text-ink/70 not-italic">
+        <address class="mt-4 text-inkMuted not-italic">
           <a
             href={`https://maps.google.com/?q=${encodeURIComponent(formatAddress(venue))}`}
             class="hover:underline"
@@ -72,13 +72,13 @@ const metadata = {
         </address>
 
         <h3 class="mt-8 text-lg font-semibold">The bays</h3>
-        <p class="mt-2 text-ink/70">{d.bays} bays · {d.simulator}</p>
+        <p class="mt-2 text-inkMuted">{d.bays} bays · {d.simulator}</p>
 
         {
           d.amenities.length > 0 && (
             <ul class="mt-4 flex flex-wrap gap-2">
               {d.amenities.map((a) => (
-                <li class="rounded-full bg-surface px-3 py-1 text-sm text-ink/70">{a}</li>
+                <li class="rounded-full bg-surface px-3 py-1 text-sm text-inkMuted">{a}</li>
               ))}
             </ul>
           )

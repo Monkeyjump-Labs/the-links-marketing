@@ -71,7 +71,7 @@ const sponsors = [
 <BaseLayout metadata={metadata}>
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">About The Links</h1>
-    <p class="mt-4 max-w-2xl text-lg text-ink/70">
+    <p class="mt-4 max-w-2xl text-lg text-inkMuted">
       Two golfers, one Wednesday-night habit, and a Minnesota winter that keeps getting in the way of it. That is
       genuinely the whole origin story.
     </p>
@@ -79,23 +79,23 @@ const sponsors = [
     {/* 1. The story, in the founders' own voice. */}
     <div class="mt-section max-w-prose-page">
       <h2 class="text-3xl font-bold">Two guys who wanted somewhere better to play</h2>
-      <p class="mt-4 text-ink/70">
+      <p class="mt-4 text-inkMuted">
         It started in December 2021. CJ had run outdoor golf leagues for years, and he and Cody played every Wednesday
         night through the summer. As neighbours and friends, when winter rolled round and golf season disappeared into
         six feet of Minnesota sadness, they kept the Wednesday tradition alive with what they called bourbon nights —
         because apparently that is what golfers do when there is snow on the ground.
       </p>
-      <p class="mt-4 text-ink/70">
+      <p class="mt-4 text-inkMuted">
         One night, after visiting an indoor simulator somewhere else, they looked at each other and said there had to be
         a better option for the Lakeville area. So they toured golf simulator businesses around the Twin Cities. Every
         place they visited made them think, "this doesn't look THAT hard." Spoiler alert: it was.
       </p>
-      <p class="mt-4 text-ink/70">
+      <p class="mt-4 text-inkMuted">
         They formed the LLC in January 2022 and started looking for space. Then came choosing the technology. After
         visiting several venues they landed on GolfZon, because it felt the most immersive and realistic — basically the
         closest thing to real golf without losing balls in the woods or blaming your driver for everything.
       </p>
-      <p class="mt-4 text-ink/70">
+      <p class="mt-4 text-inkMuted">
         The goal was simple: the best golf experience they could build, paired with good food, cold drinks, and a place
         people actually wanted to hang around in. <strong>Lakeville Links opened in the autumn of 2022.</strong> For an IT
         professional and a commodity broker pretending to know how to open an entertainment business, they think it went pretty
@@ -103,12 +103,12 @@ const sponsors = [
       </p>
 
       <h2 class="mt-12 text-3xl font-bold">Then came Stillwater</h2>
-      <p class="mt-4 text-ink/70">
+      <p class="mt-4 text-inkMuted">
         Through a mutual connection, the owner of Stillwater Bowl turned out to have some old golf simulators and no
         idea what to do with them. And when they say old, they mean old — the software was literally running on Windows
         98.
       </p>
-      <p class="mt-4 text-ink/70">
+      <p class="mt-4 text-inkMuted">
         After more planning, more due diligence and several conversations that started with "are we really doing this
         again?", it turned out to be a genuinely good opportunity: a chance to give the Stillwater golf community
         somewhere to play, hang out, and get through a long Minnesota winter without losing their swing or their sanity.
@@ -116,14 +116,14 @@ const sponsors = [
       </p>
 
       <h2 class="mt-12 text-3xl font-bold">The rebrand</h2>
-      <p class="mt-4 text-ink/70">
+      <p class="mt-4 text-inkMuted">
         With a second location, it was time for a rebrand. Apparently having multiple locations means you are supposed
         to look professional or something. So <strong>Lakeville Links</strong> became <strong
           >The Links of Lakeville</strong
         >, alongside <strong>The Links of Stillwater</strong>, under one name: <strong>The Links</strong>. They also
         bought thelinks.golf, because somehow ".golf" is a real thing and it felt meant to be.
       </p>
-      <p class="mt-4 text-ink/70">
+      <p class="mt-4 text-inkMuted">
         If you knew the place as Lakeville Links, nothing has changed except the sign. Same bays, same bar, same people
         behind it — CJ and Cody.
       </p>
@@ -141,10 +141,10 @@ const sponsors = [
                   {venue.data.name}
                 </a>
               </h3>
-              <p class="mt-1 text-sm text-ink/60">
+              <p class="mt-1 text-sm text-inkMuted">
                 Open since {venue.data.openedYear} · {venue.data.addressLocality}, {venue.data.addressRegion}
               </p>
-              {venue.data.intro && <p class="mt-3 text-ink/70">{venue.data.intro}</p>}
+              {venue.data.intro && <p class="mt-3 text-inkMuted">{venue.data.intro}</p>}
               <div class="mt-6">
                 <BookButton venue={venue} size="sm" variant="outline" />
               </div>
@@ -157,7 +157,7 @@ const sponsors = [
     {/* 3. Press. Redirect target for the retired /news shell — keep the anchor. */}
     <section class="mt-section" id="press">
       <h2 class="text-3xl font-bold">In the press</h2>
-      <p class="mt-3 max-w-2xl text-ink/70">
+      <p class="mt-3 max-w-2xl text-inkMuted">
         Coverage of both openings, from people who came and looked before writing about it.
       </p>
       <ul class="mt-8 divide-y divide-ink/10">
@@ -167,14 +167,14 @@ const sponsors = [
               <a href={item.href} class="font-semibold hover:underline" target="_blank" rel="noopener">
                 {item.title}
               </a>
-              <p class="mt-1 text-sm text-ink/60">
+              <p class="mt-1 text-sm text-inkMuted">
                 {item.outlet} · {item.date}
               </p>
             </li>
           ))
         }
       </ul>
-      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
         <strong>STUB —</strong> links only, deliberately. No quotation is reproduced from any of these pieces because none
         was captured verbatim during handover, and inventing one is not an option. If the client wants pull quotes, send the
         sentences and the outlet will be credited properly.
@@ -184,7 +184,7 @@ const sponsors = [
     {/* 4. Sponsors. Redirect target for /advertisinglogos — keep the anchor. */}
     <section class="mt-section" id="sponsors">
       <h2 class="text-3xl font-bold">The bay sponsors</h2>
-      <p class="mt-3 max-w-2xl text-ink/70">
+      <p class="mt-3 max-w-2xl text-inkMuted">
         Five Lakeville bays carry the name of a local business that backed the place. If you play Bay 2, you are playing
         Thor's bay.
       </p>
@@ -192,13 +192,13 @@ const sponsors = [
         {
           sponsors.map((sponsor) => (
             <li class="rounded border-2 border-ink/15 p-4">
-              <p class="text-sm text-ink/60">{sponsor.bay}</p>
+              <p class="text-sm text-inkMuted">{sponsor.bay}</p>
               <p class="mt-1 text-lg font-semibold">{sponsor.name}</p>
             </li>
           ))
         }
       </ul>
-      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
         <strong>STUB —</strong> sponsor logo files and each sponsor's website, so these become links rather than names. Bay
         3 has no sponsor listed — confirm whether it is unsold or simply missing from the handover. No Stillwater sponsors
         exist yet.
@@ -208,7 +208,7 @@ const sponsors = [
     {/* 5. Proof. 81% of the segment shows no reviews; we still will not invent any. */}
     <section class="mt-section">
       <h2 class="text-3xl font-bold">What people say</h2>
-      <p class="mt-3 max-w-2xl rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+      <p class="mt-3 max-w-2xl rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
         <strong>STUB —</strong> awaiting real, attributed reviews and the Google Business Profile link for each venue. Reviews
         exist on third-party listings but the counts and ratings there conflict with each other, so nothing is quoted or counted
         here until the client confirms the source. Unsourced quotes are not shipped.
@@ -218,7 +218,7 @@ const sponsors = [
     {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
     <section class="mt-section rounded bg-surface p-8">
       <h2 class="text-2xl font-bold">Come and see it</h2>
-      <p class="mt-3 max-w-2xl text-ink/70">
+      <p class="mt-3 max-w-2xl text-inkMuted">
         Book an hour at either venue. Bring people who do not golf — that is most of the room anyway.
       </p>
       <div class="mt-6"><BookButton size="lg" /></div>

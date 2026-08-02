@@ -18,7 +18,7 @@ const { footerLinks, nav, social, copyright } = globalData;
         venues.map((venue) => (
           <div>
             <h2 class="text-sm font-semibold tracking-wide uppercase">{venue.data.name}</h2>
-            <address class="mt-3 text-sm not-italic text-ink/70">
+            <address class="mt-3 text-sm not-italic text-inkMuted">
               <a href={venuePath(venue)} class="block hover:underline">
                 {formatAddress(venue)}
               </a>
@@ -31,14 +31,14 @@ const { footerLinks, nav, social, copyright } = globalData;
                 </a>
               )}
             </address>
-            <p class="mt-3 text-sm text-ink/60">{summariseHours(venue).join(' · ')}</p>
+            <p class="mt-3 text-sm text-inkMuted">{summariseHours(venue).join(' · ')}</p>
           </div>
         ))
       }
 
       <nav aria-label="Footer">
         <h2 class="text-sm font-semibold tracking-wide uppercase">Visit</h2>
-        <ul class="mt-3 flex flex-col gap-2 text-sm text-ink/70">
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-inkMuted">
           {
             nav.map((link) => (
               <li>
@@ -53,7 +53,7 @@ const { footerLinks, nav, social, copyright } = globalData;
 
       <nav aria-label="More">
         <h2 class="text-sm font-semibold tracking-wide uppercase">More</h2>
-        <ul class="mt-3 flex flex-col gap-2 text-sm text-ink/70">
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-inkMuted">
           {
             footerLinks.map((link) => (
               <li>
@@ -76,7 +76,7 @@ const { footerLinks, nav, social, copyright } = globalData;
       </nav>
     </div>
 
-    <div class="mt-10 flex flex-wrap gap-4 border-t border-ink/10 pt-6 text-xs text-ink/50">
+    <div class="mt-10 flex flex-wrap gap-4 border-t border-ink/10 pt-6 text-xs text-inkMuted">
       <span>&copy; {new Date().getFullYear()} {copyright.name}. {copyright.language}</span>
       <a href="/privacy/" class="hover:underline">Privacy</a>
       <a href="/terms/" class="hover:underline">Terms</a>

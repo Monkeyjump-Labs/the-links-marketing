@@ -11,14 +11,14 @@ const currentPath = Astro.url.pathname;
 ---
 
 <div class="flex items-center gap-1 text-sm" data-venue-switcher>
-  <span class="mr-1 hidden text-ink/60 sm:inline">Visiting</span>
+  <span class="mr-1 hidden text-inkMuted sm:inline">Visiting</span>
   {
     venues.map((venue) => (
       <a
         href={venuePath(venue)}
         class:list={[
           'rounded px-2 py-1 font-medium transition hover:bg-ink/5',
-          currentPath.startsWith(venuePath(venue)) ? 'bg-ink/10 text-ink' : 'text-ink/70',
+          currentPath.startsWith(venuePath(venue)) ? 'bg-ink/10 text-ink' : 'text-inkMuted',
         ]}
         data-venue={venue.data.slug}
       >

@@ -43,7 +43,7 @@ const whyItWorks = [
 <BaseLayout metadata={metadata}>
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">Gift cards</h1>
-    <p class="mt-4 max-w-2xl text-lg text-ink/70">
+    <p class="mt-4 max-w-2xl text-lg text-inkMuted">
       An hour in a bay, food, drinks, or all three. Bought online, delivered by email, usable the same day — which makes
       it a reasonable present to buy on 23 December.
     </p>
@@ -52,7 +52,7 @@ const whyItWorks = [
     <div class="mt-10 grid gap-6 md:grid-cols-2">
       <div class="rounded border-2 border-primary p-6">
         <h2 class="text-2xl font-bold">Buy a gift card</h2>
-        <p class="mt-3 text-ink/70">
+        <p class="mt-3 text-inkMuted">
           Choose an amount, add a message, and it is emailed to whoever you are giving it to. It takes about a minute.
         </p>
         <a
@@ -69,7 +69,7 @@ const whyItWorks = [
 
       <div class="rounded border-2 border-ink/15 p-6">
         <h2 class="text-2xl font-bold">Check a balance</h2>
-        <p class="mt-3 text-ink/70">
+        <p class="mt-3 text-inkMuted">
           Been sitting in a wallet since last Christmas? Enter the number and it will tell you what is left on it.
         </p>
         <a
@@ -93,7 +93,7 @@ const whyItWorks = [
           whyItWorks.map(([title, body]) => (
             <div>
               <dt class="text-lg font-semibold">{title}</dt>
-              <dd class="mt-2 text-ink/70">{body}</dd>
+              <dd class="mt-2 text-inkMuted">{body}</dd>
             </div>
           ))
         }
@@ -104,10 +104,10 @@ const whyItWorks = [
     <section class="mt-section">
       <h2 class="text-3xl font-bold">The details</h2>
       <div class="mt-6 rounded border-2 border-dashed border-ink/25 p-6">
-        <p class="text-ink/70">
+        <p class="text-inkMuted">
           <strong>STUB —</strong> two things a buyer needs before they will click, and neither is published today.
         </p>
-        <ul class="mt-4 list-disc space-y-2 pl-5 text-ink/70">
+        <ul class="mt-4 list-disc space-y-2 pl-5 text-inkMuted">
           <li>
             <strong>Denominations.</strong> Whether the amount is free-choice or a fixed set, and whether there is a minimum.
           </li>
@@ -117,7 +117,7 @@ const whyItWorks = [
             know before they drive.
           </li>
         </ul>
-        <p class="mt-4 text-ink/70">
+        <p class="mt-4 text-inkMuted">
           Also to confirm: expiry (if any), whether a card can be used against a membership or a LinksFlex block, and
           whether physical cards exist for someone who wants something to hand over.
         </p>
@@ -130,12 +130,12 @@ const whyItWorks = [
     }
     <section class="mt-section rounded bg-surface p-8">
       <h2 class="text-2xl font-bold">If it is November or December</h2>
-      <p class="mt-3 max-w-2xl text-ink/70">
+      <p class="mt-3 max-w-2xl text-inkMuted">
         This is when most of these get bought, and it is also when the bays are busiest — league nights, work parties
         and everyone in Minnesota realising the season is over. If you are giving one as a Christmas present, tell them
         to book early in January rather than waiting for a Saturday in February to be free.
       </p>
-      <p class="mt-4 max-w-2xl text-ink/70">
+      <p class="mt-4 max-w-2xl text-inkMuted">
         Planning a work party rather than a present? <a href="/events/" class="font-semibold underline"
           >Events and parties</a
         > is the page you want.
@@ -145,7 +145,7 @@ const whyItWorks = [
     {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
     <section class="mt-section">
       <h2 class="text-2xl font-bold">Or just bring them</h2>
-      <p class="mt-3 max-w-2xl text-ink/70">
+      <p class="mt-3 max-w-2xl text-inkMuted">
         A bay is priced by the hour, not the head. Book one and take them with you — cheaper than most presents and you
         get to come too.
       </p>

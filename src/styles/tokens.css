@@ -36,7 +36,7 @@
  * the whole weight range, so adding a weight costs zero bytes.
  * `font-display: swap` — text paints immediately in the fallback and reflows
  * when the face lands; the HTML is never blocked on a font.
- * Critical path (latin only): 34 KB display + 43 KB body = 77 KB.
+ * Critical path (latin only): 33 KB display + 42 KB body = 75 KB.
  * ------------------------------------------------------------------------- */
 
 /* Bitter — display / headings. Variable, 300–800. */
@@ -123,7 +123,7 @@
      light measured in the venue photography (every frame R−B +15..+19).
      #FFFFFF text on it 7.45:1 · #F7F5F3 text on it 6.85:1
      survives the starter's `hover:brightness-125` at 4.91:1 (still AA)
-     and `hover:opacity-90` at 5.51:1. As text on #FFFFFF 7.45:1. */
+     and `hover:opacity-90` at 5.43:1. As text on #FFFFFF 7.45:1. */
   --brand-grape: #8a400a;
 
   /* EMBER TINT — light warm field for callouts / featured-offer blocks.

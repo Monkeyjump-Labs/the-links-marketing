@@ -17,11 +17,11 @@ const venues = await getVenues();
           <a href={venuePath(venue)} class="font-semibold hover:underline">
             {venue.data.name}
           </a>
-          <p class="text-sm text-ink/70">
+          <p class="text-sm text-inkMuted">
             {summariseHours(venue).join(' · ')}
-            {!venue.data.verified && <span class="ml-1 text-ink/40">(hours being confirmed)</span>}
+            {!venue.data.verified && <span class="ml-1 text-inkMuted">(hours being confirmed)</span>}
           </p>
-          <p class="text-sm text-ink/70">
+          <p class="text-sm text-inkMuted">
             <a
               href={`https://maps.google.com/?q=${encodeURIComponent(formatAddress(venue))}`}
               class="hover:underline"

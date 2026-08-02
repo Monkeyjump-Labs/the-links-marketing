@@ -48,14 +48,14 @@ const sections = [
 <BaseLayout metadata={metadata}>
   <section class="mx-auto max-w-prose-page px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">Terms of use</h1>
-    <p class="mt-4 text-lg text-ink/70">The terms that apply to this website.</p>
+    <p class="mt-4 text-lg text-inkMuted">The terms that apply to this website.</p>
 
-    <p class="mt-8 rounded border-2 border-dashed border-ink/40 p-6 text-ink/70">
+    <p class="mt-8 rounded border-2 border-dashed border-ink/40 p-6 text-inkMuted">
       <strong>STUB — this page is a structure, not a set of terms.</strong> Nothing below has been drafted or reviewed by
       a lawyer. It exists so the footer link is not broken and so the client can see exactly which clauses are needed. Do
       not publish this site to production with this page in this state.
     </p>
-    <p class="mt-4 text-ink/70">
+    <p class="mt-4 text-inkMuted">
       Looking for the rules about your reservation — what you pay for, and how to cancel? Those are on the
       <a href="/policy/" class="font-semibold underline"> booking and cancellation policy</a> page.
     </p>
@@ -64,8 +64,8 @@ const sections = [
       sections.map(([title, plain, needed]) => (
         <section class="mt-12">
           <h2 class="text-2xl font-bold">{title}</h2>
-          <p class="mt-3 text-ink/70">{plain}</p>
-          <p class="mt-3 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+          <p class="mt-3 text-inkMuted">{plain}</p>
+          <p class="mt-3 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
             <strong>STUB —</strong> needed: {needed}
           </p>
         </section>
@@ -74,7 +74,7 @@ const sections = [
 
     <section class="mt-12">
       <h2 class="text-2xl font-bold">Contact</h2>
-      <p class="mt-3 text-ink/70">
+      <p class="mt-3 text-inkMuted">
         Questions go to <a href="mailto:info@lakevillelinks.com" class="underline">info@lakevillelinks.com</a>.
       </p>
     </section>
@@ -82,7 +82,7 @@ const sections = [
     {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
     <section class="mt-section rounded bg-surface p-8">
       <h2 class="text-2xl font-bold">Book a bay</h2>
-      <p class="mt-3 text-ink/70">$35 an hour per bay, up to five of you, in Lakeville or Stillwater.</p>
+      <p class="mt-3 text-inkMuted">$35 an hour per bay, up to five of you, in Lakeville or Stillwater.</p>
       <div class="mt-6"><BookButton size="lg" /></div>
     </section>
   </section>

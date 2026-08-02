@@ -45,7 +45,7 @@ const labelClass = 'block text-sm font-medium';
   id={formId}
 >
   <h2 class="text-2xl font-bold">{heading}</h2>
-  <p class="mt-2 text-ink/70">{blurb}</p>
+  <p class="mt-2 text-inkMuted">{blurb}</p>
 
   <input type="hidden" name="list" value={listName} />
   <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
@@ -93,7 +93,7 @@ const labelClass = 'block text-sm font-medium';
 
   {
     !endpoint && (
-      <p class="mt-3 text-xs text-ink/40">Lead endpoint not configured — this form opens an email instead.</p>
+      <p class="mt-3 text-xs text-inkMuted">Lead endpoint not configured — this form opens an email instead.</p>
     )
   }
 </form>

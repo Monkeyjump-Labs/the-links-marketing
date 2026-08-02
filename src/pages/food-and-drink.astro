@@ -37,7 +37,7 @@ const venueName = (scope: VenueScope) =>
 <BaseLayout metadata={metadata}>
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">Food &amp; drink</h1>
-    <p class="mt-4 max-w-2xl text-lg text-ink/70">
+    <p class="mt-4 max-w-2xl text-lg text-inkMuted">
       You can eat and drink in the bay. Nobody expects you to stop playing to sit at a table, and the tab runs through
       the venue so one person settles it at the end.
     </p>
@@ -49,7 +49,7 @@ const venueName = (scope: VenueScope) =>
     <section class="mt-10 grid gap-6 md:grid-cols-2">
       <div class="rounded border-2 border-ink/15 p-6">
         <h2 class="text-xl font-semibold">Lakeville</h2>
-        <p class="mt-2 text-ink/70">
+        <p class="mt-2 text-inkMuted">
           Full bar and its own kitchen. Draft and canned beer, seltzers, cocktails, soft drinks, and a food menu built
           around Minnesota thin-crust pizza, wings and appetisers. Nine screens, so the game is on whether or not you
           are playing.
@@ -57,11 +57,11 @@ const venueName = (scope: VenueScope) =>
       </div>
       <div class="rounded border-2 border-ink/15 p-6">
         <h2 class="text-xl font-semibold">Stillwater</h2>
-        <p class="mt-2 text-ink/70">
+        <p class="mt-2 text-inkMuted">
           The bays sit inside Stillwater Bowl &amp; Lounge, and the food and drink come from them — burgers, bites and a
           full bar. It is one building and one visit; it is not our kitchen.
         </p>
-        <p class="mt-3 text-sm text-ink/60">
+        <p class="mt-3 text-sm text-inkMuted">
           <strong>STUB —</strong> whether Stillwater Bowl's menu is published here, linked, or left to the host has not been
           decided with the client.
         </p>
@@ -76,12 +76,12 @@ const venueName = (scope: VenueScope) =>
         !hasRealItems && (
           <div class="mt-6 rounded border-2 border-dashed border-ink/25 p-6">
             <p class="font-semibold">STUB — the menu has not been transcribed yet.</p>
-            <p class="mt-3 text-ink/70">
+            <p class="mt-3 text-inkMuted">
               The current site publishes its entire menu as six images with no text alternative, so the items and prices
               are not machine-readable and could not be lifted safely during handover. Two of those images also give the
               same dish two different descriptions, so a straight copy would ship a contradiction.
             </p>
-            <p class="mt-3 text-ink/70">
+            <p class="mt-3 text-inkMuted">
               <strong>Needed from the client:</strong> the current menu as text — every section, every item, every
               price, including beer and soft drinks, which are not priced on the graphic at all. Once it is in the CMS
               this page fills itself in.
@@ -95,7 +95,7 @@ const venueName = (scope: VenueScope) =>
           <section class="mt-10">
             <div class="flex flex-wrap items-baseline justify-between gap-2">
               <h3 class="text-2xl font-semibold">{section.data.section}</h3>
-              <span class="text-sm text-ink/60">{venueName(section.data.venue)}</span>
+              <span class="text-sm text-inkMuted">{venueName(section.data.venue)}</span>
             </div>
 
             {section.data.items.length > 0 && (
@@ -104,7 +104,7 @@ const venueName = (scope: VenueScope) =>
                   <div class="flex flex-wrap items-baseline justify-between gap-x-6 py-3">
                     <div class="max-w-xl">
                       <dt class="font-medium">{item.name}</dt>
-                      {item.description && <dd class="mt-1 text-sm text-ink/70">{item.description}</dd>}
+                      {item.description && <dd class="mt-1 text-sm text-inkMuted">{item.description}</dd>}
                     </div>
                     {item.price && <dd class="font-semibold">{item.price}</dd>}
                   </div>
@@ -113,7 +113,7 @@ const venueName = (scope: VenueScope) =>
             )}
 
             {section.data.note && (
-              <p class="mt-4 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+              <p class="mt-4 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
                 {section.data.note}
               </p>
             )}
@@ -128,17 +128,17 @@ const venueName = (scope: VenueScope) =>
     }
     <section class="mt-section">
       <h2 class="text-3xl font-bold">Paying</h2>
-      <p class="mt-3 max-w-2xl text-ink/70">
+      <p class="mt-3 max-w-2xl text-inkMuted">
         There is a <strong>3% surcharge on credit card payments</strong>. Cash and debit avoid it. Members get 10% off
         food and drink.
       </p>
-      <p class="mt-4 max-w-2xl rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+      <p class="mt-4 max-w-2xl rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
         <strong>STUB —</strong> the 3% card surcharge appears only on the menu graphic today and nowhere in the booking flow.
         Confirm it still applies, and confirm whether it applies at Stillwater, where the till belongs to Stillwater Bowl.
       </p>
     </section>
 
-    <p class="mt-section rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+    <p class="mt-section rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
       <strong>STUB —</strong> real food photography. The playbook asks for photographs of the actual food; none were supplied
       and stock imagery is a ship-blocker.
     </p>
@@ -146,7 +146,7 @@ const venueName = (scope: VenueScope) =>
     {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
     <section class="mt-section rounded bg-surface p-8">
       <h2 class="text-2xl font-bold">Hungry and free tonight?</h2>
-      <p class="mt-3 max-w-2xl text-ink/70">
+      <p class="mt-3 max-w-2xl text-inkMuted">
         Book a bay by the hour and order from the bay. Up to five of you for the same price.
       </p>
       <div class="mt-6"><BookButton size="lg" /></div>

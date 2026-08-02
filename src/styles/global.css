@@ -36,6 +36,10 @@
   --color-primary: var(--brand-primary);
   --color-accent: var(--brand-accent);
 
+  /* Secondary text. Use `text-inkMuted` — NOT `text-ink/70`, which computes to
+     4.39:1 on white and misses WCAG AA. Any ink opacity below /75 fails. */
+  --color-inkMuted: var(--brand-ink-muted);
+
   /* -- Fonts (font-sans, font-mono) -------------------------------------- */
   --font-sans: var(--brand-font-sans);
   --font-mono: var(--brand-font-mono);

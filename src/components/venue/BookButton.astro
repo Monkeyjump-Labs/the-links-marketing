@@ -10,7 +10,16 @@ interface Props {
   venue?: Venue;
   label?: string;
   size?: 'sm' | 'md' | 'lg';
-  variant?: 'solid' | 'outline';
+  /**
+   * `solid`/`outline` are for LIGHT surfaces. On a dark field use `onDark`.
+   *
+   * This is not cosmetic: an ember fill on the forest-green hero measures
+   * 1.36:1 — effectively invisible. A solid action colour on a near-black field
+   * is mathematically unreachable here (white text at 4.5:1 caps the fill's
+   * luminance below the level a 3:1 boundary against #124B2E demands), so on
+   * dark the CTA inverts to a paper fill instead. See brand-direction.md.
+   */
+  variant?: 'solid' | 'outline' | 'onDark';
   class?: string;
 }
 
@@ -28,6 +37,7 @@ const sizes = {
 const variants = {
   solid: 'bg-primary text-surface hover:opacity-90',
   outline: 'border-2 border-current text-ink hover:bg-ink hover:text-surface',
+  onDark: 'bg-surface text-ink hover:opacity-90',
 };
 ---
 

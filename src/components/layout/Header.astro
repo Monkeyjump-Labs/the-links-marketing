@@ -26,7 +26,7 @@ const currentPath = Astro.url.pathname;
                 aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
                 class:list={[
                   'text-sm transition hover:text-primary',
-                  currentPath.startsWith(link.href) ? 'font-semibold text-ink' : 'text-ink/70',
+                  currentPath.startsWith(link.href) ? 'font-semibold text-ink' : 'text-inkMuted',
                 ]}
               >
                 {link.label}
