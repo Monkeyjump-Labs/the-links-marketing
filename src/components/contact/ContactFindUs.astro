@@ -1,0 +1,92 @@
+---
+interface Props {
+  heading?: string;
+  companyName?: string;
+  streetAddress?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string | number;
+  email?: string;
+  phone?: string;
+  careersHeading?: string;
+  careersEmail?: string;
+  careersPhone?: string;
+}
+
+const {
+  heading = 'Find Us',
+  companyName,
+  streetAddress,
+  city,
+  state,
+  zipCode,
+  email,
+  phone,
+  careersHeading = 'Careers',
+  careersEmail,
+  careersPhone,
+} = Astro.props;
+
+const toTelHref = (raw?: string) => (raw ? `tel:+1${raw.replace(/[\s\-().]/g, '')}` : undefined);
+const telHref = toTelHref(phone);
+const careersTelHref = toTelHref(careersPhone);
+const hasCareers = Boolean(careersEmail || careersPhone);
+const cityStateZip = [city, state].filter(Boolean).join(', ');
+const cityStateZipLine = [cityStateZip, zipCode].filter(Boolean).join(' ');
+---
+
+<section class="bg-mint px-6 py-12 lg:px-16 lg:py-20">
+  <div class="max-w-content mx-auto lg:flex lg:gap-12 lg:items-start">
+    <div class="bg-offWhite border-2 border-softBlack text-softBlack px-8 py-10 lg:px-12 lg:py-12 lg:flex-1">
+      <h3 class="font-mono font-normal text-lg leading-relaxed m-0 text-softBlack lg:text-3xl">{heading}</h3>
+      <div class="mt-4 font-sans text-base uppercase text-softBlack space-y-2 lg:tracking-wide lg:text-xl">
+        {companyName && <div>{companyName}</div>}
+        {streetAddress && <div>{streetAddress}</div>}
+        {cityStateZipLine && <div>{cityStateZipLine}</div>}
+        <div class="mt-8 space-y-3">
+          {
+            email && (
+              <div class="normal-case">
+                <a href={`mailto:${email}`} class="hover:underline">
+                  {email}
+                </a>
+              </div>
+            )
+          }
+          {
+            phone && telHref && (
+              <div>
+                <a href={telHref} class="hover:underline">
+                  {phone}
+                </a>
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+    {
+      hasCareers && (
+        <div class="mt-12 text-softBlack lg:mt-0 lg:max-w-sm">
+          <h3 class="font-mono font-normal text-lg leading-relaxed m-0 text-softBlack lg:text-3xl">{careersHeading}</h3>
+          <div class="mt-4 font-sans text-base text-softBlack space-y-3 lg:text-xl">
+            {careersEmail && (
+              <div>
+                <a href={`mailto:${careersEmail}`} class="hover:underline">
+                  {careersEmail}
+                </a>
+              </div>
+            )}
+            {careersPhone && careersTelHref && (
+              <div>
+                <a href={careersTelHref} class="hover:underline">
+                  {careersPhone}
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>

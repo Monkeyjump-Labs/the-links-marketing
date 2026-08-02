@@ -1,0 +1,44 @@
+---
+interface Employee {
+  name: string;
+  title?: string;
+  bio?: string;
+  image?: string;
+  imageAltText?: string;
+}
+
+interface Props {
+  employees?: Employee[];
+}
+
+const { employees = [] } = Astro.props;
+---
+
+<section class="max-w-content mx-auto px-6 lg:px-16 py-12 lg:py-20">
+  <div class="font-mono font-normal text-3xl leading-tight mb-14 lg:text-5xl">Leadership</div>
+  <div class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3 lg:max-w-[90rem]">
+    {
+      employees.map((employee) => (
+        <div class="flex flex-col">
+          {employee.image ? (
+            <img
+              src={employee.image}
+              alt={employee.imageAltText || employee.name}
+              class="w-full max-w-[480px] h-auto aspect-[2/3] object-cover mb-6 lg:max-w-[400px]"
+              loading="lazy"
+            />
+          ) : (
+            <div class="w-full max-w-[480px] aspect-[2/3] mb-6 bg-offWhite border-2 border-softBlack lg:max-w-[400px]" />
+          )}
+          <div>
+            <h3 class="font-mono text-lg font-normal m-0 mb-2 text-softBlack">{employee.name}</h3>
+            {employee.title && (
+              <p class="font-sans text-base uppercase tracking-[0.05rem] text-softBlack m-0 mb-2">{employee.title}</p>
+            )}
+            {employee.bio && <p class="font-sans text-base text-softBlack leading-relaxed">{employee.bio}</p>}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

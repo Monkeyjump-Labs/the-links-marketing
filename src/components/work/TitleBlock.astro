@@ -1,0 +1,37 @@
+---
+import type { BrandColor } from '../../lib/types';
+import { bgClass } from '../../lib/colorClasses';
+
+interface Props {
+  title: string;
+  subTitle?: string;
+  author?: string;
+  date?: string;
+  image?: string;
+  imageAltText?: string;
+  bgColor?: BrandColor;
+  prefix?: string;
+}
+
+const { title, subTitle, author, date, image, imageAltText, bgColor, prefix } = Astro.props;
+---
+
+<section
+  class:list={[
+    'max-w-content mx-auto px-6 lg:px-16 pt-40 pb-12 lg:pt-0 lg:pb-20 min-h-[40vh] lg:min-h-[60vh] lg:flex lg:flex-col lg:justify-center',
+    bgColor ? bgClass[bgColor] : '',
+  ]}
+>
+  {prefix && <p class="font-sans text-base uppercase tracking-widest text-softBlack mb-4">{prefix}</p>}
+  <h1 class="font-mono font-normal text-3xl lg:text-5xl text-softBlack mb-4">{title}</h1>
+  {subTitle && <p class="font-sans text-base lg:text-xl text-softBlack mb-4">{subTitle}</p>}
+  {
+    (author || date) && (
+      <div class="flex gap-4 mb-4">
+        {date && <span class="font-sans text-sm uppercase tracking-wide text-softBlack">{date}</span>}
+        {author && <span class="font-sans text-sm uppercase tracking-wide text-softBlack">By {author}</span>}
+      </div>
+    )
+  }
+  {image && <img src={image} alt={imageAltText || title} class="max-w-full h-auto mt-8" />}
+</section>

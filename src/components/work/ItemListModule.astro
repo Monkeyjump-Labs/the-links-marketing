@@ -1,0 +1,26 @@
+---
+import type { BrandColor } from '../../lib/types';
+import { textClass } from '../../lib/colorClasses';
+
+interface Props {
+  heading?: string;
+  itemNumberColor?: BrandColor;
+  numberedItems?: Array<{ text: string; subText?: string }>;
+}
+
+const { heading, itemNumberColor = 'grape', numberedItems = [] } = Astro.props;
+---
+
+<section class="max-w-content mx-auto px-6 lg:px-16 py-12 lg:py-20">
+  {heading && <h3 class="font-mono font-normal text-lg lg:text-3xl text-softBlack mb-8">{heading}</h3>}
+  <ol class="list-decimal pl-8">
+    {
+      numberedItems.map((item) => (
+        <li class:list={['mb-4', textClass[itemNumberColor]]}>
+          <p class="font-sans text-base lg:text-xl text-softBlack">{item.text}</p>
+          {item.subText && <p class="font-sans text-sm text-softBlack opacity-75">{item.subText}</p>}
+        </li>
+      ))
+    }
+  </ol>
+</section>

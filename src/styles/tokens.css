@@ -1,0 +1,56 @@
+/* =============================================================================
+ * tokens.css — DESIGN TOKEN OVERRIDE TARGET
+ * -----------------------------------------------------------------------------
+ * This file is the single drop-in point for a forked site's brand.
+ *
+ * CONTRACT:
+ *   Replace the values below with your brand's compiled DTCG output
+ *   (Design Tokens Community Group JSON -> CSS custom properties). The
+ *   kiwitron design-factory emits exactly this shape: raw brand primitives
+ *   as CSS custom properties on :root.
+ *
+ *   Do NOT rename the custom property KEYS unless you also update the
+ *   `@theme` mapping in `global.css` — that block is what turns these raw
+ *   vars into Tailwind theme tokens (so `bg-grape`, `text-ink`, `font-mono`,
+ *   the section spacing utilities, etc. all resolve to these values).
+ *
+ * The values here are NEUTRAL PLACEHOLDERS. They exist only so the starter
+ * builds and demonstrates the block system. Swap them for real brand tokens.
+ * ========================================================================== */
+
+:root {
+  /* -- Color primitives ---------------------------------------------------- */
+  /* Palette "slot" names are inherited from the block model's BrandColor union.
+     Treat them as neutral, swappable slots — remap freely to your brand. */
+  --brand-watermelon: #d16666;
+  --brand-pink: #d98da5;
+  --brand-grape: #6d5bd0;
+  --brand-lavender: #b3a7e8;
+  --brand-banana: #e8c860;
+  --brand-gold: #d9a441;
+  --brand-mint: #7cc6a8;
+  --brand-teal: #4a9d9c;
+  --brand-blue: #5b8dd0;
+  --brand-off-white: #f6f6f4;
+  --brand-soft-black: #1c1c1e;
+
+  /* Semantic aliases (prefer these in new components) */
+  --brand-ink: var(--brand-soft-black);
+  --brand-surface: var(--brand-off-white);
+  --brand-primary: var(--brand-grape);
+  --brand-accent: var(--brand-teal);
+
+  /* -- Typography ---------------------------------------------------------- */
+  --brand-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --brand-font-mono: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* -- Spacing rhythm (vertical section spacing) --------------------------- */
+  --brand-section-y: 4rem;
+  --brand-section-y-lg: 8rem;
+  --brand-gutter-x: 1.5rem;
+  --brand-gutter-x-lg: 4rem;
+
+  /* -- Content measure ----------------------------------------------------- */
+  --brand-content-max: 75rem;
+  --brand-prose-max: 46.875rem;
+}

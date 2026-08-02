@@ -1,0 +1,27 @@
+---
+interface Props {
+  heading?: string;
+  serviceIcons?: Array<{ icon: string; label: string; href?: string }>;
+}
+
+const { heading, serviceIcons = [] } = Astro.props;
+---
+
+<section class="max-w-content mx-auto px-6 lg:px-16 py-12 lg:py-20">
+  {heading && <h3 class="font-mono font-normal text-lg lg:text-3xl text-softBlack mb-8">{heading}</h3>}
+  <div class="flex flex-wrap gap-6">
+    {
+      serviceIcons.map((item) => (
+        <div>
+          {item.href ? (
+            <a href={item.href} class="text-grape underline">
+              <span class="font-sans text-base text-softBlack">{item.label}</span>
+            </a>
+          ) : (
+            <span class="font-sans text-base text-softBlack">{item.label}</span>
+          )}
+        </div>
+      ))
+    }
+  </div>
+</section>

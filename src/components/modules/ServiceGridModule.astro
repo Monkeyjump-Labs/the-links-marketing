@@ -1,0 +1,44 @@
+---
+import type { BrandColor } from '../../lib/types';
+
+interface Service {
+  title: string;
+  description?: string;
+  icon?: string;
+}
+
+interface Props {
+  heading?: string;
+  subHeading?: string;
+  services?: Service[];
+  backgroundColor?: BrandColor;
+}
+
+const { heading, subHeading, services = [] } = Astro.props;
+---
+
+<section class="mx-auto mb-12 max-w-content px-6 lg:mb-20 lg:px-16">
+  {
+    (heading || subHeading) && (
+      <div class="border-2 border-b-0 border-softBlack p-8 lg:p-16">
+        {heading && <h2 class="mb-4 font-mono text-lg font-normal text-softBlack lg:text-3xl">{heading}</h2>}
+        {subHeading && <p class="font-sans text-base leading-relaxed text-softBlack lg:text-xl">{subHeading}</p>}
+      </div>
+    )
+  }
+  <div class="grid grid-cols-1 border-l-2 border-t-2 border-softBlack sm:grid-cols-2 xl:grid-cols-3">
+    {
+      services.map((service) => (
+        <div class="flex flex-col items-center border-b-2 border-r-2 border-softBlack p-8 text-center lg:p-14">
+          {service.icon && <img src={service.icon} alt="" class="mb-4 h-8 w-auto lg:mb-8" aria-hidden="true" />}
+          <h3 class="mb-4 font-sans text-base font-normal uppercase tracking-wide text-softBlack lg:text-xl">
+            {service.title}
+          </h3>
+          {service.description && (
+            <p class="max-w-sm font-sans text-base leading-relaxed text-softBlack lg:text-xl">{service.description}</p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+</section>

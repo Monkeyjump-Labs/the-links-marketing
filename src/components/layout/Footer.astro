@@ -1,0 +1,94 @@
+---
+interface FooterLink {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  companyAddress?: string;
+  city?: string;
+  state?: string;
+  zipCode?: number;
+  generalCompanyEmail?: string;
+  copyrightLanguage?: string;
+  companyName?: string;
+  companyPhone?: string;
+  pageLinks?: FooterLink[];
+}
+
+const {
+  companyAddress = '',
+  city = '',
+  state = '',
+  zipCode = 0,
+  generalCompanyEmail = '',
+  copyrightLanguage = 'All rights reserved.',
+  companyName = 'Your Company',
+  companyPhone = '',
+  pageLinks = [],
+} = Astro.props;
+
+const formattedPhone = `+1${companyPhone?.replace(/[\s\-().]/g, '')}`;
+---
+
+<footer class="bg-banana mt-20">
+  <div class="border-2 border-softBlack p-8 max-w-content mx-auto lg:p-0">
+    <div class="lg:flex lg:flex-row-reverse lg:justify-between">
+      <ul class="list-none p-0 flex flex-col gap-4 m-0 mb-10 lg:mb-0 lg:border-l-2 lg:border-softBlack lg:p-16">
+        {
+          pageLinks.map((item) => (
+            <li>
+              <a class="font-sans text-softBlack no-underline hover:underline hover:text-grape" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="lg:px-16 lg:py-16">
+        <ul class="list-none p-0 flex flex-col m-0 mb-10">
+          <li>
+            <span
+              class="text-base leading-relaxed tracking-widest font-sans uppercase font-normal text-softBlack lg:text-lg"
+            >
+              {companyName}
+            </span>
+          </li>
+          <li>
+            <span
+              class="text-base leading-relaxed tracking-widest font-sans uppercase font-normal text-softBlack lg:text-lg"
+            >
+              {companyAddress}
+            </span>
+          </li>
+          <li>
+            <span
+              class="text-base leading-relaxed tracking-widest font-sans uppercase font-normal text-softBlack lg:text-lg"
+            >
+              {city}, {state}, {zipCode}
+            </span>
+          </li>
+          <li>
+            <a
+              href={`mailto:${generalCompanyEmail}`}
+              class="text-base leading-relaxed font-sans text-softBlack block lg:text-xl"
+            >
+              {generalCompanyEmail}
+            </a>
+            <a
+              href={`tel:${formattedPhone}`}
+              class="text-base leading-relaxed font-sans text-softBlack block lg:text-xl"
+            >
+              {companyPhone}
+            </a>
+          </li>
+        </ul>
+        <div>
+          <span class="text-[0.813rem] leading-none lg:text-sm">
+            &copy; {companyName}. {new Date().getFullYear()}. {copyrightLanguage}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

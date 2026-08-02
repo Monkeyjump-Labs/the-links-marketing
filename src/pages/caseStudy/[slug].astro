@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
+
+export async function getStaticPaths() {
+  const studies = await getCollection('caseStudies', ({ data }) => data.published);
+  return studies.map((study) => ({
+    params: { slug: study.slug },
+    props: { study },
+  }));
+}
+
+const { study } = Astro.props;
+const { Content } = await study.render();
+---
+
+<PostLayout
+  title={study.data.title}
+  description={study.data.description}
+  heroImage={study.data.heroImage}
+  heroImageAlt={study.data.heroImageAltText}
+  metadata={study.data.metaData
+    ? {
+        metaTitle: study.data.metaData.metaTitle,
+        metaDescription: study.data.metaData.metaDescription,
+      }
+    : undefined}
+>
+  <Content />
+</PostLayout>

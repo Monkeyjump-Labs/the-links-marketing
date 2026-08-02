@@ -1,0 +1,48 @@
+---
+import { globalData } from '../data/global';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  shareImage?: string;
+  twitterCardType?: 'summary' | 'summary_large_image';
+  noIndex?: boolean;
+}
+
+const {
+  title = globalData.siteName,
+  description = 'A brand-neutral marketing site starter.',
+  canonical = Astro.url.href,
+  shareImage = globalData.defaultShareImage,
+  twitterCardType = 'summary_large_image',
+  noIndex = false,
+} = Astro.props;
+
+const fullTitle = title.includes(globalData.siteName) ? title : `${title} ${globalData.metaTitleSuffix}`;
+let absoluteShareImage: string | undefined;
+try {
+  absoluteShareImage = shareImage ? new URL(shareImage, Astro.site).href : undefined;
+} catch {
+  // Relative shareImage with no `site` configured — skip the absolute OG image.
+  absoluteShareImage = undefined;
+}
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noIndex && <meta name="robots" content="noindex" />}
+
+<!-- Open Graph -->
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:type" content="website" />
+{absoluteShareImage && <meta property="og:image" content={absoluteShareImage} />}
+
+<!-- Twitter -->
+<meta name="twitter:card" content={twitterCardType} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+{absoluteShareImage && <meta name="twitter:image" content={absoluteShareImage} />}

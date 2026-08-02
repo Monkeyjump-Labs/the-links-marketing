@@ -1,0 +1,1681 @@
+{
+ "ROOT": {
+  "heads": [
+   [
+    "H2",
+    "The most realistic indoor golf you can play, period ."
+   ],
+   [
+    "H3",
+    "Summer Rates!"
+   ],
+   [
+    "H3",
+    "$35 per hour per bay!"
+   ],
+   [
+    "H3",
+    "Summer Hours"
+   ],
+   [
+    "H3",
+    "Hours Subject to Change without Notice."
+   ],
+   [
+    "H2",
+    "Our Locations"
+   ],
+   [
+    "H3",
+    "Lakeville, MN"
+   ],
+   [
+    "H3",
+    "Stillwater, MN"
+   ],
+   [
+    "H2",
+    "News & Specials"
+   ],
+   [
+    "H4",
+    "Memberships & Packages"
+   ],
+   [
+    "H3",
+    "Save Big, Play More Golf"
+   ],
+   [
+    "H4",
+    "New Location"
+   ],
+   [
+    "H3",
+    "Stillwater Minnesota!!"
+   ],
+   [
+    "H2",
+    "More Than Just Golf"
+   ],
+   [
+    "H3",
+    "Check out our leagues, contests, and other ways to play and engage"
+   ],
+   [
+    "H4",
+    "Join a League"
+   ],
+   [
+    "H4",
+    "Memberships & Packages"
+   ],
+   [
+    "H3",
+    "Learn more about the new Golfzon NX Simulators"
+   ],
+   [
+    "H2",
+    "Bays Sponsored By:"
+   ]
+  ],
+  "links": [
+   [
+    "Book at Lakeville",
+    "/booking"
+   ],
+   [
+    "Book at Stillwater MN",
+    "/bookingstillwater"
+   ],
+   [
+    "Book Tee Time",
+    "/booking"
+   ],
+   [
+    "Book Tee Time",
+    "/bookingstillwater"
+   ],
+   [
+    "Learn more",
+    "/memberships"
+   ],
+   [
+    "Learn more",
+    "/stillwater"
+   ],
+   [
+    "Explore Leagues",
+    "/leagues"
+   ],
+   [
+    "Explore Memberships",
+    "/memberships"
+   ],
+   [
+    "VIEW A DEMO",
+    "https://youtu.be/5YxEm2iq0lQ?si=VYcoo2pff6-TUVko"
+   ]
+  ],
+  "mainlen": 1842
+ },
+ "about": {
+  "heads": [
+   [
+    "H1",
+    "About our facility & golf"
+   ],
+   [
+    "H4",
+    "Things to know about coming to Lakeville Links:"
+   ],
+   [
+    "H4",
+    "You can always call with questions!"
+   ],
+   [
+    "H4",
+    "612-699-0526"
+   ]
+  ],
+  "links": [
+   [
+    "GO TO BOOKING",
+    "/bookinglanding"
+   ]
+  ],
+  "mainlen": 743
+ },
+ "advertisinglogos": {
+  "heads": [],
+  "links": [],
+  "mainlen": 0
+ },
+ "align-logo": {
+  "heads": [],
+  "links": [],
+  "mainlen": 0
+ },
+ "booking-scheduler": {
+  "heads": [
+   [
+    "H1",
+    "Book a Time"
+   ],
+   [
+    "H3",
+    "Select a Date Below To Book"
+   ]
+  ],
+  "links": [],
+  "mainlen": 39
+ },
+ "booking": {
+  "heads": [
+   [
+    "H1",
+    "Booking Details Lakeville"
+   ],
+   [
+    "H4",
+    "Some things to know before you book:"
+   ],
+   [
+    "H3",
+    "March Promotion Details"
+   ]
+  ],
+  "links": [
+   [
+    "ACKNOWLEDGE AND GO TO BOOKING",
+    "https://app.whoosh.io/patron/club/the-links-indoor-golf/agenda/simulators/today"
+   ]
+  ],
+  "mainlen": 1380
+ },
+ "bookinglanding": {
+  "heads": [
+   [
+    "H1",
+    "Booking Details"
+   ]
+  ],
+  "links": [
+   [
+    "Book at Lakeville",
+    "/booking"
+   ],
+   [
+    "Book at Stillwater MN",
+    "/bookingstillwater"
+   ]
+  ],
+  "mainlen": 55
+ },
+ "bookingstillwater": {
+  "heads": [
+   [
+    "H2",
+    "Booking Details Stillwater MN"
+   ],
+   [
+    "H4",
+    "Some things to know before you book:"
+   ],
+   [
+    "H3",
+    "March Promotion Details"
+   ]
+  ],
+  "links": [
+   [
+    "ACKNOWLEDGE AND GO TO BOOKING",
+    "https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today"
+   ]
+  ],
+  "mainlen": 1312
+ },
+ "cazopen": {
+  "heads": [
+   [
+    "H2",
+    "Caz Open Memorial Tournament:"
+   ],
+   [
+    "H4",
+    "Location:"
+   ],
+   [
+    "H4",
+    "Date and Time:"
+   ],
+   [
+    "H4",
+    "Format:"
+   ],
+   [
+    "H4",
+    "Registration:"
+   ],
+   [
+    "H4",
+    "Food:"
+   ],
+   [
+    "H4",
+    "Fees:"
+   ],
+   [
+    "H4",
+    "Fee includes:"
+   ],
+   [
+    "H4",
+    "On Course prizes :"
+   ],
+   [
+    "H4",
+    "Optional Prize Payout:"
+   ],
+   [
+    "H4",
+    "Additional Game:"
+   ],
+   [
+    "H4",
+    "Those in memory:"
+   ]
+  ],
+  "links": [
+   [
+    "Register Here",
+    "https://app.primesignup.com/customer/accounts/lakeville/events/caz-open-memorial-golf-tournament-2025/checkout/new"
+   ]
+  ],
+  "mainlen": 1092
+ },
+ "contact": {
+  "heads": [
+   [
+    "H1",
+    "Contact Lakeville Links"
+   ],
+   [
+    "H3",
+    "Download our App!"
+   ],
+   [
+    "H3",
+    "We\u2019d love to hear from you!"
+   ]
+  ],
+  "links": [
+   [
+    "",
+    "https://apps.apple.com/us/app/lakeville-links/id1668921452"
+   ],
+   [
+    "",
+    "https://play.google.com/store/apps/details?id=com.myappguru.lakeville"
+   ]
+  ],
+  "mainlen": 262
+ },
+ "farewaygolf__lakeville-links-memberships": {
+  "heads": [],
+  "links": [
+   [
+    "Click Here to Learn More About Memberships",
+    "https://www.fareway.golf/lakeville-links-memberships"
+   ]
+  ],
+  "mainlen": 42
+ },
+ "feedback": {
+  "heads": [
+   [
+    "H2",
+    "Feedback"
+   ]
+  ],
+  "links": [
+   [
+    "Leave a Google Review!",
+    "https://g.page/r/CXuRqGV8D_GNEAE/review"
+   ]
+  ],
+  "mainlen": 132
+ },
+ "groups": {
+  "heads": [
+   [
+    "H1",
+    "Groups & Private Events"
+   ],
+   [
+    "H2",
+    "Host Your Next Event at Lakeville Links!"
+   ],
+   [
+    "H3",
+    "SUBMIT YOUR INQUIRY BELOW!"
+   ],
+   [
+    "H3",
+    "\u201cThe simulator was unlike any I have used before, very realistic. Also, we had our office Christmas party here and the staff was very accommodating. Very unique place!\u201d"
+   ]
+  ],
+  "links": [],
+  "mainlen": 1082
+ },
+ "home-2": {
+  "heads": [
+   [
+    "H2",
+    "The most realistic indoor golf you can play, period ."
+   ],
+   [
+    "H2",
+    "Now serving EAST &"
+   ],
+   [
+    "H2",
+    "SOUTH METRO!"
+   ],
+   [
+    "H3",
+    "Introducing"
+   ],
+   [
+    "H4",
+    "Individual Summer Memberships !"
+   ],
+   [
+    "H2",
+    "Bays Sponsored By:"
+   ],
+   [
+    "H3",
+    "Welcome to Lakeville Links, the South Metro\u2019s Premier Indoor Golf Simulator Facility"
+   ],
+   [
+    "H4",
+    "Experience the most advanced golf simulator technology available featuring 6 Golfzon TwoVision simulators along with great food and drinks."
+   ],
+   [
+    "H4",
+    "Ready to Play?"
+   ],
+   [
+    "H4",
+    "Join a League"
+   ],
+   [
+    "H4",
+    "Online Gift Cards"
+   ],
+   [
+    "H3",
+    "Learn more about the new Golfzon TwoVision Simulators"
+   ],
+   [
+    "H3",
+    "Come Golf with Us!"
+   ],
+   [
+    "H4",
+    "Play. Eat. Drink."
+   ],
+   [
+    "H3",
+    "Play on the world\u2019s most sophisticated golf simulators at Lakeville Links ."
+   ],
+   [
+    "H4",
+    "Over 240+ Golf Courses + 6 Arcade Games"
+   ]
+  ],
+  "links": [
+   [
+    "BOOK NOW",
+    "https://lakevillelinks.golfbook.in/calendar.php"
+   ],
+   [
+    "MEMBERSHIP INFO",
+    "https://www.fareway.golf/lakeville-links-memberships"
+   ],
+   [
+    "BOOK A TEE TIME",
+    "https://lakevillelinks.golfbook.in/calendar.php"
+   ],
+   [
+    "SIGN UP",
+    "/leagues"
+   ],
+   [
+    "PURCHASE TODAY",
+    "https://www.toasttab.com/lakeville-links-17630-juniper-path-suite-h/giftcards"
+   ],
+   [
+    "VIEW A DEMO",
+    "https://youtu.be/5YxEm2iq0lQ?si=VYcoo2pff6-TUVko"
+   ],
+   [
+    "View Rates & Tee Times",
+    "/rates"
+   ],
+   [
+    "Book Now",
+    "/booking"
+   ]
+  ],
+  "mainlen": 1800
+ },
+ "home-old": {
+  "heads": [
+   [
+    "H2",
+    "The most realistic indoor golf you can play, period ."
+   ],
+   [
+    "H3",
+    "Welcome to Lakeville Links, the South Metro\u2019s Premier Indoor Golf Simulator Facility"
+   ],
+   [
+    "H4",
+    "Experience the most advanced golf simulator technology available featuring 6 Golfzon TwoVision simulators along with great food and drinks."
+   ],
+   [
+    "H4",
+    "Ready to Play?"
+   ],
+   [
+    "H4",
+    "Join a League"
+   ],
+   [
+    "H4",
+    "Online Gift Cards"
+   ],
+   [
+    "H2",
+    "Bays Sponsored By:"
+   ],
+   [
+    "H3",
+    "Learn more about the new Golfzon TwoVision Simulators"
+   ],
+   [
+    "H3",
+    "Come Golf with Us!"
+   ],
+   [
+    "H4",
+    "Play. Eat. Drink."
+   ],
+   [
+    "H3",
+    "Play on the world\u2019s most sophisticated golf simulators at Lakeville Links ."
+   ],
+   [
+    "H4",
+    "Over 240+ Golf Courses + 6 Arcade Games"
+   ]
+  ],
+  "links": [
+   [
+    "BOOK NOW",
+    "/booking"
+   ],
+   [
+    "Purchase GIFT CARD",
+    "https://app.squareup.com/gift/MLYARTM9VAGFK/order"
+   ],
+   [
+    "Book A BAY NOW!",
+    "/booking"
+   ],
+   [
+    "BOOK A TEE TIME",
+    "/booking"
+   ],
+   [
+    "SIGN UP",
+    "/leagues"
+   ],
+   [
+    "PURCHASE TODAY",
+    "https://app.squareup.com/gift/MLYARTM9VAGFK/order"
+   ],
+   [
+    "VIEW A DEMO",
+    "https://youtu.be/5YxEm2iq0lQ?si=VYcoo2pff6-TUVko"
+   ],
+   [
+    "View Rates & Tee Times",
+    "/rates"
+   ],
+   [
+    "Book Now",
+    "/booking"
+   ]
+  ],
+  "mainlen": 1511
+ },
+ "home": {
+  "heads": [
+   [
+    "H2",
+    "The most realistic indoor golf you can play, period ."
+   ],
+   [
+    "H3",
+    "Summer Rates!"
+   ],
+   [
+    "H3",
+    "$35 per hour per bay!"
+   ],
+   [
+    "H3",
+    "Summer Hours"
+   ],
+   [
+    "H3",
+    "Hours Subject to Change without Notice."
+   ],
+   [
+    "H2",
+    "Our Locations"
+   ],
+   [
+    "H3",
+    "Lakeville, MN"
+   ],
+   [
+    "H3",
+    "Stillwater, MN"
+   ],
+   [
+    "H2",
+    "News & Specials"
+   ],
+   [
+    "H4",
+    "Memberships & Packages"
+   ],
+   [
+    "H3",
+    "Save Big, Play More Golf"
+   ],
+   [
+    "H4",
+    "New Location"
+   ],
+   [
+    "H3",
+    "Stillwater Minnesota!!"
+   ],
+   [
+    "H2",
+    "More Than Just Golf"
+   ],
+   [
+    "H3",
+    "Check out our leagues, contests, and other ways to play and engage"
+   ],
+   [
+    "H4",
+    "Join a League"
+   ],
+   [
+    "H4",
+    "Memberships & Packages"
+   ],
+   [
+    "H3",
+    "Learn more about the new Golfzon NX Simulators"
+   ],
+   [
+    "H2",
+    "Bays Sponsored By:"
+   ]
+  ],
+  "links": [
+   [
+    "Book at Lakeville",
+    "/booking"
+   ],
+   [
+    "Book at Stillwater MN",
+    "/bookingstillwater"
+   ],
+   [
+    "Book Tee Time",
+    "/booking"
+   ],
+   [
+    "Book Tee Time",
+    "/bookingstillwater"
+   ],
+   [
+    "Learn more",
+    "/memberships"
+   ],
+   [
+    "Learn more",
+    "/stillwater"
+   ],
+   [
+    "Explore Leagues",
+    "/leagues"
+   ],
+   [
+    "Explore Memberships",
+    "/memberships"
+   ],
+   [
+    "VIEW A DEMO",
+    "https://youtu.be/5YxEm2iq0lQ?si=VYcoo2pff6-TUVko"
+   ]
+  ],
+  "mainlen": 1842
+ },
+ "instruction": {
+  "heads": [
+   [
+    "H1",
+    "Instruction"
+   ]
+  ],
+  "links": [
+   [
+    "CONTACT US",
+    "/contact"
+   ],
+   [
+    "barry.wallin@futuresclub.org",
+    "mailto:barry.wallin@futuresclub.org"
+   ],
+   [
+    "David.Anderson@mysticlakegolf.com",
+    "mailto:David.Anderson@mysticlakegolf.com"
+   ],
+   [
+    "tcgolfer44@gmail.com",
+    "mailto:tcgolfer44@gmail.com"
+   ],
+   [
+    "nstoulil@yahoo.com",
+    "mailto:nstoulil@yahoo.com"
+   ]
+  ],
+  "mainlen": 3313
+ },
+ "juniorleagues": {
+  "heads": [
+   [
+    "H1",
+    "Fun. Competive."
+   ],
+   [
+    "H1",
+    "The Best Indoor Golf Leagues"
+   ],
+   [
+    "H2",
+    "Sign-Up Now for 2026 Junior Leagues!"
+   ],
+   [
+    "H3",
+    "Secure a spot!"
+   ],
+   [
+    "H3",
+    "Leagues Run Jan - March 2026"
+   ],
+   [
+    "H2",
+    "The Details"
+   ],
+   [
+    "H3",
+    "Junior Leagues:"
+   ],
+   [
+    "H3",
+    "AGE RANGE -> 12Y/O to 18Y/O(High High School)"
+   ],
+   [
+    "H4",
+    "Weeks of January 11th thru March 8th 2026"
+   ],
+   [
+    "H4",
+    "8 Weeks!"
+   ],
+   [
+    "H4",
+    "SUNDAYS:"
+   ],
+   [
+    "H4",
+    "GIRLS DIVISION"
+   ],
+   [
+    "H2",
+    "Sign Up Links"
+   ],
+   [
+    "H4",
+    "BOYS DIVISION"
+   ],
+   [
+    "H3",
+    "Cost & Info"
+   ]
+  ],
+  "links": [
+   [
+    "",
+    "#league-details"
+   ],
+   [
+    "SIGN UP",
+    "https://app.primesignup.com/e/eze9l7"
+   ],
+   [
+    "SIGN UP",
+    "https://app.primesignup.com/e/vkijuv"
+   ],
+   [
+    "info@lakevillelinks.com",
+    "mailto:info@lakevillelinks.com?subject=Fall%20League%20at%20Lakeville%20Links"
+   ],
+   [
+    "612-619-1747",
+    "tel:6126191747"
+   ]
+  ],
+  "mainlen": 1089
+ },
+ "leagues-contests": {
+  "heads": [
+   [
+    "H2",
+    "Fun. Competive."
+   ],
+   [
+    "H2",
+    "The Best Indoor Golf Leagues & Contests"
+   ]
+  ],
+  "links": [
+   [
+    "Flexible Floating Leagues",
+    "https://ply.golf/venue/lakeville-links/leagues"
+   ],
+   [
+    "Weekly Contests & Event",
+    "https://ply.golf/"
+   ]
+  ],
+  "mainlen": 105
+ },
+ "leagues": {
+  "heads": [
+   [
+    "H1",
+    "Fun. Competive."
+   ],
+   [
+    "H2",
+    "The Best Indoor Golf Leagues"
+   ],
+   [
+    "H2",
+    "2026 Fall Leagues"
+   ],
+   [
+    "H3",
+    "Check back for league information for both Lakeville & Stillwater Fall Leagues!"
+   ]
+  ],
+  "links": [
+   [
+    "info@lakevillelinks.com",
+    "mailto:info@lakevillelinks.com?subject=Fall%20League%20at%20Lakeville%20Links"
+   ],
+   [
+    "612-619-1747",
+    "tel:6126191747"
+   ]
+  ],
+  "mainlen": 282
+ },
+ "linksflex-terms-conditions": {
+  "heads": [
+   [
+    "H2",
+    "Head Honchos, LLC, dba The Links of Lakeville - LinksFlex Terms & Conditions"
+   ],
+   [
+    "H2",
+    "1. Overview"
+   ],
+   [
+    "H2",
+    "2. LinksFlex Structure"
+   ],
+   [
+    "H2",
+    "3. Expiration & Validity"
+   ],
+   [
+    "H2",
+    "4. Non\u2011Transferability"
+   ],
+   [
+    "H2",
+    "5. Refunds & Returns"
+   ],
+   [
+    "H2",
+    "6. Usage Policies"
+   ],
+   [
+    "H2",
+    "7. Service Availability"
+   ],
+   [
+    "H2",
+    "8. Amendments"
+   ]
+  ],
+  "links": [],
+  "mainlen": 2459
+ },
+ "membership-packages-terms-conditions-copy": {
+  "heads": [
+   [
+    "H2",
+    "The Links of Lakeville & The Links of Stillwater - Membership Packages Terms & Conditions"
+   ],
+   [
+    "H2",
+    "1. Overview"
+   ],
+   [
+    "H2",
+    "2. Membership Packages Structure"
+   ],
+   [
+    "H2",
+    "3. Expiration & Validity"
+   ],
+   [
+    "H2",
+    "4. Non\u2011Transferability"
+   ],
+   [
+    "H2",
+    "5. Refunds & Returns"
+   ],
+   [
+    "H2",
+    "6. Usage Policies"
+   ],
+   [
+    "H2",
+    "7. Service Availability"
+   ],
+   [
+    "H2",
+    "8. Amendments"
+   ]
+  ],
+  "links": [],
+  "mainlen": 2753
+ },
+ "memberships": {
+  "heads": [
+   [
+    "H1",
+    "Memberships & Packages"
+   ],
+   [
+    "H4",
+    "May - September"
+   ],
+   [
+    "H3",
+    "2026 Summer Memberships"
+   ],
+   [
+    "H2",
+    "Choose your package:"
+   ],
+   [
+    "H4",
+    "Introducing"
+   ],
+   [
+    "H3",
+    "LinksFlex Packages (Lakeville Location Only)"
+   ],
+   [
+    "H2",
+    "Choose your package:"
+   ],
+   [
+    "H2",
+    "LinksFlex Off Peak"
+   ],
+   [
+    "H2",
+    "LinksFlex Anytime"
+   ],
+   [
+    "H2",
+    "LinksFlex Junior"
+   ]
+  ],
+  "links": [
+   [
+    "Join @ Lakeville",
+    "https://app.whoosh.io/patron/club/the-links-indoor-golf/store"
+   ],
+   [
+    "Join @ Stillwater",
+    "https://app.whoosh.io/patron/club/linksstillwater/store/packages"
+   ],
+   [
+    "612-619-1747",
+    "tel:6126990526"
+   ],
+   [
+    "info@lakevillelinks.com",
+    "mailto:info@lakevillelinks.com?subject=Memberships"
+   ],
+   [
+    "PURCHASE A PACKAGE",
+    "https://app.whoosh.io/patron/club/the-links-indoor-golf/store/packages"
+   ]
+  ],
+  "mainlen": 1149
+ },
+ "menu": {
+  "heads": [
+   [
+    "H1",
+    "Lakeville Links Menu"
+   ],
+   [
+    "H4",
+    "Below is our current menu and is subject to change:"
+   ]
+  ],
+  "links": [],
+  "mainlen": 72
+ },
+ "news": {
+  "heads": [
+   [
+    "H1",
+    "Indoor Golf Leagues: Stay Active and Social with High-Tech Simulators All Winter Long"
+   ],
+   [
+    "H1",
+    "First Look at Lakeville Indoor Golf"
+   ],
+   [
+    "H1",
+    "Sneak Peak Pre-Opening Look Inside Lakeville Links by TwinCitiesGolf.com"
+   ],
+   [
+    "H1",
+    "Grand Opening is Planned for October 29th, 2022!"
+   ],
+   [
+    "H1",
+    "Lakeville Links golf simulator business may open by August"
+   ],
+   [
+    "H1",
+    "Lakeville Links to Feature Golfzon TwoVision Simulators"
+   ]
+  ],
+  "links": [
+   [
+    "Indoor Golf Leagues: Stay Active and Social with High-Tech Simulators All Winter",
+    "/news/indoor-golf-leagues-stay-active-and-social-with-high-tech-simulators-all-winter-long"
+   ],
+   [
+    "Read More",
+    "/news/indoor-golf-leagues-stay-active-and-social-with-high-tech-simulators-all-winter-long"
+   ],
+   [
+    "First Look at Lakeville Indoor Golf",
+    "/news/first-look-at-lakeville-indoor-golf"
+   ],
+   [
+    "Read More",
+    "/news/first-look-at-lakeville-indoor-golf"
+   ],
+   [
+    "",
+    "/news/sneak-peak-pre-opening-look-inside-lakeville-links-by-twincitiesgolfcom"
+   ],
+   [
+    "Sneak Peak Pre-Opening Look Inside Lakeville Links by TwinCitiesGolf.com",
+    "/news/sneak-peak-pre-opening-look-inside-lakeville-links-by-twincitiesgolfcom"
+   ],
+   [
+    "Read More",
+    "/news/sneak-peak-pre-opening-look-inside-lakeville-links-by-twincitiesgolfcom"
+   ],
+   [
+    "Grand Opening is Planned for October 29th, 2022!",
+    "/news/grand-opening-is-planned-for-october-29th-2022"
+   ],
+   [
+    "Read More",
+    "/news/grand-opening-is-planned-for-october-29th-2022"
+   ],
+   [
+    "Lakeville Links golf simulator business may open by August",
+    "/news/lakeville-links-golf-simulator-business-may-open-by-august"
+   ],
+   [
+    "Read More",
+    "/news/lakeville-links-golf-simulator-business-may-open-by-august"
+   ],
+   [
+    "Lakeville Links to Feature Golfzon TwoVision Simulators",
+    "/news/golfzon-twovision"
+   ],
+   [
+    "Read More",
+    "/news/golfzon-twovision"
+   ]
+  ],
+  "mainlen": 674
+ },
+ "news__first-look-at-lakeville-indoor-golf": {
+  "heads": [
+   [
+    "H1",
+    "First Look at Lakeville Indoor Golf"
+   ],
+   [
+    "H2",
+    "Indoor Golf Leagues: Stay Active and Social with High-Tech Simulators All Winter Long"
+   ],
+   [
+    "H2",
+    "Sneak Peak Pre-Opening Look Inside Lakeville Links by TwinCitiesGolf.com"
+   ]
+  ],
+  "links": [
+   [
+    "Guest User",
+    "/news?author=68cd85aaa136fe6caa0a9960"
+   ],
+   [
+    "Previous Previous Indoor Golf Leagues: Stay Active and Social with High-Tech Sim",
+    "/news/indoor-golf-leagues-stay-active-and-social-with-high-tech-simulators-all-winter-long"
+   ],
+   [
+    "Next Next Sneak Peak Pre-Opening Look Inside Lakeville Links by TwinCitiesGolf.c",
+    "/news/sneak-peak-pre-opening-look-inside-lakeville-links-by-twincitiesgolfcom"
+   ]
+  ],
+  "mainlen": 262
+ },
+ "news__golfzon-twovision": {
+  "heads": [
+   [
+    "H1",
+    "Lakeville Links to Feature Golfzon TwoVision Simulators"
+   ],
+   [
+    "H2",
+    "Lakeville Links golf simulator business may open by August"
+   ]
+  ],
+  "links": [
+   [
+    "Guest User",
+    "/news?author=68cd85aaa136fe6caa0a9960"
+   ],
+   [
+    "Previous Previous Lakeville Links golf simulator business may open by August",
+    "/news/lakeville-links-golf-simulator-business-may-open-by-august"
+   ]
+  ],
+  "mainlen": 275
+ },
+ "news__grand-opening-is-planned-for-october-29th-2022": {
+  "heads": [
+   [
+    "H1",
+    "Grand Opening is Planned for October 29th, 2022!"
+   ],
+   [
+    "H2",
+    "Sneak Peak Pre-Opening Look Inside Lakeville Links by TwinCitiesGolf.com"
+   ],
+   [
+    "H2",
+    "Lakeville Links golf simulator business may open by August"
+   ]
+  ],
+  "links": [
+   [
+    "Christopher Johnson",
+    "/news?author=629645990f2cee0ad22c1704"
+   ],
+   [
+    "Previous Previous Sneak Peak Pre-Opening Look Inside Lakeville Links by TwinCiti",
+    "/news/sneak-peak-pre-opening-look-inside-lakeville-links-by-twincitiesgolfcom"
+   ],
+   [
+    "Next Next Lakeville Links golf simulator business may open by August",
+    "/news/lakeville-links-golf-simulator-business-may-open-by-august"
+   ]
+  ],
+  "mainlen": 364
+ },
+ "news__indoor-golf-leagues-stay-active-and-social-with-high-tech-simulators-all-winter-long": {
+  "heads": [
+   [
+    "H1",
+    "Indoor Golf Leagues: Stay Active and Social with High-Tech Simulators All Winter Long"
+   ],
+   [
+    "H3",
+    "Why Indoor Golf is the Perfect Winter Sport for Minnesotans"
+   ],
+   [
+    "H4",
+    "1. No Weather Worries"
+   ],
+   [
+    "H4",
+    "2. Year-Round Golfing Opportunities"
+   ],
+   [
+    "H4",
+    "3. Perfect for All Ages and Skill Levels"
+   ],
+   [
+    "H3",
+    "How Indoor Golf Simulators Work"
+   ],
+   [
+    "H4",
+    "1. Realistic Gameplay"
+   ],
+   [
+    "H4",
+    "2. Feedback and Coaching Tools"
+   ],
+   [
+    "H4",
+    "3. Variety of Courses"
+   ],
+   [
+    "H3",
+    "The Social Aspect: Why Indoor Golf Leagues Are a Great Group Activity"
+   ],
+   [
+    "H4",
+    "1. Golfing is More Fun with Friends"
+   ],
+   [
+    "H4",
+    "2. Friendly Competition"
+   ],
+   [
+    "H4",
+    "3. Bring Non-Golfers Into the Fun"
+   ],
+   [
+    "H3",
+    "Staying Active During Winter with Indoor Golf"
+   ],
+   [
+    "H4",
+    "1. Physical Health Benefits"
+   ],
+   [
+    "H4",
+    "2. Mental Health Benefits"
+   ],
+   [
+    "H4",
+    "3. Year-Round Skill Improvement"
+   ],
+   [
+    "H3",
+    "Choosing the Right League for You"
+   ],
+   [
+    "H4",
+    "1. Skill Level"
+   ],
+   [
+    "H4",
+    "2. Schedule Flexibility"
+   ],
+   [
+    "H4",
+    "3. Social or Competitive?"
+   ],
+   [
+    "H3",
+    "Beyond the Golf: Food, Drinks, and More"
+   ],
+   [
+    "H4",
+    "1. Food and Drink Specials"
+   ],
+   [
+    "H4",
+    "2. Social Atmosphere"
+   ],
+   [
+    "H3",
+    "How to Sign Up and Get Involved"
+   ],
+   [
+    "H4",
+    "1. How to Sign Up"
+   ],
+   [
+    "H4",
+    "2. What to Expect"
+   ],
+   [
+    "H3",
+    "Stay Active, Have Fun, and Make Winter Count"
+   ],
+   [
+    "H2",
+    "First Look at Lakeville Indoor Golf"
+   ]
+  ],
+  "links": [
+   [
+    "Justine Conary",
+    "/news?author=640f891ce0660854680bb6e9"
+   ],
+   [
+    "Next Next First Look at Lakeville Indoor Golf",
+    "/news/first-look-at-lakeville-indoor-golf"
+   ]
+  ],
+  "mainlen": 9323
+ },
+ "news__lakeville-links-golf-simulator-business-may-open-by-august": {
+  "heads": [
+   [
+    "H1",
+    "Lakeville Links golf simulator business may open by August"
+   ],
+   [
+    "H2",
+    "Grand Opening is Planned for October 29th, 2022!"
+   ],
+   [
+    "H2",
+    "Lakeville Links to Feature Golfzon TwoVision Simulators"
+   ]
+  ],
+  "links": [
+   [
+    "Guest User",
+    "/news?author=68cd85aaa136fe6caa0a9960"
+   ],
+   [
+    "https://www.hometownsource.com/sun_thisweek/community/lakeville/lakeville-links-",
+    "https://www.hometownsource.com/sun_thisweek/community/lakeville/lakeville-links-golf-simulator-business-may-open-by-august/article_f2a604b8-c190-11ec-b825-5f8dcde4e300.html"
+   ],
+   [
+    "Previous Previous Grand Opening is Planned for October 29th, 2022!",
+    "/news/grand-opening-is-planned-for-october-29th-2022"
+   ],
+   [
+    "Next Next Lakeville Links to Feature Golfzon TwoVision Simulators",
+    "/news/golfzon-twovision"
+   ]
+  ],
+  "mainlen": 412
+ },
+ "news__sneak-peak-pre-opening-look-inside-lakeville-links-by-twincitiesgolfcom": {
+  "heads": [
+   [
+    "H1",
+    "Sneak Peak Pre-Opening Look Inside Lakeville Links by TwinCitiesGolf.com"
+   ],
+   [
+    "H2",
+    "First Look at Lakeville Indoor Golf"
+   ],
+   [
+    "H2",
+    "Grand Opening is Planned for October 29th, 2022!"
+   ]
+  ],
+  "links": [
+   [
+    "Guest User",
+    "/news?author=68cd85aaa136fe6caa0a9960"
+   ],
+   [
+    "Lakeville Links Indoor Golf",
+    "https://www.facebook.com/LakevilleLinks?__cft__[0]=AZWWQS_U2GtLB-gVTwqCJFRO8N8SXLtcqTFHwQO7nepzQhTY6KNewrShqdh_dHK2tyeCM96eXxDJNLa3o_IUtiAPvpaEgALXaBUhUtpWgh4DSXMigPYIVLybx5I0UUXtrwWMT8gVPHwF-JhvK_Qg6rIZf1dqUpanzC_IaE6iEuO_vF9NhVuunuDTR0nH1LRcd8E&__tn__=-]K-R"
+   ],
+   [
+    "www.LakevilleLinks.com",
+    "http://www.lakevillelinks.com/?fbclid=IwAR3eYewZdEv8fQGTLdXOpewb7J4TKkRwWlqzRHyoE7igy3Jm-l1kqjZ_USY"
+   ],
+   [
+    "Previous Previous First Look at Lakeville Indoor Golf",
+    "/news/first-look-at-lakeville-indoor-golf"
+   ],
+   [
+    "Next Next Grand Opening is Planned for October 29th, 2022!",
+    "/news/grand-opening-is-planned-for-october-29th-2022"
+   ]
+  ],
+  "mainlen": 448
+ },
+ "our-story": {
+  "heads": [
+   [
+    "H3",
+    "CJ & CODY"
+   ],
+   [
+    "H1",
+    "Our Story"
+   ],
+   [
+    "H2",
+    "Just two guys wanting a better golf simulator to play on during the long Minnesota winters\u2026"
+   ],
+   [
+    "H2",
+    "Then came Stillwater\u2026"
+   ],
+   [
+    "H2",
+    "The Rebrand\u2026"
+   ],
+   [
+    "H2",
+    "Let\u2019s Play Golf!"
+   ]
+  ],
+  "links": [
+   [
+    "thelinks.golf",
+    "http://thelinks.golf"
+   ]
+  ],
+  "mainlen": 3509
+ },
+ "photo-gallery": {
+  "heads": [],
+  "links": [],
+  "mainlen": 0
+ },
+ "policy": {
+  "heads": [
+   [
+    "H2",
+    "Head Honchos, LLC, dba Lakeville Links - LIABILITY WAIVER"
+   ],
+   [
+    "H3",
+    "Waiver and Contact Information"
+   ]
+  ],
+  "links": [],
+  "mainlen": 9850
+ },
+ "rates": {
+  "heads": [
+   [
+    "H1",
+    "Rates, Hours & Gift Cards"
+   ],
+   [
+    "H2",
+    "Summer Hours:"
+   ],
+   [
+    "H3",
+    "Hours Subject to Change without Notice."
+   ],
+   [
+    "H3",
+    "If there are no pre-booked bay times, we reserve the right to open late or close early."
+   ],
+   [
+    "H3",
+    "Check Online for Daily Open Hours and to Book"
+   ],
+   [
+    "H3",
+    "Summer 2026 Hours & Rates: $35/Hour"
+   ],
+   [
+    "H3",
+    "Lakeville, MN"
+   ],
+   [
+    "H3",
+    "Stillwater, MN"
+   ],
+   [
+    "H3",
+    "Gift Cards Available!"
+   ]
+  ],
+  "links": [
+   [
+    "Book a Tee Time",
+    "/bookinglanding"
+   ],
+   [
+    "612-699-0526",
+    "tel:6126990526"
+   ],
+   [
+    "info@lakevillelinks.com",
+    "mailto:info@lakevillelinks.com?subject=Lakeville%20Links%20Gift%20Card"
+   ],
+   [
+    "Purchase Gift Card",
+    "https://app.squareup.com/gift/MLYARTM9VAGFK/order"
+   ],
+   [
+    "Check Gift Card Balance",
+    "https://app.squareup.com/gift/MLYARTM9VAGFK/check-balance"
+   ],
+   [
+    "Contact Us",
+    "/contact"
+   ]
+  ],
+  "mainlen": 843
+ },
+ "simulator-settings": {
+  "heads": [
+   [
+    "H2",
+    "Simulator Settings & Instructions"
+   ]
+  ],
+  "links": [],
+  "mainlen": 33
+ },
+ "sms-opt-in-form-1": {
+  "heads": [
+   [
+    "H3",
+    "SMS Opt-in Form"
+   ]
+  ],
+  "links": [],
+  "mainlen": 15
+ },
+ "sms-opt-in-form": {
+  "heads": [
+   [
+    "H3",
+    "SMS Opt-in Form"
+   ]
+  ],
+  "links": [],
+  "mainlen": 15
+ },
+ "specials": {
+  "heads": [
+   [
+    "H2",
+    "Current Specials & Contests"
+   ],
+   [
+    "H2",
+    "Golf"
+   ],
+   [
+    "H2",
+    "Food"
+   ],
+   [
+    "H2",
+    "Drinks"
+   ]
+  ],
+  "links": [
+   [
+    "PURCHASE GIFT CARD NOW!",
+    "https://app.squareup.com/gift/MLYARTM9VAGFK/order"
+   ],
+   [
+    "BOOK A SIMULATOR BAY",
+    "/bookinglanding"
+   ]
+  ],
+  "mainlen": 318
+ },
+ "stillwater": {
+  "heads": [
+   [
+    "H1",
+    "The Links of"
+   ],
+   [
+    "H1",
+    "Stillwater, MN"
+   ],
+   [
+    "H3",
+    "Your New Local Clubhouse on the East-Side"
+   ],
+   [
+    "H4",
+    "Our newest location in Stillwater, MN. A joint-entertainment facility connected to a bowling alley, The Links of Stillwater brings you the best sim-tech and experience available."
+   ],
+   [
+    "H1",
+    "Book Now"
+   ]
+  ],
+  "links": [
+   [
+    "Book Now",
+    "/bookingstillwater"
+   ],
+   [
+    "Book a Bay",
+    "/bookingstillwater"
+   ],
+   [
+    "Rates & Hours",
+    "/rates"
+   ],
+   [
+    "Leagues & Contests (Coming Soon)",
+    ""
+   ],
+   [
+    "Grab a Tee Time",
+    "/bookingstillwater"
+   ]
+  ],
+  "mainlen": 913
+ },
+ "vikings-game-day-special": {
+  "heads": [
+   [
+    "H2",
+    "The Big Game Day Packages!"
+   ],
+   [
+    "H2",
+    "Golf"
+   ],
+   [
+    "H2",
+    "Food"
+   ],
+   [
+    "H2",
+    "Drinks"
+   ],
+   [
+    "H1",
+    "Skol!"
+   ],
+   [
+    "H1",
+    "\u2022"
+   ],
+   [
+    "H1",
+    "Let's Go Vikes!"
+   ],
+   [
+    "H1",
+    "\u2022"
+   ],
+   [
+    "H1",
+    "Skol! \u2022 Let's Go Vikes! \u2022 Skol! \u2022 Let's Go Vikes! \u2022"
+   ]
+  ],
+  "links": [
+   [
+    "612-699-0526",
+    "tel:6126990526"
+   ],
+   [
+    "CALL TO RESERVE",
+    "tel:6126990526"
+   ],
+   [
+    "BOOK ONLINE",
+    "https://lakevillelinks.golfbook.in/calendar.php"
+   ],
+   [
+    "CALL TO BOOK!",
+    "tel:6126990526"
+   ]
+  ],
+  "mainlen": 1238
+ }
+}

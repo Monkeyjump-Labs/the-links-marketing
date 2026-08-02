@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class="max-w-content mx-auto px-6 lg:px-16 py-12 lg:py-20">
+      <h2 class="text-base uppercase tracking-widest font-sans font-normal text-softBlack mb-8">Featured</h2>
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
+        {posts.map((post) => (
+          <article class="flex flex-col border-2 border-softBlack">
+            {post.data.indexImage && (
+              <img
+                src={post.data.indexImage.src}
+                alt={post.data.indexImageAltText || post.data.title}
+                class="w-full h-64 object-cover"
+              />
+            )}
+            <div class="p-8 flex-1">
+              <h3 class="font-mono text-lg font-normal mb-4 lg:text-2xl">
+                <a href={`/blog/${post.slug}/`} class="text-softBlack no-underline hover:text-grape hover:underline">
+                  {post.data.indexTitle || post.data.title}
+                </a>
+              </h3>
+              <p class="font-sans text-base text-softBlack mb-4 leading-relaxed">
+                {post.data.indexDescription || post.data.description}
+              </p>
+              <p class="font-sans text-sm text-softBlack opacity-60 m-0">
+                {post.data.datePublished.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+                {' · '}
+                {post.data.author}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,40 @@
+---
+import type { BrandColor } from '../../lib/types';
+import { bgClass } from '../../lib/colorClasses';
+
+interface Props {
+  heading?: string;
+  subHeading?: string;
+  backgroundColor?: BrandColor;
+  subHeadingTextWrapModel?: 'home' | 'about' | 'services' | 'work';
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { heading, subHeading, backgroundColor, size = 'lg' } = Astro.props;
+
+const sizeClass: Record<string, string> = {
+  sm: 'min-h-[24rem]',
+  md: 'min-h-[50vh]',
+  lg: 'min-h-[70vh]',
+};
+---
+
+<section
+  class:list={[
+    'flex flex-col justify-center px-6 lg:px-16 py-24 lg:py-32',
+    sizeClass[size],
+    backgroundColor ? bgClass[backgroundColor] : '',
+  ]}
+>
+  {
+    heading && (
+      <p class="mb-4 font-sans text-base font-normal uppercase tracking-widest text-softBlack lg:text-xl">{heading}</p>
+    )
+  }
+  {
+    subHeading && (
+      <h1 class="max-w-4xl font-mono text-2xl font-normal leading-tight text-softBlack lg:text-5xl">{subHeading}</h1>
+    )
+  }
+  <slot />
+</section>

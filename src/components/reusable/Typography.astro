@@ -1,0 +1,23 @@
+---
+import type { BrandColor } from '../../lib/types';
+import { textClass } from '../../lib/colorClasses';
+
+interface Props {
+  color?: BrandColor;
+  gutterBottom?: boolean;
+  class?: string;
+}
+
+const { color, gutterBottom = false, class: className = '' } = Astro.props;
+---
+
+<p
+  class:list={[
+    'font-sans text-base leading-relaxed lg:text-xl',
+    color ? textClass[color] : 'text-softBlack',
+    gutterBottom ? 'mb-6' : '',
+    className,
+  ]}
+>
+  <slot />
+</p>

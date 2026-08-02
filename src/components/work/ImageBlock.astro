@@ -1,0 +1,19 @@
+---
+interface Props {
+  image: string;
+  imageAltText?: string;
+  imageSize?: 'thumbnail' | 'small' | 'medium' | 'large';
+  imageCaption?: string;
+  imageAlignment?: 'left' | 'center' | 'right';
+}
+
+const { image, imageAltText = '', imageSize = 'large', imageCaption, imageAlignment = 'center' } = Astro.props;
+
+const sizeMap = { thumbnail: '8rem', small: '20rem', medium: '40rem', large: '100%' };
+const alignMap = { left: 'text-left', center: 'text-center', right: 'text-right' };
+---
+
+<figure class:list={['my-12 lg:my-20 px-6 lg:px-16', alignMap[imageAlignment]]}>
+  <img src={image} alt={imageAltText} class="w-full h-auto" style={`max-width: ${sizeMap[imageSize]}`} />
+  {imageCaption && <figcaption class="font-sans text-sm italic text-softBlack mt-2" set:html={imageCaption} />}
+</figure>

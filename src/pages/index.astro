@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlockRenderer from '../components/BlockRenderer.astro';
+import { homePage } from '../data/pages/home';
+---
+
+<BaseLayout metadata={homePage.metadata}>
+  <BlockRenderer blocks={homePage.blocks} />
+</BaseLayout>

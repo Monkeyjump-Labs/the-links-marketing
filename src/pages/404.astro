@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout metadata={{ metaTitle: '404 Not Found | Your Company', noIndex: true }}>
+  <section class="flex min-h-[60vh] flex-col items-center justify-center bg-offWhite px-8 py-24 text-center">
+    <h1 class="mb-4 font-mono text-8xl font-normal text-watermelon">404</h1>
+    <p class="mb-8 font-sans text-xl text-softBlack">Page not found.</p>
+    <a href="/" class="font-sans text-grape underline">← Back to home</a>
+  </section>
+</BaseLayout>

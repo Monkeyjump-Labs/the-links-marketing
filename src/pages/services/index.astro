@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlockRenderer from '../../components/BlockRenderer.astro';
+import { servicesPage } from '../../data/pages/services';
+---
+
+<BaseLayout metadata={servicesPage.metadata}>
+  <BlockRenderer blocks={servicesPage.blocks} />
+</BaseLayout>

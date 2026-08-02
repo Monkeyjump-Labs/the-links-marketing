@@ -1,0 +1,45 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  href: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  date: Date;
+  title: string;
+  description?: string;
+}
+
+const { href, image, imageAlt, date, title, description } = Astro.props;
+---
+
+<a
+  href={href}
+  class="text-softBlack no-underline flex flex-col gap-6 outline outline-2 outline-transparent outline-offset-[1.5rem] transition-[outline-color] duration-200 hover:outline-softBlack md:flex-row md:items-center md:gap-12"
+>
+  <div class="md:flex-1">
+    <time class="block font-sans text-base text-softBlack mb-4" datetime={date.toISOString()}>
+      {date.toISOString().slice(0, 10)}
+    </time>
+    <h2
+      class="font-sans text-3xl font-bold leading-tight mb-4 text-softBlack transition-colors duration-200 lg:text-4xl"
+    >
+      {title}
+    </h2>
+    {description && <p class="font-sans text-xl font-normal leading-relaxed m-0 text-softBlack">{description}</p>}
+  </div>
+  {
+    image && (
+      <div class="w-full aspect-[4/3] rounded-[5px] overflow-hidden md:w-1/2 md:flex-shrink-0">
+        <Image
+          class="block w-full h-full object-cover"
+          src={image}
+          alt={imageAlt ?? title}
+          widths={[600, 900, 1200, 1600]}
+          sizes="(min-width: 56.25rem) 50vw, 100vw"
+        />
+      </div>
+    )
+  }
+</a>

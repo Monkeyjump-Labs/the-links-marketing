@@ -1,0 +1,15 @@
+---
+import type { BrandColor } from '../../lib/types';
+import { bgClass } from '../../lib/colorClasses';
+
+interface Props {
+  text: string;
+  bgColor?: BrandColor;
+}
+
+const { text, bgColor } = Astro.props;
+---
+
+<div class:list={['max-w-content mx-auto px-6 lg:px-16 py-12 lg:py-20', bgColor ? bgClass[bgColor] : '']}>
+  <div class="userEntered" set:html={text} />
+</div>

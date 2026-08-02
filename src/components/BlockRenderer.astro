@@ -1,0 +1,84 @@
+---
+// Internal Astro type; revisit this import path on Astro major upgrades.
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import type { Block } from '../lib/types';
+import { getSlideshowSlides } from '../lib/caseStudies';
+
+// Page-level blocks
+import HeroModule from './modules/HeroModule.astro';
+import CtaWireBoxModule from './modules/CtaWireBoxModule.astro';
+import ServiceGridModule from './modules/ServiceGridModule.astro';
+import ActionStatementModule from './modules/ActionStatementModule.astro';
+import AccordionModule from './modules/AccordionModule';
+import StatisticCardModule from './modules/StatisticCardModule.astro';
+
+// Contact blocks
+import HeroContactForm from './contact/HeroContactForm.astro';
+import ContactFindUs from './contact/ContactFindUs.astro';
+
+// Work blocks
+import CaseStudyGrid from './work/CaseStudyGrid.astro';
+import TestimonialSlider from './work/TestimonialSlider';
+import TextBlock from './work/TextBlock.astro';
+import TitleBlock from './work/TitleBlock.astro';
+import ImageBlock from './work/ImageBlock.astro';
+import TextBlockMediaRight from './work/TextBlockMediaRight.astro';
+import TextBlockMediaLeft from './work/TextBlockMediaLeft.astro';
+import Quote from './work/Quote.astro';
+import ItemListModule from './work/ItemListModule.astro';
+import HorizontalIconsModule from './work/HorizontalIconsModule.astro';
+import TechListModule from './work/TechListModule.astro';
+import ButtonModule from './work/ButtonModule.astro';
+
+// Home blocks
+import ProjectsSlideshow from './home/ProjectsSlideshow';
+
+// About blocks
+import EmployeeGrid from './about/EmployeeGrid.astro';
+
+const blockComponents: { [K in Block['type']]?: AstroComponentFactory } = {
+  'blocks.hero': HeroModule,
+  'blocks.cta-wirebox': CtaWireBoxModule,
+  'blocks.service-grid': ServiceGridModule,
+  'blocks.employee-grid': EmployeeGrid,
+  'blocks.case-study-grid': CaseStudyGrid,
+  'blocks.contact-form': HeroContactForm,
+  'blocks.contact-find-us': ContactFindUs,
+  'blocks.statistic-card': StatisticCardModule,
+  'blocks.action-statement': ActionStatementModule,
+  'art-blog-cs.text-block': TextBlock,
+  'art-blog-cs.title-block': TitleBlock,
+  'art-blog-cs.image': ImageBlock,
+  'art-blog-cs.text-media-right': TextBlockMediaRight,
+  'art-blog-cs.text-media-left': TextBlockMediaLeft,
+  'art-blog-cs.quote': Quote,
+  'art-blog-cs.item-list': ItemListModule,
+  'art-blog-cs.horizontal-icons': HorizontalIconsModule,
+  'art-blog-cs.tech-list': TechListModule,
+  'art-blog-cs.button': ButtonModule,
+};
+
+interface Props {
+  blocks: Block[];
+}
+
+const { blocks } = Astro.props;
+const slideshowSlides = await getSlideshowSlides();
+---
+
+{
+  blocks.map((block) => {
+    // React islands stay inline: the client:visible directive cannot come from a config map.
+    switch (block.type) {
+      case 'blocks.testimonial-slider':
+        return <TestimonialSlider client:visible testimonials={block.testimonials} />;
+      case 'blocks.proj-slideshow':
+        return <ProjectsSlideshow client:visible slides={slideshowSlides} />;
+      case 'blocks.accordion':
+        return <AccordionModule client:visible items={block.items} />;
+    }
+
+    const Component = blockComponents[block.type];
+    return Component ? <Component {...block} /> : null;
+  })
+}

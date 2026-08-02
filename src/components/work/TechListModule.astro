@@ -1,0 +1,26 @@
+---
+interface Props {
+  technology?: Array<{ name: string; icon?: string; url?: string }>;
+}
+
+const { technology = [] } = Astro.props;
+---
+
+<section class="max-w-content mx-auto px-6 lg:px-16 py-12 lg:py-20">
+  <h3 class="font-mono font-normal text-lg lg:text-3xl text-softBlack mb-8">Technologies</h3>
+  <ul class="list-none p-0 flex flex-wrap gap-4">
+    {
+      technology.map((tech) => (
+        <li class="font-sans text-base text-softBlack px-4 py-2 border-2 border-softBlack">
+          {tech.url ? (
+            <a href={tech.url} target="_blank" rel="noopener" class="text-grape underline">
+              {tech.name}
+            </a>
+          ) : (
+            <span>{tech.name}</span>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>

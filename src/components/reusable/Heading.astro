@@ -1,0 +1,36 @@
+---
+export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div' | 'span';
+export type StyledTag = HeadingTag | 'h4-alt';
+
+interface Props {
+  tag?: HeadingTag;
+  styledTag?: StyledTag;
+  fontColor?: 'softBlack' | 'offWhite';
+  gutterBottom?: boolean;
+  class?: string;
+}
+
+const { tag = 'div', styledTag, fontColor, gutterBottom = false, class: className = '' } = Astro.props;
+
+const Tag = tag;
+const styleKey = styledTag || tag;
+
+// Neutral type scale. Display headings use the mono token.
+const styleClass: Record<string, string> = {
+  h1: 'font-mono font-normal text-3xl lg:text-5xl leading-tight',
+  h2: 'font-mono font-normal text-2xl lg:text-4xl leading-tight',
+  h3: 'font-mono font-normal text-xl lg:text-2xl leading-snug',
+  h4: 'font-mono font-normal text-lg lg:text-xl leading-snug',
+  'h4-alt': 'font-sans font-semibold uppercase tracking-wide text-base lg:text-lg',
+  h5: 'font-sans font-semibold text-base lg:text-lg',
+  h6: 'font-sans font-semibold text-sm uppercase tracking-wide',
+  div: '',
+  span: '',
+};
+
+const colorClass = fontColor === 'offWhite' ? 'text-offWhite' : 'text-softBlack';
+---
+
+<Tag class:list={[styleClass[styleKey], colorClass, gutterBottom ? 'mb-6' : '', className]}>
+  <slot />
+</Tag>

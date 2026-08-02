@@ -1,0 +1,2 @@
+# prettier-plugin-astro can't parse <script is:inline> inside {expression} blocks
+src/layouts/BaseLayout.astro

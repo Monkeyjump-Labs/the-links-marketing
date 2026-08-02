@@ -1,0 +1,20 @@
+---
+interface Props {
+  label: string;
+  href: string;
+  openInNewTab?: boolean;
+}
+
+const { label, href, openInNewTab = false } = Astro.props;
+---
+
+<div class="px-6 py-8 lg:px-16 lg:py-16">
+  <a
+    href={href}
+    class="inline-block bg-grape text-offWhite font-mono font-bold text-xs md:text-xl px-6 py-3 md:px-7 md:py-5 min-w-[8.5rem] md:min-w-[20rem] no-underline hover:brightness-125"
+    target={openInNewTab ? '_blank' : undefined}
+    rel={openInNewTab ? 'noopener noreferrer' : undefined}
+  >
+    {label}
+  </a>
+</div>

@@ -1,0 +1,69 @@
+---
+import type { CaseStudy } from '../../lib/types';
+
+interface Props {
+  study: CaseStudy;
+}
+
+const { study } = Astro.props;
+const hasStats = Boolean(study.industry || study.technologies || study.status);
+---
+
+<div class="flex flex-col w-full">
+  <header class="flex items-center justify-between gap-6">
+    <h3 class="font-mono font-normal text-softBlack text-4xl lg:text-5xl leading-tight m-0">{study.title}</h3>
+  </header>
+  {
+    study.image && (
+      <div class="group relative mt-4 border-2 border-softBlack bg-white overflow-hidden">
+        <img
+          class="block w-full h-auto aspect-[704/404] object-cover"
+          src={study.image}
+          alt={study.imageAlt ?? study.title}
+          loading="lazy"
+        />
+        {study.href && (
+          <div class="absolute inset-0 flex items-center justify-center bg-softBlack/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <a
+              href={study.href}
+              class="px-6 py-2 text-offWhite font-sans text-base border-2 border-offWhite no-underline"
+            >
+              Learn more
+            </a>
+          </div>
+        )}
+      </div>
+    )
+  }
+  <div class="flex flex-col gap-8 mt-8">
+    {
+      study.description && (
+        <p class="font-sans font-normal text-softBlack text-xl leading-relaxed m-0">{study.description}</p>
+      )
+    }
+    {
+      hasStats && (
+        <dl class="flex flex-col gap-2 m-0">
+          {study.industry && (
+            <div class="flex gap-4 font-sans text-base leading-tight text-softBlack">
+              <dt class="font-bold m-0">Industry:</dt>
+              <dd class="font-normal m-0">{study.industry}</dd>
+            </div>
+          )}
+          {study.technologies && (
+            <div class="flex gap-4 font-sans text-base leading-tight text-softBlack">
+              <dt class="font-bold m-0">Technologies:</dt>
+              <dd class="font-normal m-0">{study.technologies}</dd>
+            </div>
+          )}
+          {study.status && (
+            <div class="flex gap-4 font-sans text-base leading-tight text-softBlack">
+              <dt class="font-bold m-0">Status:</dt>
+              <dd class="font-normal m-0">{study.status}</dd>
+            </div>
+          )}
+        </dl>
+      )
+    }
+  </div>
+</div>

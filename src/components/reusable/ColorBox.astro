@@ -1,0 +1,13 @@
+---
+import type { BrandColor } from '../../lib/types';
+import { bgClass } from '../../lib/colorClasses';
+
+interface Props {
+  bgColor: BrandColor;
+}
+
+const { bgColor } = Astro.props;
+---
+
+<!-- Decorative full-bleed color panel. Place inside a `relative` parent. -->
+<div class:list={['absolute inset-0 -z-10', bgClass[bgColor]]}></div>

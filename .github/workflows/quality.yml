@@ -1,0 +1,57 @@
+---
+name: ✅ Quality
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Tina schema lock is fresh
+        # Fails the PR if tina/config.ts changed but tina/tina-lock.json wasn't
+        # regenerated. Tina Cloud derives its remote schema from the committed lock,
+        # so a stale lock silently breaks prod editing. Secret-free: --skip-cloud-checks
+        # never contacts Tina Cloud and the client ID is not embedded in the lock.
+        run: npm run tina:lock:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run check
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          PUBLIC_LEAD_ENDPOINT: ${{ secrets.PUBLIC_LEAD_ENDPOINT }}

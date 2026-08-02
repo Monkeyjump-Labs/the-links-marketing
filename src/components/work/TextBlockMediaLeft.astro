@@ -1,0 +1,21 @@
+---
+interface Props {
+  text: string;
+  heading?: string;
+  showHeading?: boolean;
+  image: string;
+  imageAltText?: string;
+}
+
+const { text, heading, showHeading = true, image, imageAltText = '' } = Astro.props;
+---
+
+<section class="flex flex-col lg:flex-row lg:items-start gap-8 max-w-content mx-auto px-6 lg:px-16 py-12 lg:py-20">
+  <div class="flex-1">
+    <img src={image} alt={imageAltText} class="w-full h-auto" />
+  </div>
+  <div class="flex-1">
+    {showHeading && heading && <h3 class="font-mono font-normal text-lg lg:text-3xl text-softBlack mb-4">{heading}</h3>}
+    <div class="userEntered" set:html={text} />
+  </div>
+</section>

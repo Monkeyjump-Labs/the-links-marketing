@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlockRenderer from '../components/BlockRenderer.astro';
+import { pageData } from '../data/pages/index';
+
+export function getStaticPaths() {
+  return Object.keys(pageData).map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const page = pageData[slug as string];
+---
+
+<BaseLayout metadata={page.metadata}>
+  <BlockRenderer blocks={page.blocks} />
+</BaseLayout>

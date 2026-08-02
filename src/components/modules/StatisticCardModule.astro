@@ -1,0 +1,25 @@
+---
+interface Statistic {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  statistics?: Statistic[];
+}
+
+const { statistics = [] } = Astro.props;
+---
+
+<section class="mx-auto my-12 max-w-content px-6 lg:my-20 lg:px-16">
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(12rem,1fr))] gap-8">
+    {
+      statistics.map((stat) => (
+        <div class="flex flex-col border-2 border-softBlack p-8">
+          <span class="font-mono text-5xl font-bold text-grape">{stat.value}</span>
+          <span class="mt-2 font-sans text-base uppercase tracking-wide text-softBlack">{stat.label}</span>
+        </div>
+      ))
+    }
+  </div>
+</section>

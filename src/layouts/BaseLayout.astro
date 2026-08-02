@@ -1,0 +1,39 @@
+---
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { globalData } from '../data/global';
+import type { PageMetadata } from '../lib/types';
+
+interface Props {
+  metadata?: PageMetadata;
+  /** Set false to omit the shared Header/Footer chrome (e.g. bare landing pages). */
+  chrome?: boolean;
+}
+
+const { metadata = {}, chrome = true } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" />
+    <Seo
+      title={metadata.metaTitle}
+      description={metadata.metaDescription}
+      shareImage={metadata.shareImage}
+      twitterCardType={metadata.twitterCardType}
+      noIndex={metadata.noIndex}
+    />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    {chrome && <Header />}
+    <main class="flex-1">
+      <slot />
+    </main>
+    {chrome && <Footer {...globalData.footer} />}
+  </body>
+</html>

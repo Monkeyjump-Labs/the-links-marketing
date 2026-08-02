@@ -1,0 +1,52 @@
+---
+import type { BrandColor } from '../../lib/types';
+import ColorBox from '../reusable/ColorBox.astro';
+
+interface Props {
+  heading?: string;
+  subText?: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
+  backgroundColor?: BrandColor;
+  renderIcon?: boolean;
+  parallaxId?: string;
+}
+
+const { heading, subText, ctaLabel, ctaUrl, backgroundColor, renderIcon, parallaxId } = Astro.props;
+---
+
+<div
+  class="relative mx-auto my-12 flex max-w-content flex-col justify-center border-2 border-softBlack px-6 py-12 lg:my-20 lg:px-16 lg:py-24"
+  id={parallaxId}
+>
+  {backgroundColor && <ColorBox bgColor={backgroundColor} />}
+  {heading && <h2 class="mb-8 font-mono text-lg font-normal text-softBlack lg:text-3xl">{heading}</h2>}
+  {subText && <p class="max-w-3xl font-sans text-base leading-relaxed text-softBlack lg:text-xl">{subText}</p>}
+  {
+    ctaLabel && ctaUrl && (
+      <div class="mt-10">
+        <a
+          href={ctaUrl}
+          class="inline-block bg-grape px-6 py-3 font-mono text-xs font-bold text-offWhite transition hover:brightness-125 md:min-w-[16rem] md:text-lg"
+        >
+          {ctaLabel}
+        </a>
+      </div>
+    )
+  }
+  {
+    renderIcon && (
+      <svg
+        class="mt-10 h-8 w-8 text-softBlack lg:h-12 lg:w-12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    )
+  }
+  <slot />
+</div>

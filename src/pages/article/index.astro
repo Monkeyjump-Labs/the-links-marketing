@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroModule from '../../components/modules/HeroModule.astro';
+import FeaturedPostCard from '../../components/posts/FeaturedPostCard.astro';
+import PostCard from '../../components/posts/PostCard.astro';
+
+const articles = (await getCollection('articles')).sort(
+  (a, b) => b.data.datePublished.valueOf() - a.data.datePublished.valueOf(),
+);
+const [featured, ...rest] = articles;
+---
+
+<BaseLayout
+  metadata={{
+    metaTitle: 'Articles | Your Company',
+    metaDescription: 'Technical articles and deep-dives.',
+  }}
+>
+  <HeroModule heading="News + Insights" subHeading="Articles" backgroundColor="lavender" size="sm" />
+  <section class="mx-auto max-w-content px-6 py-12 lg:px-16 lg:py-20">
+    {articles.length === 0 && <p class="font-sans text-lg text-softBlack">No articles yet — check back soon.</p>}
+    {
+      featured && (
+        <FeaturedPostCard
+          href={`/article/${featured.slug}/`}
+          image={featured.data.indexImage}
+          imageAlt={featured.data.indexImageAltText}
+          date={featured.data.datePublished}
+          title={featured.data.title}
+          description={featured.data.description}
+        />
+      )
+    }
+    {
+      rest.length > 0 && (
+        <ul class="mt-12 grid list-none grid-cols-1 gap-12 p-0 md:grid-cols-2 lg:grid-cols-3">
+          {rest.map((article) => (
+            <li>
+              <PostCard
+                href={`/article/${article.slug}/`}
+                image={article.data.indexImage}
+                imageAlt={article.data.indexImageAltText}
+                date={article.data.datePublished}
+                title={article.data.title}
+                description={article.data.description}
+              />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</BaseLayout>

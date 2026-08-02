@@ -1,0 +1,15 @@
+---
+interface Props {
+  maxWidth?: number | string;
+}
+
+const { maxWidth } = Astro.props;
+
+const style = maxWidth
+  ? `display: inline-block; max-width: ${typeof maxWidth === 'number' ? `${maxWidth}rem` : maxWidth}`
+  : 'display: inline-block';
+---
+
+<div style={style}>
+  <slot />
+</div>

@@ -1,0 +1,117 @@
+/* =============================================================================
+ * global.css — Tailwind v4 entry + theme mapping
+ * -----------------------------------------------------------------------------
+ * Load order matters:
+ *   1. tokens.css      -> raw brand primitives as CSS custom properties
+ *   2. tailwindcss     -> Tailwind's base/utilities engine
+ *   3. @theme          -> maps the raw tokens into Tailwind theme tokens so
+ *                         utilities (bg-*, text-*, font-*, spacing) resolve
+ *                         to the brand values.
+ *
+ * To rebrand a fork: edit ONLY tokens.css. This file rarely changes.
+ * ========================================================================== */
+
+@import './tokens.css';
+@import 'tailwindcss';
+
+/* Tell Tailwind where to scan for class names (v4 content detection). */
+@source '../**/*.{astro,ts,tsx,js,jsx,md,mdx}';
+
+@theme {
+  /* -- Colors (bg-*, text-*, border-* utilities) ------------------------- */
+  --color-watermelon: var(--brand-watermelon);
+  --color-pink: var(--brand-pink);
+  --color-grape: var(--brand-grape);
+  --color-lavender: var(--brand-lavender);
+  --color-banana: var(--brand-banana);
+  --color-gold: var(--brand-gold);
+  --color-mint: var(--brand-mint);
+  --color-teal: var(--brand-teal);
+  --color-blue: var(--brand-blue);
+  --color-offWhite: var(--brand-off-white);
+  --color-softBlack: var(--brand-soft-black);
+
+  --color-ink: var(--brand-ink);
+  --color-surface: var(--brand-surface);
+  --color-primary: var(--brand-primary);
+  --color-accent: var(--brand-accent);
+
+  /* -- Fonts (font-sans, font-mono) -------------------------------------- */
+  --font-sans: var(--brand-font-sans);
+  --font-mono: var(--brand-font-mono);
+
+  /* -- Spacing tokens (p-section, my-section, px-gutter, etc.) ------------ */
+  --spacing-section: var(--brand-section-y);
+  --spacing-section-lg: var(--brand-section-y-lg);
+  --spacing-gutter: var(--brand-gutter-x);
+  --spacing-gutter-lg: var(--brand-gutter-x-lg);
+
+  /* -- Content widths (max-w-content, max-w-prose-page) ------------------- */
+  --container-content: var(--brand-content-max);
+  --container-prose-page: var(--brand-prose-max);
+}
+
+/* -- Base element defaults -------------------------------------------------- */
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: #fff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* -- Prose wrapper for editor/MDX-authored content ------------------------- */
+.userEntered {
+  white-space: pre-wrap;
+  font-size: 1rem;
+  line-height: 1.625rem;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+}
+
+.userEntered a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.userEntered img {
+  display: block;
+  max-width: min(100%, var(--container-prose-page));
+  height: auto;
+  margin: 1rem 0;
+}
+
+.userEntered ol,
+.userEntered ul {
+  margin: 0 0 1.66em;
+  padding-left: 1.66em;
+  white-space: normal;
+}
+
+.userEntered h1,
+.userEntered h2,
+.userEntered h3,
+.userEntered h4,
+.userEntered h5 {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 2rem 0 1rem;
+}
+
+.userEntered h1 {
+  font-size: 2rem;
+}
+.userEntered h2 {
+  font-size: 1.625rem;
+}
+.userEntered h3 {
+  font-size: 1.25rem;
+}

@@ -1,0 +1,50 @@
+---
+import type { BrandColor } from '../../lib/types';
+import { bgClass, textClass } from '../../lib/colorClasses';
+
+interface Props {
+  href?: string;
+  bgColor?: BrandColor;
+  color?: BrandColor;
+  size?: 'sm' | 'md' | 'lg';
+  target?: string;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+}
+
+const {
+  href,
+  bgColor = 'grape',
+  color = 'offWhite',
+  size = 'sm',
+  target,
+  type = 'button',
+  class: className = '',
+} = Astro.props;
+
+const sizeClass: Record<string, string> = {
+  sm: 'px-6 py-3 min-w-[8.5rem] text-xs md:text-lg',
+  md: 'px-7 py-4 min-w-[10rem] md:min-w-[16rem] text-xs md:text-lg',
+  lg: 'px-7 py-5 min-w-[12rem] md:min-w-[18rem] lg:min-w-[22rem] text-xs md:text-lg',
+};
+
+const base = [
+  'inline-block cursor-pointer border-0 text-center font-mono font-bold no-underline transition hover:brightness-125',
+  bgClass[bgColor],
+  textClass[color],
+  sizeClass[size],
+  className,
+];
+---
+
+{
+  href ? (
+    <a href={href} target={target} class:list={base}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class:list={base}>
+      <slot />
+    </button>
+  )
+}
