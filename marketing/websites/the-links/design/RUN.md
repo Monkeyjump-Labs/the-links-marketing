@@ -55,6 +55,46 @@ either a system font stack or one of the two families already self-hosted in thi
 (Bitter, Open Sans), base64-embedded if it wants them. **Judge the preview's type as an
 approximation; judge the overlay's type declaration as the real proposal.**
 
+## Round 1 gallery → human steer (2026-08-02, wisplet `rv_RPegEabiyFaa8c`)
+
+> Daran Han: *"Lets g more brutalist but try to adopt a blue base theme color versus green -
+> next diverge lets soften brutalist just a tiny tiny touch and then play with 3 new color
+> palette directions"*
+
+**Round 2 setup.** Register is now **fixed** (softened brutalist); the divergence axis narrows
+to **palette only**, 3 candidates. So the three stay honestly comparable, the softening delta is
+specified centrally and applied **identically** by all three — otherwise the comparison is
+confounded by three different readings of "a tiny tiny touch".
+
+### The softening delta (identical across all three)
+
+Applied to `brutalist.json` / `home-brutalist.html` as the base composition:
+
+- **Radius:** 0 → **3px on interactive elements only** (buttons, inputs, chips). Panels, cells
+  and image slots stay square. This is the single most legible "less hostile" signal.
+- **Rules:** the visible ruled grid **stays** — it is the idea. Secondary/internal dividers may
+  drop 2px → 1px; structural and section rules stay 2px.
+- **Spacing:** one step more air inside cells only. Section rhythm and full-bleed alternation
+  unchanged.
+- **Type:** peak display weight may come down one step. Sentence case stays. Scale unchanged.
+- **Unchanged:** the scoreboard idea, labelled cells, ground inversion, hierarchy from weight
+  and scale, and the reassurance copy carrying the loudest treatment.
+
+### Two notes that shape round 2
+
+1. **Blue resolves the gap round 1 found.** The palette could not render its own brief — "a warm
+   dark room with one bright screen" — because `screen` is 1.81:1 on night. A blue base gives
+   the system the cool axis it never had, so the brief becomes expressible rather than
+   worked around.
+2. **The old slate blue's failure was lightness, not hue.** `#7794A6` failed at 3.20:1 as a
+   *text-bearing action colour*. That is not an argument against blue; it is an argument against
+   that value in that role. A blue ink or ground at proper darkness is entirely sound —
+   and every candidate still computes its own ratios.
+3. **Dropping forest costs the one piece of real equity.** Forest `#124B2E` is the current
+   theme's declared "black" across 66 sections. Round 2 tests whether blue earns that slot; the
+   candidates should each say what they do with green — retire it, demote it to an accent, or
+   keep it as a secondary — rather than silently deleting it.
+
 ## Findings from divergence that outlive this run
 
 Things the explorers surfaced that are true regardless of which direction wins.
