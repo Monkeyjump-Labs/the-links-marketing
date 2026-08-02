@@ -1,0 +1,476 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "The Links — BLUE-STEEL token overlay (round 2, softened brutalist). Stance: blue is the atmosphere, not the accent — every ground, ink, border and grey on the page is one cool hue derived from `palette.screen`, so the whole surface is tinted like the light coming off a simulator projection rather than like a brand colour someone picked. Exactly one warm hue (the ember/amber pendant family, retained verbatim) does every job that needs heat, and forest green is demoted from 'the theme's black' to the one thing it can still mean: the colour of a venue's name.",
+
+  "$extensions": {
+    "com.monkeyjumplabs.candidate": {
+      "id": "home-blue-steel",
+      "round": 2,
+      "register": "brutalist, softened per RUN.md 'The softening delta'",
+      "surface": "homepage",
+      "divergenceAxis": "palette only — register, layout, IA, copy and data all fixed",
+      "base": "design/token-sets/brutalist.json + design/candidates/home-brutalist.html (round 1)",
+      "canonical": "design/tokens.json (v1.0.0-proposal)",
+      "date": "2026-08-02",
+      "status": "PROPOSAL — divergent candidate for a human gate. Not client-approved.",
+
+      "committedIdea": "The room is lit by the screen, so the page is too. This is a single-hue cool-neutral system: eight of the nine neutrals are new values sitting within ±5° of `palette.screen`'s 199°, which means the page has no greys at all — only steel at nine lightnesses. Nothing here is blue because blue is the brand colour; it is blue because that is the temperature of the one light source the venue actually owns. The entire heat budget is one warm hue, spent at full strength in one place.",
+
+      "whatASiblingWouldNotDo": "Refuse to make blue an accent. A sibling will hand blue a job — a button, a band, a highlight — and keep a warm or neutral chassis underneath it. This candidate does the opposite: blue never appears as a coloured element anywhere on the page, because it is the substrate. The only things that are 'coloured' are the ember band, the amber on the dark fields, and the forest green on the two venue names. Restraint is the position, and the risk it takes is that a reviewer reads restraint as absence.",
+
+      "dials": { "variance": 6, "motion": 1, "density": 6 },
+
+      "theGapThisDirectionCloses": {
+        "finding": "RUN.md finding 2 — 'the palette cannot render its own brief.' brand-direction.md §5.1 says the venue's signature is 'a warm dark room with one bright screen in it', but the only cool value in the canonical palette, `palette.screen` #2E5A6E, measures 1.81:1 against `palette.night` #0D3520. A simulator projection painted in it is invisible on the dark ground it is supposed to punch out of. Round 1 proposed `palette.screenLight` and did not add it; the brutalist candidate had to fake the projection in `palette.greige`.",
+        "whatThisOverlayDoes": "Adds `palette.screenLight` #C3DCE8 under exactly the name round 1 proposed, and measures it: **11.84:1 against `palette.steelNight`**. The Lakeville media slot now renders the brief literally — a near-black cool room, three warm pendant pools, and one bright cool panel that is the brightest thing in the frame — with no substitution and no workaround. This is the one thing this direction can demonstrate that a warm-based sibling structurally cannot.",
+        "secondOrderEffect": "Because the ground is now the cool value, the warm accent stops competing with it. In the canonical system ember and screen are both 'a colour on white' and read as two accents. Here ember is the only accent, and screen has become the room."
+      },
+
+      "callOnForestGreen": {
+        "verdict": "DEMOTED, not retired — and given one specific job it could never do before.",
+        "was": "`palette.forest` #124B2E is declared as the live theme's *black* (--black-hsl: 149.47, 61.29%, 18.24%) and backs 66 sections. brand-direction.md §1 calls it the brand's single strongest colour equity.",
+        "isNow": "`role.equity.venueName` — the colour of a venue's NAME, and nothing else. It sets the two trust-strip venue links and their underline, and the two `<h3>`s in the 'Two venues' section. It is never a ground, never body ink, never an action, never a rule between sections.",
+        "whyThisIsBetterThanKeepingIt": "As the theme's black, forest was the substrate — which meant the brand's equity colour could never appear ON a dark field, because forest on its own near-black sibling is 1.36:1. It was everywhere and it meant nothing. In a steel system it is the only non-cool, non-warm value on the page, so the eye reads it as a category: green = this place has a name. That is a direct answer to screen-spec §10.4 ('nothing on the page ever visually says The Links **of Lakeville**') and to brand-direction.md §4.2's endorsement system, and it is the first time the equity colour does work rather than being the floor.",
+        "whyThisIsBetterThanRetiringIt": "Retiring it spends four years of the only real colour equity the brand has to buy a hue that entered the system this morning. A one-role demotion keeps the equity legible on the page's most-read block (the trust strip) at a cost of zero new values.",
+        "theConstraintThisImposes": "Forest is a LIGHT-GROUND-ONLY colour in this overlay, and that is arithmetic, not preference: forest vs steelNight 1.67:1, vs steelDeep 1.36:1, vs screen 1.35:1, vs ember 1.36:1 — all far below the 3:1 non-text gate. So on the dark bands (chrome, hero, jobs, footer) the venue name is carried by `palette.amber` instead. Recorded as a rule so nobody reintroduces a green mark on a steel field.",
+        "honestCost": "Forest appears in exactly six places on this page. A reviewer who wants to *see* the brand's green will find this thin, and that is a fair objection to put at the gate. The counter-argument is that six deliberate appearances of a colour that means something beat 66 sections of a colour that means 'background'."
+      },
+
+      "theOneWarmAccent": {
+        "value": "The ember/amber family, RETAINED VERBATIM from the canonical tokens.json — `ember` #8A400A, `emberHover` #AD500D, `emberActive` #6D3308, `emberMid` #B85718, `amber` #F3B268.",
+        "whyNotANewWarm": "Because the argument this candidate makes is that colour must be sourced, and the ember is the only value in the whole system with a measurement behind it: every frame of the existing shoot is red-dominant over blue by +15 to +19, lit by warm pendants over the bar with no daylight (brand-direction.md §2.2). Coining a prettier orange to sit against a new blue would be exactly the invention this direction is arguing against. It also keeps intact the tuning that took real work: ember was chosen as the darkest attractive ember whose *brightened* hover form still clears AA.",
+        "hoverArithmeticReVerified": "Against this overlay's new light neutral: `steelChalk` #F3F6F7 on `emberHover` #AD500D = **4.92:1** ✓ (round 1's paper #F7F5F3 measured 4.91:1 — the swap does not cost the hover). `steelChalk` on `emberActive` = 9.09:1 ✓. `white` on `emberHover` = 5.34:1 ✓.",
+        "whyItIsTwoValuesAndNotOne": "One warm HUE, at exactly two lightness stops, because a single value provably cannot serve both grounds. brand-direction.md §2.4.2: white text at 4.5:1 forces a fill's relative luminance below 0.183, while a 3:1 boundary against a near-black ground forces it above 0.261 — no value satisfies both. So ember carries the warm on light grounds and amber carries it on dark. That is arithmetic, not a second accent.",
+        "whereTheHeatGoes": "One full-bleed ember band (the featured offer + waitlist), the amber on every dark band (eyebrow, score rules, the on-dark CTA fill, the reassurance line, the pendant marks in the media slot), and the ember CTA fills on light grounds. Nothing else on the page is warm."
+      },
+
+      "howThisAvoidsReadingAsColdOrUndesigned": [
+        "SATURATION, NOT GREY. The classic cool-neutral failure is a desaturated ramp that reads as unpainted UI chrome. This ramp is saturated: 58% at `steelNight`, 56% at `steelDeep`, 41% at `screen`, 45% at `screenLight`, 27% at `steelMist`. Only the two lightest steps drop to 18–20%, where saturation would tint paper. Every dark value on the page is unmistakably blue, not grey.",
+        "ONE HUE, NINE LIGHTNESSES. Every new value is within ±5° of `palette.screen`'s 199° (range 195–204°). A cool system reads as undesigned when its neutrals wander in hue; this one cannot, because there is only one hue in it.",
+        "THE LARGEST CHROMATIC EVENT ON THE PAGE IS WARM. The ember band is full-bleed and unchanged from round 1. In a page that is otherwise entirely cool it is louder than it was against green, not quieter — one warm field in a cold room is the whole photographic brief, rendered as page structure.",
+        "EVERY DARK BAND HAS WARM LIGHT IN IT. Amber sets the hero eyebrow, the score rules, the on-dark CTA, the reassurance line, the footer lockup rules and the pendant marks. The dark bands are not blue rectangles; they are cool rooms with warm light in them, which is exactly what the photographs are.",
+        "THE LIGHT END IS BARELY COOL. `steelChalk` #F3F6F7 is 20% saturation at 96% lightness — a hair off white. The page's light grounds do not read as a blue wash; they read as paper that happens to be lit by the same room. This is the single most important restraint: tint the darks hard, tint the lights almost not at all.",
+        "GREEN IS STILL THERE, MEANING SOMETHING. The one non-cool, non-warm value on the page marks the two venue names — so the page carries three colour categories (steel = everything, warm = action, green = place) rather than one hue and an accent."
+      ],
+
+      "typefaceProposal": {
+        "display": {
+          "family": "Archivo",
+          "source": "Omnibus-Type, OFL. Variable: weight 100–900, width 62–125.",
+          "weightsUsed": [600, 700, 800],
+          "widthsUsed": [100, 112],
+          "rationale": "UNCHANGED FROM ROUND 1 — the register is fixed for round 2 and the type proposal travels with it. One variable file gives a normal cut for labels and an expanded cut for scoreboard figures, so weight AND width carry hierarchy. Archivo is drawn for high-contrast display at both poster and caption size: a transit board, not an award entry.",
+          "replaces": "Bitter",
+          "softeningDeltaApplied": "The display weight ramp steps down one notch: round 1's 900 / 800 / 600 becomes **800 / 700 / 600**. The delta permits the peak to come down one step; the ladder is shifted as a whole so the h1-vs-h2 relationship survives instead of collapsing. Scale is unchanged.",
+          "costOfTheSwap": "Unchanged from round 1 and still the most contestable call in the register: a grotesque page face makes the slab 'THE LINKS' wordmark read as a MARK rather than as the same font set larger. Byte budget unchanged (one variable file for one variable file)."
+        },
+        "body": {
+          "family": "Open Sans",
+          "weightsUsed": [400, 600, 700],
+          "rationale": "RETAINED VERBATIM from the current direction and the live site. Carries tabular figures for hours and bay counts per brand-direction.md §3.2 rule 3."
+        },
+        "retiredByThisOverlay": {
+          "family": "Bitter",
+          "note": "Retired from the web build only, as in round 1. It survives inside the drawn wordmark alongside the slab it inherits from."
+        },
+        "previewApproximation": "The wisplet preview loads no network resources. Open Sans is REAL — base64-embedded from public/fonts/open-sans-normal-latin.woff2. Archivo is NOT available and is approximated by the system grotesque stack (SF Pro / Segoe UI / Helvetica Neue) at weight 700–800 with negative tracking. Judge the preview's display type as an approximation; judge this declaration as the proposal."
+      },
+
+      "photographyHandling": "There is no photography in this project and none is faked. Same two moves as round 1, but the first one now works properly: (1) THE DARK GROUNDS ARE THE PHOTOGRAPH'S JOB — the hero is a flat near-black COOL field, because the room is a near-black room lit by a screen; (2) where the playbook demands frames (§3.6), the slot is drawn entirely from palette values that were themselves derived from measurements of the real photography — a steelNight ground, a screenLight panel for the projection at 11.84:1, a screen-blue horizon band inside it, amber points for the pendants — at the real 3:2 aspect, hard-ruled, captioned with the specific frame that is missing per venue. Lakeville's caption says the shoot exists and is not in the repo. **Stillwater's slot is drawn EMPTY AND UNLIT** — a hatched dark field with an unlit frame in it — because that venue has never been professionally photographed and the honest render of 'no frame exists' is not a prettier placeholder. Asymmetric because the truth is asymmetric.",
+
+      "keptVsReplaced": {
+        "keptVerbatim": [
+          "`palette.screen` #2E5A6E — kept as a value and PROMOTED from 'informational/status only' to the anchor of the whole neutral ramp. Every new neutral is derived from its hue.",
+          "`palette.ember` / `emberHover` / `emberActive` / `emberMid` / `amber` — the entire warm family, values untouched. It is the only measured colour in the system.",
+          "`palette.forest` #124B2E — value untouched, role reduced to `role.equity.venueName`.",
+          "`palette.clay` #A22C22 and `palette.moss` #155E36 — state hues, untouched.",
+          "`palette.white` #FFFFFF — the page ground.",
+          "`space.sectionY` / `sectionYLg` / `gutterX` / `gutterXLg`, `size.contentMax` / `proseMax` — layout is fixed on this axis.",
+          "The whole `typeScale.*` and `tracking.*` and `lineHeight.*` ramp from brutalist.json — the delta forbids changing scale.",
+          "`elevation.none` — there are still no shadows on this page.",
+          "`motion.duration` 0ms — the delta says nothing about motion, so nothing moves. A 150ms ease is softening past the instruction."
+        ],
+        "replaced": [
+          "`palette.night` #0D3520 → `palette.steelNight` #0B1F2A. Reason: the page's black had to become cool for the direction to exist at all. Bonus: white on it is 16.89:1 vs 13.57:1 — the type gets louder for free.",
+          "`palette.paper` #F7F5F3 → `palette.steelChalk` #F3F6F7. Reason: a barely-warm off-white contradicts a cool system; the replacement is a barely-COOL off-white at the same lightness, so every ratio it inherits moves by <0.02.",
+          "`palette.greige` #E5E1E0 → `palette.steelFog` #DFE5E9. Reason: greige is a warm neutral; fog is the same lightness on the ramp's hue.",
+          "`palette.sage` #9CBEAD → `palette.steelMist` #9DB9C6. Reason: sage is a green light field; mist is its steel equivalent and reads BETTER on the new ground (8.19:1 vs sage's 6.71:1 on the old night).",
+          "`role.ink.bodyOnLight` forest → `palette.steelInk` #173C4D. Reason: body ink had to leave forest for green to become a category rather than the default.",
+          "`role.ink.mutedOnLight` #456052 → `palette.steelMuted` #4A6473. Reason: the old muted is a desaturated green; this is its exact steel counterpart, and it clears AA on all three light grounds (6.25 / 5.75 / 4.91)."
+        ],
+        "addedOutright": [
+          "`palette.screenLight` #C3DCE8 — the bright cool value round 1 flagged and did not add. This is the direction's whole point.",
+          "`palette.steelDeep` #12303F — the second dark, used only inside the media slot's room mass."
+        ],
+        "retiredByThisOverlay": [
+          "`palette.emberTint` #F0DCC9 — a warm light field has no home in a cool light ramp, and the offer band is full-strength ember rather than a tint. Flagged rather than silently dropped: if the convergent phase wants a light callout field it should be `palette.screenLight`, which is measured here (steelNight on it 11.84:1, ember on it 5.22:1).",
+          "`palette.night` #0D3520, `palette.paper` #F7F5F3, `palette.greige` #E5E1E0, `palette.sage` #9CBEAD — superseded as above. Values are recorded, not deleted, so a convergent merge can see exactly what was swapped for what."
+        ]
+      },
+
+      "tokenGaps": [
+        "NO WARNING / UNVERIFIED ROLE — and a monochrome system makes this WORSE, not better. `(hours being confirmed)` is neither an error nor a success; it is unverified data. Round 1 gave it `palette.screen` blue on white, which read as a different KIND of thing because the rest of the page was green. Here blue is the substrate, so a blue badge no longer signals anything by hue. This overlay differentiates it by FORM instead — a 2px screen-ruled caps tag at label size against 3rem hour figures — and records the gap: a real `role.state.unverified` is needed, and it is more urgent in this direction than in a warm one. Proposed but NOT added, because adding a third hue would break the stance.",
+        "NO RADIUS / BORDER / ELEVATION / TYPE-SCALE / TRACKING / LINE-HEIGHT CATEGORIES in the canonical tokens.json (RUN.md finding 1, unchanged). All of them are declared below. The convergent phase must promote the winning set into the canonical file.",
+        "THE LIGHT RAMP'S ADJACENT STEPS ARE NOT SELF-SEPARATING. white→steelChalk is 1.09:1 and steelChalk→steelFog is 1.17:1. That is fine here and it is deliberate: in this register adjacent light surfaces are ALWAYS separated by a rule, never by a tonal step, so no boundary on the page depends on those ratios. But it is exactly the trap a softer register would fall into, so it is recorded: **do not carry this ramp into a card-and-shadow system without adding a border token to every surface pair.**",
+        "COPY GAP, NOT INVENTED: the register still wants the published rate ($35 / hour, real, current through 2026-10-03) on the scoreboard. screen-spec-home.md §7 forbids any string not on the copy sheet and no homepage section carries a price. Flagged for the convergent phase as a one-string copy request, NOT added.",
+        "NO BRAND MARK. Unchanged from round 1 and from the canonical file. The wordmark is typeset (Archivo 800, expanded, wide-tracked, caps) and the venue lockup is a typographic rule-and-line treatment per brand-direction.md §4.2. No logo is drawn — that is a commission, not a sprint output."
+      ],
+
+      "softeningDeltaAsApplied": {
+        "radius": "`radius.control` 0 → **3px**, bound to buttons, form inputs and the venue-switcher chips ONLY. `radius.surface`, `radius.panel` and `radius.media` stay 0 — panels, cells, the waitlist slab, the quote slots and the image slots are square.",
+        "rules": "The visible ruled grid stays. Secondary/internal dividers that were `border.rule` 2px drop to `border.hairline` 1px: the trust-strip venue-name underline and the venue meta row's top/bottom rules. Structural rules (section separators, band tops, the quote-grid head, the venue-row bounds) stay 2px or heavier. `border.score` 4px and `border.slab` 8px unchanged.",
+        "spacing": "One step more air INSIDE cells only: venue cell s6→s7, quote slot s5→s6, waitlist slab s6→s7, job row block s6→s7, slot caption s4→s5, stub note s5→s6. `space.sectionY` / `sectionYLg` and the full-bleed band rhythm are byte-identical to round 1.",
+        "type": "Display weight ramp shifted one step (900/800/600 → 800/700/600). Sentence case stays. `typeScale.*` byte-identical to round 1.",
+        "unchanged": "The scoreboard idea, the labelled cells, the ground inversion sequence (dark → white → dark → white → EMBER → white → dark), hierarchy from weight and scale, and the reassurance copy carrying the loudest treatment on the page."
+      }
+    }
+  },
+
+  "palette": {
+    "$type": "color",
+    "$description": "The cool-neutral ramp. Eight new values, every one within ±5° of `palette.screen`'s 199° hue — so this is one hue at nine lightnesses, not a new palette. Hue range 195–204°. Saturation is deliberately high at the dark end (58% → 41%) and low at the light end (20% → 18%), which is what keeps a cool system from reading as grey while keeping its paper from reading as blue.",
+
+    "steelNight": { "$value": "#0b1f2a", "$description": "NEW. hue 201°, L*10.4%, sat 58%. The page's black. REPLACES `palette.night` #0D3520. white on it 16.89:1, steelChalk 15.55:1, steelMist 8.19:1, amber 9.15:1, screenLight 11.84:1 (all AA ✓). Not pure black — anti-slop rule 1." },
+    "steelDeep":  { "$value": "#12303f", "$description": "NEW. hue 200°, L*15.9%. The second dark. Used ONLY as the room mass inside the media slot. white on it 13.81:1, amber 7.48:1, steelMist 6.70:1 (AA ✓). vs steelNight 1.22:1 — a tonal mass, never a boundary." },
+    "screen":     { "$value": "#2e5a6e", "$description": "RETAINED VERBATIM from canonical `palette.screen`, and PROMOTED. It was 'informational/status only, never action'; here it is the anchor the whole ramp is derived from, and it appears as a ground for the first time (the dark-row hover fill, 2.25:1 against steelNight — perceptible as a band change, and white on it is 7.49:1 ✓)." },
+    "steelMist":  { "$value": "#9db9c6", "$description": "NEW. hue 199°, L*69.6%. Muted text and quiet rules on dark fields. REPLACES `palette.sage` #9CBEAD, which was the same job in green. on steelNight 8.19:1, on steelDeep 6.70:1 (AA ✓). On light grounds it is 1.90–2.06:1 — NEVER on light, exactly as sage was." },
+    "screenLight":{ "$value": "#c3dce8", "$description": "NEW, AND THE POINT OF THIS CANDIDATE. hue 200°, L*83.7%, sat 45%. The simulator projection — the bright cool thing the palette could never render. This is the token round 1 PROPOSED under this exact name and did not add. on steelNight 11.84:1, on screen 5.25:1, on ember 5.22:1 (AA ✓). As a fill it carries steelNight at 11.84:1 and screen at 5.25:1. NEVER on white — 1.43:1." },
+    "steelFog":   { "$value": "#dfe5e9", "$description": "NEW. hue 204°, L*89.4%. Secondary light field and decorative texture. REPLACES `palette.greige` #E5E1E0 at effectively the same lightness. steelNight on it 13.28:1, steelInk 9.23:1, steelMuted 4.91:1, ember 5.86:1 (AA ✓)." },
+    "steelChalk": { "$value": "#f3f6f7", "$description": "NEW. hue 195°, L*96.1%, sat 20%. The off-white. REPLACES `palette.paper` #F7F5F3 — a barely-warm off-white becomes a barely-cool one at the same lightness, so every inherited ratio moves by less than 0.02. Doubles as the text colour on every dark and every warm fill: on steelNight 15.55:1, on ember 6.86:1, on emberHover 4.92:1, on emberActive 9.09:1 (AA ✓)." },
+    "white":      { "$value": "#ffffff", "$description": "RETAINED. The page ground, as in the canonical file." },
+    "steelInk":   { "$value": "#173c4d", "$description": "NEW. hue 199°, L*19.6%. Body text on light grounds. REPLACES forest in that role. on white 11.73:1, on steelChalk 10.80:1, on steelFog 9.23:1, on screenLight 8.23:1 (AA ✓)." },
+    "steelMuted": { "$value": "#4a6473", "$description": "NEW. hue 202°, L*37.1%. Captions, meta, placeholders, sub-rules on light grounds. REPLACES `role.ink.muted` #456052, which is a desaturated green. on white 6.25:1, on steelChalk 5.75:1, on steelFog 4.91:1 (AA ✓ body on all three — this is the step a cool-neutral system usually fails, so it was measured against every light ground it can land on)." },
+
+    "ember":       { "$value": "#8a400a", "$description": "RETAINED VERBATIM. The action colour, and the only value in the system with a measurement behind it (brand-direction.md §2.2). white on it 7.45:1, steelChalk 6.86:1, steelFog 5.86:1, screenLight 5.22:1 (AA ✓). As a fill boundary against white 7.45:1 (non-text 3:1 ✓)." },
+    "emberHover":  { "$value": "#ad500d", "$description": "RETAINED VERBATIM, and RE-VERIFIED against the new light neutral: steelChalk on it 4.92:1 (AA ✓ — round 1's paper measured 4.91:1). white on it 5.34:1. The tuning that made ember survive `hover:brightness-125` survives the palette swap." },
+    "emberActive": { "$value": "#6d3308", "$description": "RETAINED VERBATIM. steelChalk on it 9.09:1 (AA ✓)." },
+    "emberMid":    { "$value": "#b85718", "$description": "RETAINED VERBATIM. Focus ring / border only, never text-bearing. vs white 4.76:1, vs steelChalk 4.38:1, vs steelFog 3.74:1 (non-text 3:1 ✓)." },
+    "amber":       { "$value": "#f3b268", "$description": "RETAINED VERBATIM. The pendant light. DARK FIELDS ONLY: on steelNight 9.15:1, on steelDeep 7.48:1 (AA ✓); on white 1.85:1, on steelChalk 1.70:1 (FAIL — never). Also banned on `screen` as body text (4.06:1) and on the ember band (4.04:1)." },
+
+    "forest": { "$value": "#124b2e", "$description": "RETAINED VERBATIM AS A VALUE, DEMOTED AS A ROLE. No longer the theme's black; now `role.equity.venueName` and nothing else. on white 10.14:1, on steelChalk 9.33:1, on steelFog 7.98:1, on screenLight 7.11:1 (AA ✓). LIGHT GROUNDS ONLY — vs steelNight 1.67:1, vs steelDeep 1.36:1, vs screen 1.35:1, vs ember 1.36:1, all below the 3:1 non-text gate." },
+
+    "clay": { "$value": "#a22c22", "$description": "RETAINED VERBATIM. Error. on white 7.19:1, on steelChalk 6.62:1 (AA ✓)." },
+    "moss": { "$value": "#155e36", "$description": "RETAINED VERBATIM. Success on light. on white 7.82:1 (AA ✓). NOTE: with forest demoted to venue names, moss and forest are now the only two greens in the system and they sit 2.4° apart in hue. Flagged for the convergent phase — one of them should probably go, and it should not be forest." }
+  },
+
+  "retiredByThisOverlay": {
+    "$type": "color",
+    "$description": "Values the canonical file carries that this overlay does not use. Recorded, not deleted, so a convergent merge can see exactly what was swapped for what.",
+    "night":     { "$value": "#0d3520", "$description": "The forest-black. Superseded by `steelNight`." },
+    "paper":     { "$value": "#f7f5f3", "$description": "The warm off-white. Superseded by `steelChalk` at the same lightness." },
+    "greige":    { "$value": "#e5e1e0", "$description": "The warm light neutral. Superseded by `steelFog`." },
+    "sage":      { "$value": "#9cbead", "$description": "The green light field / muted-on-dark. Superseded by `steelMist`, which measures better on the new ground (8.19:1 vs 6.71:1)." },
+    "emberTint": { "$value": "#f0dcc9", "$description": "A warm light field with no home in a cool light ramp. If the convergent phase wants a light callout field, use `screenLight` — it is measured (steelNight on it 11.84:1, ember on it 5.22:1) and it is on-hue." },
+    "inkMutedGreen": { "$value": "#456052", "$description": "The canonical `role.ink.muted`. Superseded by `steelMuted` #4A6473, its exact steel counterpart." }
+  },
+
+  "role": {
+    "$type": "color",
+    "$description": "The semantic layer. Components reference ONLY these. Every pairing carries its computed WCAG 2.1 §1.4.3 ratio.",
+
+    "ground": {
+      "$description": "The band sequence is INHERITED FROM ROUND 1 UNCHANGED — dark → white → dark → white → EMBER → white → dark. Only the values of 'dark' changed. Hard cuts, no transitions, no gradients.",
+      "chrome":  { "$value": "{palette.steelNight}", "$description": "Sticky header. Merges with the hero into one unbroken cool-dark field at the top of the page." },
+      "hero":    { "$value": "{palette.steelNight}", "$description": "REPLACES round 1's forest-night. steelChalk on it 12.48:1 → now 15.55:1; white 13.57:1 → 16.89:1. The hero got measurably louder without touching the type." },
+      "trust":   { "$value": "{palette.white}",      "$description": "HARD CUT out of the near-black. steelNight on it 16.89:1." },
+      "jobs":    { "$value": "{palette.steelNight}", "$description": "'What you can do here'. Dark again — the alternation answers §10.2." },
+      "jobsHover":{ "$value": "{palette.screen}",    "$description": "The row hover fill. 2.25:1 against steelNight — perceptible as a band change without motion; white on it 7.49:1 and steelChalk 6.90:1 (AA ✓). The first time in this brand's history the screen blue is a GROUND." },
+      "proof":   { "$value": "{palette.white}",      "$description": "'What players say'. Light, so the three empty quote cells read as blank ruled paper awaiting content." },
+      "offer":   { "$value": "{palette.ember}",      "$description": "THE ONE ACCENT, USED ONCE, AT FULL STRENGTH. Unchanged from round 1 and LOUDER here, because it is now the only warm thing on a cool page. white on it 7.45:1, steelChalk 6.86:1, steelFog 5.86:1, screenLight 5.22:1." },
+      "venues":  { "$value": "{palette.white}",      "$description": "'Two venues'. Light, so the near-black media slots read as windows punched into the page." },
+      "footer":  { "$value": "{palette.steelNight}", "$description": "Closes the page on the field it opened on." }
+    },
+
+    "ink": {
+      "onDarkStrong":   { "$value": "{palette.white}",      "$description": "Display headings on steelNight. 16.89:1 (AA ✓)." },
+      "onDark":         { "$value": "{palette.steelChalk}", "$description": "Body, nav and footer copy on dark. on steelNight 15.55:1, on steelDeep 12.72:1, on screen 6.90:1 (AA ✓)." },
+      "mutedOnDark":    { "$value": "{palette.steelMist}",  "$description": "Captions, slot labels, footer meta. on steelNight 8.19:1, on steelDeep 6.70:1 (AA ✓). NOT on `screen` as body text — 3.63:1, non-text only." },
+      "displayOnLight": { "$value": "{palette.steelNight}", "$description": "Display headings and scoreboard figures on white. 16.89:1 (AA ✓). A real darkness step above body ink — hierarchy by weight and colour, not raw scale." },
+      "bodyOnLight":    { "$value": "{palette.steelInk}",   "$description": "Body on light. on white 11.73:1, on steelChalk 10.80:1, on steelFog 9.23:1 (AA ✓)." },
+      "mutedOnLight":   { "$value": "{palette.steelMuted}", "$description": "Captions, meta, placeholders. on white 6.25:1, on steelChalk 5.75:1, on steelFog 4.91:1 (AA ✓)." },
+      "onWarmFill":     { "$value": "{palette.steelChalk}", "$description": "Text on any ember fill. 6.86:1 at rest, 4.92:1 on hover, 9.09:1 on active (AA ✓)." },
+      "onScreenLight":  { "$value": "{palette.steelNight}", "$description": "Text on a screenLight fill. 11.84:1 (AA ✓)." }
+    },
+
+    "equity": {
+      "$description": "NEW CATEGORY, and the answer to 'what happens to forest green'. One value, one job: the colour of a venue's NAME. See $extensions.callOnForestGreen.",
+      "venueName":       { "$value": "{palette.forest}", "$description": "The two trust-strip venue links (and their 1px underline) and the two `<h3>`s in 'Two venues'. on white 10.14:1 as text, 10.14:1 as a rule (non-text 3:1 ✓)." },
+      "venueNameOn":     { "$value": "{palette.white}",  "$description": "Label when a venue name inverts to a forest fill on hover. 10.14:1 (AA ✓)." },
+      "venueNameOnDark": { "$value": "{palette.amber}",  "$description": "RULE, not a preference. On the dark bands the venue name CANNOT be forest — forest vs steelNight is 1.67:1. It takes amber instead (9.15:1 ✓). Recorded so nobody reintroduces a green mark on a steel field." }
+    },
+
+    "primary": {
+      "default":       { "$value": "{palette.ember}",      "$description": "Solid CTA fill on LIGHT grounds only. steelChalk on it 6.86:1; boundary vs white 7.45:1 (non-text ✓)." },
+      "hover":         { "$value": "{palette.emberHover}", "$description": "steelChalk on it 4.92:1 (AA ✓). Re-verified against the new neutral." },
+      "active":        { "$value": "{palette.emberActive}","$description": "steelChalk on it 9.09:1 (AA ✓)." },
+      "on":            { "$value": "{palette.steelChalk}", "$description": "6.86:1 (AA ✓)." },
+      "onDarkFill":    { "$value": "{palette.amber}",      "$description": "On steelNight the CTA takes an AMBER fill with steelNight text: 9.15:1 both directions (AA ✓ body, non-text ✓). Round 1's third solution to brand-direction.md §2.4.2, and it measures BETTER here than there (9.15 vs 7.35) because the ground got darker. A solid ember button on steelNight is still 2.27:1 and is still banned." },
+      "onDarkFillInk": { "$value": "{palette.steelNight}", "$description": "Label on the amber CTA. 9.15:1 (AA ✓)." },
+      "onEmberBand":   { "$value": "{palette.steelChalk}", "$description": "RULE, not a colour, and the trap INVERTS on the ember band exactly as it did in round 1: steelNight on ember is 2.27:1 and forest on ember is 1.36:1, so a dark button on the ember field fails the 3:1 non-text gate. The waitlist therefore sits inside a steelChalk SLAB punched out of the ember (6.86:1 ✓) and the submit button reverts to a normal ember-on-light CTA inside that slab." }
+    },
+
+    "accent": {
+      "highlight": { "$value": "{palette.amber}",  "$description": "The whole warm budget on dark fields: score rules, eyebrows, the on-dark CTA, the reassurance line, the footer lockup rules, the pendant marks. on steelNight 9.15:1, on steelDeep 7.48:1 (AA ✓). NEVER on light (1.70–1.85:1). NEVER on the ember band (4.04:1 — clears large-text 3:1 but fails body, so banned outright). NEVER as body text on `screen` (4.06:1)." },
+      "cool":      { "$value": "{palette.screenLight}", "$description": "NEW ROLE. The projection light. Media-slot panel, and the only permitted light-cool fill. on steelNight 11.84:1, on screen 5.25:1, on ember 5.22:1 (AA ✓). NEVER on white — 1.43:1." }
+    },
+
+    "rule": {
+      "$description": "The load-bearing category: no cards, no shadows, so RULES carry every boundary. Colour by ground, weight by job (`border.*`).",
+      "onDark":       { "$value": "{palette.steelChalk}", "$description": "Cell rules on steelNight. 15.55:1 — stark on purpose; the grid is meant to be visible." },
+      "onDarkQuiet":  { "$value": "{palette.steelMist}",  "$description": "Sub-cell rules on steelNight where a chalk hairline would be noise. 8.19:1." },
+      "onLight":      { "$value": "{palette.steelNight}", "$description": "Cell rules on white. 16.89:1." },
+      "onLightQuiet": { "$value": "{palette.steelMuted}", "$description": "Sub-cell rules on white. 6.25:1." },
+      "onEmber":      { "$value": "{palette.white}",      "$description": "Rules on the ember band. 7.45:1." },
+      "scoreOnDark":  { "$value": "{palette.amber}",      "$description": "The heavy band separator on dark. 9.15:1 — the one recurring graphic device on the page." },
+      "scoreOnLight": { "$value": "{palette.ember}",      "$description": "The heavy band separator on light. 7.45:1 vs white (non-text ✓)." },
+      "equity":       { "$value": "{palette.forest}",     "$description": "The 1px underline beneath a venue name. 10.14:1 vs white (non-text ✓). Light grounds only." }
+    },
+
+    "state": {
+      "focus":        { "$value": "{palette.emberMid}",   "$description": "vs white 4.76:1, vs steelChalk 4.38:1, vs steelFog 3.74:1 (non-text 3:1 ✓). Rendered as a 4px offset slab, never a soft glow." },
+      "focusOnDark":  { "$value": "{palette.amber}",      "$description": "vs steelNight 9.15:1, vs screen 4.06:1 (non-text ✓)." },
+      "focusOnEmber": { "$value": "{palette.white}",      "$description": "emberMid vs ember is 1.73:1 and cannot be a focus ring there. White vs ember is 7.45:1 (✓)." },
+      "error":        { "$value": "{palette.clay}",       "$description": "on white 7.19:1, on steelChalk 6.62:1 (AA ✓)." },
+      "errorOnDark":  { "$value": "#f2a2a2",              "$description": "KEPT VERBATIM from the canonical file. on steelNight 8.41:1 (AA ✓ — improved from 5.05:1 on forest)." },
+      "success":      { "$value": "{palette.moss}",       "$description": "on white 7.82:1 (AA ✓). See the note on palette.moss — two near-identical greens now coexist and one should go." },
+      "successOnDark":{ "$value": "#a8e0c0",              "$description": "KEPT VERBATIM. on steelNight 11.33:1 (AA ✓)." },
+      "disabledSurface": { "$value": "{palette.steelFog}","$description": "Disabled fill." },
+      "disabledInk":  { "$value": "#52685b",              "$description": "KEPT VERBATIM. on steelFog 4.73:1 (AA ✓). Flagged: this is a green and should become a steel in the convergent merge." },
+      "unverified":   { "$value": "{palette.screen}",     "$description": "GAP, NOT A SOLUTION. `(hours being confirmed)` renders as a 2px screen-ruled caps tag (screen on white 7.49:1 ✓ as text and as a border), but in a page whose substrate is this hue, the badge is differentiated by FORM (a boxed caps tag against 3rem figures) rather than by colour. A real `role.state.unverified` hue is needed and is not invented here." }
+    },
+
+    "media": {
+      "$description": "The photo-slot system. Every value is a palette colour chosen because that colour was derived from a measurement of the real photography (brand-direction.md §5.1). The slot is a diagram of the frame's own numbers, never a decorative illustration and never a fake photograph.",
+      "slotGround":    { "$value": "{palette.steelNight}",  "$description": "The near-black room. Measured target: 33–38% of frame near-black, mean luminance 54–74/255." },
+      "slotMass":      { "$value": "{palette.steelDeep}",   "$description": "The bar and floor mass. 1.22:1 against the ground — a tonal mass inside an illustration, never a boundary." },
+      "slotPanel":     { "$value": "{palette.screenLight}", "$description": "THE SIMULATOR PROJECTION — the one bright thing in the frame, and the reason this direction exists. 11.84:1 against the slot ground. Round 1 had to fake this in `palette.greige` because the only cool value in the palette was 1.81:1 on the dark ground." },
+      "slotPanelBand": { "$value": "{palette.screen}",      "$description": "The horizon band inside the projection — the measured 7–8% of saturated pixels in the 210–240° band. 5.25:1 against the panel." },
+      "slotPendant":   { "$value": "{palette.amber}",       "$description": "The warm in-frame practical light. Measured: red channel exceeds blue by +15 to +19; no daylight, no flash. 9.15:1 on the slot ground." },
+      "slotFrame":     { "$value": "{palette.steelChalk}",  "$description": "The 2px rule around the slot. The slot is always visibly a SLOT." },
+      "slotLabel":     { "$value": "{palette.steelMist}",   "$description": "The caption naming the exact missing frame. 8.19:1 (AA ✓)." },
+      "slotEmpty":     { "$value": "{palette.steelMist}",   "$description": "The hatch on Stillwater's slot — drawn EMPTY AND UNLIT, because that venue has never been photographed. 8.19:1 as a hairline on the ground." },
+      "slotRatio":     { "$type": "number", "$value": 1.5,  "$description": "3:2. The existing shoot is full-frame (6000×4000, 5648×3765, 4549×3033)." }
+    }
+  },
+
+  "font": {
+    "$type": "fontFamily",
+    "display": {
+      "$value": ["Archivo", "Archivo Expanded", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+      "$description": "UNCHANGED FROM ROUND 1. Replaces Bitter. Variable grotesque, weight 100–900 and width 62–125 in one file."
+    },
+    "body": {
+      "$value": ["Open Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+      "$description": "KEPT VERBATIM from canonical font.body."
+    },
+    "numeric": {
+      "$value": ["Archivo", "ui-sans-serif", "system-ui", "sans-serif"],
+      "$description": "Scoreboard figures only — bay counts and hours — set at expanded width with `font-variant-numeric: tabular-nums lining-nums`."
+    },
+    "retired": {
+      "$value": ["Bitter", "Alfa Slab One", "Poppins"],
+      "$description": "Bitter retired from the WEB BUILD only, as in round 1. It survives in the drawn wordmark."
+    }
+  },
+
+  "fontWeight": {
+    "$type": "fontWeight",
+    "$description": "SOFTENING DELTA APPLIED: the display ramp steps down one notch from round 1 (900/800/600 → 800/700/600). Shifted as a ladder rather than only at the peak, so the h1-vs-h2 relationship survives.",
+    "displayPeak": { "$value": 800, "$description": "The h1 and the scoreboard figures. Was 900." },
+    "displayBold": { "$value": 700, "$description": "h2, h3, CTA labels. Was 800." },
+    "displaySemi": { "$value": 600, "$description": "Caps labels, eyebrows, table heads. Unchanged." },
+    "bodyRegular": { "$value": 400 },
+    "bodyMedium":  { "$value": 600 },
+    "bodyBold":    { "$value": 700 }
+  },
+
+  "fontWidth": {
+    "$type": "number",
+    "$description": "Only meaningful because the proposed display face is width-variable. Unchanged from round 1.",
+    "displayNormal":   { "$value": 100 },
+    "displayExpanded": { "$value": 112, "$description": "Scoreboard figures and the wordmark only." }
+  },
+
+  "typeScale": {
+    "$type": "dimension",
+    "$description": "BYTE-IDENTICAL TO ROUND 1. The delta forbids a scale change; the comparison is about colour alone.",
+    "displayHero":    { "$value": "clamp(3rem, 10.5vw, 8.25rem)" },
+    "displaySection": { "$value": "clamp(2.125rem, 5.5vw, 4rem)" },
+    "displayRow":     { "$value": "clamp(1.5rem, 2.6vw, 2.125rem)" },
+    "displayCard":    { "$value": "1.375rem" },
+    "scoreboardXl":   { "$value": "clamp(1.875rem, 4.2vw, 3rem)" },
+    "scoreboardMd":   { "$value": "1.25rem" },
+    "bodyLead":       { "$value": "clamp(1.0625rem, 1.35vw, 1.1875rem)" },
+    "bodyBase":       { "$value": "1rem" },
+    "bodySmall":      { "$value": "0.9375rem" },
+    "labelBase":      { "$value": "0.75rem" },
+    "labelSmall":     { "$value": "0.6875rem" }
+  },
+
+  "tracking": {
+    "$type": "dimension",
+    "$description": "BYTE-IDENTICAL TO ROUND 1.",
+    "displayTight":  { "$value": "-0.035em" },
+    "displayNormal": { "$value": "-0.02em" },
+    "bodyNormal":    { "$value": "0" },
+    "labelWide":     { "$value": "0.16em" },
+    "labelWider":    { "$value": "0.22em" }
+  },
+
+  "lineHeight": {
+    "$type": "number",
+    "$description": "BYTE-IDENTICAL TO ROUND 1.",
+    "displayHero": { "$value": 0.9 },
+    "display":     { "$value": 0.98 },
+    "scoreboard":  { "$value": 1.0 },
+    "body":        { "$value": 1.55 },
+    "label":       { "$value": 1.2 }
+  },
+
+  "radius": {
+    "$type": "dimension",
+    "$description": "SOFTENING DELTA APPLIED, AND THIS IS THE ONLY PLACE IT IS VISIBLE AS A SHAPE. 3px on interactive elements only. Everything structural stays square.",
+    "none":    { "$value": "0" },
+    "control": { "$value": "3px", "$description": "Buttons, form inputs, venue-switcher chips. Was 0. Three pixels is the smallest radius that is legible as a decision rather than as a rendering artefact." },
+    "surface": { "$value": "0",   "$description": "Panels, cells, the waitlist slab, quote slots. STILL SQUARE." },
+    "media":   { "$value": "0",   "$description": "Image slots. STILL SQUARE." },
+    "pill":    { "$value": "0",   "$description": "Declared explicitly so nobody reintroduces a rounded pill for a status badge. The unverified tag is a square-cornered ruled box." }
+  },
+
+  "border": {
+    "$type": "dimension",
+    "$description": "SOFTENING DELTA APPLIED: secondary/internal dividers that were `rule` 2px drop to `hairline` 1px. Structural and section rules stay 2px or heavier. Colour comes from `role.rule.*`.",
+    "hairline": { "$value": "1px", "$description": "Cell dividers, the venue-name underline, the venue meta rows. The last two moved here from `rule` under the delta." },
+    "rule":     { "$value": "2px", "$description": "Component boundaries that are still boundaries: inputs, buttons, media-slot frames, the unverified badge, section separators, the quote-grid head, the venue-row bounds." },
+    "score":    { "$value": "4px", "$description": "The band separator and the focus slab. The recurring graphic device." },
+    "slab":     { "$value": "8px", "$description": "The lead rule above the featured job row and the footer top rule." }
+  },
+
+  "elevation": {
+    "$description": "Declared so it can be declared EMPTY. There are no shadows on this page. Depth is ground inversion and rule weight.",
+    "none": { "$value": "none" }
+  },
+
+  "space": {
+    "$type": "dimension",
+    "$description": "Section rhythm KEPT VERBATIM. The delta's 'one step more air' applies INSIDE cells only and is expressed at the component level, not by changing the ramp.",
+    "sectionY":   { "$value": "4rem" },
+    "sectionYLg": { "$value": "8rem" },
+    "gutterX":    { "$value": "1.5rem" },
+    "gutterXLg":  { "$value": "4rem" },
+    "s1":  { "$value": "0.25rem" },
+    "s2":  { "$value": "0.5rem" },
+    "s3":  { "$value": "0.75rem" },
+    "s4":  { "$value": "1rem" },
+    "s5":  { "$value": "1.5rem" },
+    "s6":  { "$value": "2rem" },
+    "s7":  { "$value": "2.5rem" },
+    "s8":  { "$value": "3.5rem" },
+    "s9":  { "$value": "5rem" },
+    "s10": { "$value": "7rem" }
+  },
+
+  "size": {
+    "$type": "dimension",
+    "contentMax": { "$value": "75rem" },
+    "proseMax":   { "$value": "46.875rem" },
+    "tapMin":     { "$value": "44px" }
+  },
+
+  "motion": {
+    "$description": "Dial setting 1. Hover and focus only. UNCHANGED FROM ROUND 1 — the delta says nothing about motion, and adding a transition would be softening past the instruction.",
+    "duration": { "$value": "0ms" }
+  },
+
+  "contrastAudit": {
+    "$description": "Every text and non-text pairing this candidate renders, computed from sRGB relative luminance per WCAG 2.1 §1.4.3 (not estimated, not recalled). Body gate 4.5:1; large-text and non-text gate 3:1. NOTHING IN THIS CANDIDATE RELIES ON THE LARGE-TEXT ALLOWANCE. NO PAIRING FAILS.",
+
+    "onSteelNight_0B1F2A": [
+      "white #FFFFFF — 16.89:1 ✓ (h1, h2, h3)",
+      "steelChalk #F3F6F7 — 15.55:1 ✓ (body, nav, footer copy, rules)",
+      "steelFog #DFE5E9 — 13.28:1 ✓",
+      "screenLight #C3DCE8 — 11.84:1 ✓ (the media-slot projection panel — THE number this candidate exists to produce)",
+      "amber #F3B268 — 9.15:1 ✓ (eyebrow, score rules, reassurance, CTA fill, pendant marks, focus ring)",
+      "steelMist #9DB9C6 — 8.19:1 ✓ (captions, slot labels, muted meta, quiet rules)",
+      "steelNight on amber — 9.15:1 ✓ (label on the dark-field CTA)",
+      "BANNED HERE: ember 2.27:1 ✗ · screen 2.25:1 ✗ · forest 1.67:1 ✗ · steelDeep 1.22:1 ✗ (mass only) · emberMid 3.55:1 ✗ body"
+    ],
+
+    "onScreenHoverGround_2E5A6E": [
+      "white #FFFFFF — 7.49:1 ✓ (row heading on hover)",
+      "steelChalk #F3F6F7 — 6.90:1 ✓ (row body on hover)",
+      "screenLight #C3DCE8 — 5.25:1 ✓",
+      "amber #F3B268 — 4.06:1 ✓ 3:1 non-text ONLY (the row arrow, which is aria-hidden) — BANNED as body text here",
+      "steelMist #9DB9C6 — 3.63:1 ✓ 3:1 non-text only — never body here",
+      "screen vs steelNight — 2.25:1, a perceptible band change, non-text and non-boundary"
+    ],
+
+    "onWhite_FFFFFF": [
+      "steelNight #0B1F2A — 16.89:1 ✓ (display headings, scoreboard figures, structural rules)",
+      "steelInk #173C4D — 11.73:1 ✓ (body)",
+      "forest #124B2E — 10.14:1 ✓ (venue names, as text and as a 1px underline)",
+      "screen #2E5A6E — 7.49:1 ✓ (the '(hours being confirmed)' tag, text and 2px border)",
+      "ember #8A400A — 7.45:1 ✓ (as text, as a fill boundary, as the heavy score rule)",
+      "steelMuted #4A6473 — 6.25:1 ✓ (captions, sub-rules, placeholders)",
+      "emberMid #B85718 — 4.76:1 ✓ 3:1 non-text (focus slab)",
+      "steelChalk on ember fill — 6.86:1 ✓ · on emberHover 4.92:1 ✓ · on emberActive 9.09:1 ✓",
+      "white on forest fill — 10.14:1 ✓ (venue-name hover inversion)",
+      "BANNED HERE: amber 1.85:1 ✗ · steelMist 2.06:1 ✗ · screenLight 1.43:1 ✗ · steelFog 1.27:1 ✗"
+    ],
+
+    "onSteelChalk_F3F6F7_theWaitlistSlab": [
+      "steelNight — 15.55:1 ✓ (h3, input borders)",
+      "steelInk — 10.80:1 ✓ (blurb, body)",
+      "forest — 9.33:1 ✓",
+      "screen — 6.90:1 ✓",
+      "ember — 6.86:1 ✓",
+      "steelMuted — 5.75:1 ✓ (placeholders, the degradation note)",
+      "emberMid — 4.38:1 ✓ 3:1 non-text (focus slab inside the slab)",
+      "steelChalk slab vs the ember band — 6.86:1 ✓ non-text (the slab's own boundary)",
+      "BANNED HERE: amber 1.70:1 ✗ · steelMist 1.90:1 ✗"
+    ],
+
+    "onSteelFog_DFE5E9": [
+      "steelNight — 13.28:1 ✓",
+      "steelInk — 9.23:1 ✓",
+      "forest — 7.98:1 ✓",
+      "screen — 5.89:1 ✓",
+      "ember — 5.86:1 ✓",
+      "steelMuted — 4.91:1 ✓ (the tightest text pairing in the candidate, and it clears)",
+      "emberMid — 3.74:1 ✓ 3:1 non-text",
+      "disabledInk #52685B — 4.73:1 ✓"
+    ],
+
+    "onEmberBand_8A400A": [
+      "white #FFFFFF — 7.45:1 ✓ (h2, eyebrow, rules)",
+      "steelChalk #F3F6F7 — 6.86:1 ✓ (body, link, the promoted reassurance line)",
+      "steelFog #DFE5E9 — 5.86:1 ✓ (the lead-endpoint degradation note if it moved here)",
+      "screenLight #C3DCE8 — 5.22:1 ✓",
+      "steelChalk slab on ember — 6.86:1 ✓ non-text",
+      "inside the slab: steelNight 15.55:1 ✓ · steelInk 10.80:1 ✓ · steelMuted 5.75:1 ✓ (placeholders) · steelChalk on the ember submit fill 6.86:1 ✓ · emberMid focus 4.38:1 ✓ 3:1",
+      "BANNED HERE, and the trap is unchanged from round 1: steelNight on ember 2.27:1 ✗ · forest on ember 1.36:1 ✗ · amber on ember 4.04:1 ✗ body (clears large-text 3:1 only — banned outright) · steelMist on ember 3.62:1 ✗ body"
+    ],
+
+    "mediaSlot": [
+      "screenLight projection panel on the steelNight ground — 11.84:1 ✓ non-text (round 1's equivalent was a greige stand-in because `screen` measured 1.81:1)",
+      "screen horizon band on the screenLight panel — 5.25:1 ✓ non-text",
+      "amber pendant marks on the ground — 9.15:1 ✓ non-text",
+      "steelDeep room mass on the ground — 1.22:1, tonal mass inside an aria-labelled illustration; carries no information and no boundary",
+      "steelChalk 2px frame on the ground — 15.55:1 ✓ non-text",
+      "steelMist caption on the ground — 8.19:1 ✓ body",
+      "steelMist hatch on Stillwater's empty slot — 8.19:1 ✓ non-text"
+    ],
+
+    "surfacePairsThatAreNotBoundaries": [
+      "white vs steelChalk — 1.09:1 · steelChalk vs steelFog — 1.17:1 · steelNight vs steelDeep — 1.22:1. These are TONAL steps, not boundaries. In this register every adjacent surface is separated by a rule from `border.*`, so no ratio above is load-bearing. Recorded because it is the exact trap a softer register would fall into with this ramp — see tokenGaps."
+    ],
+
+    "regressionsFixedRelativeToTheLiveSite": [
+      "The hero eyebrow ships at `opacity-70` on forest today. Here it is amber on steelNight at 9.15:1 — no opacity anywhere in this overlay.",
+      "The hero subhead ships at `opacity-80`. Here it is steelChalk on steelNight at 15.55:1.",
+      "The trust strip ships entirely in inkMuted at text-sm. Here the hours are steelNight on white at 16.89:1 in 3rem figures.",
+      "The '(hours being confirmed)' badge ships in the same muted grey as the hours it qualifies. Here it is a screen-ruled caps tag at 7.49:1 — legible, and visibly a different KIND of thing by form.",
+      "Every button on all 41 live pages is `#7794A6` with white text at 3.20:1 — a sitewide AA failure. This candidate is the closest of the three to that hue family, so it is worth stating plainly: the failure was LIGHTNESS in a text-bearing role, not hue. The nearest value in this overlay, `screen` #2E5A6E, is the same 199–203° family two-thirds darker, and white on it is 7.49:1. No blue in this overlay carries text at less than 4.9:1."
+    ]
+  }
+}

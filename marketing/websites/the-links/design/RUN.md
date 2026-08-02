@@ -95,6 +95,26 @@ Applied to `brutalist.json` / `home-brutalist.html` as the base composition:
    candidates should each say what they do with green — retire it, demote it to an accent, or
    keep it as a secondary — rather than silently deleting it.
 
+### ⚠️ Verification gotcha — headless Chrome's 500px floor
+
+Headless Chrome on macOS enforces a **500px minimum window width**. `--window-size=390` does
+not give you a 390px viewport; it gives you a **390px crop of a 500px layout**, which looks
+exactly like a horizontal-overflow bug that isn't there. Round 1's `home-brutalist.html`
+reproduces the same artifact.
+
+**Consequence:** any "verified at 390px" claim made this way is invalid, including round 1's.
+Use CDP `Emulation.setDeviceMetricsOverride`, an `<iframe width="390">`, or a real device, and
+treat overflow reported at `--window-size=390` as unproven rather than as a defect. Two round-2
+explorers hit this independently; one candidate looked broken until re-rendered in a 390px
+iframe, where it is clean.
+
+### Open bug in the base composition — fix at convergence, not in a sibling
+
+**At 1440px the sticky header wraps to two rows.** It reproduces in round 1's
+`home-brutalist.html`, so it belongs to the inherited composition, not to any palette. Left
+unpatched deliberately: fixing it in one of three siblings would make that candidate look
+better for a reason unrelated to the axis being compared. **Convergence owns it.**
+
 ## Findings from divergence that outlive this run
 
 Things the explorers surfaced that are true regardless of which direction wins.

@@ -1,0 +1,425 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "The Links — BLUE-SIGNAL token overlay (round 2, softened brutalist, palette axis). Stance: the brand's existing green ink ramp is rotated to blue at IDENTICAL relative luminance — every contrast ratio already argued and approved survives the hue change untouched — and the palette's one cool value, `screen` #2E5A6E, is kept at its exact darkness, taken to full chroma, and promoted from a status badge to the loudest thing on the page. The page itself stays bright and warm-white: the only near-black left anywhere is inside the photo slots, because that is where the dark room actually is.",
+
+  "$extensions": {
+    "com.monkeyjumplabs.candidate": {
+      "id": "home-blue-signal",
+      "register": "brutalist, softened per RUN.md 'The softening delta'",
+      "surface": "homepage",
+      "divergenceAxis": "palette only (round 2 — register fixed, composition inherited)",
+      "base": "design/token-sets/brutalist.json (round 1) + design/tokens.json (v1.0.0-proposal)",
+      "siblings": "home-blue-* ×3, identical softening delta, palette is the only variable",
+      "date": "2026-08-02",
+      "status": "PROPOSAL — divergent candidate for a human gate. Not client-approved.",
+
+      "committedIdea": "Rotate the ramp, don't repaint the page. The approved system is a three-step green darkness ramp (night 0.0274 / forest 0.0536 / inkMuted 0.1024 relative luminance) plus one cool value held back at 12% of the page. This overlay rebuilds that ramp at the SAME three luminances in the blue hue family (#09304F / #154565 / #2B5F82), so 10.14:1, 9.32:1, 13.57:1, 12.48:1, 6.89:1 and every other number in brand-direction.md §2.3 carry over unchanged — and then spends the saved argument on one move: `palette.screen` #2E5A6E keeps its exact luminance (0.0902), goes to full chroma as `palette.beacon` #045890, and takes the hero, the jobs band, the hours cells and the action slot. Blue stops being the status badge and becomes the board.",
+
+      "whatASiblingWouldNotDo": "Give the hours — a bare list of opening times — the single loudest treatment on the page, as white figures inside solid saturated-blue cells on a white ground. A darker or quieter blue direction would keep the hours as ink on paper; this candidate makes the one block 67% of audited competitors omit read as a departure board. It is also the only one of the three where the flagged `palette.screenLight` gap is not worked around but actually filled — #B8DFF9 at 9.67:1 on the room ground — so 'a warm dark room with one bright screen in it' becomes renderable for the first time.",
+
+      "dials": { "variance": 6, "motion": 1, "density": 6 },
+
+      "theSaaSProblem": {
+        "$description": "A saturated blue on white is the single most common look on the internet and this candidate has to not be it. Six deliberate decisions, each of which a generic tech palette does the opposite of:",
+        "1_hue": "204°, not 217–225°. The SaaS/tech blue cluster is indigo-leaning (#2563EB is 221°, #3B82F6 is 217°). 204° is the hue of the retired slate #7794A6 (203.8°) and of `palette.screen` (203°) — the brand's own cool axis, measured off the simulator projection. Reading it as 'a blue like everyone's blue' requires ignoring where it came from.",
+        "2_no_cool_neutrals": "There is not one cool grey in this overlay. Every light field is a KEPT warm value — white, paper #F7F5F3, greige #E5E1E0. A tech palette pairs its blue with slate-50/slate-500 cool greys; that pairing is what makes a page read as software. This one pairs blue with warm paper, which is what makes a page read as print.",
+        "3_the_warm_band_stays": "The full-bleed ember #8A400A band survives verbatim from round 1 as the single loudest chromatic event, given to the waitlist. Blue and ember at 204° and 25° are very nearly complementary — that pairing is a scoreboard and a bar sign, not a dashboard. No SaaS page has a full-bleed burnt-orange band in it.",
+        "4_blue_never_sets_running_text": "The saturated `beacon` is a GROUND, a FILL, a RULE and a FIGURE. It never sets body copy, never sets a link, never sets a heading on a light ground. Brand-blue headings and link-blue body text are the tell; a navy ink ramp is a newspaper.",
+        "5_no_shadow_no_gradient_no_pill": "Inherited from the register and kept: elevation is empty, no gradient anywhere, radius is 3px on interactive elements only and 0 everywhere else. The generic blue page is rounded, shadowed and gradient-filled; remove those three and most of the resemblance goes with them.",
+        "6_the_numerals": "Every figure on the page — 6 bays, 4 bays, the hours — is set tabular, lining, expanded, at display scale, in the display face. A product UI sets numerals small and quiet. A board sets them huge.",
+        "acceptedAntiSlopDeviation": "taste/anti-slop.md says 'no oversaturated accents — desaturate to sit with the neutrals'. This candidate deliberately does not, because the round-2 brief asks for saturated blue as the signal. Recorded as an explicit, briefed override rather than an oversight. Every other item on that checklist is honoured."
+      },
+
+      "whatHappensToForestGreen": {
+        "verdict": "DEMOTED — from the theme to the room. Retained in the palette, removed from every UI role.",
+        "removedFrom": "Every ground, every rule, every button, every heading, all body and muted text. Forest #124B2E and night #0D3520 no longer appear anywhere in the page chrome.",
+        "keptIn": [
+          "`role.media.slotGround` / `slotMass` — the photo slots. The rooms genuinely are that colour: the measured shoot is 33–38% near-black per frame with a green-black cast, and forest/night is the only honest value for the drawn interior. Green survives exactly where it is TRUE.",
+          "`role.state.success` — moss #155E36 (7.82:1 on white). A green success state is correct and uncontested.",
+          "The palette file itself, verbatim. Nothing is deleted; re-promoting forest is a one-line role swap if the gate wants it."
+        ],
+        "why": "Forest's claimed equity is that it backs 66 sections as the declared theme black (`--black-hsl`). That is the same provenance problem the direction already rejected in the slate blue: it is a Squarespace theme slot, not a chosen brand colour — brand-direction.md §2.1 threw out #7794A6 partly on the grounds that 'a colour that arrived by aliasing has no equity to protect'. The identical argument applies here and was not applied. What forest DOES have is a real, verifiable strength: it looks like the room in the photographs. This overlay keeps that and drops the rest. Green stops being a colour and becomes a place.",
+        "whatItCosts": "Honestly stated for the gate: the page loses its inherited hue at the most-repeated element (body text), so a returning visitor's recognition now rests on the blue, the ember band and the ruled scoreboard rather than on green. If the client's attachment to the green is genuine rather than inherited, that is a reason to reject this candidate — and it should be asked as a question, not assumed either way.",
+        "whatItDoesNotCost": "Not one contrast ratio. The blue ink ramp is luminance-matched to the green ramp step for step (see `contrastAudit.rampRotation`), so the entire approved a11y table transfers without re-derivation."
+      },
+
+      "typefaceProposal": {
+        "$description": "IDENTICAL to brutalist.json — the register is fixed in round 2 and type is not the variable. Reproduced here so the overlay stands alone.",
+        "display": {
+          "family": "Archivo",
+          "source": "Omnibus-Type, OFL. Variable: weight 100–900, width 62–125.",
+          "weightsUsed": [600, 800],
+          "widthsUsed": [100, 112],
+          "rationale": "One variable file gives a normal cut for labels and an expanded cut for scoreboard figures, so weight AND width are hierarchy tools. Archivo is a workhorse grotesque drawn for high-contrast display at both poster and caption size — a bar sign and a transit board, not a design-award entry.",
+          "replaces": "Bitter",
+          "deltaFromRound1": "Peak display weight comes down one step per the softening delta: the h1 and the scoreboard figures move 900 → 800, and 900 is dropped from the ramp entirely. Scale, tracking and leading are unchanged."
+        },
+        "body": {
+          "family": "Open Sans",
+          "weightsUsed": [400, 600, 700],
+          "rationale": "RETAINED VERBATIM from the live site. Carries tabular figures for the rates/hours numerals per brand-direction.md §3.2 rule 3."
+        },
+        "previewApproximation": "The wisplet preview loads no network resources. Open Sans is base64-embedded from public/fonts/open-sans-normal-latin.woff2 (real). Archivo is NOT available and is approximated by the system grotesque stack at weight 700–800 with negative tracking. Judge the preview's display type as an approximation; judge this declaration as the proposal."
+      },
+
+      "photographyHandling": "There is no photography in the repo and none is faked. Round 1's approach is carried forward with one substantive improvement: the slot is drawn entirely from palette values derived from measurements of the real shoot (night ground, forest bar mass, amber pendants, 3:2 aspect, hard-ruled, honest caption), and the simulator projection is now painted in `palette.screenLight` #B8DFF9 — an actual bright COOL value at 9.67:1 against the room ground. Round 1 had to substitute warm greige because no bright cool value existed. Lakeville's slot is drawn lit and occupied and captioned 'the shoot exists and is not in this repository'; Stillwater's is drawn EMPTY and unlit, hatched and crossed, captioned 'no professional photograph of this room exists'. Asymmetric because the truth is asymmetric. Never stock, never a faked frame.",
+
+      "tokenGaps": [
+        "CLOSED, NOT FLAGGED: `palette.screenLight`. Round 1 found that the palette cannot render its own brief — 'a warm dark room with one bright screen in it' — because `screen` #2E5A6E is 1.81:1 on night, so the projection is invisible on the ground it is meant to punch out of. That gap was flagged with a proposed name. This candidate ADDS it under exactly that name, at #B8DFF9: 9.67:1 on the night room ground, 5.34:1 on `beacon`, 5.31:1 on the ember band, and able to carry `beaconDeep` text at 9.67:1 if it is ever used as a fill. It is the single most useful thing this palette direction buys.",
+        "STILL OPEN — STRUCTURAL VOCABULARY. The canonical tokens.json still has no type scale, radius, border, elevation, tracking, line-height or internal spacing scale. This overlay declares its own (inherited from brutalist.json with the softening delta applied). Round 1's finding stands: the CONVERGENT PHASE MUST PROMOTE THE WINNING SET into the canonical file, or the next surface re-invents it a fifth time.",
+        "CLOSED: NO WARNING/CAUTION ROLE. Round 1 flagged that `(hours being confirmed)` is neither an error nor a success and had to borrow the informational blue. In this palette the informational blue has been promoted to the page's signal, so borrowing it would make the caveat invisible against the thing it qualifies. Ember #8A400A is freed from the action slot by that same promotion and takes the caution role instead: `role.state.unverified`, 7.45:1 as text and as a 2px boundary on white. A warm outline against a blue page reads as 'attention' without reading as 'error'.",
+        "OPEN — HOVER MECHANICS. brand-direction.md §2.4 rule 1 notes that this codebase computes hovers (`hover:brightness-125`, `hover:opacity-90`) rather than choosing them, and that ember was tuned so its brightened form still clears AA. `beacon` #045890 needs the same treatment before it ships: this overlay declares EXPLICIT `beaconHover` / `beaconActive` values (#0A6DAE / #04405F) rather than relying on a filter, and the build must bind those instead of a brightness filter. Flagged because it is a code change, not a token change.",
+        "COPY GAP, NOT INVENTED: the register still wants the published rate ($35 / hour, real, current through 2026-10-03) on the scoreboard. screen-spec-home.md §7 forbids any string not on the copy sheet and no homepage section carries a price. Flagged again for the convergent phase as a one-string copy request, NOT added."
+      ]
+    }
+  },
+
+  "palette": {
+    "$type": "color",
+    "$description": "Five NEW values, all in one hue family (203–206°), three of them luminance-matched to values the approved system already contains. Every other value below is KEPT VERBATIM from tokens.json — nothing warm is invented, and nothing is deleted.",
+
+    "beacon": {
+      "$value": "#045890",
+      "$description": "NEW — THE SIGNAL. Hue 204°, relative luminance 0.0902, which is `palette.screen` #2E5A6E's luminance to four decimal places and within 0.0007 of `palette.ember`'s. So this is not a new position in the system: it is the cool value the palette already had, kept at exactly the darkness that was proven to carry white text, taken from 28% to 95% chroma, and moved from a status badge to the page's ground. white on it 7.49:1, paper 6.89:1, greige 5.77:1, screenLight 5.34:1 — the same four numbers `screen` and `ember` already carry, so it is a drop-in for either."
+    },
+    "beaconDeep": {
+      "$value": "#09304F",
+      "$description": "NEW — luminance 0.0274, IDENTICAL to `palette.night` #0D3520. Display headings and structural rules on light grounds; the chrome and footer field. white 13.57:1, paper 12.48:1, greige 10.46:1, amber 7.35:1, screenLight 9.67:1 — every one of these is night's number unchanged, because the luminance is night's luminance. The hue rotated; the arithmetic did not move."
+    },
+    "beaconInk": {
+      "$value": "#154565",
+      "$description": "NEW — luminance 0.0536, IDENTICAL to `palette.forest` #124B2E. Body copy on light grounds. on white 10.14:1, on paper 9.32:1, on greige 7.81:1 — forest's three numbers exactly. This is the token that makes the green→blue swap free: the most-repeated colour on the page changes hue and changes nothing else."
+    },
+    "beaconMuted": {
+      "$value": "#2B5F82",
+      "$description": "NEW — luminance 0.1031 against `role.ink.muted` #456052's 0.1024. Captions, meta, table keys, placeholders, quiet sub-rules. on white 6.86:1, on paper 6.31:1, on greige 5.28:1 (vs 6.89 / 6.34 / 5.31). A 0.03 drift, three decimal places out from the value it replaces. Opacity is still never used as a ramp."
+    },
+    "screenLight": {
+      "$value": "#B8DFF9",
+      "$description": "NEW — and this is the gap round 1 flagged, filled under the name round 1 proposed. Hue 204°, luminance 0.6981. The simulator projection as an actual bright cool value: 9.67:1 against the night room ground (round 1 had to paint the projection in warm greige because nothing cool was bright enough), 5.34:1 on beacon, 5.31:1 on the ember band, 9.67:1 against beaconDeep. Unlike the round-1 proposal it is NOT decorative-only — it clears AA body on all three dark grounds, so it is the muted/secondary text colour on every blue field as well as the media-slot panel. NEVER on light: 1.40:1 on white."
+    },
+    "beaconHover": {
+      "$value": "#0A6DAE",
+      "$description": "NEW — explicit hover fill for beacon. white on it 5.51:1, paper 5.07:1 (AA ✓ body). Declared as a VALUE rather than left to `hover:brightness-125`, which is the mechanism brand-direction.md §2.4 rule 1 warns about."
+    },
+    "beaconActive": {
+      "$value": "#04405F",
+      "$description": "NEW — pressed. white on it 11.03:1 (AA ✓ body)."
+    },
+
+    "white":       { "$value": "#ffffff", "$description": "KEPT VERBATIM. The page's dominant ground. This candidate is a light page." },
+    "paper":       { "$value": "#f7f5f3", "$description": "KEPT VERBATIM. Barely-warm off-white. LOAD-BEARING here: it is the anti-SaaS insurance. A saturated blue on a warm paper reads as print; the same blue on a cool grey reads as software. There is no cool neutral anywhere in this overlay." },
+    "greige":      { "$value": "#e5e1e0", "$description": "KEPT VERBATIM. Secondary warm light field and secondary text on blue grounds (5.77:1 on beacon)." },
+    "ember":       { "$value": "#8a400a", "$description": "KEPT VERBATIM — REASSIGNED. No longer the action colour (beacon takes that slot on light grounds). It keeps the two jobs it is best at: the ONE full-bleed warm band, at full strength, given to the waitlist; and the new caution/unverified role. Its whole §2.2 defence — the pendant light, the LL Icon precedent, the complement of the equity colour — is untouched. It is now the complement of blue instead of green, at 204° vs 25°, which is a slightly wider separation than 150° vs 25° was." },
+    "emberHover":  { "$value": "#ad500d", "$description": "KEPT VERBATIM. paper on it 4.91:1." },
+    "emberActive": { "$value": "#6d3308", "$description": "KEPT VERBATIM. paper on it 9.08:1." },
+    "emberMid":    { "$value": "#b85718", "$description": "KEPT VERBATIM. Focus ring on light grounds only. vs white 4.76:1, vs paper 4.37:1." },
+    "amber":       { "$value": "#f3b268", "$description": "KEPT VERBATIM, and it is what stops this page reading as software. The pendant light: rules and CTA fills on blue grounds, focus on blue grounds, the score rule. on beaconDeep 7.35:1 (text ✓), on beacon 4.06:1 (NON-TEXT ONLY — see the ban list). NEVER on light: 1.85:1 on white." },
+    "night":       { "$value": "#0d3520", "$description": "KEPT VERBATIM, DEMOTED. No longer a page ground. Sole surviving job: the near-black room inside the photo slots. It is the only near-black anywhere on this page, which is the point — the dark room is in the photograph, not behind the copy." },
+    "forest":      { "$value": "#124b2e", "$description": "KEPT VERBATIM, DEMOTED. See $extensions.whatHappensToForestGreen. Sole surviving jobs: the bar mass inside the photo slots, and the family the success state belongs to." },
+    "sage":        { "$value": "#9cbead", "$description": "KEPT VERBATIM, DEMOTED FURTHER. Round 1 promoted sage to muted-on-dark; a light green on a blue field is the one pairing this palette cannot make work, so `screenLight` takes that role instead. Sage survives only as the caption colour inside the photo slots, where it sits on the green room ground it was drawn for (6.71:1 on night)." },
+    "moss":        { "$value": "#155e36", "$description": "KEPT VERBATIM. Success. on white 7.82:1." },
+    "clay":        { "$value": "#a22c22", "$description": "KEPT VERBATIM. Error and destructive only. on white 7.19:1." },
+    "emberTint":   { "$value": "#f0dcc9", "$description": "KEPT VERBATIM, UNUSED on this surface. Decorative fill only, never text-bearing. Recorded so it is not assumed deleted." }
+  },
+
+  "retired": {
+    "$type": "color",
+    "$description": "Additions to tokens.json's retired list, made by this overlay.",
+    "screen": {
+      "$value": "#2e5a6e",
+      "$description": "RETIRED INTO `palette.beacon` — not deleted, absorbed. Same hue family (203° vs 204°), same relative luminance (0.0902), same derivation (the simulator projection), same white-text ratio (7.49:1). It was the desaturated version of this candidate's central colour, held at 12% of the page doing badge duty. Keeping both would ship two blues five chroma steps apart that no user could tell apart and no rule could separate."
+    },
+    "slate": {
+      "$value": "#7794a6",
+      "$description": "STAYS RETIRED, and this candidate does not reopen it. Its failure was LIGHTNESS in a text-bearing role — white on it is 3.20:1, forest on it 3.17:1, so it could carry text of neither polarity. `beacon` shares its hue family (203.8° vs 204°) and fixes precisely that: at luminance 0.0902 instead of 0.2896 it carries white at 7.49:1. The hue was never the problem; the value was."
+    }
+  },
+
+  "role": {
+    "$type": "color",
+    "$description": "The semantic layer. Components reference ONLY these. Every pairing carries its computed WCAG 2.1 ratio.",
+
+    "ground": {
+      "$description": "The band sequence is INHERITED UNCHANGED from round 1 — same eight bands, same order, same alternation. Only the values move: night → blue. The delta forbids touching the rhythm, so it isn't touched.",
+      "chrome":  { "$value": "{palette.beaconDeep}", "$description": "Sticky header. Merges with the hero into one blue field (beacon vs beaconDeep is 1.81:1 — deliberately a low-contrast seam, exactly as round 1 merged chrome into hero), cut by a 4px amber rule at 7.35:1." },
+      "hero":    { "$value": "{palette.beacon}",     "$description": "REPLACES round 1's night hero. Full chroma, full bleed. white on it 7.49:1, paper 6.89:1 (AA ✓ body). This is the page's loudest field and the reason the direction is called blue-signal." },
+      "trust":   { "$value": "{palette.white}",      "$description": "HARD CUT out of the blue. The hours themselves become filled beacon cells on this white ground — see `role.scoreboard.*`. Maximum figure/ground on the highest-leverage block (screen-spec §3.2)." },
+      "jobs":    { "$value": "{palette.beacon}",     "$description": "'What you can do here'. The second blue field. Alternation preserved from round 1." },
+      "proof":   { "$value": "{palette.white}",      "$description": "'What players say'. Light, so the three empty quote cells read as an unfilled board." },
+      "offer":   { "$value": "{palette.ember}",      "$description": "THE ONE WARM BAND, USED ONCE, AT FULL STRENGTH — KEPT VERBATIM from round 1, and load-bearing twice over: it gives the differentiator (the waitlist, which zero of 126 audited competitors have) the largest chromatic event on the page, and it is the single strongest reason a saturated-blue page does not read as a software product. white on it 7.45:1, paper 6.85:1, greige 5.74:1, screenLight 5.31:1." },
+      "venues":  { "$value": "{palette.white}",      "$description": "'Two venues'. Light, so the near-black GREEN media slots read as windows punched into the page — the only near-black on the surface." },
+      "footer":  { "$value": "{palette.beaconDeep}", "$description": "Closes the page on the same field it opened on." }
+    },
+
+    "ink": {
+      "$description": "The rotated ramp. Three steps, luminance-matched to night / forest / inkMuted, so hierarchy-by-darkness is preserved exactly.",
+      "displayOnLight": { "$value": "{palette.beaconDeep}",  "$description": "Display headings, venue names, scoreboard figures on white/paper. on white 13.57:1, on paper 12.48:1, on greige 10.46:1 (AA ✓). Was night." },
+      "bodyOnLight":    { "$value": "{palette.beaconInk}",   "$description": "Body copy on light. on white 10.14:1, on paper 9.32:1, on greige 7.81:1 (AA ✓). Was forest — same numbers." },
+      "mutedOnLight":   { "$value": "{palette.beaconMuted}", "$description": "Captions, meta, table keys, input placeholders. on white 6.86:1, on paper 6.31:1, on greige 5.28:1 (AA ✓). Was #456052 — within 0.03 on all three." },
+      "onSignalStrong": { "$value": "{palette.white}",       "$description": "Display headings on the beacon bands. 7.49:1 (AA ✓ body)." },
+      "onSignal":       { "$value": "{palette.paper}",       "$description": "Body on the beacon bands. 6.89:1 (AA ✓)." },
+      "mutedOnSignal":  { "$value": "{palette.screenLight}", "$description": "Eyebrows, captions and secondary meta on the beacon bands. 5.34:1 (AA ✓ body). This is the role sage held in round 1; a light green on blue is the one pairing this palette can't make, so the new bright cool value takes it." },
+      "onDeepStrong":   { "$value": "{palette.white}",       "$description": "Headings on chrome/footer. 13.57:1 (AA ✓)." },
+      "onDeep":         { "$value": "{palette.paper}",       "$description": "Body, nav and footer copy on chrome/footer. 12.48:1 (AA ✓)." },
+      "mutedOnDeep":    { "$value": "{palette.screenLight}", "$description": "Secondary footer copy, collapsed hours in the footer. 9.67:1 (AA ✓)." }
+    },
+
+    "primary": {
+      "$description": "The action colour moves from ember to beacon on light grounds, and inverts to amber on blue grounds. Both halves of the arithmetic were solved in round 1 and neither changes.",
+      "default":     { "$value": "{palette.beacon}",       "$description": "Solid CTA fill on LIGHT grounds only. white on it 7.49:1, paper 6.89:1; boundary vs white 7.49:1, vs paper 6.89:1 (non-text 3:1 ✓). Numerically interchangeable with ember's 7.45 / 6.85 / 7.45." },
+      "hover":       { "$value": "{palette.beaconHover}",  "$description": "white on it 5.51:1 (AA ✓). An explicit value, not a brightness filter — see the flagged hover gap." },
+      "active":      { "$value": "{palette.beaconActive}", "$description": "white on it 11.03:1 (AA ✓)." },
+      "on":          { "$value": "{palette.white}",        "$description": "Label on a beacon fill. 7.49:1 (AA ✓)." },
+      "onSignalFill":{ "$value": "{palette.amber}",        "$description": "RULE + ROLE. On a beacon ground the CTA takes an AMBER fill with beaconDeep text: beaconDeep on amber 7.35:1 (AA ✓ body) and the amber-vs-beacon boundary is 4.06:1 (non-text 3:1 ✓). The same third solution round 1 found for the dark hero, and it is what keeps the primary action coloured — and warm — on the most-seen band of the page." },
+      "onSignalFillInk": { "$value": "{palette.beaconDeep}", "$description": "Label on the amber CTA. 7.35:1 (AA ✓)." },
+      "onEmberBand": {
+        "$value": "{palette.paper}",
+        "$description": "RULE, not a colour, and the arithmetic is WORSE here than in round 1. beacon on ember is 1.01:1 — the two are within 0.0007 of the same relative luminance, so a blue button on the ember band is not merely low-contrast, it is invisible. beaconDeep on ember is 1.82:1. The waitlist therefore sits inside a PAPER SLAB punched out of the ember (paper vs ember 6.85:1 ✓ non-text), and the submit button reverts to a normal beacon-on-light CTA inside that slab (white on beacon 7.49:1; beacon vs paper boundary 6.89:1 ✓). Recorded because the luminance collision is exact and would be very easy to ship."
+      }
+    },
+
+    "accent": {
+      "highlight": { "$value": "{palette.amber}",       "$description": "The warm counterpoint, and the thing that makes this page a scoreboard rather than a dashboard. Score rules and CTA fills on blue grounds, focus on blue grounds, the chrome cut, the footer cut. on beaconDeep 7.35:1 (text ✓). ON BEACON: 4.06:1 — NON-TEXT ONLY, banned as body copy. NEVER on light (1.85:1 on white). NEVER on ember (4.04:1 — clears large-text 3:1 but fails body, so banned outright, exactly as round 1 banned it)." },
+      "screenGlow": { "$value": "{palette.screenLight}", "$description": "NOT a glow — the name is the projection, not an effect. There is no shadow, blur or outer glow anywhere in this overlay. Bright cool marks: the media-slot panel, eyebrows on blue, the quiet rules on blue." }
+    },
+
+    "scoreboard": {
+      "$description": "NEW CATEGORY, and this candidate's signature. A scoreboard cell is a SOLID BEACON BLOCK carrying a white figure, sitting on a white ground. It is used for exactly two things, both of them real numbers already in the content collections: the collapsed opening hours, and the bay counts. Never for a decorative index number — that is the anti-slop '01 / 4' rule.",
+      "cellGround": { "$value": "{palette.beacon}", "$description": "The filled cell. Boundary vs white 7.49:1, vs paper 6.89:1 (non-text 3:1 ✓)." },
+      "cellInk":    { "$value": "{palette.white}",  "$description": "The figure. 7.49:1 (AA ✓ body — so it passes even though it is always set at display scale)." },
+      "cellLabel":  { "$value": "{palette.screenLight}", "$description": "The unit label inside the cell ('bays', the day run). 5.34:1 (AA ✓ body)." },
+      "cellRule":   { "$value": "{palette.amber}",  "$description": "The 4px separator between cells. 4.06:1 against the cell ground (non-text 3:1 ✓)." }
+    },
+
+    "rule": {
+      "$description": "INHERITED CATEGORY, recoloured. This register has no cards, no shadows and no radii on surfaces, so rules carry every boundary. Colour by ground; weight by job (see `border.*`). Every value here clears the 3:1 non-text gate against its ground — there is no sub-3:1 'decorative' rule in this overlay.",
+      "onLight":       { "$value": "{palette.beaconDeep}",  "$description": "Structural rules on white/paper. 13.57:1 / 12.48:1." },
+      "onLightQuiet":  { "$value": "{palette.beaconMuted}", "$description": "1px sub-cell rules on light. 6.86:1 / 6.31:1." },
+      "onSignal":      { "$value": "{palette.paper}",       "$description": "Structural rules on the beacon bands. 6.89:1 — stark on purpose; the grid is meant to be visible." },
+      "onSignalQuiet": { "$value": "{palette.screenLight}", "$description": "1px sub-cell rules on beacon. 5.34:1." },
+      "onDeep":        { "$value": "{palette.screenLight}", "$description": "Rules on chrome/footer. 9.67:1." },
+      "onEmber":       { "$value": "{palette.white}",       "$description": "Rules on the ember band. 7.45:1." },
+      "scoreOnSignal": { "$value": "{palette.amber}",       "$description": "The heavy 4px band separator on blue grounds. 4.06:1 on beacon, 7.35:1 on beaconDeep (non-text 3:1 ✓). The one recurring graphic device on the page, so a fragment of it is recognisable — the §10.10 complaint." },
+      "scoreOnLight":  { "$value": "{palette.beacon}",      "$description": "The heavy 4px band separator on light grounds. 7.49:1 vs white (non-text 3:1 ✓)." }
+    },
+
+    "state": {
+      "focus":        { "$value": "{palette.emberMid}", "$description": "KEPT VERBATIM. Focus on light grounds. vs white 4.76:1, vs paper 4.37:1, vs greige 3.66:1 (non-text 3:1 ✓). Rendered as a 4px offset slab, never a soft glow. A WARM focus ring on a blue page is also the most visible option available — the one thing that cannot be confused with the signal." },
+      "focusOnSignal":{ "$value": "{palette.amber}",    "$description": "Focus on beacon 4.06:1 and on beaconDeep 7.35:1 (non-text 3:1 ✓)." },
+      "focusOnEmber": { "$value": "{palette.white}",    "$description": "KEPT from round 1. vs ember 7.45:1 (✓)." },
+      "unverified":   {
+        "$value": "{palette.ember}",
+        "$description": "NEW ROLE, NO NEW VALUE — the caution role round 1 flagged as missing. Carries `(hours being confirmed)` as a 2px-ruled caps tag on white: 7.45:1 as text and 7.45:1 as a boundary (non-text 3:1 ✓). Ember is free for this because beacon took the action slot, and a warm outline on a blue page reads as 'attention' without reading as 'error' — clay #A22C22 is reserved and untouched."
+      },
+      "error":        { "$value": "{palette.clay}", "$description": "KEPT VERBATIM. on white 7.19:1 (AA ✓)." },
+      "success":      { "$value": "{palette.moss}", "$description": "KEPT VERBATIM. on white 7.82:1 (AA ✓). The last green in the UI, and it stays." }
+    },
+
+    "media": {
+      "$description": "The photo-slot system, INHERITED from round 1 with the one substantive upgrade this palette makes possible: the projection is finally a bright COOL value instead of a warm stand-in. This is where forest and night live now.",
+      "slotGround":  { "$value": "{palette.night}",       "$description": "The near-black room. Measured: 33–38% of frame near-black, mean luminance 54–74/255. The only near-black on the page." },
+      "slotMass":    { "$value": "{palette.forest}",      "$description": "The bar mass in the lower third. 1.34:1 against the room ground — a tonal, not a structural, distinction, which is what it is in the photograph too." },
+      "slotPanel":   { "$value": "{palette.screenLight}", "$description": "THE SIMULATOR PROJECTION — the one bright thing in the frame, and for the first time an actually cool one. 9.67:1 against the night ground (non-text 3:1 ✓). Round 1 had to use warm greige here because `screen` was 1.81:1 and invisible; that workaround is retired." },
+      "slotPanelDeep": { "$value": "{palette.beacon}",    "$description": "The saturated horizon band inside the projection — the measured 7–8% of pixels in the 210–240° band. 5.34:1 against the panel (non-text ✓)." },
+      "slotPendant": { "$value": "{palette.amber}",       "$description": "The warm in-frame practical light. Measured: red channel exceeds blue by +15 to +19; no daylight, no flash. 7.35:1 on the night ground." },
+      "slotFrame":   { "$value": "{palette.paper}",       "$description": "The 2px rule around the slot. The slot is always visibly a SLOT — it never pretends to be a photograph." },
+      "slotLabel":   { "$value": "{palette.sage}",        "$description": "The caption naming the exact missing frame. 6.71:1 on night (AA ✓). Sage's last job, on the green ground it was drawn for." },
+      "slotRatio":   { "$type": "number", "$value": 1.5,  "$description": "3:2 — the aspect the real frames will arrive in (6000×4000, 5648×3765, 4549×3033)." }
+    }
+  },
+
+  "font": {
+    "$type": "fontFamily",
+    "$description": "IDENTICAL to brutalist.json. Type is not the round-2 variable.",
+    "display": { "$value": ["Archivo", "Archivo Expanded", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"] },
+    "body":    { "$value": ["Open Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"] },
+    "numeric": { "$value": ["Archivo", "ui-sans-serif", "system-ui", "sans-serif"], "$description": "Scoreboard figures only, `font-variant-numeric: tabular-nums lining-nums`, expanded width. Only ever bound to numbers that exist in the content collections." },
+    "retired": { "$value": ["Bitter", "Alfa Slab One", "Poppins"], "$description": "Bitter is retired from the web build only; it survives in the drawn wordmark." }
+  },
+
+  "fontWeight": {
+    "$type": "fontWeight",
+    "$description": "SOFTENING DELTA APPLIED: peak display weight comes down one step. 900 is removed from the ramp entirely; the h1 and the scoreboard figures now sit at 800.",
+    "displayBold": { "$value": 800, "$description": "h1, h2, scoreboard figures. The top of the ramp — one step below round 1's 900." },
+    "displaySemi": { "$value": 600, "$description": "h3, CTA labels, caps labels, eyebrows, table heads." },
+    "bodyRegular": { "$value": 400 },
+    "bodyMedium":  { "$value": 600 },
+    "bodyBold":    { "$value": 700 }
+  },
+
+  "fontWidth": {
+    "$type": "number",
+    "$description": "KEPT from brutalist.json. Meaningful because the display face is width-variable.",
+    "displayNormal":   { "$value": 100 },
+    "displayExpanded": { "$value": 112, "$description": "Scoreboard figures only." }
+  },
+
+  "typeScale": {
+    "$type": "dimension",
+    "$description": "KEPT VERBATIM from brutalist.json — the softening delta explicitly leaves the type scale alone.",
+    "displayHero":    { "$value": "clamp(3rem, 10.5vw, 8.25rem)" },
+    "displaySection": { "$value": "clamp(2.125rem, 5.5vw, 4rem)" },
+    "displayRow":     { "$value": "clamp(1.5rem, 2.6vw, 2.125rem)" },
+    "displayCard":    { "$value": "1.375rem" },
+    "scoreboardXl":   { "$value": "clamp(1.875rem, 4.2vw, 3rem)" },
+    "scoreboardMd":   { "$value": "1.25rem" },
+    "bodyLead":       { "$value": "clamp(1.0625rem, 1.35vw, 1.1875rem)" },
+    "bodyBase":       { "$value": "1rem" },
+    "bodySmall":      { "$value": "0.9375rem" },
+    "labelBase":      { "$value": "0.75rem" },
+    "labelSmall":     { "$value": "0.6875rem" }
+  },
+
+  "tracking": {
+    "$type": "dimension",
+    "$description": "KEPT VERBATIM from brutalist.json.",
+    "displayTight":  { "$value": "-0.035em" },
+    "displayNormal": { "$value": "-0.02em" },
+    "bodyNormal":    { "$value": "0" },
+    "labelWide":     { "$value": "0.16em" },
+    "labelWider":    { "$value": "0.22em" }
+  },
+
+  "lineHeight": {
+    "$type": "number",
+    "$description": "KEPT VERBATIM from brutalist.json.",
+    "displayHero": { "$value": 0.9 },
+    "display":     { "$value": 0.98 },
+    "scoreboard":  { "$value": 1.0 },
+    "body":        { "$value": 1.55 },
+    "label":       { "$value": 1.2 }
+  },
+
+  "radius": {
+    "$type": "dimension",
+    "$description": "SOFTENING DELTA APPLIED, and this is the whole of it structurally: 3px on interactive elements ONLY. Panels, cells, media slots, the waitlist slab and every band stay at 0. A returning corner radius on a surface is the failure mode this delta is one step away from.",
+    "none":    { "$value": "0",   "$description": "Panels, cells, image slots, bands, the paper slab." },
+    "control": { "$value": "3px", "$description": "Buttons, inputs, the venue-switcher chips, the unverified tag. Interactive only." },
+    "surface": { "$value": "0" },
+    "pill":    { "$value": "3px", "$description": "Declared explicitly at 3px, not 999px, so nobody reintroduces a rounded pill for the venue switcher or a status badge." }
+  },
+
+  "border": {
+    "$type": "dimension",
+    "$description": "SOFTENING DELTA APPLIED: secondary/internal dividers drop to 1px; structural and section rules stay at 2px and 4px. The visible ruled grid stays — it is the idea.",
+    "hairline": { "$value": "1px", "$description": "Cell dividers inside a block, sub-rules, nav separators — the ledger rules. Round 1 already had these at 1px; the delta moves a further tier down to join them." },
+    "rule":     { "$value": "2px", "$description": "STRUCTURAL, unchanged: component boundaries — inputs, media-slot frames, the unverified tag, outline buttons." },
+    "score":    { "$value": "4px", "$description": "The band separator and the focus slab. The recurring graphic device." },
+    "slab":     { "$value": "8px", "$description": "The lead rule above a section heading and above the featured row of the jobs list." }
+  },
+
+  "elevation": {
+    "$description": "Declared EMPTY, again. There are no shadows on this page and there is no glow. Depth is ground inversion and rule weight. This matters more in a blue direction than it did in a black one: a soft blue shadow or an outer glow is the named AI tell this candidate is closest to, so the absence is recorded rather than assumed.",
+    "none": { "$value": "none" }
+  },
+
+  "space": {
+    "$type": "dimension",
+    "$description": "Ramp KEPT VERBATIM from brutalist.json. SOFTENING DELTA: cells get one step more air — cell padding moves s5 → s6 and s6 → s7. Section rhythm (sectionY / sectionYLg) and the full-bleed alternation are untouched.",
+    "sectionY":   { "$value": "4rem" },
+    "sectionYLg": { "$value": "8rem" },
+    "gutterX":    { "$value": "1.5rem" },
+    "gutterXLg":  { "$value": "4rem" },
+    "s1": { "$value": "0.25rem" },
+    "s2": { "$value": "0.5rem" },
+    "s3": { "$value": "0.75rem" },
+    "s4": { "$value": "1rem" },
+    "s5": { "$value": "1.5rem" },
+    "s6": { "$value": "2rem" },
+    "s7": { "$value": "2.5rem" },
+    "s8": { "$value": "3.5rem" },
+    "s9": { "$value": "5rem" },
+    "s10": { "$value": "7rem" }
+  },
+
+  "size": {
+    "$type": "dimension",
+    "contentMax": { "$value": "75rem" },
+    "proseMax":   { "$value": "46.875rem" },
+    "tapMin":     { "$value": "44px" }
+  },
+
+  "motion": {
+    "$description": "KEPT from brutalist.json at dial setting 1. The softening delta does not mention motion, so motion does not move. Colour and border changes are instant.",
+    "duration": { "$value": "0ms" }
+  },
+
+  "contrastAudit": {
+    "$description": "Every text and non-text pairing this candidate renders, computed from sRGB relative luminance per WCAG 2.1 §1.4.3 and §1.4.11. Body gate 4.5:1, large-text and non-text gate 3:1. NOTHING in this candidate relies on the large-text allowance. NO PAIRING FAILS.",
+
+    "rampRotation": {
+      "$description": "The load-bearing claim, stated as arithmetic. The blue ink ramp is luminance-matched to the green ramp it replaces, so the approved contrast table transfers without re-derivation.",
+      "rows": [
+        "night   #0D3520  L=0.0274  →  beaconDeep  #09304F  L=0.0274  — identical. white 13.57:1 · paper 12.48:1 · greige 10.46:1 · amber on it 7.35:1 · sage on it 6.71:1",
+        "forest  #124B2E  L=0.0536  →  beaconInk   #154565  L=0.0536  — identical. on white 10.14:1 · on paper 9.32:1 · on greige 7.81:1",
+        "#456052          L=0.1024  →  beaconMuted #2B5F82  L=0.1031  — +0.0007. on white 6.86:1 (was 6.89) · on paper 6.31:1 (was 6.34) · on greige 5.28:1 (was 5.31)",
+        "screen  #2E5A6E  L=0.0902  →  beacon      #045890  L=0.0902  — identical, chroma 28% → 95%. white on it 7.49:1 · paper 6.89:1 · greige 5.77:1",
+        "(for reference) ember #8A400A L=0.0909 — beacon sits 0.0007 below it, which is why beacon is a drop-in for the action slot AND why a beacon element on the ember band is 1.01:1 and banned."
+      ]
+    },
+
+    "onBeaconGround": [
+      "white #FFFFFF on beacon #045890 — 7.49:1 ✓ (h1, h2, h3, scoreboard figures)",
+      "paper #F7F5F3 on beacon — 6.89:1 ✓ (body, jobs row copy, structural rules)",
+      "screenLight #B8DFF9 on beacon — 5.34:1 ✓ (eyebrows, captions, cell labels, quiet 1px rules)",
+      "greige #E5E1E0 on beacon — 5.77:1 ✓ (secondary meta)",
+      "amber #F3B268 on beacon — 4.06:1 ✓ 3:1 NON-TEXT ONLY (score rule, CTA fill boundary, focus ring). BANNED as body copy — it clears the large-text allowance and this candidate does not use the large-text allowance.",
+      "beaconDeep #09304F on amber #F3B268 — 7.35:1 ✓ (the label on the amber CTA)",
+      "BANNED HERE: beaconDeep on beacon 1.81:1 ✗ · ember on beacon 1.01:1 ✗ · emberMid on beacon 1.57:1 ✗ · night on beacon 1.81:1 ✗"
+    ],
+
+    "onBeaconDeepGround": [
+      "white #FFFFFF on beaconDeep #09304F — 13.57:1 ✓ (wordmark, footer headings)",
+      "paper #F7F5F3 on beaconDeep — 12.48:1 ✓ (nav, footer copy, addresses)",
+      "screenLight #B8DFF9 on beaconDeep — 9.67:1 ✓ (footer muted, collapsed hours, 1px rules)",
+      "greige #E5E1E0 on beaconDeep — 10.46:1 ✓",
+      "amber #F3B268 on beaconDeep — 7.35:1 ✓ (column heads, the 4px chrome and footer cuts, focus)",
+      "BANNED HERE: beacon on beaconDeep 1.81:1 ✗ as text — used only as the deliberate low-contrast chrome/hero seam, which is decorative and carries no information."
+    ],
+
+    "onWhiteGround": [
+      "beaconDeep #09304F on white — 13.57:1 ✓ (display headings, venue names, structural rules)",
+      "beaconInk #154565 on white — 10.14:1 ✓ (body)",
+      "beaconMuted #2B5F82 on white — 6.86:1 ✓ (captions, table keys, quiet sub-rules, placeholders)",
+      "beacon #045890 on white — 7.49:1 ✓ (bay-count figures, links, the 4px score rule, the CTA fill boundary)",
+      "ember #8A400A on white — 7.45:1 ✓ (the `(hours being confirmed)` tag, text and 2px border)",
+      "clay #A22C22 on white — 7.19:1 ✓ (error, unused on this surface) · moss #155E36 on white — 7.82:1 ✓ (success, unused on this surface)",
+      "emberMid #B85718 on white — 4.76:1 ✓ 3:1 non-text (focus slab)",
+      "white #FFFFFF on beacon fill — 7.49:1 ✓ (CTA label) · on beaconHover #0A6DAE — 5.51:1 ✓ · on beaconActive #04405F — 11.03:1 ✓",
+      "BANNED HERE: amber on white 1.85:1 ✗ · screenLight on white 1.40:1 ✗ · sage on white 2.02:1 ✗ · greige on white 1.30:1 ✗"
+    ],
+
+    "onPaperGround": [
+      "beaconDeep on paper — 12.48:1 ✓ · beaconInk on paper — 9.32:1 ✓ · beaconMuted on paper — 6.31:1 ✓",
+      "beacon on paper — 6.89:1 ✓ (as text and as the submit-button fill boundary) · ember on paper — 6.85:1 ✓",
+      "emberMid on paper — 4.37:1 ✓ 3:1 non-text (focus inside the slab)"
+    ],
+
+    "onEmberBand": [
+      "white #FFFFFF on ember #8A400A — 7.45:1 ✓ (h2, eyebrow, rules)",
+      "paper #F7F5F3 on ember — 6.85:1 ✓ (body, link)",
+      "greige #E5E1E0 on ember — 5.74:1 ✓ · screenLight #B8DFF9 on ember — 5.31:1 ✓",
+      "paper slab on ember — 6.85:1 ✓ non-text (the waitlist panel's own boundary)",
+      "inside the paper slab: beaconDeep on paper 12.48:1 ✓ · beaconInk on paper 9.32:1 ✓ · beaconMuted on white input 6.86:1 ✓ (placeholders) · white on beacon fill 7.49:1 ✓ (submit) · beacon vs paper boundary 6.89:1 ✓ · emberMid on paper 4.37:1 ✓ 3:1 (focus)",
+      "BANNED HERE, and the first one is new and exact: beacon on ember 1.01:1 ✗ (the two are luminance twins) · beaconDeep on ember 1.82:1 ✗ · amber on ember 4.04:1 ✗ body (clears 3:1 large only — banned outright) · sage on ember 3.68:1 ✗ body"
+    ],
+
+    "mediaSlot": [
+      "screenLight #B8DFF9 projection panel on night #0D3520 ground — 9.67:1 ✓ non-text (round 1 could only reach this with warm greige)",
+      "beacon #045890 horizon band on the screenLight panel — 5.34:1 ✓ non-text",
+      "amber #F3B268 pendant marks on night — 7.35:1 ✓ non-text",
+      "forest #124B2E bar mass on night — 1.34:1, tonal only, carries no information (it is the same tonal step it is in the photograph)",
+      "paper #F7F5F3 2px frame on night — 12.48:1 ✓ non-text",
+      "sage #9CBEAD caption on night — 6.71:1 ✓ body"
+    ],
+
+    "regressionsFixed": [
+      "The hero eyebrow currently ships at `opacity-70` on forest. Here it is screenLight on beacon at 5.34:1 — no opacity anywhere in this overlay.",
+      "The hero subhead currently ships at `opacity-80` on forest. Here it is paper on beacon at 6.89:1.",
+      "The trust strip currently ships entirely in inkMuted at text-sm. Here the hours are white figures inside solid beacon cells at 7.49:1, at scoreboardXl scale.",
+      "The `(hours being confirmed)` badge currently renders in the same muted grey as the hours it qualifies. Here it is an ember 2px-ruled caps tag at 7.45:1 on white — legible, warm, and visibly a different KIND of thing from the blue it qualifies.",
+      "`palette.screen` at 1.81:1 on night made the brand's own photography brief unrenderable. `palette.screenLight` at 9.67:1 renders it."
+    ]
+  }
+}

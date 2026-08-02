@@ -1,0 +1,406 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "The Links — BLUE-NAVY token overlay (round 2, softened brutalist). Stance: the page is ONE BLUE RAMP AND ONE WARM ACCENT — a near-black navy is both the ground and the ink, so the whole surface is the room at night, and the only heat left anywhere is the ember/amber that was measured off the venue's own pendant lights. The ramp finally reaches a bright cool value at its top, which is the thing round 1 proved the current palette could not do: the simulator projection can now actually be painted.",
+
+  "$extensions": {
+    "com.monkeyjumplabs.candidate": {
+      "id": "home-blue-navy",
+      "register": "brutalist, softened (round-2 delta applied verbatim)",
+      "surface": "homepage",
+      "divergenceAxis": "palette only — register, layout, IA, copy and data are FIXED",
+      "round": 2,
+      "base": [
+        "marketing/websites/the-links/design/token-sets/brutalist.json (round-1 candidate)",
+        "marketing/websites/the-links/design/tokens.json (v1.0.0-proposal, canonical)"
+      ],
+      "date": "2026-08-02",
+      "status": "PROPOSAL — divergent candidate for a human gate. Not client-approved.",
+
+      "committedIdea": "One blue ramp, six stops, from the room at night to the screen on the wall — plus one warm accent. Navy replaces forest as BOTH the ground and the ink, so the page is cold everywhere by construction; the ember and the amber are then the only heat on it, which is exactly the physical fact the photography records (a near-black room lit by warm practical pendants). The ramp's top stop is a genuinely bright cool value, so `a warm dark room with one bright screen in it` stops being a brief the palette cannot render.",
+
+      "whatASiblingWouldNotDo": "Spend the entire neutral axis on one hue. Navy is not an accent here and it is not a second dark — it is the ground, the ink, the rules, the muted text and the hover state, all six stops of one 205–215° ramp. A sibling palette direction keeps a neutral grey or a second family to do some of that work; this one refuses, which is why the two warm values read as the only temperature on the page and why the single cool-bright value reads as a light source rather than as a colour.",
+
+      "dials": { "variance": 6, "motion": 1, "density": 6 },
+
+      "softeningDeltaApplied": {
+        "$description": "The round-2 delta, applied EXACTLY as specified and no further, so the three siblings differ only by colour.",
+        "radius": "radius.control = 3px, bound ONLY to buttons, inputs and the interactive venue-switcher chips. radius.surface / radius.none / radius.badge = 0 — panels, cells, media slots, the paper slab and the static (hours being confirmed) tag all stay square.",
+        "rules": "The visible ruled grid stays; it is the idea. border.hairline 1px, border.rule 2px and border.score 4px / border.slab 8px are unchanged. ONE new weight, border.ruleQuiet = 1px, replaces 2px on exactly two SECONDARY, INTERNAL dividers: the venue meta row's top/bottom rules and the build-state stub note's box. Every structural and section rule stays 2px or heavier.",
+        "spacing": "One step up the existing space ramp INSIDE cells only — venue cell, quote slot, paper slab, slot caption, stub note, job row and button padding each move one step. space.sectionY / sectionYLg / gutterX / gutterXLg and the full-bleed ground alternation are untouched.",
+        "type": "Peak display weight down one step: 900 → 800 for the h1 and the scoreboard figures, and 800 → 700 for h2/h3/CTA labels so the ladder keeps its two steps instead of collapsing. Type scale unchanged. Sentence case unchanged.",
+        "unchanged": "The scoreboard idea, the labelled cells, the ground inversion sequence, hierarchy from weight and scale, and the reassurance copy carrying the loudest treatment on the page."
+      },
+
+      "callOnForestGreen": {
+        "verdict": "DEMOTED TO A SECONDARY — not retired, not silently deleted.",
+        "whatItLoses": "Forest #124B2E stops being the theme's declared 'black'. It is no longer the ground of any band, no longer the ink of any text, no longer a rule colour and no longer the hero. In the live theme it backs 66 sections; in this overlay it backs none.",
+        "whatItKeeps": [
+          "role.media.slotFairway — the projected course INSIDE the simulator screen in the Lakeville photo slot. This is the honest place for it: in the actual building, the green is not the room, it is the thing on the wall. Forest on screenLight measures 6.41:1, so it renders as a real, legible band rather than a tint.",
+          "role.state.success — the confirmed/good semantic across the whole system, on light grounds. On white 10.14:1, on paper 9.32:1, on greige 7.81:1. This RETIRES palette.moss #155E36 as redundant: with forest freed from ink duty there is no longer any reason to carry a second green so that success does not read as body text."
+        ],
+        "whyNotRetireIt": "It is the brand's one piece of real colour equity and it is on the door in Lakeville. Deleting it costs four years of recognition for a rebrand that is already fragile (brand-direction.md §4.4 warns that a rebrand which appears to erase the original venue's identity is how rebrands get reversed). Demotion keeps the value in the system, in writing, with two jobs it can actually do in a cold palette.",
+        "whyNotKeepItStructural": "Because the direction is 'blue is the ground and the ink' and a navy page with a forest band is two near-blacks that differ by almost nothing — which is the precise complaint in screen-spec §10.2 about white-vs-paper, reproduced at the dark end. Forest on midnight measures 1.73:1: as a second ground it would not read as a second ground.",
+        "cheapestRestoration": "If the gate wants green back structurally, flip role.ground.jobs from midnight to forest — one token, one band, and every ratio in contrastAudit.onMidnightGround is reproduced on forest within 0.6 (white 10.14:1, paper 9.32:1, amber 5.49:1, screenLight 6.41:1, slate 3.17:1 ✗ — slate is the one value that would have to swap back to sage 5.01:1). Recorded so the retreat is costed, not improvised."
+      },
+
+      "callOnTheOldSlateBlue": {
+        "verdict": "REVIVED AT ITS ORIGINAL VALUE, in the one role its lightness supports.",
+        "detail": "palette.slate #7794A6 is listed under `retired` in the canonical tokens.json because white text on it is 3.20:1 — a FAILURE of a text-bearing action colour, sitewide. That was a lightness failure in a fill role, not a verdict on the hue. Turned around, the same value is muted TEXT on the near-black navy ground at 5.48:1 (AA ✓ body). It comes back unchanged, with a hard rule attached: DARK GROUNDS ONLY, and only the midnight ground — on navy #12314F it is 4.16:1 (fails body) and on white 3.20:1 (the original failure). This is the exact mirror of the amber rule (warm, dark-fields-only) on the cool side, which is what makes the system symmetrical.",
+        "consequence": "palette.sage #9CBEAD, which carried muted-on-dark in the round-1 brutalist candidate, is not rendered by this overlay at all — it is a pale GREEN and this page has no green in it above the fairway band. It stays in the palette as a light decorative field; it does no work here."
+      },
+
+      "typefaceProposal": {
+        "display": {
+          "family": "Archivo",
+          "source": "Omnibus-Type, OFL. Variable: weight 100–900, width 62–125.",
+          "weightsUsed": [600, 700, 800],
+          "widthsUsed": [100, 112],
+          "rationale": "KEPT VERBATIM from the round-1 brutalist overlay. Round 2's divergence axis is palette only; changing the face would confound the comparison between the three colour directions. The one change is the delta's weight step-down (900 → 800 at the peak, 800 → 700 below it), which is specified centrally and applied identically by all three siblings.",
+          "replaces": "Bitter — still the single most contestable call inherited from round 1, still a gate question, unchanged by the palette."
+        },
+        "body": {
+          "family": "Open Sans",
+          "weightsUsed": [400, 600, 700],
+          "rationale": "KEPT VERBATIM from the canonical direction and the live site. Tabular lining figures for hours and bay counts."
+        },
+        "previewApproximation": "The wisplet preview loads no network resources. Open Sans is REAL — base64-embedded from public/fonts/open-sans-normal-latin.woff2. Archivo is NOT available and is approximated by the system grotesque stack at weight 700–800 with negative tracking. Judge the preview's display type as an approximation; judge this declaration as the proposal."
+      },
+
+      "photographyHandling": "There is no photography in the repo and none is faked — no stock, no gradient mesh, no AI frame. Two moves, both inherited from round 1 and both improved by this palette: (1) THE DARK GROUND IS THE PHOTOGRAPH'S JOB — the hero is a flat near-black NAVY field because the room is a near-black room (measured: 33–38% of every professional frame near-black, mean luminance 54–74/255); (2) where the playbook demands frames (§3.6), the slot is a spec drawing at the real 3:2, built only from palette values that were themselves derived from measurements of the real shoot. THE DIFFERENCE THIS PALETTE MAKES IS IN THE SLOT: round 1 had to paint the simulator projection in greige, a warm neutral, because the palette had no bright cool value (screen #2E5A6E is 1.81:1 on the dark ground — invisible). Here the projection is painted in palette.screenLight at 11.07:1 against the midnight ground, with the forest fairway inside it at 6.41:1. The one-sentence brief — 'a warm dark room with one bright screen in it' — is rendered literally for the first time. Stillwater's slot is drawn EMPTY AND UNLIT, hatched, with an honest caption, because that venue has never been photographed; the lit slot and the unlit slot sit one above the other so the missing asset is visible as an absence rather than described as one.",
+
+      "tokenGaps": [
+        "CLOSED, NOT FLAGGED: the round-1 gap 'no bright cool value — the palette cannot render its own photography brief' is the gap this candidate exists to close. palette.screenLight #A9D3F2 is added at the name and the scope round 1 proposed (a light 210–240° blue, MEDIA/DECORATIVE ONLY, never text-bearing). It is 11.07:1 on midnight and 1.58:1 on white, so the dark-fields-only rule is arithmetic, not preference. It renders in exactly ONE place on this page — the Lakeville projection — and the overlay bans it everywhere else BY RULE rather than by ratio: if the projection colour also sets captions and rules, the page has many screens and no room.",
+        "STILL OPEN — NO WARNING / UNVERIFIED ROLE. '(hours being confirmed)' is neither an error nor a success; it is unverified data. Round 1 used role.accent.default (screen blue #2E5A6E), which is unavailable here: on a page whose ink is navy, a mid-blue tag reads as the brand rather than as a caveat, which is the exact §10.6 defect. This overlay instead makes WARM MEAN CAUTION and binds the tag to palette.emberMid #B85718 (4.76:1 on white, as text AND as its 2px rule), consistent with the build-state stub note. A distinct role.state.unverified would still be better than borrowing a state colour — flagged, not invented.",
+        "STILL OPEN — THE CANONICAL tokens.json HAS NO STRUCTURAL VOCABULARY. No radius, border, elevation, type scale, tracking, line-height or internal spacing scale. All of those are declared here as additions, as they were in all four round-1 candidates. The convergent phase should promote the winning set into the canonical file rather than leaving each candidate carrying a private structural language.",
+        "STILL OPEN — COPY GAP, FLAGGED NOT INVENTED. The scoreboard wants the published rate ($35 / hour, real and current through 2026-10-03). screen-spec-home.md §7 forbids any string not on the copy sheet and no homepage section carries a price, so it is NOT on the page. A one-string copy request for the convergent phase, not a licence.",
+        "STILL OPEN — NO BRAND MARK, AND NONE DRAWN. Per §10.4 a candidate may typeset a wordmark treatment but must not draw a logo. The header sets `The Links` in the display face at 800, caps, 0.22em tracked; the footer demonstrates brand-direction.md §4.2's endorsement system using only real strings. The SVG lockup set remains commission #1."
+      ]
+    }
+  },
+
+  "palette": {
+    "$type": "color",
+    "$description": "The blue ramp is SIX MONOTONIC STOPS of one 205–215° hue family, and it does every job a neutral ramp would do in another system: ground, ink, body, muted, muted-on-dark, and one bright cool value. Relative luminance runs 0.0100 → 0.0289 → 0.0558 → 0.1028 → 0.2781 → 0.6146, so every adjacent pair is a real step and no two stops can be confused. The warm family and the three neutrals are carried over unchanged.",
+
+    "midnight": {
+      "$value": "#0a1a2e",
+      "$description": "NEW. Stop 1. The structural dark: chrome, hero, jobs, footer, media-slot ground. hsl(213°, 64%, 11%) — recognisably navy beside white, and darker than the green it replaces (L 0.0100 vs night's 0.0177) because the measured room is darker than #124B2E ever admitted. Not #000000 (anti-slop). white on it 17.50:1, paper 16.09:1."
+    },
+    "navy": {
+      "$value": "#12314f",
+      "$description": "NEW. Stop 2. Display headings and structural rules on light grounds; also the row-hover ground on dark. on white 13.31:1, on paper 12.24:1, on greige 10.25:1 (AA ✓ all)."
+    },
+    "navyMid": {
+      "$value": "#1e4470",
+      "$description": "NEW. Stop 3. Body copy and links on light grounds. on white 9.92:1, on paper 9.13:1, on greige 7.65:1 (AA ✓ all). The one-step darkness gap to `navy` is what makes heading-vs-body hierarchy chromatic rather than purely scalar."
+    },
+    "inkMutedCool": {
+      "$value": "#4a5c70",
+      "$description": "NEW. Stop 4. Secondary text, captions, table meta on light grounds — the cool replacement for role.ink.muted #456052, chosen to land on the same ratios so nothing regresses: on white 6.87:1 (vs 6.89:1), on paper 6.32:1 (vs 6.34:1), on greige 5.29:1 (vs 5.31:1). Use this instead of an opacity: navy at 70% over white computes below AA exactly as ink/70 did."
+    },
+    "slate": {
+      "$value": "#7794a6",
+      "$description": "REVIVED VERBATIM from tokens.json `retired`. Stop 5. Muted text, captions, slot labels and quiet hairlines ON THE MIDNIGHT GROUND ONLY — 5.48:1 (AA ✓ body). Its documented failure was 3.20:1 as white-bearing button fill; that was lightness in the wrong role, not the hue. HARD BANS: on white 3.20:1 ✗, on paper 2.94:1 ✗, on navy 4.16:1 ✗ body, on ember 2.33:1 ✗. The cool mirror of the amber rule."
+    },
+    "screenLight": {
+      "$value": "#a9d3f2",
+      "$description": "NEW. Stop 6, and the point of the whole direction. hsl(205°, 71%, 81%) — inside the 210–240° band the simulator projection actually occupies (measured: 7–8% of saturated pixels). MEDIA / DECORATIVE ONLY, NEVER TEXT-BEARING, and rendered in exactly one place on this page: the lit projection in the Lakeville photo slot. on midnight 11.07:1 ✓ non-text, on white 1.58:1 ✗ — dark grounds only, by arithmetic."
+    },
+
+    "forest": {
+      "$value": "#124b2e",
+      "$description": "RETAINED AS A VALUE, DEMOTED AS A ROLE. No longer the theme black, no longer any ground, no longer any ink. Two jobs: the projected fairway inside the simulator screen (on screenLight 6.41:1 ✓) and role.state.success on light grounds (on white 10.14:1 ✓). See $extensions.callOnForestGreen — this is a stated demotion with a costed retreat, not a deletion."
+    },
+
+    "ember":       { "$value": "#8a400a", "$description": "KEPT VERBATIM. The action colour, and the full-bleed offer band. paper on it 6.85:1, white 7.45:1; as text on white 7.45:1." },
+    "emberHover":  { "$value": "#ad500d", "$description": "KEPT VERBATIM. paper on it 4.91:1 ✓ — the value of ember was tuned so brightness-125 stays above 4.5." },
+    "emberActive": { "$value": "#6d3308", "$description": "KEPT VERBATIM. paper on it 9.08:1 ✓." },
+    "emberMid":    { "$value": "#b85718", "$description": "KEPT VERBATIM, RE-SCOPED. In this overlay it is the CAUTION value — the (hours being confirmed) tag and the build-state stub note, as text AND as a 2px rule, both 4.76:1 on white (AA ✓ body, ✓ non-text). The base file's rule 'not a text-bearing FILL' is untouched: nothing is set ON it." },
+    "amber":       { "$value": "#f3b268", "$description": "KEPT VERBATIM. The pendant light itself, and the CTA fill on dark grounds. on midnight 9.48:1 (better than the 7.35:1 it managed on night green). DARK FIELDS ONLY — 1.85:1 on white." },
+    "emberTint":   { "$value": "#f0dcc9", "$description": "KEPT VERBATIM. Warm light field. Not rendered on this page; decorative fills only, never text-bearing." },
+
+    "paper":  { "$value": "#f7f5f3", "$description": "KEPT VERBATIM. Body copy on dark, and the slab punched out of the ember band." },
+    "white":  { "$value": "#ffffff", "$description": "KEPT VERBATIM. The light ground and the maximum-contrast text on dark." },
+    "greige": { "$value": "#e5e1e0", "$description": "KEPT VERBATIM. Alternating light field and the hatch of the empty quote slots. Deliberately the one value that is not on the blue ramp and not warm — the page needs a true neutral somewhere or the paper reads as tinted." },
+
+    "clay":   { "$value": "#a22c22", "$description": "KEPT VERBATIM. Error and destructive only. on white 7.19:1 ✓." },
+
+    "retiredByThisOverlay": {
+      "$description": "Values the canonical file carries that this palette direction removes. Recorded so nobody reintroduces them by accident.",
+      "night": { "$value": "#0d3520", "$description": "The deeper forest. Superseded by palette.midnight as the structural dark — the whole point of the direction is that the ground is blue." },
+      "screen": { "$value": "#2e5a6e", "$description": "The informational blue. It was itself only 'the surviving trace of the retired slate, darkened until white text passed'. This overlay revives the actual slate at its actual value and adds screenLight for the projection, so #2E5A6E is now a fourth, duller stop wedged between navy and navyMid with no job. Absorbed by the ramp." },
+      "moss": { "$value": "#155e36", "$description": "The success green. It existed only so success would not read as body text while forest WAS the body text. Forest is no longer the body text, so forest takes success and moss is redundant." }
+    },
+    "notRenderedByThisOverlay": {
+      "sage": { "$value": "#9cbead", "$description": "A pale green. Retained in the palette as a light decorative field carrying dark text; this page has no green above the fairway band, so it does no work here. Its round-1 job (muted-on-dark) is done by palette.slate." }
+    }
+  },
+
+  "role": {
+    "$type": "color",
+    "$description": "The semantic layer. Every pairing carries its computed WCAG 2.1 §1.4.3 ratio.",
+
+    "ground": {
+      "$description": "The band sequence is unchanged from round 1 — the delta explicitly holds it fixed. Only the dark value changes, from night green to midnight navy.",
+      "chrome": { "$value": "{palette.midnight}", "$description": "Sticky header + footer. Merges with the hero into one unbroken navy field." },
+      "hero":   { "$value": "{palette.midnight}", "$description": "The room at night. paper on it 16.09:1, white 17.50:1." },
+      "trust":  { "$value": "{palette.white}",    "$description": "HARD CUT out of the navy. navy on it 13.31:1." },
+      "jobs":   { "$value": "{palette.midnight}", "$description": "'What you can do here'. Dark again — the alternation is the answer to §10.2." },
+      "proof":  { "$value": "{palette.white}",    "$description": "'What players say'. Light, so the empty quote cells read as blank ruled paper." },
+      "offer":  { "$value": "{palette.ember}",    "$description": "THE ONE ACCENT, USED ONCE, AT FULL STRENGTH — and on a page this cold it is now the only warm field of any size. white on it 7.45:1, paper 6.85:1, greige 5.74:1." },
+      "venues": { "$value": "{palette.white}",    "$description": "'Two venues'. Light, so the navy media slots read as windows punched into the page." },
+      "footer": { "$value": "{palette.midnight}", "$description": "Closes on the field it opened on." },
+      "rowHover": { "$value": "{palette.navy}",   "$description": "NEW. The job-row hover ground — one step UP the same ramp rather than a hue change. Every foreground inside a job row clears AA on it: white 13.31:1, paper 12.24:1, amber 7.21:1." }
+    },
+
+    "ink": {
+      "onDarkStrong":   { "$value": "{palette.white}",        "$description": "Display headings on midnight. 17.50:1 (AA ✓)." },
+      "onDark":         { "$value": "{palette.paper}",        "$description": "Body, nav and footer copy on midnight. 16.09:1 (AA ✓)." },
+      "mutedOnDark":    { "$value": "{palette.slate}",        "$description": "Captions, slot labels, meta on midnight. 5.48:1 (AA ✓). MIDNIGHT GROUND ONLY — see palette.slate." },
+      "displayOnLight": { "$value": "{palette.navy}",         "$description": "Display headings and scoreboard figures on white/paper. on white 13.31:1, on paper 12.24:1 (AA ✓)." },
+      "bodyOnLight":    { "$value": "{palette.navyMid}",      "$description": "Body copy and links on white/paper/greige. 9.92 / 9.13 / 7.65:1 (AA ✓)." },
+      "mutedOnLight":   { "$value": "{palette.inkMutedCool}", "$description": "Captions and sub-rules on light. 6.87 / 6.32 / 5.29:1 (AA ✓)." }
+    },
+
+    "primary": {
+      "default":       { "$value": "{palette.ember}",       "$description": "KEPT. Solid CTA fill on LIGHT grounds only. paper on it 6.85:1, white 7.45:1; boundary vs white 7.45:1 ✓ non-text." },
+      "hover":         { "$value": "{palette.emberHover}",  "$description": "KEPT VERBATIM. paper on it 4.91:1 ✓." },
+      "active":        { "$value": "{palette.emberActive}", "$description": "KEPT VERBATIM. paper on it 9.08:1 ✓." },
+      "on":            { "$value": "{palette.paper}",       "$description": "KEPT. 6.85:1 ✓." },
+      "onDarkFill":    { "$value": "{palette.amber}",       "$description": "The dark-field CTA, inherited from round 1 and IMPROVED by the ground swap: amber on midnight is 9.48:1 (it was 7.35:1 on night green), and midnight on amber is likewise 9.48:1 — so the label clears AA body and the fill clears the 3:1 non-text gate against its own ground with far more headroom." },
+      "onDarkFillInk": { "$value": "{palette.midnight}",    "$description": "Label on the amber CTA. 9.48:1 (AA ✓)." },
+      "onDarkFillHover": { "$value": "{palette.white}",     "$description": "Hover on the dark-field CTA — a white fill with midnight text, 17.50:1 both directions." },
+      "banOnDark": { "$value": "{palette.ember}", "$description": "RULE, not a colour. A solid ember button on midnight is 2.35:1 and FAILS the 3:1 non-text gate — the same arithmetic brand-direction.md §2.4.2 sets out for forest, and it does not improve on navy. emberMid on midnight is 3.68:1: it clears the non-text gate but cannot carry a label — paper on emberMid is 4.37:1 and white on it is 4.76:1, so it fails AA body with paper and is a hair over with white, which is not a margin to ship a button on. Banned as a fill too. The dark-field CTA is amber, or it is a paper outline." },
+      "onEmberBand": { "$value": "{palette.paper}", "$description": "RULE, not a colour, and it survives the palette change intact. On the ember band the arithmetic inverts: midnight on ember is 2.35:1 and navy on ember is 1.79:1, so a dark button on the ember field fails exactly as an ember button on the dark field does. The waitlist therefore sits in a PAPER SLAB punched out of the ember (6.85:1 ✓ non-text) and reverts to normal light-field styling inside it." }
+    },
+
+    "accent": {
+      "highlight": { "$value": "{palette.amber}",  "$description": "Eyebrows, score rules, the reassurance lines, the dark-field CTA. on midnight 9.48:1, on navy 7.21:1 (AA ✓). NEVER on light — 1.85:1 on white. NEVER on the ember band — 4.04:1, which clears large-text 3:1 but fails body, so it is banned there outright." },
+      "caution":   { "$value": "{palette.emberMid}", "$description": "REPLACES role.accent.default (screen blue), which this palette retires. The system rule this direction can afford BECAUSE the page is cold: WARM MEANS CAUTION. Carries the (hours being confirmed) tag and the build-state stub note, as text and as a 2px rule — 4.76:1 on white, both gates. Still a borrowed state colour; role.state.unverified remains a flagged gap." }
+    },
+
+    "rule": {
+      "$description": "Rules carry every boundary — no cards, no shadows, and radius only on interactive controls. Colour by ground, weight by job.",
+      "onDark":       { "$value": "{palette.paper}",        "$description": "Hairline and cell rules on midnight. 16.09:1 — the grid is meant to be visible." },
+      "onDarkQuiet":  { "$value": "{palette.slate}",        "$description": "Sub-cell rules on midnight where a paper hairline would be noise. 5.48:1." },
+      "onLight":      { "$value": "{palette.navy}",         "$description": "Hairline and cell rules on white/paper. 13.31:1." },
+      "onLightQuiet": { "$value": "{palette.inkMutedCool}", "$description": "Sub-cell and secondary rules on white. 6.87:1." },
+      "onEmber":      { "$value": "{palette.white}",        "$description": "Rules on the ember band. 7.45:1." },
+      "scoreOnDark":  { "$value": "{palette.amber}",        "$description": "The heavy band separator on dark. 9.48:1 — the one recurring graphic device." },
+      "scoreOnLight": { "$value": "{palette.ember}",        "$description": "The heavy band separator on light. 7.45:1 vs white ✓ non-text." }
+    },
+
+    "state": {
+      "focus":        { "$value": "{palette.ember}",    "$description": "CHANGED FROM emberMid. The focus slab on light grounds is now the full-strength ember: 7.45:1 vs white and 6.85:1 vs paper, against emberMid's 4.76 / 4.37. Two reasons — a stronger ring is a better ring on an open ship-gate item, and it frees emberMid to be the caution value without state colours colliding. Rendered as a 4px offset slab, never a glow." },
+      "focusOnDark":  { "$value": "{palette.amber}",    "$description": "vs midnight 9.48:1 (✓ non-text)." },
+      "focusOnEmber": { "$value": "{palette.white}",    "$description": "vs ember 7.45:1 (✓)." },
+      "error":        { "$value": "{palette.clay}",     "$description": "KEPT VERBATIM. on white 7.19:1, on paper 6.61:1 (AA ✓)." },
+      "errorOnDark":  { "$value": "#f2a2a2",            "$description": "KEPT VERBATIM as a value; re-measured on the new ground. on midnight 8.72:1 (AA ✓ — it was 5.05:1 on forest)." },
+      "success":      { "$value": "{palette.forest}",   "$description": "FOREST'S SECOND JOB. on white 10.14:1, on paper 9.32:1, on greige 7.81:1 (AA ✓). Retires palette.moss as redundant." },
+      "successOnDark":{ "$value": "#a8e0c0",            "$description": "KEPT VERBATIM as a value; re-measured. on midnight 11.74:1 (AA ✓ — it was 6.80:1 on forest)." },
+      "disabledSurface": { "$value": "{palette.greige}", "$description": "KEPT VERBATIM." },
+      "disabledInk":  { "$value": "#52685b",            "$description": "FLAGGED: kept verbatim from the base file, but it is a green-grey in a blue system. on greige 4.64:1, on white 6.02:1 — it still passes, so it is not a defect, only an off-ramp value. It is NOT re-cut here, deliberately: the obvious cool substitution at the same apparent lightness (#5A6B7C) measures 4.23:1 on greige and FAILS, so the replacement has to be darker than it looks and needs computing against a real rendered control. No disabled control appears on the homepage, so the convergent phase should do it against the rates table and the sold-out button rather than have this candidate guess." }
+    },
+
+    "media": {
+      "$description": "The photo-slot system, and the place this palette direction proves itself. Every value is chosen because it corresponds to a MEASURED property of the real Lakeville shoot.",
+      "slotGround":  { "$value": "{palette.midnight}",   "$description": "The near-black room. Measured target: 33–38% of frame near-black, mean luminance 54–74/255." },
+      "slotScreen":  { "$value": "{palette.screenLight}", "$description": "THE ONE BRIGHT SCREEN — the simulator projection, at 11.07:1 against the slot ground. Round 1 could not do this: palette.screen is 1.81:1 on the dark ground, so the projection had to be faked in greige, a warm neutral, which inverted the frame's actual temperature relationship. This is the single measurable improvement the blue base buys." },
+      "slotFairway": { "$value": "{palette.forest}",      "$description": "The projected course inside the screen. 6.41:1 against slotScreen. Forest's surviving visible job: in the real building the green is on the wall, not on the walls." },
+      "slotSky":     { "$value": "{palette.white}",       "$description": "The bright sky band at the top of the projection. 1.58:1 against slotScreen — deliberately a low-contrast internal step, decorative only, never carrying anything." },
+      "slotPendant": { "$value": "{palette.amber}",       "$description": "The warm in-frame practical light. Measured: red channel exceeds blue by +15 to +19; no daylight, no flash. 9.48:1 on the slot ground." },
+      "slotMass":    { "$value": "{palette.navy}",        "$description": "The bar mass. 1.31:1 against the slot ground on purpose — a near-black room does not have legible furniture. It is made readable by an amber top edge (9.48:1) and a slate hairline (5.48:1), which is how the real frames read it too." },
+      "slotFrame":   { "$value": "{palette.paper}",       "$description": "The 2px rule around the slot. 16.09:1. The slot is always visibly a SLOT — it never pretends to be a photograph." },
+      "slotLabel":   { "$value": "{palette.slate}",       "$description": "The caption naming the exact missing frame. 5.48:1 on the slot ground (AA ✓)." },
+      "slotRatio":   { "$type": "number", "$value": 1.5, "$description": "3:2 — the aspect the real frames will arrive in (6000×4000, 5648×3765, 4549×3033)." }
+    }
+  },
+
+  "font": {
+    "$type": "fontFamily",
+    "display": {
+      "$value": ["Archivo", "Archivo Expanded", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+      "$description": "KEPT VERBATIM from brutalist.json. Variable grotesque, weight 100–900 and width 62–125 in one file. Intended production typeface; the preview approximates it with the system grotesque."
+    },
+    "body": {
+      "$value": ["Open Sans", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+      "$description": "KEPT VERBATIM. Self-hosted, real in the preview."
+    },
+    "numeric": {
+      "$value": ["Archivo", "ui-sans-serif", "system-ui", "sans-serif"],
+      "$description": "KEPT VERBATIM. Scoreboard figures at expanded width with `font-variant-numeric: tabular-nums lining-nums`."
+    },
+    "retired": {
+      "$value": ["Bitter", "Alfa Slab One", "Poppins"],
+      "$description": "KEPT VERBATIM from brutalist.json. Bitter survives in the drawn wordmark."
+    }
+  },
+
+  "fontWeight": {
+    "$type": "fontWeight",
+    "$description": "The delta's one type change: the peak comes down one step, and the step below it follows so the ladder keeps two rungs rather than collapsing into one.",
+    "displayHeavy": { "$value": 800, "$description": "WAS 900. The h1 and the scoreboard figures." },
+    "displayBold":  { "$value": 700, "$description": "WAS 800. h2, h3, CTA labels." },
+    "displaySemi":  { "$value": 600, "$description": "UNCHANGED. Caps labels, eyebrows." },
+    "bodyRegular":  { "$value": 400 },
+    "bodyMedium":   { "$value": 600 },
+    "bodyBold":     { "$value": 700 }
+  },
+
+  "fontWidth": {
+    "$type": "number",
+    "$description": "KEPT VERBATIM. Only meaningful because the display face is width-variable.",
+    "displayNormal":   { "$value": 100 },
+    "displayExpanded": { "$value": 112, "$description": "Scoreboard figures only." }
+  },
+
+  "typeScale": {
+    "$type": "dimension",
+    "$description": "KEPT VERBATIM from brutalist.json — the delta holds the scale fixed so the three siblings differ only by colour.",
+    "displayHero":    { "$value": "clamp(3rem, 10.5vw, 8.25rem)" },
+    "displaySection": { "$value": "clamp(2.125rem, 5.5vw, 4rem)" },
+    "displayRow":     { "$value": "clamp(1.5rem, 2.6vw, 2.125rem)" },
+    "displayCard":    { "$value": "1.375rem" },
+    "scoreboardXl":   { "$value": "clamp(1.875rem, 4.2vw, 3rem)" },
+    "scoreboardMd":   { "$value": "1.25rem" },
+    "bodyLead":       { "$value": "clamp(1.0625rem, 1.35vw, 1.1875rem)" },
+    "bodyBase":       { "$value": "1rem" },
+    "bodySmall":      { "$value": "0.9375rem", "$description": "Floor for anything a user must read." },
+    "labelBase":      { "$value": "0.75rem" },
+    "labelSmall":     { "$value": "0.6875rem" }
+  },
+
+  "tracking": {
+    "$type": "dimension",
+    "$description": "KEPT VERBATIM.",
+    "displayTight":  { "$value": "-0.035em" },
+    "displayNormal": { "$value": "-0.02em" },
+    "bodyNormal":    { "$value": "0" },
+    "labelWide":     { "$value": "0.16em" },
+    "labelWider":    { "$value": "0.22em" }
+  },
+
+  "lineHeight": {
+    "$type": "number",
+    "$description": "KEPT VERBATIM.",
+    "displayHero": { "$value": 0.9 },
+    "display":     { "$value": 0.98 },
+    "scoreboard":  { "$value": 1.0 },
+    "body":        { "$value": 1.55 },
+    "label":       { "$value": 1.2 }
+  },
+
+  "radius": {
+    "$type": "dimension",
+    "$description": "THE DELTA. One non-zero value, bound only to things a finger presses. This is the single most legible 'less hostile' signal and it is worth exactly 3px — a 3px corner on a 44px control is visible at arm's length and invisible as a style.",
+    "none":    { "$value": "0" },
+    "control": { "$value": "3px", "$description": "Buttons, text inputs, and the interactive venue-switcher chips. Nothing else." },
+    "surface": { "$value": "0",   "$description": "Panels, cells, the paper slab, media slots. Square." },
+    "badge":   { "$value": "0",   "$description": "Declared explicitly: the (hours being confirmed) tag and the needs-client-data tags are STATIC, not interactive, so they do not take the control radius. Recorded so a rounded pill cannot drift back in on the argument that it is a chip." }
+  },
+
+  "border": {
+    "$type": "dimension",
+    "$description": "Five weights now, not four. The delta permits secondary/internal dividers to drop 2px → 1px; rather than mutating `rule`, this overlay adds an explicit quiet weight so the two uses stay distinguishable in the artifact and a reviewer can see exactly which rules softened.",
+    "hairline":  { "$value": "1px", "$description": "UNCHANGED. Cell dividers inside a block — the ledger rules." },
+    "ruleQuiet": { "$value": "1px", "$description": "NEW. Secondary INTERNAL boundaries that were 2px in round 1: the venue meta row and the build-state stub note box. Applied to exactly those two." },
+    "rule":      { "$value": "2px", "$description": "UNCHANGED. Component boundaries: inputs, media slots, the caution tag, outline buttons." },
+    "score":     { "$value": "4px", "$description": "UNCHANGED. Band separators and the focus slab." },
+    "slab":      { "$value": "8px", "$description": "UNCHANGED. The lead rule above a section heading and above the featured job row." }
+  },
+
+  "elevation": {
+    "$description": "Declared so it can be declared EMPTY. There are no shadows on this page — softening the register does not mean introducing depth. Depth is ground inversion and rule weight.",
+    "none": { "$value": "none" }
+  },
+
+  "space": {
+    "$type": "dimension",
+    "$description": "The ramp is KEPT VERBATIM from brutalist.json; the delta changes which step a cell binds, not what the steps are. Section rhythm and gutters are untouched.",
+    "sectionY":   { "$value": "4rem",   "$description": "KEPT VERBATIM." },
+    "sectionYLg": { "$value": "8rem",   "$description": "KEPT VERBATIM." },
+    "gutterX":    { "$value": "1.5rem", "$description": "KEPT VERBATIM." },
+    "gutterXLg":  { "$value": "4rem",   "$description": "KEPT VERBATIM." },
+    "s1":  { "$value": "0.25rem" },
+    "s2":  { "$value": "0.5rem" },
+    "s3":  { "$value": "0.75rem" },
+    "s4":  { "$value": "1rem" },
+    "s5":  { "$value": "1.5rem" },
+    "s6":  { "$value": "2rem" },
+    "s7":  { "$value": "2.5rem" },
+    "s8":  { "$value": "3.5rem" },
+    "s9":  { "$value": "5rem" },
+    "s10": { "$value": "7rem" },
+    "cellPadding":     { "$value": "{space.s6}", "$description": "DELTA: was s5. Venue cells, quote slots, slot captions, the stub note." },
+    "cellPaddingLg":   { "$value": "{space.s7}", "$description": "DELTA: was s6. The paper slab, the desktop venue cell." },
+    "rowPaddingBlock": { "$value": "{space.s6}", "$description": "DELTA: was s5. Job rows on mobile." }
+  },
+
+  "size": {
+    "$type": "dimension",
+    "contentMax": { "$value": "75rem",     "$description": "KEPT VERBATIM." },
+    "proseMax":   { "$value": "46.875rem", "$description": "KEPT VERBATIM." },
+    "tapMin":     { "$value": "44px",      "$description": "KEPT VERBATIM." }
+  },
+
+  "motion": {
+    "$description": "KEPT VERBATIM. Dial setting 1 — hover and focus only, instant state swaps.",
+    "duration": { "$value": "0ms" }
+  },
+
+  "contrastAudit": {
+    "$description": "Every text and non-text pairing this candidate renders, computed from sRGB relative luminance per WCAG 2.1 §1.4.3 — not estimated, not recalled. Body gate 4.5:1, large-text and non-text gate 3:1. NOTHING RENDERED HERE RELIES ON THE LARGE-TEXT ALLOWANCE. NO PAIRING IN THIS CANDIDATE FAILS.",
+    "onMidnightGround": [
+      "white #FFFFFF on midnight #0A1A2E — 17.50:1 ✓ (h1, h2, h3, wordmark)",
+      "paper #F7F5F3 on midnight — 16.09:1 ✓ (body, nav, footer NAP, ghost-button label)",
+      "greige #E5E1E0 on midnight — 13.48:1 ✓ non-text",
+      "screenLight #A9D3F2 on midnight — 11.07:1 ✓ non-text (the projection — media only)",
+      "amber #F3B268 on midnight — 9.48:1 ✓ (eyebrows, reassurance, score rules, CTA fill, focus ring)",
+      "midnight on an amber fill — 9.48:1 ✓ (the dark-field CTA label)",
+      "slate #7794A6 on midnight — 5.48:1 ✓ (captions, slot labels, quiet hairlines, footer legal bar)",
+      "successOnDark #A8E0C0 on midnight — 11.74:1 ✓ · errorOnDark #F2A2A2 on midnight — 8.72:1 ✓ (not rendered on this page; recorded so the form states are ready)",
+      "BANNED HERE: ember #8A400A 2.35:1 ✗ · emberMid #B85718 3.68:1 (non-text only, cannot carry a label) ✗ · forest #124B2E 1.73:1 ✗ · navy #12314F 1.31:1 ✗ as text"
+    ],
+    "onNavyRowHover": [
+      "white on navy #12314F — 13.31:1 ✓ (row title) · paper on navy — 12.24:1 ✓ (row body) · amber on navy — 7.21:1 ✓ (arrow, reassurance)",
+      "navy vs midnight — 1.31:1: the hover is a FIELD change, not a boundary; it is never used as a border against midnight",
+      "BANNED HERE: slate on navy 4.16:1 ✗ body — which is why no muted text appears inside a job row"
+    ],
+    "onWhiteGround": [
+      "navy #12314F on white — 13.31:1 ✓ (display headings, scoreboard figures, structural rules)",
+      "navyMid #1E4470 on white — 9.92:1 ✓ (body copy, links)",
+      "ember #8A400A on white — 7.45:1 ✓ (heavy score rule, CTA fill boundary, focus slab, as text)",
+      "inkMutedCool #4A5C70 on white — 6.87:1 ✓ (captions, quote-slot rules, key labels)",
+      "emberMid #B85718 on white — 4.76:1 ✓ body AND ✓ non-text (the (hours being confirmed) tag: text and its 2px rule; the stub-note box)",
+      "forest #124B2E on white — 10.14:1 ✓ (state.success — not rendered on this page)",
+      "paper on an ember fill — 6.85:1 ✓ (Book at Lakeville / Book at Stillwater / Notify me)",
+      "paper on emberHover #AD500D — 4.91:1 ✓ · paper on emberActive #6D3308 — 9.08:1 ✓",
+      "greige hatch on white — 1.30:1, decorative texture only, carries nothing",
+      "BANNED HERE: amber 1.85:1 ✗ · screenLight 1.58:1 ✗ · slate 3.20:1 ✗ body (the original documented failure) · emberTint 1.33:1 ✗"
+    ],
+    "onEmberBand": [
+      "white #FFFFFF on ember #8A400A — 7.45:1 ✓ (h2, eyebrow, the rules around the promoted line, focus ring)",
+      "paper #F7F5F3 on ember — 6.85:1 ✓ (body, link) and 6.85:1 ✓ non-text as the waitlist slab's own boundary",
+      "greige #E5E1E0 on ember — 5.74:1 ✓ (the lead-endpoint degradation note)",
+      "inside the paper slab: navy on paper 12.24:1 ✓ · navyMid on paper 9.13:1 ✓ · inkMutedCool on paper 6.32:1 ✓ (placeholders) · paper on an ember fill 6.85:1 ✓ (submit) · ember focus slab vs paper 6.85:1 ✓",
+      "BANNED HERE, and the trap is unchanged by the palette: midnight on ember 2.35:1 ✗ · navy on ember 1.79:1 ✗ · amber on ember 4.04:1 ✗ body (clears 3:1 large only — banned outright) · slate on ember 2.33:1 ✗"
+    ],
+    "mediaSlot": [
+      "screenLight projection on the midnight slot ground — 11.07:1 ✓ non-text",
+      "forest fairway on the screenLight projection — 6.41:1 ✓ non-text",
+      "white sky band on the screenLight projection — 1.58:1, decorative internal step, carries nothing",
+      "amber pendants on midnight — 9.48:1 ✓ non-text · amber top edge on the navy bar mass — 7.21:1 ✓ non-text",
+      "slate hairline on midnight — 5.48:1 ✓ non-text · slate hatch on midnight (Stillwater, empty) — 5.48:1 ✓ non-text",
+      "paper 2px frame on midnight — 16.09:1 ✓ non-text",
+      "slate caption on midnight — 5.48:1 ✓ body · amber caption label on midnight — 9.48:1 ✓ body"
+    ],
+    "regressionsFixed": [
+      "Hero eyebrow ships today at opacity-70 on forest. Here: amber on midnight, 9.48:1 — no opacity anywhere in this overlay.",
+      "Hero subhead ships today at opacity-80 on forest. Here: paper on midnight, 16.09:1.",
+      "Trust strip ships today entirely in inkMuted at text-sm. Here: hours as navy on white at 13.31:1 in 3rem scoreboard figures.",
+      "'(hours being confirmed)' ships today in the same muted grey as the hours it qualifies. Here: an emberMid 2px-ruled caps tag at 4.76:1 — legible, and the only warm thing on a cold light band, so it is visibly a different KIND of object.",
+      "Focus-visible styling is absent today (open ship-gate item). Here: a 4px offset slab — ember on light 7.45:1, amber on dark 9.48:1, white on the ember band 7.45:1.",
+      "The simulator projection could not be drawn at all in round 1 (screen #2E5A6E is 1.81:1 on the dark ground) and was substituted with a warm neutral. Here it is screenLight at 11.07:1 — the brief's 'one bright screen' rendered rather than worked around."
+    ]
+  }
+}
