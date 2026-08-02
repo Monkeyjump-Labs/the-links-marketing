@@ -31,3 +31,6 @@ pnpm-debug.log*
 .idea/
 .vercel
 .env*
+
+# visual audit output
+.audit/

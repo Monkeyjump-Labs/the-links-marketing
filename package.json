@@ -18,7 +18,8 @@
     "format": "prettier --write src",
     "prepare": "husky install",
     "tokens:build": "node scripts/build-tokens.mjs",
-    "tokens:check": "node scripts/build-tokens.mjs --check"
+    "tokens:check": "node scripts/build-tokens.mjs --check",
+    "audit:visual": "node scripts/visual-audit.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",
@@ -33,13 +34,15 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
-    "@tinacms/cli": "^1.6.0",
+    "@axe-core/playwright": "^4.12.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@tinacms/cli": "^1.6.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.59.0",
     "@typescript-eslint/parser": "^8.59.0",
+    "axe-core": "^4.12.1",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-astro": "^1.7.0",
@@ -48,6 +51,7 @@
     "husky": "^8.0.3",
     "jsdom": "^29.1.1",
     "lint-staged": "^15.2.0",
+    "playwright": "^1.62.1",
     "prettier": "^3.2.0",
     "prettier-plugin-astro": "^0.14.1",
     "tinacms": "^2.4.0",

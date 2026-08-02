@@ -17,7 +17,7 @@ const currentPath = Astro.url.pathname;
       <a
         href={venuePath(venue)}
         class:list={[
-          'rounded px-2 py-1 font-medium transition hover:bg-ink/5',
+          'flex min-h-tap items-center rounded px-2 font-medium transition hover:bg-ink/5',
           currentPath.startsWith(venuePath(venue)) ? 'bg-ink/10 text-ink' : 'text-inkMuted',
         ]}
         data-venue={venue.data.slug}

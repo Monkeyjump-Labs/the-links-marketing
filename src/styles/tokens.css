@@ -14,80 +14,81 @@
  * ========================================================================== */
 
 :root {
+
   /* ── Palette primitives — never reference directly, use the aliases ──── */
-  --brand-midnight: #0a1a2e;
-  --brand-navy: #12314f;
-  --brand-navy-mid: #1e4470;
-  --brand-ink-muted-cool: #4a5c70;
-  --brand-slate: #7794a6;
-  --brand-screen-light: #a9d3f2;
-  --brand-forest: #124b2e;
-  --brand-ember: #8a400a;
-  --brand-ember-hover: #ad500d;
-  --brand-ember-active: #6d3308;
-  --brand-ember-mid: #b85718;
-  --brand-amber: #f3b268;
-  --brand-ember-tint: #f0dcc9;
-  --brand-paper: #f7f5f3;
-  --brand-white: #ffffff;
-  --brand-greige: #e5e1e0;
-  --brand-clay: #a22c22;
-  --brand-error-on-dark: #f2a2a2;
-  --brand-success-on-dark: #a8e0c0;
+  --brand-midnight: #0A1A2E;
+  --brand-navy: #12314F;
+  --brand-navy-mid: #1E4470;
+  --brand-ink-muted-cool: #4A5C70;
+  --brand-slate: #7794A6;
+  --brand-screen-light: #A9D3F2;
+  --brand-forest: #124B2E;
+  --brand-ember: #8A400A;
+  --brand-ember-hover: #AD500D;
+  --brand-ember-active: #6D3308;
+  --brand-ember-mid: #B85718;
+  --brand-amber: #F3B268;
+  --brand-ember-tint: #F0DCC9;
+  --brand-paper: #F7F5F3;
+  --brand-white: #FFFFFF;
+  --brand-greige: #E5E1E0;
+  --brand-clay: #A22C22;
+  --brand-error-on-dark: #F2A2A2;
+  --brand-success-on-dark: #A8E0C0;
   --brand-disabled-ink: #556372;
 
   /* ── Semantic colour roles — what components reference ───────────────── */
-  --brand-ground-chrome: #0a1a2e;
-  --brand-ground-hero: #0a1a2e;
-  --brand-ground-base: #ffffff;
-  --brand-ground-raised: #f7f5f3;
-  --brand-ground-alt: #e5e1e0;
-  --brand-ground-accent-band: #8a400a;
-  --brand-ground-row-hover: #12314f;
-  --brand-ground-media: #0a1a2e;
-  --brand-ink-on-dark-strong: #ffffff;
-  --brand-ink-on-dark: #f7f5f3;
-  --brand-ink-muted-on-dark: #7794a6;
-  --brand-ink-display-on-light: #12314f;
-  --brand-ink-body-on-light: #1e4470;
-  --brand-ink-muted-on-light: #4a5c70;
-  --brand-ink-on-accent-band: #f7f5f3;
-  --brand-primary-default: #8a400a;
-  --brand-primary-hover: #ad500d;
-  --brand-primary-active: #6d3308;
-  --brand-primary-on: #f7f5f3;
-  --brand-primary-on-dark-fill: #f3b268;
-  --brand-primary-on-dark-fill-ink: #0a1a2e;
-  --brand-primary-on-dark-fill-hover: #ffffff;
-  --brand-accent-highlight: #f3b268;
-  --brand-accent-caution: #b85718;
-  --brand-accent-screen: #a9d3f2;
-  --brand-rule-on-dark: #f7f5f3;
-  --brand-rule-on-dark-quiet: #7794a6;
-  --brand-rule-on-light: #12314f;
-  --brand-rule-on-light-quiet: #4a5c70;
-  --brand-rule-on-accent-band: #ffffff;
-  --brand-rule-score-on-dark: #f3b268;
-  --brand-rule-score-on-light: #8a400a;
-  --brand-state-focus: #8a400a;
-  --brand-state-focus-on-dark: #f3b268;
-  --brand-state-focus-on-accent-band: #ffffff;
-  --brand-state-error: #a22c22;
-  --brand-state-error-on-dark: #f2a2a2;
-  --brand-state-warning: #b85718;
-  --brand-state-success: #124b2e;
-  --brand-state-success-on-dark: #a8e0c0;
-  --brand-state-info: #1e4470;
-  --brand-state-info-on-dark: #a9d3f2;
-  --brand-state-disabled-surface: #e5e1e0;
+  --brand-ground-chrome: #0A1A2E;
+  --brand-ground-hero: #0A1A2E;
+  --brand-ground-base: #FFFFFF;
+  --brand-ground-raised: #F7F5F3;
+  --brand-ground-alt: #E5E1E0;
+  --brand-ground-accent-band: #8A400A;
+  --brand-ground-row-hover: #12314F;
+  --brand-ground-media: #0A1A2E;
+  --brand-ink-on-dark-strong: #FFFFFF;
+  --brand-ink-on-dark: #F7F5F3;
+  --brand-ink-muted-on-dark: #7794A6;
+  --brand-ink-display-on-light: #12314F;
+  --brand-ink-body-on-light: #1E4470;
+  --brand-ink-muted-on-light: #4A5C70;
+  --brand-ink-on-accent-band: #F7F5F3;
+  --brand-primary-default: #8A400A;
+  --brand-primary-hover: #AD500D;
+  --brand-primary-active: #6D3308;
+  --brand-primary-on: #F7F5F3;
+  --brand-primary-on-dark-fill: #F3B268;
+  --brand-primary-on-dark-fill-ink: #0A1A2E;
+  --brand-primary-on-dark-fill-hover: #FFFFFF;
+  --brand-accent-highlight: #F3B268;
+  --brand-accent-caution: #B85718;
+  --brand-accent-screen: #A9D3F2;
+  --brand-rule-on-dark: #F7F5F3;
+  --brand-rule-on-dark-quiet: #7794A6;
+  --brand-rule-on-light: #12314F;
+  --brand-rule-on-light-quiet: #4A5C70;
+  --brand-rule-on-accent-band: #FFFFFF;
+  --brand-rule-score-on-dark: #F3B268;
+  --brand-rule-score-on-light: #8A400A;
+  --brand-state-focus: #8A400A;
+  --brand-state-focus-on-dark: #F3B268;
+  --brand-state-focus-on-accent-band: #FFFFFF;
+  --brand-state-error: #A22C22;
+  --brand-state-error-on-dark: #F2A2A2;
+  --brand-state-warning: #B85718;
+  --brand-state-success: #124B2E;
+  --brand-state-success-on-dark: #A8E0C0;
+  --brand-state-info: #1E4470;
+  --brand-state-info-on-dark: #A9D3F2;
+  --brand-state-disabled-surface: #E5E1E0;
   --brand-state-disabled-ink: #556372;
-  --brand-media-slot-ground: #0a1a2e;
-  --brand-media-slot-screen: #a9d3f2;
-  --brand-media-slot-fairway: #124b2e;
-  --brand-media-slot-pendant: #f3b268;
-  --brand-media-slot-mass: #12314f;
-  --brand-media-slot-frame: #f7f5f3;
-  --brand-media-slot-label: #7794a6;
+  --brand-media-slot-ground: #0A1A2E;
+  --brand-media-slot-screen: #A9D3F2;
+  --brand-media-slot-fairway: #124B2E;
+  --brand-media-slot-pendant: #F3B268;
+  --brand-media-slot-mass: #12314F;
+  --brand-media-slot-frame: #F7F5F3;
+  --brand-media-slot-label: #7794A6;
 
   /* ── Starter-contract aliases — the names global.css @theme maps ─────── */
   --brand-ink: var(--brand-navy); /* display + default ink, 13.31:1 on white */
@@ -98,10 +99,8 @@
   --brand-accent: var(--brand-ember-mid); /* caution/warning — NOT amber, which is 1.85:1 on white */
 
   /* ── Typography ──────────────────────────────────────────────────────── */
-  --brand-font-display:
-    Archivo, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --brand-font-body:
-    'Open Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --brand-font-display: Archivo, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --brand-font-body: 'Open Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   --brand-font-numeric: Archivo, ui-sans-serif, system-ui, sans-serif;
   --brand-font-weight-display-heavy: 800;
   --brand-font-weight-display-bold: 700;
@@ -196,9 +195,7 @@
   --brand-content-max: var(--brand-size-content-max);
   --brand-prose-max: var(--brand-size-prose-max);
   --brand-font-sans: var(--brand-font-body);
-  --brand-font-mono: var(
-    --brand-font-display
-  ); /* the starter maps font-mono to the DISPLAY slot — it is not monospace here */
+  --brand-font-mono: var(--brand-font-display); /* the starter maps font-mono to the DISPLAY slot — it is not monospace here */
 
   /* ── DEPRECATED 1.x slot names — do not use in new work ──────────────── */
   --brand-watermelon: var(--brand-clay);

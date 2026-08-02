@@ -29,7 +29,7 @@ const currentPath = Astro.url.pathname;
   <div
     class="mx-auto flex max-w-content flex-wrap items-center gap-x-6 gap-y-3 px-gutter py-3 lg:flex-nowrap lg:px-gutter-lg"
   >
-    <a href="/" class="shrink-0 text-xl font-bold tracking-tight">{siteName}</a>
+    <a href="/" class="flex min-h-tap shrink-0 items-center text-xl font-bold tracking-tight">{siteName}</a>
 
     <nav aria-label="Main" class="order-3 w-full lg:order-none lg:w-auto lg:min-w-0 lg:flex-1">
       <ul class="flex flex-wrap gap-x-5 gap-y-2 lg:flex-nowrap lg:gap-x-4 xl:gap-x-5">
@@ -40,7 +40,7 @@ const currentPath = Astro.url.pathname;
                 href={link.href}
                 aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
                 class:list={[
-                  'text-sm whitespace-nowrap transition hover:text-primary',
+                  'flex min-h-tap items-center text-sm whitespace-nowrap transition hover:text-primary',
                   currentPath.startsWith(link.href) ? 'font-semibold text-ink' : 'text-inkMuted',
                 ]}
               >

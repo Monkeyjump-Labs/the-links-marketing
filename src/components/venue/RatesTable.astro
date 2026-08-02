@@ -29,7 +29,8 @@ const d = card.data;
     )
   }
 
-  <div class="mt-4 overflow-x-auto">
+  {/* tabindex makes the scroll region keyboard-reachable (axe: scrollable-region-focusable) */}
+  <div class="mt-4 overflow-x-auto" tabindex="0" role="region" aria-label={`${d.season} rates`}>
     <table class="w-full min-w-[36rem] text-left text-sm">
       <thead>
         <tr class="border-b-2 border-ink/20">

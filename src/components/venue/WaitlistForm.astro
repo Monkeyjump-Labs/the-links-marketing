@@ -49,7 +49,7 @@ const formId = `waitlist-${listName.replace(/\W+/g, '-').toLowerCase()}`;
       type="text"
       required
       placeholder="Your name"
-      class="flex-1 rounded border border-ink/20 px-3 py-2 text-sm"
+      class="min-h-tap flex-1 rounded border border-ink/20 px-3 py-2 text-sm"
     />
     <label class="sr-only" for={`${formId}-email`}>Email address</label>
     <input
@@ -58,9 +58,12 @@ const formId = `waitlist-${listName.replace(/\W+/g, '-').toLowerCase()}`;
       type="email"
       required
       placeholder="you@example.com"
-      class="flex-1 rounded border border-ink/20 px-3 py-2 text-sm"
+      class="min-h-tap flex-1 rounded border border-ink/20 px-3 py-2 text-sm"
     />
-    <button type="submit" class="rounded bg-primary px-5 py-2 text-sm font-semibold text-surface hover:opacity-90">
+    <button
+      type="submit"
+      class="min-h-tap rounded bg-primary px-5 py-2 text-sm font-semibold text-surface hover:opacity-90"
+    >
       Notify me
     </button>
   </div>

@@ -100,13 +100,17 @@ const venueName = (scope: VenueScope) =>
 
             {section.data.items.length > 0 && (
               <dl class="mt-4 divide-y divide-ink/10">
+                {/*
+                  dt/dd must be direct children of the dl, or of a single div
+                  child of it. Wrapping them in a second nested div broke the
+                  grouping (axe: definition-list / dlitem), so the layout is done
+                  with flex order and a full-width description row instead.
+                */}
                 {section.data.items.map((item) => (
                   <div class="flex flex-wrap items-baseline justify-between gap-x-6 py-3">
-                    <div class="max-w-xl">
-                      <dt class="font-medium">{item.name}</dt>
-                      {item.description && <dd class="mt-1 text-sm text-inkMuted">{item.description}</dd>}
-                    </div>
+                    <dt class="max-w-xl font-medium">{item.name}</dt>
                     {item.price && <dd class="font-semibold">{item.price}</dd>}
+                    {item.description && <dd class="mt-1 w-full max-w-xl text-sm text-inkMuted">{item.description}</dd>}
                   </div>
                 ))}
               </dl>

@@ -1,0 +1,1253 @@
+---
+/**
+ * /styleguide — the rendered design system.
+ *
+ * INTERNAL. `noIndex: true`, and astro.config.mjs keeps it out of the sitemap.
+ *
+ * Every swatch, scale row and spec table on this page is read from the canonical
+ * DTCG file at marketing/websites/the-links/design/tokens.json via src/lib/tokens.ts.
+ * Nothing here is a transcribed value, and every contrast ratio shown is measured
+ * on the page with the WCAG 2.1 relative-luminance formula — the same one the
+ * build gate in scripts/build-tokens.mjs uses. If a token changes, this page
+ * changes with it; it cannot drift from the system.
+ *
+ * The components section renders the REAL components, not copies, so a styling
+ * regression in src/components/venue/ shows up here.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookButton from '../components/venue/BookButton.astro';
+import WaitlistForm from '../components/venue/WaitlistForm.astro';
+import LeagueCard from '../components/venue/LeagueCard.astro';
+import HoursTable from '../components/venue/HoursTable.astro';
+import TrustStrip from '../components/venue/TrustStrip.astro';
+import { getVenues } from '../lib/venues';
+import {
+  meta,
+  group,
+  groupDescription,
+  leaf,
+  value,
+  resolve,
+  contrast,
+  ratioText,
+  verdict,
+  luminance,
+  remToPx,
+  prohibitions,
+  pendingImplementation,
+  type TokenRow,
+} from '../lib/tokens';
+
+const metadata = {
+  metaTitle: 'Design system & style guide',
+  metaDescription:
+    'Internal reference for The Links: every colour role, type step, space, border and component, rendered from the canonical token file with measured contrast ratios.',
+  noIndex: true,
+};
+
+// ── Grounds ──────────────────────────────────────────────────────────────────
+// Each semantic role is drawn on the ground its own $description names, so the
+// ratio shown underneath is the ratio that role actually has to clear. A token
+// that is only legal on dark is DISPLAYED on dark.
+
+type SpecimenMode = 'ground' | 'text' | 'fill' | 'block' | 'rule';
+
+interface RoleSpec {
+  mode: SpecimenMode;
+  /** Token path of the ground this role is legal on. */
+  ground: string;
+  /** Token path of the label ink, for `ground` and `fill` specimens. */
+  ink?: string;
+}
+
+const SPEC: Record<string, RoleSpec> = {
+  // Grounds render as fields, labelled in the ink that is legal on them.
+  'semantic.ground.chrome': { mode: 'ground', ground: 'semantic.ground.chrome', ink: 'semantic.ink.onDark' },
+  'semantic.ground.hero': { mode: 'ground', ground: 'semantic.ground.hero', ink: 'semantic.ink.onDarkStrong' },
+  'semantic.ground.base': { mode: 'ground', ground: 'semantic.ground.base', ink: 'semantic.ink.bodyOnLight' },
+  'semantic.ground.raised': { mode: 'ground', ground: 'semantic.ground.raised', ink: 'semantic.ink.bodyOnLight' },
+  'semantic.ground.alt': { mode: 'ground', ground: 'semantic.ground.alt', ink: 'semantic.ink.bodyOnLight' },
+  'semantic.ground.accentBand': {
+    mode: 'ground',
+    ground: 'semantic.ground.accentBand',
+    ink: 'semantic.ink.onAccentBand',
+  },
+  'semantic.ground.rowHover': { mode: 'ground', ground: 'semantic.ground.rowHover', ink: 'semantic.ink.onDark' },
+  'semantic.ground.media': { mode: 'ground', ground: 'semantic.ground.media', ink: 'semantic.media.slotLabel' },
+
+  // Ink roles render as text on their stated ground.
+  'semantic.ink.onDarkStrong': { mode: 'text', ground: 'palette.midnight' },
+  'semantic.ink.onDark': { mode: 'text', ground: 'palette.midnight' },
+  'semantic.ink.mutedOnDark': { mode: 'text', ground: 'palette.midnight' },
+  'semantic.ink.displayOnLight': { mode: 'text', ground: 'palette.white' },
+  'semantic.ink.bodyOnLight': { mode: 'text', ground: 'palette.white' },
+  'semantic.ink.mutedOnLight': { mode: 'text', ground: 'palette.white' },
+  'semantic.ink.onAccentBand': { mode: 'text', ground: 'palette.ember' },
+
+  // Primary is a fill plus its label, so the ratio measured is fill vs label.
+  'semantic.primary.default': { mode: 'fill', ground: 'palette.white', ink: 'semantic.primary.on' },
+  'semantic.primary.hover': { mode: 'fill', ground: 'palette.white', ink: 'semantic.primary.on' },
+  'semantic.primary.active': { mode: 'fill', ground: 'palette.white', ink: 'semantic.primary.on' },
+  'semantic.primary.on': { mode: 'text', ground: 'palette.ember' },
+  'semantic.primary.onDarkFill': {
+    mode: 'fill',
+    ground: 'palette.midnight',
+    ink: 'semantic.primary.onDarkFillInk',
+  },
+  'semantic.primary.onDarkFillInk': { mode: 'text', ground: 'palette.amber' },
+  'semantic.primary.onDarkFillHover': {
+    mode: 'fill',
+    ground: 'palette.midnight',
+    ink: 'semantic.primary.onDarkFillInk',
+  },
+
+  'semantic.accent.highlight': { mode: 'text', ground: 'palette.midnight' },
+  'semantic.accent.caution': { mode: 'text', ground: 'palette.white' },
+  'semantic.accent.screen': { mode: 'block', ground: 'palette.midnight' },
+
+  'semantic.rule.onDark': { mode: 'rule', ground: 'palette.midnight' },
+  'semantic.rule.onDarkQuiet': { mode: 'rule', ground: 'palette.midnight' },
+  'semantic.rule.onLight': { mode: 'rule', ground: 'palette.white' },
+  'semantic.rule.onLightQuiet': { mode: 'rule', ground: 'palette.white' },
+  'semantic.rule.onAccentBand': { mode: 'rule', ground: 'palette.ember' },
+  'semantic.rule.scoreOnDark': { mode: 'rule', ground: 'palette.midnight' },
+  'semantic.rule.scoreOnLight': { mode: 'rule', ground: 'palette.white' },
+
+  'semantic.state.focus': { mode: 'rule', ground: 'palette.white' },
+  'semantic.state.focusOnDark': { mode: 'rule', ground: 'palette.midnight' },
+  'semantic.state.focusOnAccentBand': { mode: 'rule', ground: 'palette.ember' },
+  'semantic.state.error': { mode: 'text', ground: 'palette.white' },
+  'semantic.state.errorOnDark': { mode: 'text', ground: 'palette.midnight' },
+  'semantic.state.warning': { mode: 'text', ground: 'palette.white' },
+  'semantic.state.success': { mode: 'text', ground: 'palette.white' },
+  'semantic.state.successOnDark': { mode: 'text', ground: 'palette.midnight' },
+  'semantic.state.info': { mode: 'text', ground: 'palette.white' },
+  'semantic.state.infoOnDark': { mode: 'text', ground: 'palette.midnight' },
+  'semantic.state.disabledSurface': {
+    mode: 'ground',
+    ground: 'semantic.state.disabledSurface',
+    ink: 'semantic.state.disabledInk',
+  },
+  'semantic.state.disabledInk': { mode: 'text', ground: 'semantic.state.disabledSurface' },
+
+  'semantic.media.slotGround': { mode: 'ground', ground: 'semantic.media.slotGround', ink: 'semantic.media.slotLabel' },
+  'semantic.media.slotScreen': { mode: 'block', ground: 'semantic.media.slotGround' },
+  'semantic.media.slotFairway': { mode: 'block', ground: 'semantic.media.slotScreen' },
+  'semantic.media.slotPendant': { mode: 'block', ground: 'semantic.media.slotGround' },
+  'semantic.media.slotMass': { mode: 'block', ground: 'semantic.media.slotGround' },
+  'semantic.media.slotFrame': { mode: 'rule', ground: 'semantic.media.slotGround' },
+  'semantic.media.slotLabel': { mode: 'text', ground: 'semantic.media.slotGround' },
+};
+
+/** The pair whose ratio the specimen is demonstrating. */
+function measured(row: TokenRow): { fg: string; bg: string; against: string } {
+  const spec = SPEC[row.path];
+  if (spec.mode === 'fill' || spec.mode === 'ground') {
+    return { fg: value(spec.ink as string), bg: row.resolved, against: spec.ink as string };
+  }
+  return { fg: row.resolved, bg: value(spec.ground), against: spec.ground };
+}
+
+const COLOUR_GROUPS = [
+  {
+    path: 'semantic.ground',
+    title: 'Ground',
+    blurb: 'The fields a page is built out of. Everything else is measured against one of these.',
+  },
+  {
+    path: 'semantic.ink',
+    title: 'Ink',
+    blurb: 'Text. Every entry names the ground it is legal on; none of them is an opacity of another.',
+  },
+  {
+    path: 'semantic.primary',
+    title: 'Primary',
+    blurb: 'The action colour. Ember fill on light, amber fill on dark — the two are not interchangeable.',
+  },
+  { path: 'semantic.accent', title: 'Accent', blurb: 'Highlight, caution and the simulator projection.' },
+  {
+    path: 'semantic.rule',
+    title: 'Rule',
+    blurb: 'The grid is meant to be seen. Rules are a colour role, not a border default.',
+  },
+  {
+    path: 'semantic.state',
+    title: 'State',
+    blurb: 'Focus, error, warning, success, info, disabled — each with a dark-ground twin where one is needed.',
+  },
+  {
+    path: 'semantic.media',
+    title: 'Media',
+    blurb: 'The drawn media slot. There is no photography yet, so the slot is an honest reservation.',
+  },
+];
+
+// ── Type ─────────────────────────────────────────────────────────────────────
+// The token file declares typeScale, tracking and lineHeight as three INDEPENDENT
+// scales — it does not bind a tracking or a line-height to a given step. The
+// pairing below is inferred from the token names so the specimen renders at a
+// plausible real size; it is flagged as inferred everywhere it is shown, and
+// noted as a gap in the pending-work section.
+const TYPE_PAIRING: Record<string, { lineHeight: string; tracking: string }> = {
+  displayHero: { lineHeight: 'lineHeight.displayHero', tracking: 'tracking.displayTight' },
+  displaySection: { lineHeight: 'lineHeight.display', tracking: 'tracking.displayTight' },
+  displayRow: { lineHeight: 'lineHeight.display', tracking: 'tracking.displayNormal' },
+  displayCard: { lineHeight: 'lineHeight.display', tracking: 'tracking.displayNormal' },
+  scoreboardXl: { lineHeight: 'lineHeight.scoreboard', tracking: 'tracking.displayNormal' },
+  scoreboardMd: { lineHeight: 'lineHeight.scoreboard', tracking: 'tracking.displayNormal' },
+  bodyLead: { lineHeight: 'lineHeight.body', tracking: 'tracking.bodyNormal' },
+  bodyBase: { lineHeight: 'lineHeight.body', tracking: 'tracking.bodyNormal' },
+  bodySmall: { lineHeight: 'lineHeight.body', tracking: 'tracking.bodyNormal' },
+  labelBase: { lineHeight: 'lineHeight.label', tracking: 'tracking.labelWide' },
+  labelSmall: { lineHeight: 'lineHeight.label', tracking: 'tracking.labelWider' },
+};
+
+const DISPLAY_FAMILIES = new Set(['display', 'numeric']);
+const fontRows = group('font').filter((row) => row.name !== 'retired');
+const retiredFont = leaf('font.retired');
+
+// ── The ink-opacity ladder, measured ─────────────────────────────────────────
+// rules.noInkOpacityForText is the prohibition that most often gets broken by a
+// well-meaning `text-ink/70`. It is worth SHOWING rather than asserting, so the
+// ladder below is composited and measured here against the CURRENT ink.
+const inkHex = value('semantic.ink.displayOnLight');
+const whiteHex = value('palette.white');
+
+function composite(hex: string, alpha: number, over: string): string {
+  const a = hex.replace('#', '');
+  const b = over.replace('#', '');
+  const mix = [0, 2, 4].map((i) =>
+    Math.round(alpha * parseInt(a.slice(i, i + 2), 16) + (1 - alpha) * parseInt(b.slice(i, i + 2), 16)),
+  );
+  return `#${mix.map((n) => n.toString(16).padStart(2, '0')).join('')}`;
+}
+
+const inkLadder = [90, 80, 70, 65, 60, 50, 40].map((pct) => {
+  const hex = composite(inkHex, pct / 100, whiteHex).toUpperCase();
+  return { pct, hex, ratio: ratioText(hex, whiteHex), passes: contrast(hex, whiteHex) >= 4.5 };
+});
+
+// ── Live component data ──────────────────────────────────────────────────────
+const venues = await getVenues();
+const demoVenue = venues[0];
+
+// Real league entries, with the registration state swapped so all three render.
+// The component and the schema are real; only `state` and the state-specific
+// copy differ, so the three cards are honestly comparable.
+const leagues = (await getCollection('leagues')).sort((a, b) => a.data.order - b.data.order);
+const baseLeague = leagues[0];
+const leagueStates = [
+  { state: 'open' as const, label: 'state: open — registers offsite' },
+  { state: 'full' as const, label: 'state: full — waitlist' },
+  { state: 'between' as const, label: 'state: between — notify me' },
+];
+const demoLeagues = leagueStates.map(({ state, label }) => ({
+  label,
+  entry: {
+    ...baseLeague,
+    id: `${baseLeague.id}--styleguide-${state}`,
+    data: { ...baseLeague.data, state },
+  },
+}));
+
+const controlHeights = ['size.controlSm', 'size.controlMd', 'size.controlLg'].map((path) => ({
+  path,
+  height: value(path),
+}));
+
+const sectionIndex = [
+  ['colour', 'Colour'],
+  ['prohibitions', 'Prohibitions'],
+  ['type', 'Type'],
+  ['space', 'Space'],
+  ['structure', 'Border, radius, elevation'],
+  ['components', 'Components'],
+  ['spec', 'Motion, z-index, breakpoints'],
+  ['pending', 'Pending implementation'],
+];
+
+const midnight = value('palette.midnight');
+const paper = value('palette.paper');
+const amber = value('palette.amber');
+const ember = value('palette.ember');
+const navy = value('palette.navy');
+const inkMuted = value('semantic.ink.mutedOnLight');
+const slate = value('palette.slate');
+const greige = value('palette.greige');
+const screenLight = value('palette.screenLight');
+---
+
+<BaseLayout metadata={metadata}>
+  <div class="mx-auto max-w-content px-gutter py-section">
+    <!-- ── Masthead ───────────────────────────────────────────────────────── -->
+    <header class="border-b-4 pb-8" style={`border-color: ${ember}; font-family: var(--brand-font-display);`}>
+      <p
+        class="text-xs font-semibold uppercase"
+        style={`letter-spacing: ${value('tracking.labelWider')}; color: ${inkMuted};`}
+      >
+        Internal · not indexed
+      </p>
+      <h1
+        class="mt-4 font-extrabold"
+        style={`font-size: ${value('typeScale.displaySection')}; line-height: ${value('lineHeight.display')}; letter-spacing: ${value('tracking.displayTight')}; color: ${navy};`}
+      >
+        {meta.brand} — design system
+      </h1>
+      <p
+        class="mt-4 max-w-prose-page"
+        style={`font-size: ${value('typeScale.bodyLead')}; line-height: ${value('lineHeight.body')}; color: ${value('semantic.ink.bodyOnLight')}; font-family: var(--brand-font-body);`}
+      >
+        Register: <strong>{meta.register}</strong>. Everything below is rendered from
+        <code>marketing/websites/the-links/design/tokens.json</code> — the swatches, the scales, the spec tables and every
+        contrast ratio. The ratios are measured on this page with the WCAG 2.1 relative-luminance formula, not copied out
+        of the file, so a value that drifts shows up here as a number that disagrees with its own note.
+      </p>
+
+      <dl class="mt-6 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2" style="font-family: var(--brand-font-body);">
+        {
+          [
+            ['Version', `${meta.version} · ${meta.date}`],
+            ['Venues', meta.venues.join(' · ')],
+            ['Status', meta.status],
+            ['Contrast policy', meta.contrastPolicy],
+            ['Compiled to', meta.compiledTo],
+            ['Provenance', meta.provenance],
+          ].map(([term, def]) => (
+            <div class="flex gap-3">
+              <dt class="shrink-0 font-semibold" style={`color: ${navy};`}>
+                {term}
+              </dt>
+              <dd style={`color: ${inkMuted};`}>{def}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <nav
+        aria-label="Sections"
+        class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm"
+        style="font-family: var(--brand-font-body);"
+      >
+        {
+          sectionIndex.map(([id, label]) => (
+            <a href={`#${id}`} class="font-semibold underline" style={`color: ${value('semantic.ink.bodyOnLight')};`}>
+              {label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+
+    <!-- ── 1. Colour ──────────────────────────────────────────────────────── -->
+    <section id="colour" class="mt-16" style="font-family: var(--brand-font-body);">
+      <h2
+        class="font-extrabold"
+        style={`font-size: ${value('typeScale.displayRow')}; line-height: ${value('lineHeight.display')}; letter-spacing: ${value('tracking.displayNormal')}; color: ${navy}; font-family: var(--brand-font-display);`}
+      >
+        Colour
+      </h2>
+
+      <h3 class="mt-8 text-lg font-bold" style={`color: ${navy};`}>Palette primitives</h3>
+      <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>{groupDescription('palette')}</p>
+
+      <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          group('palette').map((row) => (
+            <li class="border-2" style={`border-color: ${greige};`}>
+              <div class="h-20" style={`background: ${row.resolved};`} />
+              <div class="p-4">
+                <p class="font-mono text-sm font-bold" style={`color: ${navy};`}>
+                  palette.{row.name}
+                </p>
+                <p class="mt-1 font-mono text-xs" style={`color: ${inkMuted};`}>
+                  {row.resolved.toUpperCase()} · relative luminance {luminance(row.resolved).toFixed(4)}
+                </p>
+                <p
+                  class="mt-2 text-xs"
+                  style={`color: ${value('semantic.ink.bodyOnLight')}; line-height: ${value('lineHeight.body')};`}
+                >
+                  {row.$description}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Retired primitives</h3>
+      <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        {groupDescription('palette.retired')} They are shown so a value that turns up in old CSS can be identified, never
+        so it can be reused.
+      </p>
+      <ul class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          group('palette.retired').map((row) => (
+            <li class="flex gap-3 border-2 p-3" style={`border-color: ${greige}; opacity: 0.85;`}>
+              <span class="mt-0.5 h-10 w-10 shrink-0" style={`background: ${row.resolved};`} />
+              <div>
+                <p class="font-mono text-xs font-bold line-through" style={`color: ${inkMuted};`}>
+                  palette.retired.{row.name}
+                </p>
+                <p class="font-mono text-xs" style={`color: ${inkMuted};`}>
+                  {row.resolved.toUpperCase()}
+                </p>
+                <p class="mt-1 text-xs" style={`color: ${inkMuted};`}>
+                  {row.$description}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h3 class="mt-12 text-lg font-bold" style={`color: ${navy};`}>Semantic roles</h3>
+      <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        {groupDescription('semantic')} These are the names a component types. Each specimen is drawn on the ground its own
+        note names, so a dark-only token is shown on dark — and the ratio under it is the ratio that role actually has to
+        clear.
+      </p>
+
+      {
+        COLOUR_GROUPS.map((section) => (
+          <div class="mt-10">
+            <h4 class="font-mono text-sm font-bold" style={`color: ${ember};`}>
+              {section.path}
+            </h4>
+            <p class="mt-1 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+              {section.blurb}
+            </p>
+
+            <ul class="mt-4 divide-y-2" style={`border-color: ${greige};`}>
+              {group(section.path).map((row) => {
+                const spec = SPEC[row.path];
+                const pair = measured(row);
+                const groundHex = value(spec.ground);
+                const r = contrast(pair.fg, pair.bg);
+                const v = verdict(pair.fg, pair.bg);
+                return (
+                  <li class="grid gap-4 border-t-2 py-4 lg:grid-cols-[18rem_1fr]" style={`border-color: ${greige};`}>
+                    <div>
+                      {spec.mode === 'ground' && (
+                        <div
+                          class="flex h-24 items-end p-3"
+                          style={`background: ${row.resolved}; color: ${value(spec.ink as string)};`}
+                        >
+                          <span class="font-mono text-xs">{spec.ink}</span>
+                        </div>
+                      )}
+                      {spec.mode === 'text' && (
+                        <div class="h-24 p-3" style={`background: ${groundHex};`}>
+                          <p class="text-lg font-bold" style={`color: ${row.resolved};`}>
+                            Tuesday is a golf night
+                          </p>
+                          <p
+                            class="mt-1"
+                            style={`color: ${row.resolved}; font-size: ${value('typeScale.bodySmall')}; line-height: ${value('lineHeight.body')};`}
+                          >
+                            Body copy at typeScale.bodySmall.
+                          </p>
+                        </div>
+                      )}
+                      {spec.mode === 'fill' && (
+                        <div class="flex h-24 items-center justify-center p-3" style={`background: ${groundHex};`}>
+                          <span
+                            class="px-6 py-3 text-sm font-bold"
+                            style={`background: ${row.resolved}; color: ${value(spec.ink as string)}; border-radius: ${value('radius.control')};`}
+                          >
+                            Book a Bay
+                          </span>
+                        </div>
+                      )}
+                      {spec.mode === 'block' && (
+                        <div class="flex h-24 items-center justify-center p-3" style={`background: ${groundHex};`}>
+                          <span class="block h-12 w-full" style={`background: ${row.resolved};`} />
+                        </div>
+                      )}
+                      {spec.mode === 'rule' && (
+                        <div class="flex h-24 flex-col justify-center gap-3 p-3" style={`background: ${groundHex};`}>
+                          <span
+                            class="block w-full"
+                            style={`height: ${value('border.rule')}; background: ${row.resolved};`}
+                          />
+                          <span
+                            class="block w-full"
+                            style={`height: ${value('border.score')}; background: ${row.resolved};`}
+                          />
+                          <span
+                            class="block w-full"
+                            style={`height: ${value('border.slab')}; background: ${row.resolved};`}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <p class="font-mono text-sm font-bold" style={`color: ${navy};`}>
+                        {row.path}
+                      </p>
+                      <p class="mt-1 font-mono text-xs" style={`color: ${inkMuted};`}>
+                        {row.alias ?? '—'} → {row.resolved.toUpperCase()}
+                      </p>
+                      <p
+                        class="mt-2 text-sm font-semibold"
+                        style={`color: ${r >= 4.5 ? value('semantic.state.success') : r >= 3 ? value('semantic.state.warning') : value('semantic.state.error')};`}
+                      >
+                        {ratioText(pair.fg, pair.bg)} — {v}
+                        <span class="font-normal" style={`color: ${inkMuted};`}>
+                          {' '}
+                          (measured against {pair.against})
+                        </span>
+                      </p>
+                      {row.$description && (
+                        <p
+                          class="mt-2 max-w-prose-page text-sm"
+                          style={`color: ${value('semantic.ink.bodyOnLight')}; line-height: ${value('lineHeight.body')};`}
+                        >
+                          {row.$description}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))
+      }
+    </section>
+
+    <!-- ── 2. Prohibitions ────────────────────────────────────────────────── -->
+    <section id="prohibitions" class="mt-16" style="font-family: var(--brand-font-body);">
+      <div style={`background: ${midnight}; color: ${paper};`}>
+        <div class="p-6 lg:p-10">
+          <span class="block w-full" style={`height: ${value('border.score')}; background: ${amber};`}></span>
+          <h2
+            class="mt-6 font-extrabold"
+            style={`font-size: ${value('typeScale.displayRow')}; line-height: ${value('lineHeight.display')}; letter-spacing: ${value('tracking.displayNormal')}; color: ${value('semantic.ink.onDarkStrong')}; font-family: var(--brand-font-display);`}
+          >
+            The prohibitions
+          </h2>
+          <p class="mt-3 max-w-prose-page" style={`color: ${paper}; line-height: ${value('lineHeight.body')};`}>
+            {groupDescription('rules')}
+          </p>
+
+          <ul class="mt-8 grid gap-6 lg:grid-cols-2">
+            {
+              prohibitions().map((rule) => (
+                <li class="border-l-4 pl-4" style={`border-color: ${amber};`}>
+                  <p class="font-mono text-sm font-bold" style={`color: ${amber};`}>
+                    {rule.name}
+                  </p>
+                  <p class="mt-2 text-sm" style={`color: ${paper}; line-height: ${value('lineHeight.body')};`}>
+                    {rule.text}
+                  </p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 border-2 p-6" style={`border-color: ${greige};`}>
+        <h3 class="text-lg font-bold" style={`color: ${navy};`}>
+          <code>noInkOpacityForText</code>, measured
+        </h3>
+        <p class="mt-2 max-w-prose-page text-sm" style={`color: ${value('semantic.ink.bodyOnLight')};`}>
+          The rule is the one most often broken by a well-meaning <code>text-ink/70</code>. Below, the current ink (<code
+            >semantic.ink.displayOnLight</code
+          >, {inkHex.toUpperCase()}) is composited over
+          <code>palette.white</code> at each step and re-measured here. Use <code>text-inkMuted</code> —
+          <code>semantic.ink.mutedOnLight</code> at {ratioText(value('semantic.ink.mutedOnLight'), whiteHex)} — instead of
+          any of them.
+        </p>
+        <table class="mt-4 w-full text-left text-sm">
+          <thead>
+            <tr class="border-b-2" style={`border-color: ${navy};`}>
+              <th scope="col" class="py-2 pr-4">Utility</th>
+              <th scope="col" class="py-2 pr-4">Composited</th>
+              <th scope="col" class="py-2 pr-4">Measured on white</th>
+              <th scope="col" class="py-2">AA body</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              inkLadder.map((step) => (
+                <tr class="border-b" style={`border-color: ${greige};`}>
+                  <td class="py-2 pr-4 font-mono">text-ink/{step.pct}</td>
+                  <td class="py-2 pr-4 font-mono" style={`color: ${step.hex};`}>
+                    {step.hex}
+                  </td>
+                  <td class="py-2 pr-4 font-mono">{step.ratio}</td>
+                  <td
+                    class="py-2 font-semibold"
+                    style={`color: ${step.passes ? value('semantic.state.success') : value('semantic.state.error')};`}
+                  >
+                    {step.passes ? 'passes' : 'FAILS'}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <p class="mt-3 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+          Note the discrepancy: the rule's own text cites 4.39:1 for <code>ink/70</code>. That figure is the
+          <strong> 1.x forest ink</strong> (<code>#124B2E</code> at 70% on white measures 4.39:1) and predates the navy ink.
+          Against today's ink the ladder crosses the 4.5:1 floor between /65 and /66. The prohibition still stands — an opacity
+          is not a token and the crossover is not somewhere anyone should be navigating by feel — but the number in the rule,
+          and the “below /75 fails” comment in <code>global.css</code>, describe a palette that has been retired.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 3. Type ────────────────────────────────────────────────────────── -->
+    <section id="type" class="mt-16" style="font-family: var(--brand-font-body);">
+      <h2
+        class="font-extrabold"
+        style={`font-size: ${value('typeScale.displayRow')}; line-height: ${value('lineHeight.display')}; letter-spacing: ${value('tracking.displayNormal')}; color: ${navy}; font-family: var(--brand-font-display);`}
+      >
+        Type
+      </h2>
+
+      <div
+        class="mt-6 border-l-4 p-4"
+        style={`border-color: ${value('semantic.state.warning')}; background: ${paper};`}
+      >
+        <p
+          class="text-sm"
+          style={`color: ${value('semantic.ink.bodyOnLight')}; line-height: ${value('lineHeight.body')};`}
+        >
+          <strong>What you are actually looking at.</strong> The repository declares no <code>@font-face</code> anywhere,
+          so neither declared family is loading. Archivo is not in <code>public/fonts</code> at all — the token file says
+          so. Open Sans <em>is</em> in <code>public/fonts</code>, but nothing references those <code>.woff2</code> files,
+          so the body face is also falling through to the system stack. Every specimen on this page is therefore the fallback,
+          at the real size, weight, tracking and line-height. Judge the metrics; do not judge the letterforms.
+        </p>
+      </div>
+
+      <h3 class="mt-8 text-lg font-bold" style={`color: ${navy};`}>Families</h3>
+      <ul class="mt-4 space-y-6">
+        {
+          fontRows.map((row) => (
+            <li class="border-2 p-5" style={`border-color: ${greige};`}>
+              <p class="font-mono text-sm font-bold" style={`color: ${navy};`}>
+                font.{row.name}
+              </p>
+              <p class="mt-1 font-mono text-xs break-words" style={`color: ${inkMuted};`}>
+                {row.resolved}
+              </p>
+              <p
+                class="mt-4"
+                style={`font-family: ${row.resolved}; font-size: 2rem; font-weight: ${DISPLAY_FAMILIES.has(row.name) ? value('fontWeight.displayBold') : value('fontWeight.bodyRegular')}; letter-spacing: ${DISPLAY_FAMILIES.has(row.name) ? value('tracking.displayNormal') : value('tracking.bodyNormal')}; color: ${navy}; ${row.name === 'numeric' ? 'font-variant-numeric: tabular-nums lining-nums;' : ''}`}
+              >
+                {row.name === 'numeric' ? '6 bays · 4 bays · $35 / hour' : 'Indoor golf that’s actually a night out'}
+              </p>
+              <p
+                class="mt-3 max-w-prose-page text-sm"
+                style={`color: ${value('semantic.ink.bodyOnLight')}; line-height: ${value('lineHeight.body')};`}
+              >
+                {row.$description}
+              </p>
+            </li>
+          ))
+        }
+        <li class="border-2 border-dashed p-5" style={`border-color: ${greige};`}>
+          <p class="font-mono text-sm font-bold line-through" style={`color: ${inkMuted};`}>font.retired</p>
+          <p class="mt-1 font-mono text-xs" style={`color: ${inkMuted};`}>{resolve(retiredFont?.$value ?? '')}</p>
+          <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>{retiredFont?.$description}</p>
+        </li>
+      </ul>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Weight and width</h3>
+      <ul class="mt-4 divide-y-2" style={`border-color: ${greige};`}>
+        {
+          group('fontWeight').map((row) => (
+            <li
+              class="flex flex-wrap items-baseline gap-x-6 gap-y-1 border-t-2 py-3"
+              style={`border-color: ${greige};`}
+            >
+              <span class="w-56 shrink-0 font-mono text-xs" style={`color: ${ember};`}>
+                fontWeight.{row.name}
+              </span>
+              <span class="w-12 shrink-0 font-mono text-xs" style={`color: ${inkMuted};`}>
+                {row.resolved}
+              </span>
+              <span
+                style={`font-family: var(--brand-font-display); font-size: 1.375rem; font-weight: ${row.resolved}; color: ${navy};`}
+              >
+                Book a bay by the hour
+              </span>
+              {row.$description && (
+                <span class="text-sm" style={`color: ${inkMuted};`}>
+                  {row.$description}
+                </span>
+              )}
+            </li>
+          ))
+        }
+        {
+          group('fontWidth').map((row) => (
+            <li
+              class="flex flex-wrap items-baseline gap-x-6 gap-y-1 border-t-2 py-3"
+              style={`border-color: ${greige};`}
+            >
+              <span class="w-56 shrink-0 font-mono text-xs" style={`color: ${ember};`}>
+                fontWidth.{row.name}
+              </span>
+              <span class="w-12 shrink-0 font-mono text-xs" style={`color: ${inkMuted};`}>
+                {row.resolved}
+              </span>
+              <span
+                style={`font-family: var(--brand-font-display); font-size: 1.375rem; font-weight: ${value('fontWeight.displayHeavy')}; font-stretch: ${row.resolved}%; color: ${navy};`}
+              >
+                72 · 6 bays
+              </span>
+              <span class="text-sm" style={`color: ${inkMuted};`}>
+                {row.$description ?? 'The default width.'} Needs the variable Archivo to have any effect.
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Type scale</h3>
+      <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        Each step at its real size. <code>typeScale</code>, <code>tracking</code> and <code>lineHeight</code> are three independent
+        scales in the token file — it does not declare which tracking or line-height belongs to a given step, so the pairing
+        shown is <strong>inferred from the token names</strong> and marked as such.
+      </p>
+      <ul class="mt-6 space-y-8">
+        {
+          group('typeScale').map((row) => {
+            const pair = TYPE_PAIRING[row.name];
+            const isDisplay = row.name.startsWith('display') || row.name.startsWith('scoreboard');
+            const isLabel = row.name.startsWith('label');
+            return (
+              <li class="border-t-2 pt-4" style={`border-color: ${greige};`}>
+                <p class="font-mono text-xs" style={`color: ${ember};`}>
+                  typeScale.{row.name} = {row.resolved}
+                </p>
+                <p class="font-mono text-xs" style={`color: ${inkMuted};`}>
+                  {pair.lineHeight} = {value(pair.lineHeight)} · {pair.tracking} = {value(pair.tracking)}
+                  <span> (pairing inferred)</span>
+                </p>
+                <p
+                  class="mt-3"
+                  style={`font-family: ${isDisplay ? 'var(--brand-font-display)' : 'var(--brand-font-body)'}; font-size: ${row.resolved}; line-height: ${value(pair.lineHeight)}; letter-spacing: ${value(pair.tracking)}; font-weight: ${isDisplay ? value('fontWeight.displayHeavy') : isLabel ? value('fontWeight.displaySemi') : value('fontWeight.bodyRegular')}; color: ${navy}; ${isLabel ? 'text-transform: uppercase;' : ''}`}
+                >
+                  {isLabel ? 'Lakeville & Stillwater' : 'Indoor golf that’s actually a night out'}
+                </p>
+                {row.$description && (
+                  <p class="mt-2 text-sm" style={`color: ${inkMuted};`}>
+                    {row.$description}
+                  </p>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Tracking</h3>
+      <ul class="mt-4 divide-y-2" style={`border-color: ${greige};`}>
+        {
+          group('tracking').map((row) => (
+            <li class="border-t-2 py-3" style={`border-color: ${greige};`}>
+              <p class="font-mono text-xs" style={`color: ${ember};`}>
+                tracking.{row.name} = {row.resolved}
+              </p>
+              <p
+                class="mt-1"
+                style={`font-family: var(--brand-font-display); font-size: 1.375rem; font-weight: ${value('fontWeight.displaySemi')}; letter-spacing: ${row.resolved}; color: ${navy}; ${row.name.startsWith('label') ? 'text-transform: uppercase; font-size: 0.75rem;' : ''}`}
+              >
+                Lakeville &amp; Stillwater, Minnesota
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Line height</h3>
+      <ul class="mt-4 grid gap-6 lg:grid-cols-2">
+        {
+          group('lineHeight').map((row) => (
+            <li class="border-2 p-4" style={`border-color: ${greige};`}>
+              <p class="font-mono text-xs" style={`color: ${ember};`}>
+                lineHeight.{row.name} = {row.resolved}
+              </p>
+              <p class="mt-2" style={`line-height: ${row.resolved}; color: ${value('semantic.ink.bodyOnLight')};`}>
+                Ten GolfZon NX bays across two Twin Cities venues. Book by the hour, bring up to five friends for the
+                same price, and let the simulator keep score while you order another round.
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- ── 4. Space ───────────────────────────────────────────────────────── -->
+    <section id="space" class="mt-16" style="font-family: var(--brand-font-body);">
+      <h2
+        class="font-extrabold"
+        style={`font-size: ${value('typeScale.displayRow')}; line-height: ${value('lineHeight.display')}; letter-spacing: ${value('tracking.displayNormal')}; color: ${navy}; font-family: var(--brand-font-display);`}
+      >
+        Space
+      </h2>
+      <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        <code>s1</code>–<code>s10</code> is the ramp; the named entries below it are the ramp bound to a job. An alias is
+        shown with the step it points at, so nobody re-derives <code>cellPadding</code> by eye.
+      </p>
+      <ul class="mt-6 space-y-3">
+        {
+          group('space').map((row) => (
+            <li class="flex flex-wrap items-center gap-x-4 gap-y-1">
+              <span class="w-44 shrink-0 font-mono text-xs" style={`color: ${ember};`}>
+                space.{row.name}
+              </span>
+              <span class="w-36 shrink-0 font-mono text-xs" style={`color: ${inkMuted};`}>
+                {row.alias ? `${row.alias} = ` : ''}
+                {row.resolved}
+                {remToPx(row.resolved) ? ` / ${remToPx(row.resolved)}` : ''}
+              </span>
+              <span class="h-4" style={`width: ${row.resolved}; background: ${ember};`} />
+            </li>
+          ))
+        }
+      </ul>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Size and control</h3>
+      <table class="mt-4 w-full text-left text-sm">
+        <thead>
+          <tr class="border-b-2" style={`border-color: ${navy};`}>
+            <th scope="col" class="py-2 pr-4">Token</th>
+            <th scope="col" class="py-2 pr-4">Value</th>
+            <th scope="col" class="py-2">Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            group('size').map((row) => (
+              <tr class="border-b" style={`border-color: ${greige};`}>
+                <td class="py-2 pr-4 font-mono text-xs">size.{row.name}</td>
+                <td class="py-2 pr-4 font-mono text-xs">
+                  {row.resolved}
+                  {remToPx(row.resolved) ? ` / ${remToPx(row.resolved)}` : ''}
+                </td>
+                <td class="py-2" style={`color: ${inkMuted};`}>
+                  {row.$description ?? '—'}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <div class="mt-4 flex flex-wrap items-end gap-4">
+        {
+          controlHeights.map((control) => (
+            <div class="text-center">
+              <div
+                class="flex items-center justify-center px-5 text-sm font-semibold"
+                style={`height: ${control.height}; background: ${ember}; color: ${value('semantic.primary.on')}; border-radius: ${value('radius.control')};`}
+              >
+                Book a Bay
+              </div>
+              <p class="mt-1 font-mono text-xs" style={`color: ${inkMuted};`}>
+                {control.path} = {control.height}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ── 5. Border, radius, elevation ───────────────────────────────────── -->
+    <section id="structure" class="mt-16" style="font-family: var(--brand-font-body);">
+      <h2
+        class="font-extrabold"
+        style={`font-size: ${value('typeScale.displayRow')}; line-height: ${value('lineHeight.display')}; letter-spacing: ${value('tracking.displayNormal')}; color: ${navy}; font-family: var(--brand-font-display);`}
+      >
+        Border, radius, elevation
+      </h2>
+
+      <h3 class="mt-8 text-lg font-bold" style={`color: ${navy};`}>Border</h3>
+      <ul class="mt-4 space-y-5">
+        {
+          group('border').map((row) => (
+            <li>
+              <p class="font-mono text-xs" style={`color: ${ember};`}>
+                border.{row.name} = {row.resolved}
+              </p>
+              <span class="mt-2 block w-full" style={`height: ${row.resolved}; background: ${navy};`} />
+              <p class="mt-1 text-sm" style={`color: ${inkMuted};`}>
+                {row.$description}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Radius</h3>
+      <ul class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          group('radius').map((row) => (
+            <li>
+              <div
+                class="flex h-24 items-center justify-center border-2 text-sm font-semibold"
+                style={`border-color: ${navy}; border-radius: ${row.resolved}; color: ${navy};`}
+              >
+                {row.resolved}
+              </div>
+              <p class="mt-2 font-mono text-xs" style={`color: ${ember};`}>
+                radius.{row.name}
+              </p>
+              <p class="mt-1 text-xs" style={`color: ${inkMuted};`}>
+                {row.$description ?? '—'}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Elevation</h3>
+      <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>{groupDescription('elevation')}</p>
+      <ul class="mt-4 grid gap-4 lg:grid-cols-3">
+        {
+          group('elevation').map((row) => (
+            <li class="border-2 p-4" style={`border-color: ${greige};`}>
+              <p class="font-mono text-xs" style={`color: ${ember};`}>
+                elevation.{row.name} = {row.resolved}
+              </p>
+              <p class="mt-2 text-sm" style={`color: ${inkMuted};`}>
+                {row.$description ?? 'No shadow. There is no shadow token because there is no shadow.'}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-6 grid gap-0 lg:grid-cols-2">
+        <div class="p-6" style={`background: ${value('semantic.ground.base')};`}>
+          <p class="text-sm font-semibold" style={`color: ${navy};`}>semantic.ground.base</p>
+          <p class="mt-1 text-sm" style={`color: ${value('semantic.ink.bodyOnLight')};`}>The flat page ground.</p>
+        </div>
+        <div
+          class="border-2 p-6"
+          style={`background: ${value('semantic.ground.raised')}; border-color: ${value('semantic.rule.onLight')};`}
+        >
+          <p class="text-sm font-semibold" style={`color: ${navy};`}>semantic.ground.raised + a 2px rule</p>
+          <p class="mt-1 text-sm" style={`color: ${value('semantic.ink.bodyOnLight')};`}>
+            This is what “raised” looks like in this system: a ground change and a <code>border.rule</code>. No shadow
+            was harmed.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Focus and opacity</h3>
+      <div class="mt-4 grid gap-6 lg:grid-cols-2">
+        <div class="border-2 p-6" style={`border-color: ${greige};`}>
+          <p class="text-sm" style={`color: ${inkMuted};`}>{groupDescription('focus')}</p>
+          <p class="mt-3 font-mono text-xs" style={`color: ${ember};`}>
+            focus.width = {value('focus.width')} · focus.offset = {value('focus.offset')} · focus.style ={' '}
+            {value('focus.style')}
+          </p>
+          <div class="mt-4 flex flex-wrap gap-6">
+            <span
+              class="inline-block px-6 py-3 text-sm font-semibold"
+              style={`background: ${ember}; color: ${value('semantic.primary.on')}; border-radius: ${value('radius.control')}; outline: ${value('focus.width')} ${value('focus.style')} ${value('semantic.state.focus')}; outline-offset: ${value('focus.offset')};`}
+            >
+              focus on light
+            </span>
+            <span
+              class="inline-block px-6 py-3 text-sm font-semibold"
+              style={`background: ${midnight}; color: ${paper}; border-radius: ${value('radius.control')}; outline: ${value('focus.width')} ${value('focus.style')} ${value('semantic.state.focusOnDark')}; outline-offset: ${value('focus.offset')};`}
+            >
+              focusOnDark
+            </span>
+          </div>
+        </div>
+        <div class="border-2 p-6" style={`border-color: ${greige};`}>
+          <ul class="space-y-3">
+            {
+              group('opacity').map((row) => (
+                <li>
+                  <p class="font-mono text-xs" style={`color: ${ember};`}>
+                    opacity.{row.name} = {row.resolved}
+                  </p>
+                  <p class="mt-1 text-sm" style={`color: ${inkMuted};`}>
+                    {row.$description}
+                  </p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 6. Components ──────────────────────────────────────────────────── -->
+    <section id="components" class="mt-16" style="font-family: var(--brand-font-body);">
+      <h2
+        class="font-extrabold"
+        style={`font-size: ${value('typeScale.displayRow')}; line-height: ${value('lineHeight.display')}; letter-spacing: ${value('tracking.displayNormal')}; color: ${navy}; font-family: var(--brand-font-display);`}
+      >
+        Components
+      </h2>
+      <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        These are the real components from <code>src/components/venue/</code>, imported, not reproduced. If one of them
+        regresses, it regresses here first.
+      </p>
+
+      <h3 class="mt-8 text-lg font-bold" style={`color: ${navy};`}>BookButton</h3>
+      <p class="mt-1 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        <code>solid</code> and <code>outline</code> are light-ground variants; <code>onDark</code> is for a dark field and
+        is shown twice — on light, where it is wrong, and on dark, where it belongs. Note the divergence flagged under Pending:
+        <code>onDark</code> renders a paper fill, while <code>semantic.primary.onDarkFill</code> in the token file is an amber
+        fill with midnight ink.
+      </p>
+      <div class="mt-4 grid gap-0 lg:grid-cols-2">
+        <div class="flex flex-wrap items-center gap-4 p-6" style={`background: ${value('semantic.ground.base')};`}>
+          <div>
+            <BookButton venue={demoVenue} variant="solid" />
+            <p class="mt-2 font-mono text-xs" style={`color: ${inkMuted};`}>variant="solid" size="md"</p>
+          </div>
+          <div>
+            <BookButton variant="outline" label="See rates" />
+            <p class="mt-2 font-mono text-xs" style={`color: ${inkMuted};`}>variant="outline"</p>
+          </div>
+          <div>
+            <BookButton variant="onDark" label="onDark, on light" />
+            <p class="mt-2 font-mono text-xs" style={`color: ${inkMuted};`}>variant="onDark" — wrong ground</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-4 p-6" style={`background: ${value('semantic.ground.hero')};`}>
+          <div>
+            <BookButton variant="onDark" size="lg" />
+            <p class="mt-2 font-mono text-xs" style={`color: ${slate};`}>variant="onDark" size="lg" — correct ground</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>TrustStrip</h3>
+      <p class="mt-1 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        Real venue data from the <code>venues</code> collection. Full-bleed in production; boxed here.
+      </p>
+      <div class="mt-4 border-2" style={`border-color: ${greige};`}>
+        <TrustStrip />
+      </div>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>HoursTable</h3>
+      <p class="mt-1 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        Showing <code>{demoVenue.data.name}</code>.
+      </p>
+      <div class="mt-4 max-w-md border-2 p-6" style={`border-color: ${greige};`}>
+        <HoursTable venue={demoVenue} />
+      </div>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>WaitlistForm</h3>
+      <p class="mt-1 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        Degrades to a <code>mailto:</code> when <code>PUBLIC_LEAD_ENDPOINT</code> is unset, and says so rather than dropping
+        the lead.
+      </p>
+      <div class="mt-4 max-w-2xl">
+        <WaitlistForm listName="styleguide" heading="Join the list" />
+      </div>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>LeagueCard — all three registration states</h3>
+      <p class="mt-1 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        One real league entry with <code>state</code> swapped, so the three are honestly comparable. No state is a dead end:
+        <code>open</code> registers, <code>full</code> and <code>between</code> both fall through to the waitlist.
+      </p>
+      <div class="mt-4 grid gap-8 lg:grid-cols-2">
+        {
+          demoLeagues.map((demo) => (
+            <div>
+              <p class="mb-2 font-mono text-xs" style={`color: ${ember};`}>
+                {demo.label}
+              </p>
+              <LeagueCard league={demo.entry} />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ── 7. Motion, z-index, breakpoints ────────────────────────────────── -->
+    <section id="spec" class="mt-16" style="font-family: var(--brand-font-body);">
+      <h2
+        class="font-extrabold"
+        style={`font-size: ${value('typeScale.displayRow')}; line-height: ${value('lineHeight.display')}; letter-spacing: ${value('tracking.displayNormal')}; color: ${navy}; font-family: var(--brand-font-display);`}
+      >
+        Motion, z-index, breakpoints
+      </h2>
+
+      <h3 class="mt-8 text-lg font-bold" style={`color: ${navy};`}>Motion</h3>
+      <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>{groupDescription('motion')}</p>
+      <table class="mt-4 w-full text-left text-sm">
+        <thead>
+          <tr class="border-b-2" style={`border-color: ${navy};`}>
+            <th scope="col" class="py-2 pr-4">Token</th>
+            <th scope="col" class="py-2 pr-4">Value</th>
+            <th scope="col" class="py-2">Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            group('motion.duration').map((row) => (
+              <tr class="border-b" style={`border-color: ${greige};`}>
+                <td class="py-2 pr-4 font-mono text-xs">motion.duration.{row.name}</td>
+                <td class="py-2 pr-4 font-mono text-xs">{row.resolved}</td>
+                <td class="py-2" style={`color: ${inkMuted};`}>
+                  {row.$description}
+                </td>
+              </tr>
+            ))
+          }
+          {
+            group('motion.easing').map((row) => (
+              <tr class="border-b" style={`border-color: ${greige};`}>
+                <td class="py-2 pr-4 font-mono text-xs">motion.easing.{row.name}</td>
+                <td class="py-2 pr-4 font-mono text-xs">cubic-bezier({row.resolved})</td>
+                <td class="py-2" style={`color: ${inkMuted};`}>
+                  {row.$description ?? '—'}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>z-index</h3>
+      <table class="mt-4 w-full text-left text-sm">
+        <thead>
+          <tr class="border-b-2" style={`border-color: ${navy};`}>
+            <th scope="col" class="py-2 pr-4">Token</th>
+            <th scope="col" class="py-2 pr-4">Value</th>
+            <th scope="col" class="py-2 pr-4">Tailwind utility</th>
+            <th scope="col" class="py-2">Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            group('zIndex').map((row) => (
+              <tr class="border-b" style={`border-color: ${greige};`}>
+                <td class="py-2 pr-4 font-mono text-xs">zIndex.{row.name}</td>
+                <td class="py-2 pr-4 font-mono text-xs">{row.resolved}</td>
+                <td class="py-2 pr-4 font-mono text-xs">z-{row.name.toLowerCase()}</td>
+                <td class="py-2" style={`color: ${inkMuted};`}>
+                  {row.$description ?? '—'}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>Breakpoints</h3>
+      <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>{groupDescription('breakpoint')}</p>
+      <table class="mt-4 w-full text-left text-sm">
+        <thead>
+          <tr class="border-b-2" style={`border-color: ${navy};`}>
+            <th scope="col" class="py-2 pr-4">Token</th>
+            <th scope="col" class="py-2 pr-4">Min width</th>
+            <th scope="col" class="py-2">What changes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            group('breakpoint').map((row) => (
+              <tr class="border-b" style={`border-color: ${greige};`}>
+                <td class="py-2 pr-4 font-mono text-xs">breakpoint.{row.name}</td>
+                <td class="py-2 pr-4 font-mono text-xs">{row.resolved}</td>
+                <td class="py-2" style={`color: ${inkMuted};`}>
+                  {row.$description}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <p class="mt-3 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        These are token values, not Tailwind's breakpoints. Custom properties cannot be used inside
+        <code>@media</code>, so <code>sm:</code>, <code>md:</code>, <code>lg:</code> and <code>xl:</code> in the markup still
+        resolve to Tailwind's own defaults (640/768/1024/1280px). Keeping the two in sync is a manual job the compiler flags
+        in a comment at the foot of <code>tokens.css</code>.
+      </p>
+    </section>
+
+    <!-- ── 8. Pending implementation ──────────────────────────────────────── -->
+    <section id="pending" class="mt-16" style="font-family: var(--brand-font-body);">
+      <div class="border-4 p-6 lg:p-10" style={`border-color: ${ember};`}>
+        <h2
+          class="font-extrabold"
+          style={`font-size: ${value('typeScale.displayRow')}; line-height: ${value('lineHeight.display')}; letter-spacing: ${value('tracking.displayNormal')}; color: ${navy}; font-family: var(--brand-font-display);`}
+        >
+          Pending implementation
+        </h2>
+        <p class="mt-2 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+          Straight from <code>notes.pendingImplementation</code>. {groupDescription('notes.pendingImplementation')}
+        </p>
+        <ul class="mt-6 space-y-5">
+          {
+            pendingImplementation().map((note) => (
+              <li class="border-l-4 pl-4" style={`border-color: ${value('semantic.state.warning')};`}>
+                <p class="font-mono text-sm font-bold" style={`color: ${ember};`}>
+                  {note.name}
+                </p>
+                <p
+                  class="mt-1 max-w-prose-page text-sm"
+                  style={`color: ${value('semantic.ink.bodyOnLight')}; line-height: ${value('lineHeight.body')};`}
+                >
+                  {note.text}
+                </p>
+              </li>
+            ))
+          }
+          <li class="border-l-4 pl-4" style={`border-color: ${value('semantic.state.warning')};`}>
+            <p class="font-mono text-sm font-bold" style={`color: ${ember};`}>bodyFaceAlsoNotWired</p>
+            <p
+              class="mt-1 max-w-prose-page text-sm"
+              style={`color: ${value('semantic.ink.bodyOnLight')}; line-height: ${value('lineHeight.body')};`}
+            >
+              Not in the token file, found while building this page: the repository declares no <code>@font-face</code>
+              at all. <code>public/fonts/open-sans-*.woff2</code> ships but nothing references it, so
+              <code>font.body</code> is falling back too — not just <code>font.display</code>.
+            </p>
+          </li>
+          <li class="border-l-4 pl-4" style={`border-color: ${value('semantic.state.warning')};`}>
+            <p class="font-mono text-sm font-bold" style={`color: ${ember};`}>typeScalePairingUndeclared</p>
+            <p
+              class="mt-1 max-w-prose-page text-sm"
+              style={`color: ${value('semantic.ink.bodyOnLight')}; line-height: ${value('lineHeight.body')};`}
+            >
+              <code>typeScale</code>, <code>tracking</code> and <code>lineHeight</code> are three independent scales with
+              no declared binding between them. Until one exists, every surface picks its own pairing and the type section
+              above has to infer one from token names.
+            </p>
+          </li>
+        </ul>
+
+        <div class="mt-8 border-t-2 pt-6" style={`border-color: ${greige};`}>
+          <p
+            class="text-sm"
+            style={`color: ${value('semantic.ink.bodyOnLight')}; line-height: ${value('lineHeight.body')};`}
+          >
+            <strong>Changing a token.</strong> Edit
+            <code>marketing/websites/the-links/design/tokens.json</code>, run <code>npm run tokens:build</code>, and
+            commit both files. <code>src/styles/tokens.css</code> is generated — never hand-edit it.
+            <code>npm run tokens:check</code> fails the build if it is stale, and re-measures
+            {' '}every gated pairing so a palette tweak cannot quietly ship a 3.2:1 button. The prose companion to this
+            page is <code>marketing/websites/the-links/design/STYLE-GUIDE.md</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Referenced so the specimen palette is obviously live, not decorative. -->
+    <p class="mt-12 text-xs" style={`color: ${inkMuted};`}>
+      Rendered from tokens.json v{meta.version} ({meta.date}). Ground vocabulary in use on this page:
+      <span style={`color: ${navy};`}>navy</span>, <span style={`color: ${ember};`}>ember</span>,
+      <span style={`background: ${midnight}; color: ${amber}; padding: 0 0.25rem;`}>amber on midnight</span>,
+      <span style={`background: ${midnight}; color: ${screenLight}; padding: 0 0.25rem;`}>screenLight on midnight</span
+      >.
+    </p>
+  </div>
+</BaseLayout>

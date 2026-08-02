@@ -15,7 +15,14 @@ export default defineConfig({
   site: 'https://thelinks.golf',
   output: 'static',
   trailingSlash: 'always',
-  integrations: [mdx(), react(), sitemap()],
+  integrations: [
+    mdx(),
+    react(),
+    // /styleguide is an internal reference page. It already emits
+    // `<meta name="robots" content="noindex">`; keeping it out of the sitemap
+    // stops us asking Google to crawl a page we then tell it to drop.
+    sitemap({ filter: (page) => !page.includes('/styleguide') }),
+  ],
   redirects,
   vite: {
     plugins: [tailwindcss()],
