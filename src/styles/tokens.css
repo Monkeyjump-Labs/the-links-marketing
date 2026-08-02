@@ -14,35 +14,198 @@
  *   vars into Tailwind theme tokens (so `bg-grape`, `text-ink`, `font-mono`,
  *   the section spacing utilities, etc. all resolve to these values).
  *
- * The values here are NEUTRAL PLACEHOLDERS. They exist only so the starter
- * builds and demonstrates the block system. Swap them for real brand tokens.
+ * -----------------------------------------------------------------------------
+ * BRAND: The Links — indoor golf, Lakeville + Stillwater, Minnesota.
+ * Source of truth: marketing/websites/the-links/brand-direction.md
+ * Machine-readable source: marketing/websites/the-links/design/tokens.json (DTCG)
+ *
+ * The slot names below (watermelon, grape, banana …) are inherited from the
+ * starter's BrandColor union and are NEUTRAL. They have been remapped to The
+ * Links' palette; the slot name no longer describes the hue. Read the comment,
+ * not the key.
+ *
+ * Every foreground/background pairing named below has a computed WCAG 2.1
+ * contrast ratio. Body text pairings are >= 4.5:1 (AA). Non-text pairings
+ * (focus rings, borders, disabled fills) are >= 3:1 or explicitly marked as
+ * decorative-only.
  * ========================================================================== */
+
+/* -- Self-hosted web fonts -------------------------------------------------
+ * No external CDN request is made. Files live in `public/fonts/` and are
+ * served from this origin. Both families are VARIABLE fonts: one file covers
+ * the whole weight range, so adding a weight costs zero bytes.
+ * `font-display: swap` — text paints immediately in the fallback and reflows
+ * when the face lands; the HTML is never blocked on a font.
+ * Critical path (latin only): 34 KB display + 43 KB body = 77 KB.
+ * ------------------------------------------------------------------------- */
+
+/* Bitter — display / headings. Variable, 300–800. */
+@font-face {
+  font-family: 'Bitter';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('/fonts/bitter-normal-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Bitter';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('/fonts/bitter-normal-latin-ext.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Open Sans — body / UI. Variable, 400–700, roman + italic. */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/open-sans-normal-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/open-sans-normal-latin-ext.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/open-sans-italic-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/open-sans-italic-latin-ext.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
 
 :root {
   /* -- Color primitives ---------------------------------------------------- */
   /* Palette "slot" names are inherited from the block model's BrandColor union.
-     Treat them as neutral, swappable slots — remap freely to your brand. */
-  --brand-watermelon: #d16666;
-  --brand-pink: #d98da5;
-  --brand-grape: #6d5bd0;
-  --brand-lavender: #b3a7e8;
-  --brand-banana: #e8c860;
-  --brand-gold: #d9a441;
-  --brand-mint: #7cc6a8;
-  --brand-teal: #4a9d9c;
-  --brand-blue: #5b8dd0;
-  --brand-off-white: #f6f6f4;
-  --brand-soft-black: #1c1c1e;
+     Treat them as neutral, swappable slots — remapped here to The Links.
+     Ratios in the comments are computed WCAG 2.1 relative-luminance ratios. */
+
+  /* CLAY RED — the error / alert tone. The only red in the system.
+     text on #FFFFFF 7.19:1 · on #F7F5F3 6.61:1 · #F7F5F3 text on it 6.61:1 */
+  --brand-watermelon: #a22c22;
+
+  /* GREIGE — retained verbatim from the existing theme (`--lightAccent`).
+     Secondary light field; 54 sections use it today.
+     #124B2E ink on it 7.81:1 · #8A400A ember on it 5.74:1 */
+  --brand-pink: #e5e1e0;
+
+  /* EMBER — THE ACTION COLOUR. Replaces the accidental slate blue #7794A6,
+     which fails AA at 3.20:1 with white text. Warm, drawn from the pendant
+     light measured in the venue photography (every frame R−B +15..+19).
+     #FFFFFF text on it 7.45:1 · #F7F5F3 text on it 6.85:1
+     survives the starter's `hover:brightness-125` at 4.91:1 (still AA)
+     and `hover:opacity-90` at 5.51:1. As text on #FFFFFF 7.45:1. */
+  --brand-grape: #8a400a;
+
+  /* EMBER TINT — light warm field for callouts / featured-offer blocks.
+     #124B2E ink on it 7.62:1. Decorative fill only — never text-bearing. */
+  --brand-lavender: #f0dcc9;
+
+  /* AMBER — the pendant light itself. Lives on DARK fields only.
+     on #124B2E 5.49:1 · on #0D3520 7.35:1 · on #FFFFFF 1.85:1 ✗ (never do this) */
+  --brand-banana: #f3b268;
+
+  /* EMBER MID — the focus / state ember (`focus:border-gold`).
+     vs #F7F5F3 4.37:1 and vs #FFFFFF 4.76:1 — clears the 3:1 non-text gate.
+     Border and ring use only: do NOT use as a text-bearing fill (white on it
+     is 4.76:1 at rest but 3.20:1 after `hover:brightness-125`). */
+  --brand-gold: #b85718;
+
+  /* SAGE — retained verbatim from the existing theme (`--darkAccent`).
+     Demoted from "dark section background" (where white text scored 2.02:1)
+     to a LIGHT field. #124B2E ink on it 5.01:1 · white on it 2.02:1 ✗ */
+  --brand-mint: #9cbead;
+
+  /* SCREEN BLUE — the informational / status tone. The surviving trace of the
+     old slate #7794A6, darkened until it passes: the only cool element in the
+     photography is the simulator projection, so the hue keeps one job.
+     #FFFFFF text on it 7.49:1 · #F7F5F3 text on it 6.89:1 */
+  --brand-teal: #2e5a6e;
+
+  /* NIGHT GREEN — the deepest field, for sections that sit over or beside the
+     near-black interior photography (33–38% of every frame is near-black).
+     #FFFFFF on it 13.57:1 · #E5E1E0 on it 10.46:1 · #F3B268 amber on it 7.35:1 */
+  --brand-blue: #0d3520;
+
+  /* OFF-WHITE — the raised light surface, and the "white" text colour used on
+     every dark fill (`text-surface`). Barely warm, so it reads as paper rather
+     than screen next to the warm photography.
+     #124B2E ink on it 9.32:1 · on #8A400A ember 6.85:1 · on #124B2E 9.32:1 */
+  --brand-off-white: #f7f5f3;
+
+  /* FOREST — the brand's real equity. Verbatim from the existing theme, where
+     it is declared as the theme "black" (`--black-hsl: 149.47,61.29%,18.24%`).
+     Serves as both ink and dark field.
+     on #FFFFFF 10.14:1 · on #F7F5F3 9.32:1 · on #E5E1E0 7.81:1 · on #9CBEAD 5.01:1 */
+  --brand-soft-black: #124b2e;
 
   /* Semantic aliases (prefer these in new components) */
-  --brand-ink: var(--brand-soft-black);
-  --brand-surface: var(--brand-off-white);
-  --brand-primary: var(--brand-grape);
-  --brand-accent: var(--brand-teal);
+  --brand-ink: var(--brand-soft-black); /* #124B2E */
+  --brand-surface: var(--brand-off-white); /* #F7F5F3 */
+  --brand-primary: var(--brand-grape); /* #8A400A */
+  --brand-accent: var(--brand-teal); /* #2E5A6E */
 
-  /* -- Typography ---------------------------------------------------------- */
-  --brand-font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --brand-font-mono: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  /* -- State tokens --------------------------------------------------------
+   * Additive keys (not mapped into Tailwind's @theme — reach for them with an
+   * arbitrary value, e.g. `text-[color:var(--brand-state-success)]`).
+   * They exist so the state palette has one home rather than being re-invented
+   * per component. */
+  --brand-ink-muted: #456052; /* secondary text — on #FFFFFF 6.89:1, on #E5E1E0 5.31:1 */
+  --brand-state-focus: var(--brand-gold); /* #B85718 — 4.37:1 vs #F7F5F3 (non-text gate 3:1) */
+  --brand-state-error: var(--brand-watermelon); /* #A22C22 — 7.19:1 on #FFFFFF */
+  --brand-state-error-on-dark: #f2a2a2; /* 5.05:1 on #124B2E */
+  --brand-state-success: #155e36; /* 7.82:1 on #FFFFFF, 6.02:1 on #E5E1E0 */
+  --brand-state-success-on-dark: #a8e0c0; /* 6.80:1 on #124B2E */
+  --brand-state-disabled-surface: #e5e1e0; /* greige fill */
+  --brand-state-disabled-ink: #52685b; /* 4.64:1 on #E5E1E0, 6.02:1 on #FFFFFF — disabled stays readable */
+
+  /* -- Typography ----------------------------------------------------------
+   * TWO families, down from three. Alfa Slab One (single weight, display-only,
+   * clogs below ~24px) is retired from the web build and retained only inside
+   * the drawn wordmark. Poppins — loaded on 41 pages to set one button — is
+   * deleted outright.
+   *
+   * `--brand-font-mono` is the starter's DISPLAY slot: global.css maps it to
+   * `font-mono`, which is what every heading and button label in this codebase
+   * uses. It is not a monospace slot on this site. Do not put code in it.
+   * ---------------------------------------------------------------------- */
+
+  /* Body / UI — Open Sans, retained from the existing site. 400 / 600 / 700. */
+  --brand-font-sans:
+    'Open Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Display / headings / button labels — Bitter. 500 / 700 / 800.
+     Fallback is a slab-ish serif stack so the swap does not change genus. */
+  --brand-font-mono: 'Bitter', ui-serif, Georgia, 'Iowan Old Style', 'Times New Roman', Times, serif;
 
   /* -- Spacing rhythm (vertical section spacing) --------------------------- */
   --brand-section-y: 4rem;

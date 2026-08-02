@@ -19,7 +19,17 @@ const {
   noIndex = false,
 } = Astro.props;
 
-const fullTitle = title.includes(globalData.siteName) ? title : `${title} ${globalData.metaTitleSuffix}`;
+/**
+ * Append the brand suffix — but only when the result still fits in a SERP.
+ *
+ * Google truncates around 60 characters. Our titles already carry the thing that
+ * actually wins the click: a geographic cue ("— Lakeville & Stillwater, MN").
+ * If appending the brand would push the title past the cut, the brand is what we
+ * drop, because a truncated geo cue costs more than a missing brand name.
+ */
+const TITLE_MAX = 60;
+const withSuffix = `${title} ${globalData.metaTitleSuffix}`;
+const fullTitle = title.includes(globalData.siteName) ? title : withSuffix.length <= TITLE_MAX ? withSuffix : title;
 let absoluteShareImage: string | undefined;
 try {
   absoluteShareImage = shareImage ? new URL(shareImage, Astro.site).href : undefined;

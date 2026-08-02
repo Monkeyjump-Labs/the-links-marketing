@@ -1,0 +1,245 @@
+---
+/**
+ * "Lessons" is the wrong front door. The playbook says broaden it and lead with
+ * a lighter entry point — "book a swing evaluation" converts better than asking
+ * someone to commit to a package (playbook-sim-venue.md §4). So the page leads
+ * with one session, and the packages sit under it.
+ *
+ * The instructor credentials here are unusually strong for the segment — a Class
+ * A PGA professional, a state Hall of Fame coach, two varsity head coaches — and
+ * they are a genuine E-E-A-T asset, so they stay in crawlable text rather than
+ * becoming a carousel of headshots.
+ *
+ * The commercial model as published is a direct handoff to four independent
+ * coaches with no prices and no booking. That is stubbed, not papered over.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookButton from '../components/venue/BookButton.astro';
+
+const metadata = {
+  metaTitle: 'Golf Lessons & Practice — Lakeville, MN | The Links',
+  metaDescription:
+    'Golf lessons and swing work on GolfZon NX in Lakeville, MN. PGA and varsity coaching staff, 1:1 or group. Start with a swing evaluation.',
+};
+
+/**
+ * Four independent instructors. Every credential below is quoted from what the
+ * coach publishes about themselves; nothing is embellished. Each one is booked
+ * directly — that is the arrangement, and hiding it would waste the visitor's
+ * first email.
+ */
+const coaches = [
+  {
+    name: 'Barry Wallin',
+    title: 'Class A PGA Golf Professional',
+    credentials: [
+      'Director of Golf Instruction at Emerald Greens Golf Course, Hastings MN, overseeing a staff of 30 and a programme serving over 900 students',
+      'Has coached the Rosemount girls golf teams since 1991',
+      'Three-time Section 3AAA Girls Golf Coach of the Year (2009, 2014, 2017)',
+      'Two-time Minnesota State AAA Girls Golf Coach of the Year (2009, 2014)',
+      'Inducted into the Minnesota State Golf Coaches Association Hall of Fame, 2018',
+    ],
+    email: 'barry.wallin@futuresclub.org',
+    phone: '651-245-5899',
+  },
+  {
+    name: 'David Anderson',
+    title: 'Assistant Golf Professional',
+    credentials: [
+      'On staff at The Meadows at Mystic Lake since 2022',
+      'Played collegiate golf at the University of St. Thomas',
+      'Head Boys Varsity Golf Coach, Eden Prairie High School, 2020–2022',
+      'Former director of the Get a Grip Youth Golf League',
+    ],
+    email: 'David.Anderson@mysticlakegolf.com',
+    phone: '952-233-2890',
+  },
+  {
+    name: 'Tamara Colucci',
+    title: 'Varsity head coach, Eastview High School',
+    credentials: [
+      'Has been coaching golf for 25 years',
+      'Teams placed 5th and 3rd at the State Tournament',
+      'Also instructs at the Emerald Greens Golf Course camps alongside Barry Wallin',
+    ],
+    email: 'tcgolfer44@gmail.com',
+    phone: '612-306-4409',
+  },
+  {
+    name: 'Nick Stoulil',
+    title: 'Golf Academy of America graduate',
+    credentials: [
+      'Played in over 30 mini-tour events',
+      'Teaching certificate; completed the Players Ability Test at Ken McDonald GC, Tempe AZ',
+      'Made the Academic Directors List; earned Players Credentials',
+      'Tournament operations experience',
+    ],
+    email: 'nstoulil@yahoo.com',
+    phone: '952-465-9109',
+  },
+];
+
+/** Who each format is actually for, in plain words. */
+const formats = [
+  [
+    'A swing evaluation',
+    'One session. You hit balls, the launch monitor records every one of them, and a coach tells you the two things worth changing. No package, no plan, no commitment. This is the right place to start if you are not sure lessons are for you.',
+  ],
+  [
+    'One-to-one lessons',
+    'Ongoing work with the same coach. Best if you have a specific problem — a slice, a short game, a handicap that has not moved in three years.',
+  ],
+  [
+    'Group lessons',
+    'Two to four of you with one coach. Cheaper per person, and less exposing than being watched alone if that is what has been putting you off.',
+  ],
+  [
+    'Beginners and kids',
+    'From "I have never held a club". Nobody is watching, nobody is waiting behind you, and the simulator does not care how many you take.',
+  ],
+];
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">Lessons &amp; practice</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink/70">
+      Start with one session, not a package. Book a bay, spend an hour with a coach, and find out what your swing is
+      actually doing before you commit to changing it.
+    </p>
+
+    {/* 1. The low-commitment entry point, above everything else. */}
+    <section class="mt-10 rounded border-2 border-primary p-8">
+      <h2 class="text-2xl font-bold">Book a swing evaluation</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        An hour in a bay with one of the coaches below. The simulator measures every shot — ball speed, launch, spin,
+        where it actually went rather than where you thought it went — and the coach reads it back to you and picks the
+        one or two changes worth making. You leave with something specific to work on. You are not signed up to
+        anything.
+      </p>
+      <p class="mt-4 max-w-2xl text-ink/70">Contact a coach directly to arrange a time, then book the bay here.</p>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <a
+          href="#coaches"
+          class="inline-block rounded bg-primary px-6 py-3 font-semibold text-surface hover:opacity-90"
+        >
+          Choose a coach
+        </a>
+        <BookButton size="md" variant="outline" label="Book a practice bay" />
+      </div>
+    </section>
+
+    {/* 2. What a first session is actually like — the anxiety, answered. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">What a first session looks like</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        You are in an enclosed bay, indoors, with a door and a screen — not on a range with a queue behind you. Bring
+        your own clubs if you have them; rental sets are $15 at Lakeville and balls are included. You hit, the system
+        records, the coach talks. That is the hour.
+      </p>
+      <p class="mt-4 max-w-2xl rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB —</strong> session length, whether video is used, whether you leave with your numbers, and what the coach
+        expects you to bring have not been confirmed with the coaching staff. The paragraph above is written from what the
+        venue publishes about its bays, not from a described lesson.
+      </p>
+    </section>
+
+    {/* 3. Formats. Broadened past the word "lessons", per the playbook. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">Ways to work on it</h2>
+      <dl class="mt-6 grid gap-6 sm:grid-cols-2">
+        {
+          formats.map(([title, body]) => (
+            <div>
+              <dt class="text-lg font-semibold">{title}</dt>
+              <dd class="mt-1 text-ink/70">{body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    {/* 4. Price. Unpublished, so said so — not implied by omission. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">What it costs</h2>
+      <div class="mt-6 rounded border-2 border-dashed border-ink/25 p-6">
+        <p class="text-ink/70">
+          <strong>STUB —</strong> no lesson pricing is published anywhere today. Each coach sets and quotes their own rate,
+          so the honest current answer is "ask the coach" — which loses the visitor who wanted to know whether this is a $60
+          decision or a $600 one before they email a stranger.
+        </p>
+        <p class="mt-4 font-semibold">Needed from the client and the coaching staff:</p>
+        <ul class="mt-3 list-disc space-y-1 pl-5 text-ink/70">
+          <li>A price, or a price range, for a single session</li>
+          <li>Whether bay time is included in the lesson fee or billed separately</li>
+          <li>Group rates, and any multi-lesson package</li>
+          <li>Junior rates</li>
+          <li>Whether instruction is available at Stillwater, and with whom</li>
+        </ul>
+      </div>
+    </section>
+
+    {/* 5. The coaches. Credentials in crawlable text — a real trust asset. */}
+    <section class="mt-section" id="coaches">
+      <h2 class="text-3xl font-bold">The coaches</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        Four independent instructors teach at Lakeville. They are not employees — you contact them directly, agree a
+        time, and they teach in our bays. Pick whoever fits; if you are not sure, email any of them and say so.
+      </p>
+
+      <ul class="mt-8 grid gap-6 lg:grid-cols-2">
+        {
+          coaches.map((coach) => (
+            <li class="rounded border-2 border-ink/15 p-6">
+              <h3 class="text-xl font-semibold">{coach.name}</h3>
+              <p class="mt-1 text-sm font-medium text-ink/60">{coach.title}</p>
+              <ul class="mt-4 list-disc space-y-1 pl-5 text-sm text-ink/70">
+                {coach.credentials.map((c) => (
+                  <li>{c}</li>
+                ))}
+              </ul>
+              <p class="mt-4 text-sm">
+                <a href={`mailto:${coach.email}`} class="font-semibold underline">
+                  {coach.email}
+                </a>
+                <span class="text-ink/50"> · </span>
+                <a href={`tel:+1${coach.phone.replace(/\D/g, '')}`} class="font-semibold underline">
+                  {coach.phone}
+                </a>
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB —</strong> photographs of each coach, and confirmation that all four are still teaching here. Every credential
+        above is transcribed from the current site; re-confirm with each coach before launch.
+      </p>
+    </section>
+
+    {/* 6. Practice without a coach — the other half of "lessons and practice". */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">Just want to hit balls</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        You do not need a coach to use a bay. Book an hour, choose the practice range instead of a course, and work
+        through a bucket while the launch monitor tells you what each one did. In February that is the only range in
+        Minnesota that is open.
+      </p>
+      <p class="mt-4 max-w-2xl text-ink/70">
+        If you practise regularly, prepaid <a href="/memberships/" class="font-semibold underline">LinksFlex hours</a> work
+        out cheaper per hour than walking in.
+      </p>
+    </section>
+
+    {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
+    <section class="mt-section rounded bg-surface p-8">
+      <h2 class="text-2xl font-bold">Book the bay</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        Arrange the time with your coach, then reserve the hour here. Or book a practice hour on your own and start
+        there.
+      </p>
+      <div class="mt-6"><BookButton size="lg" /></div>
+    </section>
+  </section>
+</BaseLayout>

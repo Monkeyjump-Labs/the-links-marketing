@@ -1,0 +1,216 @@
+---
+/**
+ * "The Bays". Name the technology — 42% of the segment names none, and GolfZon,
+ * TrackMan and Full Swing are search terms with real credibility weight
+ * (playbook-core.md §8, playbook-sim-venue.md §4).
+ *
+ * ⚠️ NX vs TwoVision is contradicted across the client's own live pages and this
+ * is the single most consequential fact on the site.
+ *   - Current pages (homepage, /stillwater) say "GolfZon NX".
+ *   - /home-old, /home-2 and /news/golfzon-twovision — all still live, all still
+ *     indexed — say "6 GolfZon TwoVision simulators".
+ *   - AI-generated search summaries are repeating the TwoVision claim today,
+ *     i.e. the site is actively teaching answer engines a fact that may be false
+ *     (seo-map.md §0).
+ * This page publishes NX because that is what the current pages say, but the
+ * claim MUST be confirmed with the client before launch, along with whether and
+ * when Lakeville was re-fitted. Everything downstream — schema, titles, the
+ * homepage hero — inherits this answer.
+ *
+ * ⚠️ Also unconfirmed: the "240+ courses" figure appears ONLY on the retired
+ * homepages and is not repeated on the current site, so it is stubbed rather
+ * than republished.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookButton from '../components/venue/BookButton.astro';
+import { getVenues, venuePath } from '../lib/venues';
+
+const venues = await getVenues();
+
+const metadata = {
+  metaTitle: 'GolfZon NX Simulator Bays — Lakeville & Stillwater MN',
+  metaDescription:
+    'Six GolfZon NX bays in Lakeville, four in Stillwater MN — moving swing plate, auto tee-up, real ball flight. Five of six bays suit lefties.',
+};
+
+/** What the hardware actually does, described for someone who has never used one. */
+const hardware = [
+  [
+    'A moving swing plate',
+    'The floor you stand on tilts. On an uphill lie it tilts uphill; in a bunker shot it drops. That is the part people do not expect, and it is why the ball behaves like it does outdoors rather than like a video game.',
+  ],
+  [
+    'High-speed camera sensors',
+    'Cameras above and beside you read the club and the ball at impact — speed, face angle, path, spin, launch. Nothing is attached to you and nothing is attached to the club.',
+  ],
+  [
+    'Auto tee-up and ball return',
+    'The machine tees the next ball for you. You do not bend down between shots, and you do not run out of balls — they are included, you never bring your own.',
+  ],
+  [
+    'A touchscreen next to you',
+    'You pick the course, the difficulty and the wind, and it keeps score for everyone in the bay. Staff set it up on your first visit; you do not need to know anything going in.',
+  ],
+];
+
+/** Practice and play are different products in the same bay. */
+const modes = [
+  [
+    'Play a course',
+    'Eighteen holes on a real course, rendered hole by hole. Budget about an hour per person — four of you in one bay is roughly a four-hour round, which is why most groups play nine or split across two bays.',
+  ],
+  [
+    'Practise',
+    'A driving range and a putting green with no queue, no weather and no lost balls. Every shot comes back with numbers, which is the point — you find out what your 7-iron actually carries instead of what you tell people it carries.',
+  ],
+  [
+    'Play a game',
+    'Closest-to-the-pin, longest drive, and the arcade-style formats. This is what a group who do not really golf ends up playing, and it is fine — that is most of the room.',
+  ],
+];
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">The bays</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink/70">
+      Ten <strong>GolfZon NX</strong> simulator bays across two venues. You hit a real ball with a real club into a screen,
+      the cameras read what happened, and the floor under you tilts to match the lie. Nothing is strapped to you and nothing
+      needs setting up.
+    </p>
+
+    {/* 1. Per venue, with the numbers a golfer actually screens on. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">What is where</h2>
+      <ul class="mt-8 grid gap-6 md:grid-cols-2">
+        {
+          venues.map((venue) => (
+            <li class="rounded border-2 border-ink/15 p-6">
+              <h3 class="text-xl font-semibold">
+                <a href={venuePath(venue)} class="hover:underline">
+                  {venue.data.name}
+                </a>
+              </h3>
+              <p class="mt-2 text-ink/70">
+                {venue.data.bays} bays · {venue.data.simulator}
+              </p>
+              {venue.data.intro && <p class="mt-3 text-ink/70">{venue.data.intro}</p>}
+              <div class="mt-6">
+                <BookButton venue={venue} size="sm" variant="outline" />
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <dl class="mt-10 grid gap-6 sm:grid-cols-2">
+        <div>
+          <dt class="font-semibold">Left-handed players</dt>
+          <dd class="mt-1 text-ink/70">
+            Five of the six Lakeville bays are set up for both right and left handers. One is right-handed only, so if
+            you are a lefty in a group of six, say so when you book.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-semibold">Clubs and balls</dt>
+          <dd class="mt-1 text-ink/70">
+            Balls are included — every bay has its own. Bring your own clubs if you have them; rental sets are $15 at
+            Lakeville and they are basic, not fitted.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-semibold">How many in a bay</dt>
+          <dd class="mt-1 text-ink/70">
+            Up to six people, though four is the number that keeps a round moving. Lakeville seats up to 36 golfers
+            across all six bays.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-semibold">Screens</dt>
+          <dd class="mt-1 text-ink/70">Nine TVs at Lakeville, so whatever is on is on while you play.</dd>
+        </div>
+      </dl>
+
+      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB —</strong> the Stillwater equivalents are unknown: how many of the four bays play left-handed, the TV
+        count, seating, whether club rental is available there, and whether it is $15. A left-handed golfer in Stillwater
+        currently cannot find out whether they can play at all.
+      </p>
+    </section>
+
+    {/* 2. The technology, named and explained. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">What GolfZon NX does</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        GolfZon is one of the three simulator systems people compare — the others you will see around the Twin Cities
+        are TrackMan and Full Swing. NX is GolfZon's current generation. Four things separate it from hitting into a
+        net.
+      </p>
+      <dl class="mt-8 grid gap-8 md:grid-cols-2">
+        {
+          hardware.map(([title, body]) => (
+            <div>
+              <dt class="text-lg font-semibold">{title}</dt>
+              <dd class="mt-2 text-ink/70">{body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <p class="mt-8 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB — confirm before launch.</strong> The current site says GolfZon NX; three older pages that are still
+        live say GolfZon TwoVision, and third-party directories and AI search summaries are repeating TwoVision today. We
+        need a straight answer on which system is in the Lakeville bays and, if it was re-fitted, when. This is the single
+        most consequential unconfirmed fact on the site.
+      </p>
+    </section>
+
+    {/* 3. What you can do with it. Practice vs play, per the spec. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">Practice, play, or just mess about</h2>
+      <dl class="mt-8 grid gap-8 md:grid-cols-3">
+        {
+          modes.map(([title, body]) => (
+            <div>
+              <dt class="text-lg font-semibold">{title}</dt>
+              <dd class="mt-2 text-ink/70">{body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <p class="mt-8 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB —</strong> the course list. A "240+ courses and 6 arcade games" figure exists only on two retired homepages
+        and is not repeated on the current site, so it is not republished here. We need the current course count and, ideally,
+        five or six named courses people would recognise — that is what the golfer comparing venues is looking for.
+      </p>
+    </section>
+
+    {/* 4. Never used one. The largest addressable market (playbook-core.md §8). */}
+    <section class="mt-section rounded bg-surface p-8">
+      <h2 class="text-2xl font-bold">Never used one?</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        Most people in the building have not either. Staff start the bay for you and show you the screen. Turn the
+        difficulty down, turn the wind off, and take as many shots as you like — there is no group behind you and the
+        bay is yours for the hour. If you top one, the machine tees another ball up.
+      </p>
+      <p class="mt-4 max-w-2xl text-ink/70">
+        You do not need clubs, you do not need shoes, and you do not need to know the rules.
+      </p>
+    </section>
+
+    {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
+    <section class="mt-section">
+      <h2 class="text-2xl font-bold">Try one</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        A bay is $35 an hour through 3 October 2026 — per bay, not per person, up to five of you.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-4">
+        <BookButton size="lg" />
+        <a href="/rates/" class="inline-block rounded border-2 border-current px-8 py-4 font-semibold hover:bg-ink/5">
+          See rates &amp; hours
+        </a>
+      </div>
+    </section>
+  </section>
+</BaseLayout>

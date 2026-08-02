@@ -1,0 +1,227 @@
+---
+/**
+ * Merges the old /about (facility facts) and /our-story (voice). The /our-story
+ * voice is the best writing on the site — "six feet of Minnesota sadness",
+ * "Apparently having multiple locations means you're supposed to look
+ * professional or something" — and it matches the segment rule that warm and
+ * slightly irreverent beats premium and serious (playbook-sim-venue.md §2). It
+ * is kept close to verbatim rather than rewritten into brochure prose.
+ *
+ * This page also has an SEO job: "Lakeville Links" still outranks "The Links"
+ * in branded demand and will for a year. The old name has to appear in body
+ * copy here so the brand-transition query resolves on this site rather than on a
+ * directory (seo-map.md §1.3). Do NOT purge it.
+ *
+ * #press and #sponsors are redirect targets for the retired /news and
+ * /advertisinglogos pages (seo-map.md §4), so the anchors must stay stable.
+ *
+ * Press is cited as links only. No quote is attributed to any outlet that was
+ * not captured verbatim, and none was.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookButton from '../components/venue/BookButton.astro';
+import { getVenues, venuePath } from '../lib/venues';
+
+const venues = await getVenues();
+
+const metadata = {
+  metaTitle: 'About The Links — Indoor Golf in Lakeville & Stillwater',
+  metaDescription:
+    'Two neighbours, one long Minnesota winter, now two clubhouses — Lakeville since 2022, Stillwater since 2026. The story, the press, the sponsors.',
+};
+
+/** Coverage. Titles, outlets and dates as published — links, not pull quotes. */
+const press = [
+  {
+    outlet: 'TwinCitiesGolf.com',
+    title: 'FIRST LOOK at The Links of Stillwater Indoor Golf Simulators in Stillwater, Minnesota',
+    date: '2026',
+    href: 'https://www.twincitiesgolf.com/news/the-links-of-stillwater-indoor-golf-simulators-in-stillwater-minnesota',
+  },
+  {
+    outlet: 'TwinCitiesGolf.com',
+    title: 'First Look at Lakeville Indoor Golf',
+    date: '25 October 2022',
+    href: 'https://www.youtube.com/watch?v=3_T1b032Zew',
+  },
+  {
+    outlet: 'TwinCitiesGolf.com',
+    title: 'Sneak Peek: Pre-Opening Look Inside Lakeville Links',
+    date: '19 October 2022',
+    href: 'https://www.youtube.com/watch?v=WXRRgKPt4lM',
+  },
+  {
+    outlet: 'Sun ThisWeek',
+    title: 'Lakeville Links golf simulator business may open by August',
+    date: '25 April 2022',
+    href: 'https://www.hometownsource.com/sun_thisweek/community/lakeville/lakeville-links-golf-simulator-business-may-open-by-august/article_f2a604b8-c190-11ec-b825-5f8dcde4e300.html',
+  },
+];
+
+/** Bay sponsors at Lakeville. Local businesses, on the bays, by name. */
+const sponsors = [
+  { bay: 'Bay 1', name: 'Align' },
+  { bay: 'Bay 2', name: 'Thor' },
+  { bay: 'Bay 4', name: 'Von Hanson' },
+  { bay: 'Bay 5', name: 'Miller' },
+  { bay: 'Bay 6', name: 'Kretsch' },
+];
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">About The Links</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink/70">
+      Two golfers, one Wednesday-night habit, and a Minnesota winter that keeps getting in the way of it. That is
+      genuinely the whole origin story.
+    </p>
+
+    {/* 1. The story, in the founders' own voice. */}
+    <div class="mt-section max-w-prose-page">
+      <h2 class="text-3xl font-bold">Two guys who wanted somewhere better to play</h2>
+      <p class="mt-4 text-ink/70">
+        It started in December 2021. CJ had run outdoor golf leagues for years, and he and Cody played every Wednesday
+        night through the summer. As neighbours and friends, when winter rolled round and golf season disappeared into
+        six feet of Minnesota sadness, they kept the Wednesday tradition alive with what they called bourbon nights —
+        because apparently that is what golfers do when there is snow on the ground.
+      </p>
+      <p class="mt-4 text-ink/70">
+        One night, after visiting an indoor simulator somewhere else, they looked at each other and said there had to be
+        a better option for the Lakeville area. So they toured golf simulator businesses around the Twin Cities. Every
+        place they visited made them think, "this doesn't look THAT hard." Spoiler alert: it was.
+      </p>
+      <p class="mt-4 text-ink/70">
+        They formed the LLC in January 2022 and started looking for space. Then came choosing the technology. After
+        visiting several venues they landed on GolfZon, because it felt the most immersive and realistic — basically the
+        closest thing to real golf without losing balls in the woods or blaming your driver for everything.
+      </p>
+      <p class="mt-4 text-ink/70">
+        The goal was simple: the best golf experience they could build, paired with good food, cold drinks, and a place
+        people actually wanted to hang around in. <strong>Lakeville Links opened in the autumn of 2022.</strong> For an IT
+        professional and a commodity broker pretending to know how to open an entertainment business, they think it went pretty
+        okay.
+      </p>
+
+      <h2 class="mt-12 text-3xl font-bold">Then came Stillwater</h2>
+      <p class="mt-4 text-ink/70">
+        Through a mutual connection, the owner of Stillwater Bowl turned out to have some old golf simulators and no
+        idea what to do with them. And when they say old, they mean old — the software was literally running on Windows
+        98.
+      </p>
+      <p class="mt-4 text-ink/70">
+        After more planning, more due diligence and several conversations that started with "are we really doing this
+        again?", it turned out to be a genuinely good opportunity: a chance to give the Stillwater golf community
+        somewhere to play, hang out, and get through a long Minnesota winter without losing their swing or their sanity.
+        <strong>The Links of Stillwater opened in February 2026.</strong>
+      </p>
+
+      <h2 class="mt-12 text-3xl font-bold">The rebrand</h2>
+      <p class="mt-4 text-ink/70">
+        With a second location, it was time for a rebrand. Apparently having multiple locations means you are supposed
+        to look professional or something. So <strong>Lakeville Links</strong> became <strong
+          >The Links of Lakeville</strong
+        >, alongside <strong>The Links of Stillwater</strong>, under one name: <strong>The Links</strong>. They also
+        bought thelinks.golf, because somehow ".golf" is a real thing and it felt meant to be.
+      </p>
+      <p class="mt-4 text-ink/70">
+        If you knew the place as Lakeville Links, nothing has changed except the sign. Same bays, same bar, same people
+        behind it — CJ and Cody.
+      </p>
+    </div>
+
+    {/* 2. The two venues, with the facility facts. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">The two venues</h2>
+      <ul class="mt-8 grid gap-6 md:grid-cols-2">
+        {
+          venues.map((venue) => (
+            <li class="rounded border-2 border-ink/15 p-6">
+              <h3 class="text-xl font-semibold">
+                <a href={venuePath(venue)} class="hover:underline">
+                  {venue.data.name}
+                </a>
+              </h3>
+              <p class="mt-1 text-sm text-ink/60">
+                Open since {venue.data.openedYear} · {venue.data.addressLocality}, {venue.data.addressRegion}
+              </p>
+              {venue.data.intro && <p class="mt-3 text-ink/70">{venue.data.intro}</p>}
+              <div class="mt-6">
+                <BookButton venue={venue} size="sm" variant="outline" />
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {/* 3. Press. Redirect target for the retired /news shell — keep the anchor. */}
+    <section class="mt-section" id="press">
+      <h2 class="text-3xl font-bold">In the press</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        Coverage of both openings, from people who came and looked before writing about it.
+      </p>
+      <ul class="mt-8 divide-y divide-ink/10">
+        {
+          press.map((item) => (
+            <li class="py-4">
+              <a href={item.href} class="font-semibold hover:underline" target="_blank" rel="noopener">
+                {item.title}
+              </a>
+              <p class="mt-1 text-sm text-ink/60">
+                {item.outlet} · {item.date}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB —</strong> links only, deliberately. No quotation is reproduced from any of these pieces because none
+        was captured verbatim during handover, and inventing one is not an option. If the client wants pull quotes, send the
+        sentences and the outlet will be credited properly.
+      </p>
+    </section>
+
+    {/* 4. Sponsors. Redirect target for /advertisinglogos — keep the anchor. */}
+    <section class="mt-section" id="sponsors">
+      <h2 class="text-3xl font-bold">The bay sponsors</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        Five Lakeville bays carry the name of a local business that backed the place. If you play Bay 2, you are playing
+        Thor's bay.
+      </p>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          sponsors.map((sponsor) => (
+            <li class="rounded border-2 border-ink/15 p-4">
+              <p class="text-sm text-ink/60">{sponsor.bay}</p>
+              <p class="mt-1 text-lg font-semibold">{sponsor.name}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB —</strong> sponsor logo files and each sponsor's website, so these become links rather than names. Bay
+        3 has no sponsor listed — confirm whether it is unsold or simply missing from the handover. No Stillwater sponsors
+        exist yet.
+      </p>
+    </section>
+
+    {/* 5. Proof. 81% of the segment shows no reviews; we still will not invent any. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">What people say</h2>
+      <p class="mt-3 max-w-2xl rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB —</strong> awaiting real, attributed reviews and the Google Business Profile link for each venue. Reviews
+        exist on third-party listings but the counts and ratings there conflict with each other, so nothing is quoted or counted
+        here until the client confirms the source. Unsourced quotes are not shipped.
+      </p>
+    </section>
+
+    {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
+    <section class="mt-section rounded bg-surface p-8">
+      <h2 class="text-2xl font-bold">Come and see it</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        Book an hour at either venue. Bring people who do not golf — that is most of the room anyway.
+      </p>
+      <div class="mt-6"><BookButton size="lg" /></div>
+    </section>
+  </section>
+</BaseLayout>

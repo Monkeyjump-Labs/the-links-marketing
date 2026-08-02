@@ -1,0 +1,157 @@
+---
+/**
+ * The booking and cancellation policy.
+ *
+ * The playbook calls the cancellation window the top pre-booking objection in
+ * the segment and says it is almost never answered (playbook-sim-venue.md §4).
+ * It is REQUIRED on /book and it is required here — and it was not recoverable
+ * from the handover, so it is stubbed prominently rather than guessed
+ * (sitemap.md §5).
+ *
+ * ⚠️ For the client's answer: a "free cancellation up to 48 hours ahead, 100% of
+ * the bay charge inside 48 hours" rule appears on the current site's booking
+ * interstitials — the pages being deleted. It is NOT published here because it
+ * has not been confirmed as current policy, and shipping an unconfirmed
+ * cancellation charge is the one stub that could cost a customer money.
+ * Confirm and publish, and mirror the same words on /book.
+ *
+ * ⚠️ Note: seo-map.md §4 redirects the old /policy to /policies. This build ships
+ * /policy as the canonical booking-policy URL; reconcile the redirect map before
+ * launch so the two do not both resolve.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookButton from '../components/venue/BookButton.astro';
+import { getVenues, telHref } from '../lib/venues';
+
+const venues = await getVenues();
+
+const metadata = {
+  metaTitle: 'Booking & Cancellation Policy — The Links, MN',
+  metaDescription:
+    'How booking, payment and cancellation work at The Links in Lakeville and Stillwater, Minnesota. Read this before you reserve a simulator bay.',
+};
+
+/** The rules the current site does publish, in plain words. */
+const rules = [
+  [
+    'You pay for the whole booking',
+    'You are responsible for the full time you reserved, even if you finish early. Book the hours you want, not the hours you might want.',
+  ],
+  [
+    'Your slot ends five minutes early',
+    'Every booking finishes at five minutes to the hour so the next group can start on time. Plan the last hole accordingly.',
+  ],
+  [
+    'We may move you to a different bay',
+    'We reserve the right to move a booking to another bay to fit the tee sheet together. If you need a left-handed bay, say so when you book.',
+  ],
+  [
+    'How long to book for',
+    'Roughly one hour per person for 18 holes. One person is about an hour, four people in one bay is about four. If that is longer than you want, book two bays or play nine.',
+  ],
+];
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-prose-page px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">Booking &amp; cancellation policy</h1>
+    <p class="mt-4 text-lg text-ink/70">
+      What you are agreeing to when you reserve a bay at The Links of Lakeville or The Links of Stillwater. Booking
+      itself happens in Whoosh, our reservation system.
+    </p>
+
+    {/* The stub goes FIRST because it is the question people came for. */}
+    <section class="mt-10 rounded border-2 border-dashed border-ink/40 p-6">
+      <h2 class="text-2xl font-bold">Cancellations</h2>
+      <p class="mt-3 font-semibold">STUB — the cancellation window is not confirmed and must not be guessed.</p>
+      <p class="mt-3 text-ink/70">
+        This is the most common question anyone asks before booking a simulator bay, and almost nobody in this industry
+        answers it. We are not going to publish a number we have not had confirmed, because being wrong about it costs a
+        customer money.
+      </p>
+      <p class="mt-4 font-semibold">Needed from the client, before launch:</p>
+      <ul class="mt-3 list-disc space-y-1 pl-5 text-ink/70">
+        <li>How far ahead a booking can be cancelled free of charge</li>
+        <li>What is charged inside that window, and whether it differs by venue</li>
+        <li>How you cancel — in the Whoosh app, by phone, or either</li>
+        <li>Whether a booking can be moved rather than cancelled, and by when</li>
+        <li>What happens to a no-show</li>
+        <li>Weather and closure policy: what happens if we close and you had a booking</li>
+      </ul>
+      <p class="mt-4 text-sm text-ink/60">
+        Whatever the answer is, it must appear in the same words here and on the booking page.
+      </p>
+    </section>
+
+    <section class="mt-section">
+      <h2 class="text-2xl font-bold">Paying</h2>
+      <p class="mt-3 text-ink/70">
+        A card is required to make a reservation at either venue, and the two venues handle it differently:
+      </p>
+      <ul class="mt-4 list-disc space-y-2 pl-5 text-ink/70">
+        <li>
+          <strong>Lakeville</strong> — a hold is placed on your card. The charge transfers to the till at the venue, so you
+          can split the bill with your group at the end.
+        </li>
+        <li>
+          <strong>Stillwater</strong> — your card is charged in full at the time of booking.
+        </li>
+      </ul>
+      <p class="mt-4 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB —</strong> confirm both of the above are still current. They are transcribed from booking pages that
+        this rebuild deletes. Also confirm the 3% credit-card surcharge that appears on the Lakeville menu, and whether it
+        applies to bay time as well as food.
+      </p>
+    </section>
+
+    <section class="mt-section">
+      <h2 class="text-2xl font-bold">Your booking</h2>
+      <dl class="mt-6 space-y-6">
+        {
+          rules.map(([title, body]) => (
+            <div>
+              <dt class="font-semibold">{title}</dt>
+              <dd class="mt-1 text-ink/70">{body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="mt-section">
+      <h2 class="text-2xl font-bold">Still to be written</h2>
+      <p class="mt-3 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+        <strong>STUB —</strong> this page also needs: the walk-in policy, minimum age and any unaccompanied-minor rule, the
+        alcohol and outside-food rules, the dress and footwear rule if there is one, damage liability, any waiver a guest
+        is asked to sign, and the group or event deposit terms. Membership and LinksFlex terms live with the
+        <a href="/memberships/" class="underline"> memberships</a> page and need the same treatment.
+      </p>
+    </section>
+
+    <section class="mt-section">
+      <h2 class="text-2xl font-bold">Ask us instead</h2>
+      <p class="mt-3 text-ink/70">
+        If something here is not answered, phone the venue — it is faster than email and someone is there during opening
+        hours.
+      </p>
+      <ul class="mt-4 space-y-1 text-ink/70">
+        {
+          venues.map((venue) => (
+            <li>
+              {venue.data.name}:{' '}
+              <a href={telHref(venue.data.phone)} class="font-semibold underline">
+                {venue.data.phone}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
+    <section class="mt-section rounded bg-surface p-8">
+      <h2 class="text-2xl font-bold">Ready to book</h2>
+      <div class="mt-6"><BookButton size="lg" /></div>
+    </section>
+  </section>
+</BaseLayout>

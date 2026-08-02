@@ -1091,6 +1091,15 @@ being decommissioned, and a redirect that depends on the old CMS staying paid fo
 
 ### 4.2 The URL table — all 41 current URLs
 
+> **Reconciled 2026-08-02 during build:** rows 30–32 of the table below proposed `/policies`,
+> `/policies/linksflex-terms` and `/policies/membership-terms`. The build ships a single
+> **`/policy`** page instead — the old site's `/policy` path is unchanged, so it needs no redirect
+> at all, and splitting three thin legal pages out of one contradicts the playbook's
+> "small-and-complete beats large-and-thin". `vercel.json` maps the two terms URLs to `/policy/`.
+> Row 24's `/gallery` is also not built — `/photo-gallery` maps to `/about/` until there is a
+> gallery worth having.
+
+
 Old URLs are relative to `https://www.lakevillelinks.com`. New URLs are relative to
 `https://thelinks.golf`. Cut list per `current-site-audit.md` §3.
 

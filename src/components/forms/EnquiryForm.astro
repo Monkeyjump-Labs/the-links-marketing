@@ -1,0 +1,99 @@
+---
+/**
+ * The events lead-capture form. Events are the highest revenue per visit in the
+ * segment, and the playbook is explicit: "Lead with a lead-capture form — do not
+ * bury it under 1,500 words of packages" (playbook-sim-venue.md §4).
+ *
+ * Same shape and degradation behaviour as WaitlistForm: posts to
+ * PUBLIC_LEAD_ENDPOINT, and with no endpoint configured falls back to a mailto so
+ * an enquiry is never silently dropped.
+ *
+ * "Which venue" is a required field. It is the only two-location accommodation
+ * anywhere in the current site's forms and it is the one we must not lose.
+ */
+import { getVenues } from '../../lib/venues';
+
+interface Props {
+  heading?: string;
+  blurb?: string;
+  listName: string;
+  email?: string;
+  id?: string;
+}
+
+const {
+  heading = 'Tell us about your event',
+  blurb = 'Give us the date and rough numbers and we will come back with what it costs. No obligation.',
+  listName,
+  email = 'info@lakevillelinks.com',
+  id,
+} = Astro.props;
+
+const venues = await getVenues();
+const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT;
+const formId = id ?? `enquiry-${listName.replace(/\W+/g, '-').toLowerCase()}`;
+
+const field = 'w-full rounded border border-ink/20 px-3 py-2 text-sm';
+const labelClass = 'block text-sm font-medium';
+---
+
+<form
+  class="rounded border-2 border-ink/15 bg-surface p-6"
+  action={endpoint ?? `mailto:${email}`}
+  method={endpoint ? 'POST' : 'GET'}
+  data-analytics={`enquiry:${listName}`}
+  id={formId}
+>
+  <h2 class="text-2xl font-bold">{heading}</h2>
+  <p class="mt-2 text-ink/70">{blurb}</p>
+
+  <input type="hidden" name="list" value={listName} />
+  <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+  <div class="mt-6 grid gap-4 sm:grid-cols-2">
+    <div>
+      <label class={labelClass} for={`${formId}-name`}>Your name</label>
+      <input id={`${formId}-name`} name="name" type="text" required class={`mt-1 ${field}`} />
+    </div>
+    <div>
+      <label class={labelClass} for={`${formId}-venue`}>Which venue</label>
+      <select id={`${formId}-venue`} name="venue" required class={`mt-1 ${field}`}>
+        {venues.map((venue) => <option value={venue.data.slug}>{venue.data.name}</option>)}
+        <option value="either">Either — help me choose</option>
+      </select>
+    </div>
+    <div>
+      <label class={labelClass} for={`${formId}-email`}>Email</label>
+      <input id={`${formId}-email`} name="email" type="email" required class={`mt-1 ${field}`} />
+    </div>
+    <div>
+      <label class={labelClass} for={`${formId}-phone`}>Phone</label>
+      <input id={`${formId}-phone`} name="phone" type="tel" class={`mt-1 ${field}`} />
+    </div>
+    <div>
+      <label class={labelClass} for={`${formId}-date`}>Date you have in mind</label>
+      <input id={`${formId}-date`} name="date" type="date" class={`mt-1 ${field}`} />
+    </div>
+    <div>
+      <label class={labelClass} for={`${formId}-size`}>How many people</label>
+      <input id={`${formId}-size`} name="groupSize" type="number" min="1" inputmode="numeric" class={`mt-1 ${field}`} />
+    </div>
+    <div class="sm:col-span-2">
+      <label class={labelClass} for={`${formId}-message`}>Anything else we should know</label>
+      <textarea id={`${formId}-message`} name="message" rows="4" class={`mt-1 ${field}`}></textarea>
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="mt-6 inline-block rounded bg-primary px-6 py-3 font-semibold text-surface transition hover:opacity-90"
+  >
+    Send my enquiry
+  </button>
+
+  {
+    !endpoint && (
+      <p class="mt-3 text-xs text-ink/40">Lead endpoint not configured — this form opens an email instead.</p>
+    )
+  }
+</form>

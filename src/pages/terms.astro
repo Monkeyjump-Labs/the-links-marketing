@@ -1,0 +1,89 @@
+---
+/**
+ * Legal shell for the website's terms of use. Kept separate from /policy, which
+ * is the booking and cancellation policy a customer actually reads before
+ * reserving — conflating the two buries the one people came for.
+ *
+ * Every substantive clause is a marked stub. Nothing here has been drafted or
+ * reviewed by a lawyer.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookButton from '../components/venue/BookButton.astro';
+
+const metadata = {
+  metaTitle: 'Terms of Use — The Links, Lakeville & Stillwater MN',
+  metaDescription:
+    'Terms of use for thelinks.golf, the website of The Links of Lakeville and The Links of Stillwater, Minnesota, and how they relate to booking.',
+};
+
+const sections = [
+  [
+    'Who runs this site',
+    'thelinks.golf is operated by the business behind The Links of Lakeville and The Links of Stillwater, Minnesota.',
+    'the correct legal entity name, registered address and state of incorporation. Three different entity names appear across the current legal pages, and none of them names Stillwater.',
+  ],
+  [
+    'Booking happens somewhere else',
+    'Reservations are taken in Whoosh, a third-party system. Using it means agreeing to their terms as well as ours, and the booking rules that apply to your reservation are on our booking policy page.',
+    'confirmation that the Whoosh terms are the ones that govern a reservation, and a link to them.',
+  ],
+  [
+    'Prices and information on this site',
+    'We publish rates, hours and menus as text on purpose. They can change, and the price you are shown at the point of booking is the one that applies.',
+    'the wording the client wants for changes, errors and seasonal rate transitions.',
+  ],
+  [
+    'Using the site',
+    'Ordinary use is fine. Scraping it, breaking it, or reusing our photography and copy elsewhere is not.',
+    'the acceptable-use and intellectual-property wording, including the position on third-party logos and sponsor marks.',
+  ],
+  [
+    'Liability and disputes',
+    'The limits of our liability for the website, and where a dispute would be heard.',
+    'the full liability limitation, warranty disclaimer and governing-law clause — Minnesota law, presumably, but that is a lawyer’s call, not ours.',
+  ],
+];
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-prose-page px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">Terms of use</h1>
+    <p class="mt-4 text-lg text-ink/70">The terms that apply to this website.</p>
+
+    <p class="mt-8 rounded border-2 border-dashed border-ink/40 p-6 text-ink/70">
+      <strong>STUB — this page is a structure, not a set of terms.</strong> Nothing below has been drafted or reviewed by
+      a lawyer. It exists so the footer link is not broken and so the client can see exactly which clauses are needed. Do
+      not publish this site to production with this page in this state.
+    </p>
+    <p class="mt-4 text-ink/70">
+      Looking for the rules about your reservation — what you pay for, and how to cancel? Those are on the
+      <a href="/policy/" class="font-semibold underline"> booking and cancellation policy</a> page.
+    </p>
+
+    {
+      sections.map(([title, plain, needed]) => (
+        <section class="mt-12">
+          <h2 class="text-2xl font-bold">{title}</h2>
+          <p class="mt-3 text-ink/70">{plain}</p>
+          <p class="mt-3 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+            <strong>STUB —</strong> needed: {needed}
+          </p>
+        </section>
+      ))
+    }
+
+    <section class="mt-12">
+      <h2 class="text-2xl font-bold">Contact</h2>
+      <p class="mt-3 text-ink/70">
+        Questions go to <a href="mailto:info@lakevillelinks.com" class="underline">info@lakevillelinks.com</a>.
+      </p>
+    </section>
+
+    {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
+    <section class="mt-section rounded bg-surface p-8">
+      <h2 class="text-2xl font-bold">Book a bay</h2>
+      <p class="mt-3 text-ink/70">$35 an hour per bay, up to five of you, in Lakeville or Stillwater.</p>
+      <div class="mt-6"><BookButton size="lg" /></div>
+    </section>
+  </section>
+</BaseLayout>
