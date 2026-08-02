@@ -1,0 +1,21 @@
+---
+/** FAQPage JSON-LD — only 4% of the audited corpus has it. The AEO surface. */
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  items: CollectionEntry<'faq'>[];
+}
+const { items } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((i) => ({
+    '@type': 'Question',
+    name: i.data.question,
+    acceptedAnswer: { '@type': 'Answer', text: i.data.answer },
+  })),
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

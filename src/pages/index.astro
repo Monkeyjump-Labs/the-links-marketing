@@ -1,9 +1,153 @@
 ---
+/**
+ * Homepage. Section order is the playbook's, ordered by the decision the
+ * visitor is making (playbook-core.md §4) — not by what the client is proudest
+ * of. The trust strip sits immediately under the hero because 67% of simulator
+ * venues have no hours on the homepage at all.
+ */
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import BlockRenderer from '../components/BlockRenderer.astro';
-import { homePage } from '../data/pages/home';
+import TrustStrip from '../components/venue/TrustStrip.astro';
+import BookButton from '../components/venue/BookButton.astro';
+import WaitlistForm from '../components/venue/WaitlistForm.astro';
+import { getVenues, venuePath } from '../lib/venues';
+
+const venues = await getVenues();
+const leagues = (await getCollection('leagues')).filter((l) => l.data.published);
+
+const metadata = {
+  metaTitle: 'Indoor Golf & Simulators — Lakeville & Stillwater, MN',
+  metaDescription:
+    'Two indoor golf venues in the Twin Cities. Book a GolfZon NX bay by the hour, bring up to five friends, full bar and food. Lakeville and Stillwater, MN.',
+};
+
+/** "What you can do here" — jobs, not departments (anti-pattern: org-shaped nav). */
+const things = [
+  { title: 'Play', body: 'Book a bay by the hour. Up to five of you, same price.', href: '/book/' },
+  { title: 'Compete', body: 'Fall and winter leagues at both venues.', href: '/leagues/' },
+  { title: 'Celebrate', body: 'Work parties, birthdays, bachelor parties.', href: '/events/' },
+  { title: 'Improve', body: 'Lessons and practice on a real launch monitor.', href: '/lessons/' },
+  { title: 'Eat & drink', body: 'Full bar, real food, nine screens.', href: '/food-and-drink/' },
+];
 ---
 
-<BaseLayout metadata={homePage.metadata}>
-  <BlockRenderer blocks={homePage.blocks} />
+<BaseLayout metadata={metadata}>
+  {
+    /* 1. Hero — promise + what it is + where, one CTA. Venue-neutral by design:
+      the venue question is asked at the Book click, not the front door. */
+  }
+  <section class="bg-ink text-surface">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <p class="text-sm font-semibold tracking-widest uppercase opacity-70">Lakeville &amp; Stillwater, Minnesota</p>
+      <h1 class="mt-4 max-w-4xl text-4xl leading-tight font-bold lg:text-6xl">
+        Indoor golf that's actually a night out.
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg opacity-80">
+        Ten GolfZon NX bays across two Twin Cities venues. Book by the hour, bring up to five friends for the same
+        price, and let the simulator keep score while you order another round.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <BookButton size="lg" />
+        <a
+          href="/rates/"
+          class="inline-block rounded border-2 border-surface/40 px-8 py-4 font-semibold hover:bg-surface/10"
+        >
+          See rates &amp; hours
+        </a>
+      </div>
+      {
+        /* TODO(content): replace with real venue photography once the Stillwater
+          shoot exists. Stock golf imagery is a ship-blocker (playbook §9). */
+      }
+    </div>
+  </section>
+
+  {/* 2. Trust strip — hours, address, phone. The cheapest, highest-impact block. */}
+  <TrustStrip />
+
+  {/* 3. What you can do here */}
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h2 class="text-3xl font-bold">What you can do here</h2>
+    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        things.map((t) => (
+          <li>
+            <a href={t.href} class="block h-full rounded border-2 border-ink/15 p-6 transition hover:border-primary">
+              <h3 class="text-xl font-semibold">{t.title}</h3>
+              <p class="mt-2 text-ink/70">{t.body}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {
+    /* 4. Proof. 81% of the segment shows no reviews at all — but we will not
+      invent testimonials. Real quotes go here once the client supplies them. */
+  }
+  <section class="bg-surface">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+      <h2 class="text-3xl font-bold">What players say</h2>
+      <p class="mt-4 max-w-2xl text-ink/60">
+        STUB — awaiting real, attributed reviews and the Google Business Profile links for both venues. Unsourced quotes
+        are not shipped.
+      </p>
+    </div>
+  </section>
+
+  {
+    /* 5. The featured offer — the slot that changes monthly (strategy.md §5).
+      Launching in the Sep–Oct window, so it is league registration. */
+  }
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <div class="grid gap-10 lg:grid-cols-2">
+      <div>
+        <p class="text-sm font-semibold tracking-widest uppercase text-primary">This season</p>
+        <h2 class="mt-3 text-3xl font-bold">Fall &amp; winter leagues</h2>
+        <p class="mt-4 text-ink/70">
+          League nights are the reason winter is our busiest season. Teams, handicaps, a live leaderboard and a bar tab.
+          Registration for {leagues[0]?.data.season ?? 'the coming season'} opens soon at both venues.
+        </p>
+        <p class="mt-4 text-ink/70">
+          Never played in one? Most of our league players hadn't either. Handicaps keep it fair.
+        </p>
+        <a href="/leagues/" class="mt-6 inline-block font-semibold underline">See how leagues work</a>
+      </div>
+      <WaitlistForm
+        listName="league-general"
+        heading="Get first word on league sign-ups"
+        blurb="One email when registration opens. Nothing else."
+      />
+    </div>
+  </section>
+
+  {/* 6. The space / the venues */}
+  <section class="bg-surface">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+      <h2 class="text-3xl font-bold">Two venues</h2>
+      <ul class="mt-8 grid gap-6 md:grid-cols-2">
+        {
+          venues.map((venue) => (
+            <li class="rounded border-2 border-ink/15 bg-white p-6">
+              <h3 class="text-xl font-semibold">{venue.data.name}</h3>
+              <p class="mt-2 text-ink/70">{venue.data.intro}</p>
+              <p class="mt-4 text-sm text-ink/60">
+                {venue.data.bays} bays · {venue.data.simulator}
+              </p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <BookButton venue={venue} size="sm" />
+                <a
+                  href={venuePath(venue)}
+                  class="inline-block rounded border-2 border-ink/20 px-4 py-2 text-sm font-semibold hover:bg-ink/5"
+                >
+                  Venue details
+                </a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 </BaseLayout>

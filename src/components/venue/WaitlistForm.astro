@@ -1,0 +1,72 @@
+---
+/**
+ * THE differentiator. Across all 126 audited simulator and golf-course sites,
+ * exactly ZERO offered a waitlist, while 11% of league pages say "registration
+ * closed" and simply stop (playbook-core.md §5).
+ *
+ * Posts to PUBLIC_LEAD_ENDPOINT. With no endpoint configured it degrades to a
+ * mailto so a lead is never silently dropped.
+ */
+interface Props {
+  heading?: string;
+  blurb?: string;
+  listName: string;
+  venue?: string;
+  email?: string;
+}
+
+const {
+  heading = 'Join the list',
+  blurb = 'We will email you the moment registration opens. No other mail, ever.',
+  listName,
+  venue,
+  email = 'info@lakevillelinks.com',
+} = Astro.props;
+
+const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT;
+const formId = `waitlist-${listName.replace(/\W+/g, '-').toLowerCase()}`;
+---
+
+<form
+  class="rounded border-2 border-ink/15 bg-surface p-6"
+  action={endpoint ?? `mailto:${email}`}
+  method={endpoint ? 'POST' : 'GET'}
+  data-analytics={`waitlist:${listName}`}
+  id={formId}
+>
+  <h3 class="text-lg font-semibold">{heading}</h3>
+  <p class="mt-1 text-sm text-ink/70">{blurb}</p>
+
+  <input type="hidden" name="list" value={listName} />
+  {venue && <input type="hidden" name="venue" value={venue} />}
+  <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+  <div class="mt-4 flex flex-col gap-3 sm:flex-row">
+    <label class="sr-only" for={`${formId}-name`}>Your name</label>
+    <input
+      id={`${formId}-name`}
+      name="name"
+      type="text"
+      required
+      placeholder="Your name"
+      class="flex-1 rounded border border-ink/20 px-3 py-2 text-sm"
+    />
+    <label class="sr-only" for={`${formId}-email`}>Email address</label>
+    <input
+      id={`${formId}-email`}
+      name="email"
+      type="email"
+      required
+      placeholder="you@example.com"
+      class="flex-1 rounded border border-ink/20 px-3 py-2 text-sm"
+    />
+    <button type="submit" class="rounded bg-primary px-5 py-2 text-sm font-semibold text-surface hover:opacity-90">
+      Notify me
+    </button>
+  </div>
+  {
+    !endpoint && (
+      <p class="mt-3 text-xs text-ink/40">Lead endpoint not configured — this form opens an email instead.</p>
+    )
+  }
+</form>

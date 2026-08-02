@@ -1,0 +1,46 @@
+---
+/**
+ * The AEO surface. FAQPage schema appears on only 4% of the audited corpus, and
+ * these answers are written to be quotable by an AI assistant answering
+ * "where can I play indoor golf near Stillwater MN".
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqSchema from '../components/venue/FaqSchema.astro';
+
+const items = (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
+
+const categories = [...new Set(items.map((i) => i.data.category))];
+
+const metadata = {
+  metaTitle: 'FAQ — Indoor Golf at The Links, Lakeville & Stillwater MN',
+  metaDescription:
+    'What a bay costs, how many people fit, whether you need clubs, and whether it works if you have never golfed. Answers for both Twin Cities venues.',
+};
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-prose-page px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">Questions</h1>
+
+    {
+      categories.map((category) => (
+        <section class="mt-12">
+          <h2 class="text-2xl font-bold">{category}</h2>
+          <dl class="mt-6 space-y-6">
+            {items
+              .filter((i) => i.data.category === category)
+              .map((i) => (
+                <div class="border-b border-ink/10 pb-6 last:border-0">
+                  <dt class="text-lg font-semibold">{i.data.question}</dt>
+                  <dd class="mt-2 text-ink/70">{i.data.answer}</dd>
+                </div>
+              ))}
+          </dl>
+        </section>
+      ))
+    }
+  </section>
+
+  <FaqSchema items={items} />
+</BaseLayout>

@@ -1,0 +1,42 @@
+---
+/**
+ * The primary CTA. Booking is offsite on Whoosh (decision #5), so the button
+ * SAYS where it goes — playbook core.md §6: "never link out mid-funnel without
+ * warning". Without a venue it routes to /book, which asks which one.
+ */
+import type { Venue } from '../../lib/venues';
+
+interface Props {
+  venue?: Venue;
+  label?: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'solid' | 'outline';
+  class?: string;
+}
+
+const { venue, label, size = 'md', variant = 'solid', class: className = '' } = Astro.props;
+
+const href = venue ? venue.data.bookingUrl : '/book/';
+const isExternal = Boolean(venue);
+const text = label ?? (venue ? `Book at ${venue.data.shortName}` : 'Book a Bay');
+
+const sizes = {
+  sm: 'px-4 py-2 text-sm',
+  md: 'px-6 py-3 text-base',
+  lg: 'px-8 py-4 text-lg',
+};
+const variants = {
+  solid: 'bg-primary text-surface hover:opacity-90',
+  outline: 'border-2 border-current text-ink hover:bg-ink hover:text-surface',
+};
+---
+
+<a
+  href={href}
+  class:list={['inline-block rounded font-semibold transition', sizes[size], variants[variant], className]}
+  {...isExternal ? { target: '_blank', rel: 'noopener' } : {}}
+  data-analytics={venue ? `book:${venue.data.slug}` : 'book:chooser'}
+>
+  {text}{isExternal && <span aria-hidden="true"> →</span>}
+  {isExternal && <span class="sr-only">(opens Whoosh booking in a new tab)</span>}
+</a>

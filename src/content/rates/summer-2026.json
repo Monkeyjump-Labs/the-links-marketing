@@ -1,0 +1,12 @@
+{
+  "season": "Summer 2026",
+  "order": 1,
+  "effectiveFrom": "2026-05-03",
+  "effectiveTo": "2026-10-03",
+  "current": true,
+  "note": "Rates are per bay, not per person - bring up to five friends for the same price.",
+  "rows": [
+    { "label": "Bay rental", "price": "$35 / hour", "eligibility": "Per bay, any day, 3 May - 3 Oct 2026", "venue": "both" },
+    { "label": "Club rental", "price": "$15", "eligibility": "Per set, per visit", "venue": "lakeville" }
+  ]
+}

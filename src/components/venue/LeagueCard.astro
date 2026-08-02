@@ -1,0 +1,100 @@
+---
+/**
+ * Leagues are the worst-executed page type in the corpus: 46% offer no way to
+ * register, 50% state no price, 67% give no beginner reassurance.
+ * The three registration states each get an action — never a dead end.
+ */
+import type { CollectionEntry } from 'astro:content';
+import WaitlistForm from './WaitlistForm.astro';
+
+interface Props {
+  league: CollectionEntry<'leagues'>;
+}
+const { league } = Astro.props;
+const d = league.data;
+
+const stateLabel = {
+  open: 'Registration open',
+  full: 'Full — waitlist open',
+  between: 'Between seasons',
+}[d.state];
+
+const stateClass = {
+  open: 'bg-primary text-surface',
+  full: 'bg-accent text-surface',
+  between: 'bg-ink/10 text-ink',
+}[d.state];
+
+const facts = [
+  ['Format', d.format],
+  ['Night', d.night],
+  ['Starts', d.startDate],
+  ['Length', d.weeks ? `${d.weeks} weeks` : undefined],
+  ['Cost', d.price],
+  ['Prizes', d.prizes],
+].filter(([, v]) => v) as [string, string][];
+---
+
+<article class="rounded border-2 border-ink/15 p-6">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <h3 class="text-xl font-semibold">{d.name}</h3>
+    <span class:list={['rounded-full px-3 py-1 text-xs font-semibold', stateClass]}>{stateLabel}</span>
+  </div>
+
+  <p class="mt-2 text-ink/80">{d.oneLiner}</p>
+  <p class="mt-1 text-sm text-ink/50">{d.season}</p>
+
+  <!-- Beginner reassurance is REQUIRED, not optional: it is the top reason people don't join. -->
+  <p class="mt-4 rounded bg-surface p-3 text-sm">{d.beginnerNote}</p>
+
+  {
+    facts.length > 0 && (
+      <dl class="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+        {facts.map(([label, value]) => (
+          <div>
+            <dt class="text-ink/50">{label}</dt>
+            <dd class="font-medium">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+
+  <div class="mt-6">
+    {
+      d.state === 'open' && d.registerUrl && (
+        <a
+          href={d.registerUrl}
+          target="_blank"
+          rel="noopener"
+          class="inline-block rounded bg-primary px-6 py-3 font-semibold text-surface hover:opacity-90"
+          data-analytics={`league-register:${league.id}`}
+        >
+          Register now <span aria-hidden="true">→</span>
+        </a>
+      )
+    }
+    {
+      d.state !== 'open' && (
+        <>
+          {d.nextSeasonNote && <p class="mb-4 text-sm text-ink/70">{d.nextSeasonNote}</p>}
+          <WaitlistForm
+            listName={`league-${league.id}`}
+            venue={d.venue}
+            heading={d.state === 'full' ? 'Join the waitlist' : 'Tell me when it opens'}
+          />
+        </>
+      )
+    }
+  </div>
+
+  {
+    d.standingsUrl && (
+      <p class="mt-4 text-sm">
+        <a href={d.standingsUrl} class="underline" target="_blank" rel="noopener">
+          Current standings and results
+        </a>
+      </p>
+    )
+  }
+</article>

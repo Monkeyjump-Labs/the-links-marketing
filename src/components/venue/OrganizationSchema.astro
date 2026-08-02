@@ -1,0 +1,22 @@
+---
+/** The parent brand. Both venues point at this with `parentOrganization`. */
+import { getVenues } from '../../lib/venues';
+import { globalData } from '../../data/global';
+
+const venues = await getVenues();
+const site = globalData.siteUrl;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${site}/#organization`,
+  name: globalData.siteName,
+  url: `${site}/`,
+  // No `address` on the Organization — the parent brand is not a place. Today's
+  // site puts Lakeville's address on the org, which is why Stillwater is invisible.
+  subOrganization: venues.map((v) => ({ '@id': `${site}/locations/${v.data.slug}/#venue` })),
+  sameAs: globalData.social.map((s) => s.href),
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

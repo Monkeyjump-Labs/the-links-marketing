@@ -1,0 +1,11 @@
+{
+  "season": "Winter 2026-27",
+  "order": 2,
+  "effectiveFrom": "2026-10-04",
+  "current": false,
+  "note": "STUB - winter pricing has not been supplied by the client. The current published rate expires 3 Oct 2026 and there is no winter rate anywhere on the existing site. This page cannot go live without it.",
+  "rows": [
+    { "label": "Bay rental - peak", "price": "TBC", "eligibility": "Needs client input", "venue": "both" },
+    { "label": "Bay rental - off peak", "price": "TBC", "eligibility": "Needs client input", "venue": "both" }
+  ]
+}

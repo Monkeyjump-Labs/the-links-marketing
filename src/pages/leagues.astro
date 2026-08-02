@@ -1,0 +1,56 @@
+---
+/**
+ * The retention engine, and the worst-executed page type in the corpus.
+ * The waitlist is mandatory in ALL THREE registration states — zero of 126
+ * audited sites offered one (playbook-core.md §5). In August both venues are
+ * between seasons, so the waitlist IS the page's primary action at launch.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LeagueCard from '../components/venue/LeagueCard.astro';
+import LeagueSchema from '../components/venue/LeagueSchema.astro';
+
+const leagues = (await getCollection('leagues'))
+  .filter((l) => l.data.published)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const metadata = {
+  metaTitle: 'Indoor Golf Leagues — Lakeville & Stillwater, MN',
+  metaDescription:
+    'Fall and winter simulator golf leagues at The Links in Lakeville and Stillwater. Handicapped, beginner-friendly, and league nights fill fast — join the list.',
+};
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">Leagues</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink/70">
+      A league is the cheapest way to play all winter and the fastest way to meet people who also think Tuesday is a
+      golf night. Handicaps keep matches fair, so a first-timer and a scratch player can be on the same team.
+    </p>
+
+    <div class="mt-10 grid gap-8 lg:grid-cols-2">
+      {leagues.map((league) => <LeagueCard league={league} />)}
+    </div>
+
+    <section class="mt-section rounded bg-surface p-8">
+      <h2 class="text-2xl font-bold">How league nights work</h2>
+      <p class="mt-3 max-w-2xl text-ink/70">
+        STUB — the season format, night, length, price and prizes have not been supplied for either venue. The structure
+        below is what the page needs before launch.
+      </p>
+      <ul class="mt-4 list-disc space-y-1 pl-5 text-ink/70">
+        <li>What it is, in one line — the format and the commitment</li>
+        <li>Who it is for — explicit beginner reassurance</li>
+        <li>The format — scramble, stroke play or match play; team size; handicapping</li>
+        <li>When — night, start date, number of weeks</li>
+        <li>What it costs — a number</li>
+        <li>What you win</li>
+        <li>How to register, and the waitlist when registration is closed</li>
+        <li>Standings and past winners — the returning-player hook</li>
+      </ul>
+    </section>
+  </section>
+
+  <LeagueSchema leagues={leagues} />
+</BaseLayout>

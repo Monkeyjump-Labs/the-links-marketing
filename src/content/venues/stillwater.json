@@ -1,0 +1,80 @@
+{
+  "name": "The Links of Stillwater",
+  "shortName": "Stillwater",
+  "slug": "stillwater",
+  "order": 2,
+  "streetAddress": "5862 Omaha Ave N",
+  "addressLocality": "Stillwater",
+  "addressRegion": "MN",
+  "postalCode": "55082",
+  "phone": "612-699-0527",
+  "latitude": 45.035,
+  "longitude": -92.822,
+  "bays": 4,
+  "simulator": "GolfZon NX",
+  "bookingUrl": "https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today",
+  "openedYear": 2026,
+  "intro": "Four GolfZon NX bays in the east metro, inside Stillwater Bowl & Lounge. Opened early 2026.",
+  "hours": [
+    {
+      "day": "Mon",
+      "opens": "12:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Tue",
+      "opens": "15:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Wed",
+      "opens": "15:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Thu",
+      "opens": "15:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Fri",
+      "opens": "15:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Sat",
+      "opens": "10:00",
+      "closes": "22:00",
+      "closed": false
+    },
+    {
+      "day": "Sun",
+      "opens": "12:00",
+      "closes": "19:00",
+      "closed": false
+    }
+  ],
+  "hoursNote": "UNVERIFIED. Inferred from a schedule that appears under BOTH venue headings on the current site - it may belong to Lakeville. Confirm before launch.",
+  "amenities": [
+    "Food & drink via Stillwater Bowl & Lounge"
+  ],
+  "verified": false,
+  "needsFromClient": [
+    "Real opening hours - not recoverable from the current site",
+    "Photography - NO photo of this venue exists anywhere today",
+    "Capacity, TV count, private/event space",
+    "Whether food & beverage is Stillwater Bowl's offer or its own",
+    "Whether LinksFlex hour banks apply here (currently Lakeville-only)",
+    "A venue email address",
+    "The correct legal entity for this location"
+  ],
+  "schemaTypes": [
+    "SportsActivityLocation"
+  ],
+  "containedInPlace": "Stillwater Bowl & Lounge"
+}

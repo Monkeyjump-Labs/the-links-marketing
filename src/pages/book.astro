@@ -1,0 +1,79 @@
+---
+/**
+ * The transaction. No marketing interstitial (playbook sim-venue.md §4) — the
+ * current site's "ACKNOWLEDGE AND GO TO BOOKING" wall is deleted.
+ * Booking is offsite on Whoosh, two separate club accounts, so this page's job
+ * is to ask which venue and then get out of the way.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookButton from '../components/venue/BookButton.astro';
+import { getVenues, summariseHours } from '../lib/venues';
+
+const venues = await getVenues();
+
+const metadata = {
+  metaTitle: 'Book a Bay — Indoor Golf in Lakeville & Stillwater, MN',
+  metaDescription:
+    'Book a GolfZon NX bay at The Links. $35 an hour per bay, up to five players, clubs available. Choose Lakeville or Stillwater.',
+};
+
+/** The questions people actually ask before booking. The cancellation window is
+    the top pre-booking objection in the segment and is almost never answered. */
+const beforeYouBook = [
+  ['What it costs', '$35 an hour, per bay — not per person. Through 3 October 2026.'],
+  ['How many fit', 'Up to five people in a bay comfortably.'],
+  [
+    'Clubs',
+    'Rental sets are $15 at Lakeville. Left-handed players are covered — five of the six Lakeville bays play both ways.',
+  ],
+  ['Never played', 'Fine. Put it on easy, nobody is waiting behind you, and the simulator does the scoring.'],
+  ['Walk-ins', 'STUB — walk-in policy needs confirming with the client.'],
+  [
+    'Cancelling',
+    'STUB — the cancellation window needs confirming with the client. This is the most-asked question before booking.',
+  ],
+];
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">Book a bay</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink/70">
+      Pick a venue. Booking opens in Whoosh, our reservation system — you will finish there.
+    </p>
+
+    <ul class="mt-10 grid gap-6 md:grid-cols-2">
+      {
+        venues.map((venue) => (
+          <li class="rounded border-2 border-ink/15 p-6">
+            <h2 class="text-2xl font-semibold">{venue.data.name}</h2>
+            <p class="mt-1 text-sm text-ink/60">
+              {venue.data.streetAddress}, {venue.data.addressLocality}
+            </p>
+            <p class="mt-3 text-sm text-ink/70">{summariseHours(venue).join(' · ')}</p>
+            <p class="mt-3 text-sm text-ink/70">
+              {venue.data.bays} bays · {venue.data.simulator}
+            </p>
+            <div class="mt-6">
+              <BookButton venue={venue} size="md" />
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <section class="mt-section">
+      <h2 class="text-2xl font-bold">Before you book</h2>
+      <dl class="mt-6 grid gap-6 sm:grid-cols-2">
+        {
+          beforeYouBook.map(([q, a]) => (
+            <div>
+              <dt class="font-semibold">{q}</dt>
+              <dd class="mt-1 text-ink/70">{a}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+  </section>
+</BaseLayout>

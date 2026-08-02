@@ -1,0 +1,46 @@
+---
+/**
+ * Per-venue LocalBusiness JSON-LD.
+ *
+ * 61% of audited simulator venues have no LocalBusiness schema, and across seven
+ * multi-location peers NOT ONE shipped correct per-location schema. Two distinct
+ * entities — each with its own NAP, geo and hours — under one parent Organization
+ * is the whole edge here, and it costs nothing.
+ */
+import { schemaOpeningHours, type Venue } from '../../lib/venues';
+import { globalData } from '../../data/global';
+
+interface Props {
+  venue: Venue;
+}
+const { venue } = Astro.props;
+const d = venue.data;
+const site = globalData.siteUrl;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': d.schemaTypes,
+  '@id': `${site}/locations/${d.slug}/#venue`,
+  name: d.name,
+  url: `${site}/locations/${d.slug}/`,
+  telephone: d.phone,
+  ...(d.email ? { email: d.email } : {}),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: d.streetAddress,
+    addressLocality: d.addressLocality,
+    addressRegion: d.addressRegion,
+    postalCode: d.postalCode,
+    addressCountry: 'US',
+  },
+  ...(d.latitude && d.longitude
+    ? { geo: { '@type': 'GeoCoordinates', latitude: d.latitude, longitude: d.longitude } }
+    : {}),
+  openingHours: schemaOpeningHours(venue),
+  parentOrganization: { '@id': `${site}/#organization` },
+  ...(d.containedInPlace ? { containedInPlace: { '@type': 'LocalBusiness', name: d.containedInPlace } } : {}),
+  amenityFeature: d.amenities.map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

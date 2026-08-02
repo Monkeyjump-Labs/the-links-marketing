@@ -1,94 +1,86 @@
 ---
-interface FooterLink {
-  label: string;
-  href: string;
-}
+/**
+ * Footer NAP must match each Google Business Profile character-for-character
+ * (playbook-core.md §7). Both venues appear — a two-venue operator whose footer
+ * shows one address is the defect we are fixing.
+ */
+import { getVenues, summariseHours, formatAddress, telHref, venuePath } from '../../lib/venues';
+import { globalData } from '../../data/global';
 
-interface Props {
-  companyAddress?: string;
-  city?: string;
-  state?: string;
-  zipCode?: number;
-  generalCompanyEmail?: string;
-  copyrightLanguage?: string;
-  companyName?: string;
-  companyPhone?: string;
-  pageLinks?: FooterLink[];
-}
-
-const {
-  companyAddress = '',
-  city = '',
-  state = '',
-  zipCode = 0,
-  generalCompanyEmail = '',
-  copyrightLanguage = 'All rights reserved.',
-  companyName = 'Your Company',
-  companyPhone = '',
-  pageLinks = [],
-} = Astro.props;
-
-const formattedPhone = `+1${companyPhone?.replace(/[\s\-().]/g, '')}`;
+const venues = await getVenues();
+const { footerLinks, nav, social, copyright } = globalData;
 ---
 
-<footer class="bg-banana mt-20">
-  <div class="border-2 border-softBlack p-8 max-w-content mx-auto lg:p-0">
-    <div class="lg:flex lg:flex-row-reverse lg:justify-between">
-      <ul class="list-none p-0 flex flex-col gap-4 m-0 mb-10 lg:mb-0 lg:border-l-2 lg:border-softBlack lg:p-16">
-        {
-          pageLinks.map((item) => (
-            <li>
-              <a class="font-sans text-softBlack no-underline hover:underline hover:text-grape" href={item.href}>
-                {item.label}
+<footer class="mt-section-lg border-t-2 border-ink/15 bg-surface">
+  <div class="mx-auto max-w-content px-gutter py-12 lg:px-gutter-lg">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+      {
+        venues.map((venue) => (
+          <div>
+            <h2 class="text-sm font-semibold tracking-wide uppercase">{venue.data.name}</h2>
+            <address class="mt-3 text-sm not-italic text-ink/70">
+              <a href={venuePath(venue)} class="block hover:underline">
+                {formatAddress(venue)}
               </a>
-            </li>
-          ))
-        }
-      </ul>
-      <div class="lg:px-16 lg:py-16">
-        <ul class="list-none p-0 flex flex-col m-0 mb-10">
-          <li>
-            <span
-              class="text-base leading-relaxed tracking-widest font-sans uppercase font-normal text-softBlack lg:text-lg"
-            >
-              {companyName}
-            </span>
-          </li>
-          <li>
-            <span
-              class="text-base leading-relaxed tracking-widest font-sans uppercase font-normal text-softBlack lg:text-lg"
-            >
-              {companyAddress}
-            </span>
-          </li>
-          <li>
-            <span
-              class="text-base leading-relaxed tracking-widest font-sans uppercase font-normal text-softBlack lg:text-lg"
-            >
-              {city}, {state}, {zipCode}
-            </span>
-          </li>
-          <li>
-            <a
-              href={`mailto:${generalCompanyEmail}`}
-              class="text-base leading-relaxed font-sans text-softBlack block lg:text-xl"
-            >
-              {generalCompanyEmail}
-            </a>
-            <a
-              href={`tel:${formattedPhone}`}
-              class="text-base leading-relaxed font-sans text-softBlack block lg:text-xl"
-            >
-              {companyPhone}
-            </a>
-          </li>
+              <a href={telHref(venue.data.phone)} class="mt-1 block hover:underline">
+                {venue.data.phone}
+              </a>
+              {venue.data.email && (
+                <a href={`mailto:${venue.data.email}`} class="mt-1 block hover:underline">
+                  {venue.data.email}
+                </a>
+              )}
+            </address>
+            <p class="mt-3 text-sm text-ink/60">{summariseHours(venue).join(' · ')}</p>
+          </div>
+        ))
+      }
+
+      <nav aria-label="Footer">
+        <h2 class="text-sm font-semibold tracking-wide uppercase">Visit</h2>
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-ink/70">
+          {
+            nav.map((link) => (
+              <li>
+                <a href={link.href} class="hover:underline">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
         </ul>
-        <div>
-          <span class="text-[0.813rem] leading-none lg:text-sm">
-            &copy; {companyName}. {new Date().getFullYear()}. {copyrightLanguage}
-          </span>
-        </div>
-      </div>
+      </nav>
+
+      <nav aria-label="More">
+        <h2 class="text-sm font-semibold tracking-wide uppercase">More</h2>
+        <ul class="mt-3 flex flex-col gap-2 text-sm text-ink/70">
+          {
+            footerLinks.map((link) => (
+              <li>
+                <a href={link.href} class="hover:underline">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+          {
+            social.map((s) => (
+              <li>
+                <a href={s.href} class="hover:underline" target="_blank" rel="noopener">
+                  {s.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="mt-10 flex flex-wrap gap-4 border-t border-ink/10 pt-6 text-xs text-ink/50">
+      <span>&copy; {new Date().getFullYear()} {copyright.name}. {copyright.language}</span>
+      <a href="/privacy/" class="hover:underline">Privacy</a>
+      <a href="/terms/" class="hover:underline">Terms</a>
+      <a href="/policy/" class="hover:underline">Booking policy</a>
     </div>
   </div>
 </footer>

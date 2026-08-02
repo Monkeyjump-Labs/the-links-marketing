@@ -1,0 +1,46 @@
+---
+/**
+ * Event schema for leagues. Only 1% of the audited corpus uses it — the single
+ * largest untapped structured-data opportunity in the segment.
+ * Emitted only for leagues with a real start date; a stub league emits nothing
+ * rather than invalid markup.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { getVenues, formatAddress } from '../../lib/venues';
+import { globalData } from '../../data/global';
+
+interface Props {
+  leagues: CollectionEntry<'leagues'>[];
+}
+const { leagues } = Astro.props;
+const venues = await getVenues();
+const site = globalData.siteUrl;
+
+const dated = leagues.filter((l) => l.data.startDate && /^\d{4}-\d{2}-\d{2}$/.test(l.data.startDate));
+
+const schema = dated.map((l) => {
+  const venue = venues.find((v) => v.data.slug === l.data.venue);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SportsEvent',
+    name: l.data.name,
+    startDate: l.data.startDate,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    description: l.data.oneLiner,
+    ...(venue
+      ? {
+          location: {
+            '@type': 'Place',
+            name: venue.data.name,
+            address: formatAddress(venue),
+          },
+        }
+      : {}),
+    organizer: { '@id': `${site}/#organization` },
+    ...(l.data.registerUrl ? { url: l.data.registerUrl } : {}),
+  };
+});
+---
+
+{schema.length > 0 && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}

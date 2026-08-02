@@ -92,4 +92,143 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { blog, articles, caseStudies, pages };
+// ── Venue collections ─────────────────────────────────────────────────────────
+// The Links runs two venues. Venue is a DIMENSION of the site, not a fork of it:
+// one set of topic pages, each carrying a venue column or a venue-prefixed row.
+// See marketing/websites/the-links/sitemap.md §1.
+
+/** One row of opening hours. `closed` wins over the times. */
+const hoursRow = z.object({
+  day: z.enum(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']),
+  opens: z.string().optional(), // "12:00" 24h, for schema.org
+  closes: z.string().optional(),
+  closed: z.boolean().default(false),
+});
+
+const venues = defineCollection({
+  type: 'data',
+  schema: z.object({
+    name: z.string(), // "The Links of Lakeville"
+    shortName: z.string(), // "Lakeville" — used in the switcher
+    slug: z.string(),
+    order: z.number().default(0),
+    streetAddress: z.string(),
+    addressLocality: z.string(),
+    addressRegion: z.string().default('MN'),
+    postalCode: z.string(),
+    phone: z.string(),
+    email: z.string().optional(),
+    latitude: z.number().optional(),
+    longitude: z.number().optional(),
+    bays: z.number(),
+    simulator: z.string().default('GolfZon NX'),
+    /**
+     * schema.org types for this venue. Lakeville is also a BarOrPub (full bar);
+     * Stillwater's F&B belongs to its host, so it is not.
+     */
+    schemaTypes: z.array(z.string()).default(['SportsActivityLocation']),
+    /** Set when the venue sits inside another business (Stillwater Bowl & Lounge). */
+    containedInPlace: z.string().optional(),
+    bookingUrl: z.string().url(),
+    mapUrl: z.string().url().optional(),
+    openedYear: z.number().optional(),
+    intro: z.string().optional(),
+    hours: z.array(hoursRow).default([]),
+    hoursNote: z.string().optional(),
+    amenities: z.array(z.string()).default([]),
+    /**
+     * Set false when a field on this venue is inherited/assumed rather than
+     * confirmed by the client. Surfaces a build warning and a CMS note; never
+     * publish an unverified venue fact silently.
+     */
+    verified: z.boolean().default(false),
+    needsFromClient: z.array(z.string()).default([]),
+  }),
+});
+
+/**
+ * Leagues. The playbook's highest-value page type and the worst-executed in the
+ * corpus: 46% of league pages offer no way to register and exactly ZERO of 126
+ * audited sites offered a waitlist. `state` drives all three behaviours and must
+ * never produce a dead end. See playbook-core.md §5.
+ */
+const leagues = defineCollection({
+  type: 'data',
+  schema: z.object({
+    name: z.string(),
+    venue: z.enum(['lakeville', 'stillwater', 'both']),
+    order: z.number().default(0),
+    /** open = register now · full = waitlist · between = notify me */
+    state: z.enum(['open', 'full', 'between']),
+    oneLiner: z.string(), // "Eight weeks. Two-person teams. Wednesday nights."
+    beginnerNote: z.string(), // required — 67% of the corpus omits this
+    format: z.string(),
+    night: z.string().optional(),
+    startDate: z.string().optional(),
+    weeks: z.number().optional(),
+    price: z.string().optional(),
+    prizes: z.string().optional(),
+    registerUrl: z.string().url().optional(),
+    /** Shown when state is `between` — when registration is expected to open. */
+    nextSeasonNote: z.string().optional(),
+    standingsUrl: z.string().url().optional(),
+    season: z.string(), // every dated page carries its season + year
+    published: z.boolean().default(true),
+  }),
+});
+
+/** A rate card for one season. Seasonality is a FIELD, never a second page. */
+const rates = defineCollection({
+  type: 'data',
+  schema: z.object({
+    season: z.string(), // "Summer 2026"
+    order: z.number().default(0),
+    effectiveFrom: z.string().optional(),
+    effectiveTo: z.string().optional(),
+    current: z.boolean().default(false),
+    note: z.string().optional(),
+    rows: z
+      .array(
+        z.object({
+          label: z.string(),
+          price: z.string(), // HTML text, never an image
+          eligibility: z.string().optional(), // price cards carry their own windows
+          venue: z.enum(['lakeville', 'stillwater', 'both']).default('both'),
+        }),
+      )
+      .default([]),
+  }),
+});
+
+/** HTML menu, never a PDF and never a PNG. */
+const menu = defineCollection({
+  type: 'data',
+  schema: z.object({
+    section: z.string(),
+    order: z.number().default(0),
+    venue: z.enum(['lakeville', 'stillwater', 'both']).default('both'),
+    note: z.string().optional(),
+    items: z
+      .array(
+        z.object({
+          name: z.string(),
+          description: z.string().optional(),
+          price: z.string().optional(),
+        }),
+      )
+      .default([]),
+  }),
+});
+
+/** FAQ — the AEO surface. Renders FAQPage schema; 4% of the corpus has it. */
+const faq = defineCollection({
+  type: 'data',
+  schema: z.object({
+    question: z.string(),
+    answer: z.string(),
+    category: z.string().default('General'),
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { blog, articles, caseStudies, pages, venues, leagues, rates, menu, faq };

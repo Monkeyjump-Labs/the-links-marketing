@@ -1,0 +1,82 @@
+{
+  "name": "The Links of Lakeville",
+  "shortName": "Lakeville",
+  "slug": "lakeville",
+  "order": 1,
+  "streetAddress": "17630 Juniper Path Suite H",
+  "addressLocality": "Lakeville",
+  "addressRegion": "MN",
+  "postalCode": "55044",
+  "phone": "612-699-0526",
+  "email": "info@lakevillelinks.com",
+  "latitude": 44.6794,
+  "longitude": -93.2448,
+  "bays": 6,
+  "simulator": "GolfZon NX",
+  "bookingUrl": "https://app.whoosh.io/patron/club/the-links-indoor-golf/agenda/simulators/today",
+  "openedYear": 2022,
+  "intro": "Six GolfZon NX bays, a full bar and nine screens in the south metro. Five bays play both-handed; one is right-handed only.",
+  "hours": [
+    {
+      "day": "Mon",
+      "opens": "11:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Tue",
+      "opens": "11:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Wed",
+      "opens": "11:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Thu",
+      "opens": "11:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Fri",
+      "opens": "11:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Sat",
+      "opens": "11:00",
+      "closes": "21:00",
+      "closed": false
+    },
+    {
+      "day": "Sun",
+      "opens": "11:00",
+      "closes": "21:00",
+      "closed": false
+    }
+  ],
+  "hoursNote": "SUMMER HOURS ONLY (through 3 Oct 2026). Winter hours are not yet supplied.",
+  "amenities": [
+    "Full bar",
+    "Food menu",
+    "9 TVs",
+    "Up to 36 golfers",
+    "Club rental $15",
+    "Left-handed bays"
+  ],
+  "verified": false,
+  "needsFromClient": [
+    "Winter hours (the published schedule ends 3 Oct 2026)",
+    "Confirm 11am-9pm daily is LAKEVILLE's schedule - the source page shows one schedule under two venue headings",
+    "Confirm which phone number is correct (612-699-0526 vs 612-619-1747 both appear)"
+  ],
+  "schemaTypes": [
+    "SportsActivityLocation",
+    "BarOrPub"
+  ]
+}

@@ -1,0 +1,95 @@
+---
+/**
+ * The per-venue local-SEO anchor page, and the only place per-venue
+ * LocalBusiness schema lives. Across seven audited multi-location peers, not one
+ * shipped correct per-location schema — this page is the edge.
+ */
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HoursTable from '../../components/venue/HoursTable.astro';
+import BookButton from '../../components/venue/BookButton.astro';
+import VenueSchema from '../../components/venue/VenueSchema.astro';
+import { getVenues, formatAddress, telHref, type Venue } from '../../lib/venues';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const venues = await getVenues();
+  return venues.map((venue) => ({ params: { slug: venue.data.slug }, props: { venue } }));
+};
+
+interface Props {
+  venue: Venue;
+}
+
+const { venue } = Astro.props as Props;
+const d = venue.data;
+
+const metadata = {
+  metaTitle: `${d.name} — Indoor Golf in ${d.addressLocality}, MN`,
+  metaDescription: `${d.bays} ${d.simulator} bays at ${d.streetAddress}, ${d.addressLocality}. Hours, directions, rates and booking for The Links of ${d.addressLocality}.`,
+};
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">{d.name}</h1>
+    {d.intro && <p class="mt-4 max-w-2xl text-lg text-ink/70">{d.intro}</p>}
+
+    {
+      !d.verified && (
+        <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-ink/60">
+          <strong>Pre-launch note:</strong> some details on this page are inherited from the old site and not yet
+          confirmed by the venue. See the venue record in the CMS for the outstanding list.
+        </p>
+      )
+    }
+
+    <div class="mt-10 grid gap-10 md:grid-cols-2">
+      <div>
+        <h2 class="text-2xl font-bold">Hours</h2>
+        <div class="mt-4"><HoursTable venue={venue} /></div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold">Find us</h2>
+        <address class="mt-4 text-ink/70 not-italic">
+          <a
+            href={`https://maps.google.com/?q=${encodeURIComponent(formatAddress(venue))}`}
+            class="hover:underline"
+            target="_blank"
+            rel="noopener"
+          >
+            {d.streetAddress}<br />{d.addressLocality}, {d.addressRegion}
+            {d.postalCode}
+          </a>
+          <a href={telHref(d.phone)} class="mt-3 block hover:underline">{d.phone}</a>
+          {
+            d.email && (
+              <a href={`mailto:${d.email}`} class="mt-1 block hover:underline">
+                {d.email}
+              </a>
+            )
+          }
+        </address>
+
+        <h3 class="mt-8 text-lg font-semibold">The bays</h3>
+        <p class="mt-2 text-ink/70">{d.bays} bays · {d.simulator}</p>
+
+        {
+          d.amenities.length > 0 && (
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {d.amenities.map((a) => (
+                <li class="rounded-full bg-surface px-3 py-1 text-sm text-ink/70">{a}</li>
+              ))}
+            </ul>
+          )
+        }
+
+        <div class="mt-8"><BookButton venue={venue} size="lg" /></div>
+      </div>
+    </div>
+
+    {/* TODO(content): venue photography. Stillwater has none — a shoot is a launch blocker. */}
+  </section>
+
+  <VenueSchema venue={venue} />
+</BaseLayout>

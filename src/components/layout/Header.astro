@@ -1,31 +1,45 @@
 ---
+/**
+ * Persistent transactional CTA + the venue switcher.
+ * Playbook core.md §6: two clicks to book from any page, and the primary CTA is
+ * transactional ("Book a Bay"), never "Learn More".
+ */
 import { globalData } from '../../data/global';
+import VenueSwitcher from '../venue/VenueSwitcher.astro';
+import BookButton from '../venue/BookButton.astro';
 
-const links = globalData.footer.pageLinks;
+const { nav, siteName } = globalData;
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 z-50 border-b-2 border-softBlack bg-white">
-  <nav class="mx-auto flex max-w-content items-center justify-between px-6 py-4 lg:px-16">
-    <a href="/" class="font-mono text-lg font-bold text-softBlack">{globalData.siteName}</a>
-    <ul class="flex flex-wrap gap-4 lg:gap-8">
-      {
-        links
-          .filter((link) => link.href !== '/')
-          .map((link) => (
+<header class="sticky top-0 z-50 border-b border-ink/15 bg-white/95 backdrop-blur">
+  <div class="mx-auto flex max-w-content flex-wrap items-center gap-x-6 gap-y-3 px-gutter py-3 lg:px-gutter-lg">
+    <a href="/" class="text-xl font-bold tracking-tight">{siteName}</a>
+
+    <nav aria-label="Main" class="order-3 w-full lg:order-none lg:w-auto lg:flex-1">
+      <ul class="flex flex-wrap gap-x-5 gap-y-2">
+        {
+          nav.map((link) => (
             <li>
               <a
                 href={link.href}
+                aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
                 class:list={[
-                  'font-sans text-sm text-softBlack hover:text-grape lg:text-base',
-                  currentPath.startsWith(link.href) && link.href !== '/' ? 'font-semibold underline' : '',
+                  'text-sm transition hover:text-primary',
+                  currentPath.startsWith(link.href) ? 'font-semibold text-ink' : 'text-ink/70',
                 ]}
               >
                 {link.label}
               </a>
             </li>
           ))
-      }
-    </ul>
-  </nav>
+        }
+      </ul>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-4">
+      <VenueSwitcher />
+      <BookButton size="sm" />
+    </div>
+  </div>
 </header>

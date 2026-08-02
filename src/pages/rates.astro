@@ -1,0 +1,53 @@
+---
+/**
+ * Rates AND hours on one page — the same decision moment. Splitting them is a
+ * recurring audit failure (playbook-core.md §3).
+ * Prices are HTML text, never an image. Seasonality is a field on this page,
+ * never a second page (the /rates vs /rates-summer trap on the reference site).
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RatesTable from '../components/venue/RatesTable.astro';
+import HoursTable from '../components/venue/HoursTable.astro';
+import BookButton from '../components/venue/BookButton.astro';
+import { getVenues } from '../lib/venues';
+
+const venues = await getVenues();
+const cards = (await getCollection('rates')).sort((a, b) => a.data.order - b.data.order);
+
+const metadata = {
+  metaTitle: 'Rates & Hours — Indoor Golf, Lakeville & Stillwater MN',
+  metaDescription:
+    'What an hour costs at The Links and when we are open. $35 per bay per hour through 3 October 2026. Full weekly hours for both Twin Cities venues.',
+};
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">Rates &amp; hours</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink/70">
+      A bay is priced by the hour, not by the person. Bring up to five people for the same price.
+    </p>
+
+    {cards.map((card) => <RatesTable card={card} />)}
+
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">Hours</h2>
+      <div class="mt-8 grid gap-10 md:grid-cols-2">
+        {
+          venues.map((venue) => (
+            <div>
+              <h3 class="text-xl font-semibold">{venue.data.name}</h3>
+              <div class="mt-4">
+                <HoursTable venue={venue} />
+              </div>
+              <div class="mt-6">
+                <BookButton venue={venue} size="sm" variant="outline" />
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </section>
+</BaseLayout>

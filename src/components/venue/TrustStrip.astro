@@ -1,0 +1,42 @@
+---
+/**
+ * Hours, address, phone — immediately under the hero.
+ * The playbook's single highest-leverage block: 67% of simulator venues have no
+ * hours on the homepage at all (playbook-core.md §4).
+ */
+import { getVenues, summariseHours, formatAddress, telHref, venuePath } from '../../lib/venues';
+
+const venues = await getVenues();
+---
+
+<section class="border-y border-ink/10 bg-surface" aria-label="Hours and locations">
+  <div class="mx-auto grid max-w-content gap-6 px-gutter py-6 sm:grid-cols-2 lg:px-gutter-lg">
+    {
+      venues.map((venue) => (
+        <div class="flex flex-col gap-1">
+          <a href={venuePath(venue)} class="font-semibold hover:underline">
+            {venue.data.name}
+          </a>
+          <p class="text-sm text-ink/70">
+            {summariseHours(venue).join(' · ')}
+            {!venue.data.verified && <span class="ml-1 text-ink/40">(hours being confirmed)</span>}
+          </p>
+          <p class="text-sm text-ink/70">
+            <a
+              href={`https://maps.google.com/?q=${encodeURIComponent(formatAddress(venue))}`}
+              class="hover:underline"
+              target="_blank"
+              rel="noopener"
+            >
+              {formatAddress(venue)}
+            </a>
+            {' · '}
+            <a href={telHref(venue.data.phone)} class="hover:underline">
+              {venue.data.phone}
+            </a>
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>
