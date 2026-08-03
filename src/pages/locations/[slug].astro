@@ -9,6 +9,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import HoursTable from '../../components/venue/HoursTable.astro';
 import BookButton from '../../components/venue/BookButton.astro';
 import VenueSchema from '../../components/venue/VenueSchema.astro';
+import PendingTag from '../../components/venue/PendingTag.astro';
 import { getVenues, formatAddress, telHref, type Venue } from '../../lib/venues';
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -62,6 +63,7 @@ const metadata = {
             {d.postalCode}
           </a>
           <a href={telHref(d.phone)} class="mt-3 block hover:underline">{d.phone}</a>
+          {d.phoneNote && <PendingTag class="mt-s3" reason={d.phoneNote} />}
           {
             d.email && (
               <a href={`mailto:${d.email}`} class="mt-1 block hover:underline">

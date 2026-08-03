@@ -33,15 +33,33 @@ const metadata = {
     'Six GolfZon bays in Lakeville, four in Stillwater MN — moving swing plate, auto tee-up, real ball flight. Five of six bays suit lefties.',
 };
 
-/** What the hardware actually does, described for someone who has never used one. */
+/**
+ * What the hardware actually does, described for someone who has never used one.
+ *
+ * The four titles are the client's own homepage feature bullets, verbatim. The
+ * bodies are constrained to what GolfZon publishes about its own sensors
+ * (golfzongolf.com/global/user/technology/sensors.do), because this is the one
+ * paragraph on the site whose whole job is to sound like it knows the machine:
+ *   - the sensors are "positioned above and in FRONT of the player" and "meet at
+ *     90 degrees" — not "above and beside you", which is what this said before;
+ *   - BALL data (speed, direction and trajectory, spin rate, launch angle, spin
+ *     axis) comes from the T2, which is FLOOR-mounted and is not a camera;
+ *   - CLUB data (club path, angle of attack, club face impact area) comes from
+ *     the overhead TwoVision unit;
+ *   - GolfZon publishes "club face impact area", NOT "face angle". Do not put
+ *     "face angle" back — it is not a metric they claim.
+ * The plate detail ("five-segment", fairway/rough/bunker mats) is likewise
+ * GolfZon's own, and replaced an invented "in a bunker shot it drops".
+ * See truth-audit.md §C6 and §U19.
+ */
 const hardware = [
   [
     'A moving swing plate',
-    'The floor you stand on tilts. On an uphill lie it tilts uphill; in a bunker shot it drops. That is the part people do not expect, and it is why the ball behaves like it does outdoors rather than like a video game.',
+    'The floor you stand on tilts to match the lie. GolfZon builds it in five segments — one under the ball, four under your stance — with fairway, rough and bunker mats. That is the part people do not expect, and it is why the ball behaves like it does outdoors rather than like a video game.',
   ],
   [
     'High-speed camera sensors',
-    'Cameras above and beside you read the club and the ball at impact — speed, face angle, path, spin, launch. Nothing is attached to you and nothing is attached to the club.',
+    'The cameras sit above and in front of you, angled at each other, and read the club: the path it takes, how steeply it comes into the ball, and where on the face you hit it. A separate sensor in the floor reads the ball — speed, launch angle, spin rate and spin axis. Nothing is attached to you and nothing is attached to the club.',
   ],
   [
     'Auto tee-up and ball return',
@@ -49,7 +67,7 @@ const hardware = [
   ],
   [
     'A touchscreen next to you',
-    'You pick the course, the difficulty and the wind, and it keeps score for everyone in the bay. Staff set it up on your first visit; you do not need to know anything going in.',
+    'You pick the course and the settings from the screen in the bay, and it scores the round for you. Staff set it up on your first visit; you do not need to know anything going in.',
   ],
 ];
 
@@ -65,7 +83,7 @@ const modes = [
   ],
   [
     'Play a game',
-    'Closest-to-the-pin, longest drive, and the arcade-style formats. This is what a group who do not really golf ends up playing, and it is fine — that is most of the room.',
+    'Closest-to-the-pin, longest drive, and the arcade-style formats. This is what a group who do not really golf ends up playing, and it is fine.',
   ],
 ];
 ---
@@ -142,9 +160,8 @@ const modes = [
     <section class="mt-section">
       <h2 class="text-3xl font-bold">What GolfZon does</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
-        GolfZon is one of the three simulator systems people compare — the others you will see around the Twin Cities
-        are TrackMan and Full Swing. NX is GolfZon's current generation. Four things separate it from hitting into a
-        net.
+        GolfZon is the system in our bays. Around the Twin Cities you will also see TrackMan and Full Swing. Four things
+        separate it from hitting into a net.
       </p>
       <dl class="mt-8 grid gap-8 md:grid-cols-2">
         {
@@ -190,9 +207,9 @@ const modes = [
     <section class="mt-section rounded bg-surface p-8">
       <h2 class="text-2xl font-bold">Never used one?</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
-        Most people in the building have not either. Staff start the bay for you and show you the screen. Turn the
-        difficulty down, turn the wind off, and take as many shots as you like — there is no group behind you and the
-        bay is yours for the hour. If you top one, the machine tees another ball up.
+        Staff start the bay for you and show you the screen. Turn the difficulty down, turn the wind off, and take as
+        many shots as you like — there is no group behind you and the bay is yours for the hour. If you top one, the
+        machine tees another ball up.
       </p>
       <p class="mt-4 max-w-2xl text-inkMuted">
         You do not need clubs, you do not need shoes, and you do not need to know the rules.

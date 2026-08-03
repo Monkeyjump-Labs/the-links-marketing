@@ -58,9 +58,28 @@ export default defineConfig({
           { type: 'string', name: 'addressRegion', label: 'State' },
           { type: 'string', name: 'postalCode', label: 'ZIP', required: true },
           { type: 'string', name: 'phone', label: 'Phone', required: true },
+          {
+            type: 'string',
+            name: 'phoneNote',
+            label: 'Phone: pending confirmation',
+            description:
+              'Fill this in only while the number is in doubt. It renders a "Pending confirmation" tag beside the number everywhere it appears. Clear it as soon as the venue confirms.',
+            ui: { component: 'textarea' },
+          },
           { type: 'string', name: 'email', label: 'Email' },
-          { type: 'number', name: 'latitude', label: 'Latitude' },
-          { type: 'number', name: 'longitude', label: 'Longitude' },
+          {
+            type: 'number',
+            name: 'latitude',
+            label: 'Latitude',
+            description:
+              'Leave empty unless the coordinate comes from the venue itself. A geocode we guessed is worse than none: it ships as GeoCoordinates in LocalBusiness schema and can send people to the wrong building. Google geocodes fine from the address alone.',
+          },
+          {
+            type: 'number',
+            name: 'longitude',
+            label: 'Longitude',
+            description: 'See Latitude. Both must be present before either is published.',
+          },
           { type: 'number', name: 'bays', label: 'Number of bays', required: true },
           { type: 'string', name: 'simulator', label: 'Simulator technology' },
           { type: 'string', name: 'schemaTypes', label: 'schema.org types', list: true },

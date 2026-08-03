@@ -9,6 +9,21 @@
  * Prices here are HTML text (playbook-core.md §8). On the current site every one
  * of these numbers lives inside a JPEG.
  *
+ * ⚠️ "Hours never expire" is the CLIENT'S marketing line and it is true as far
+ * as it goes, but the LinksFlex T&Cs attach a condition to it: hours stay valid
+ * "for as long as the customer is in good standing with the Company and the
+ * Company continues to offer the associated service". This page states that
+ * condition once, in the "Before you join" small print, and every other mention
+ * of the promise points at it. Do not restore a bare "never expire" — a promise
+ * published without its condition is the shape of a complaint (truth-audit §U5).
+ *
+ * ⚠️ The guest policy is NOT resolved, and this page must not resolve it. The
+ * Individual price card says "only available for the package purchaser" and "No
+ * Guest Fees" in the same breath, and the membership T&Cs say a package is
+ * "ONLY FOR THE PURCHASER". An earlier draft answered it in the customer's
+ * favour ("Guests play on your booking, in your bay") without saying it was
+ * guessing. That one can cost a member money at the till (truth-audit §U3).
+ *
  * ⚠️ The LinksFlex "Anytime" tier is deliberately NOT published as a buyable
  * card. At $39.56–$45.75 an hour effective it costs MORE than the $35 walk-up
  * rate, so selling it would be selling a worse deal to a loyal customer. That is
@@ -21,7 +36,7 @@ import { globalData } from '../data/global';
 const metadata = {
   metaTitle: 'Golf Memberships & LinksFlex — Lakeville & Stillwater',
   metaDescription:
-    'Monthly memberships and LinksFlex prepaid hours at The Links, Lakeville and Stillwater MN. Hours never expire. Compare tiers and join online.',
+    'Monthly memberships and LinksFlex prepaid hours at The Links, Lakeville and Stillwater MN. No expiry date on LinksFlex hours. Compare tiers and join online.',
 };
 
 /** Monthly memberships. Both venues. Client-supplied figures. */
@@ -38,7 +53,7 @@ const monthly = [
       '21-day booking window — you book before everyone else',
       '10% off food and drink',
       'No guest fees',
-      'Buy extra hours any time at the normal rate',
+      'Purchase more hours any time',
     ],
   },
   {
@@ -97,11 +112,14 @@ const smallPrint = [
     'Hours restrictions',
     'The monthly memberships include two hours a day and are subject to opening hours — a membership does not guarantee a walk-in bay. LinksFlex Off Peak and Junior hours are limited to the windows above; there is no restriction on how long you take to use them.',
   ],
-  ['Guests', 'No guest fees on either monthly tier. Guests play on your booking, in your bay.'],
+  [
+    'Guests',
+    'Both monthly tiers say "no guest fees". What that means for an Individual membership is being confirmed: the same price card also says "only available for the package purchaser", and the membership terms say a package is "only for the purchaser". Until the venue settles it, ask at the desk before you bring people on an Individual membership. The Family tier is explicit — the purchaser and immediate family.',
+  ],
   ['Do you have to be there?', 'Yes. The member has to be present at the tee time.'],
   [
     'Commitment',
-    'The monthly memberships bill automatically each month until 30 September 2026, or until you cancel. LinksFlex is a one-off purchase with no monthly commitment — the hours never expire, but they are non-transferable and all sales are final.',
+    'The monthly memberships bill automatically each month until 3 October 2026, or until you cancel. LinksFlex is a one-off purchase with no monthly commitment. Its hours have no expiry date — the terms hold them open for as long as you are in good standing and we still offer the service — but they are non-transferable and all sales are final.',
   ],
 ];
 ---
@@ -111,7 +129,7 @@ const smallPrint = [
     <h1 class="text-4xl font-bold lg:text-5xl">Memberships</h1>
     <p class="mt-4 max-w-2xl text-lg text-inkMuted">
       Two ways to pay less per hour: a monthly membership if you play most weeks, or a bank of prepaid LinksFlex hours
-      that never expire if you play in bursts. You do not need to be any good at golf to be worth one.
+      with no expiry date if you play in bursts. You do not need to be any good at golf to be worth one.
     </p>
 
     {/* 1. Monthly tiers as cards, one marked recommended (playbook sim-venue.md §4). */}
@@ -190,8 +208,9 @@ const smallPrint = [
     <section class="mt-section">
       <h2 class="text-3xl font-bold">LinksFlex — prepaid hours</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
-        Buy a block of hours up front, use them whenever. They do not expire, so a bad month costs you nothing. Cheaper
-        per hour than walking in, and there is no monthly bill.
+        Buy a block of hours up front, use them whenever. There is no expiry date on them, so a bad month costs you
+        nothing. Cheaper per hour than walking in, and there is no monthly bill. The one condition is in
+        <a href="#before-you-join" class="font-semibold underline">the small print</a> below.
       </p>
       <p class="mt-3 max-w-2xl text-inkMuted">
         <strong>Lakeville only</strong> at the moment. Every LinksFlex block also carries the 21-day booking window and 10%
@@ -277,7 +296,7 @@ const smallPrint = [
     </section>
 
     {/* 3. The small print the playbook requires, in plain words. */}
-    <section class="mt-section">
+    <section class="mt-section" id="before-you-join">
       <h2 class="text-3xl font-bold">Before you join</h2>
       <dl class="mt-6 grid gap-6 sm:grid-cols-2">
         {

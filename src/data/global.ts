@@ -16,14 +16,22 @@ export const globalData = {
    * Top nav — the playbook's canonical 7 for a simulator venue.
    *
    * These labels are IA, not voice. Each is the most common name for that concept
-   * across the 96 audited sim-venue sites, so a visitor scanning the nav is
-   * pattern-matching rather than reading. The brand's personality belongs in the
-   * headlines and body copy; the navigation is not where to spend it.
+   * across the 96 audited SIMULATOR-VENUE sites — the sim-venue subset of the
+   * playbook's 126-site corpus, which also contains golf courses — so a visitor
+   * scanning the nav is pattern-matching rather than reading. The brand's
+   * personality belongs in the headlines and body copy; the navigation is not
+   * where to spend it.
+   *
+   * Both corpus figures are real and both are the playbook's own: 126 total
+   * (`audit-findings.md`), 96 sim venues (`playbook-sim-venue.md`). Always name
+   * which one you mean — two bare numbers in one project reads as sloppiness.
+   * See truth-audit.md §U23.
    *
    * Corrected 2026-08-02 after the playbook was revised: our first pass inherited
    * On The Green's vocabulary from the playbook's own first draft — "The Bays",
    * "/food-and-drink" and "Celebrate", none of which the corpus supports.
-   * "Celebrate" appears exactly once across 96 sites, and that once is On The Green.
+   * "Celebrate" appears exactly once across the 96 sim-venue sites, and that once
+   * is On The Green.
    * `Leagues` stays here deliberately: only 38% of independent venues put it in
    * the top nav despite 56% having league content.
    * Venue selection is handled by the header switcher, not a nav slot.

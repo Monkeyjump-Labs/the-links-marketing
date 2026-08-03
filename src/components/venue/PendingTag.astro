@@ -1,0 +1,40 @@
+---
+/**
+ * The gap system's "Pending confirmation" mark.
+ *
+ * One of three marks (SUBPAGE-EXPLORATION.md §"The gap system, as converged"):
+ *
+ *   Not yet set          — an absence. The venue has not decided.
+ *   Pending confirmation — a stated value we believe but have not verified.
+ *   Quoted / Ask us      — not an absence. A decision to give it on request.
+ *
+ * This is the middle one, and the system's ONLY outlined tag: 1px rule, 12px
+ * caps, `accent.caution` (emberMid, 4.76:1 on white). It RIDES BESIDE a stated
+ * value rather than replacing it — the value still ships, because a marked value
+ * is more use to a visitor than a blank, and more honest than an unmarked one.
+ *
+ * Unlike `StubNote`, this renders in PRODUCTION as well as staging. A stub note
+ * is a message to us; this is a message to the reader standing next to a fact we
+ * are not yet certain of. Suppressing it in production would be exactly the
+ * defect it exists to fix.
+ *
+ * Warm means caution here, the same rule the unverified-hours tag in
+ * `TrustStrip` follows. Never on a greige field: emberMid is 3.66:1 there
+ * (`rules.noWarningOnGreige`).
+ */
+interface Props {
+  /** The tag word. Keep it to two or three words — it is 12px caps. */
+  label?: string;
+  /** The one-line reason, shown under the tag. Optional but strongly preferred. */
+  reason?: string;
+  class?: string;
+}
+const { label = 'Pending confirmation', reason, class: className = '' } = Astro.props;
+---
+
+<span class:list={['block', className]}>
+  <span class="caps-label inline-block rounded-surface border-rule border-accent px-s2 py-s1 text-accent">
+    {label}
+  </span>
+  {reason && <span class="mt-s2 block text-small leading-body text-inkMuted">{reason}</span>}
+</span>

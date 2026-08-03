@@ -271,6 +271,12 @@ fragment of it. It lives only in the Paper file, which I cannot read from here. 
 verify the wording** — but the "four" in it inherits the problem above, and the substantive
 half ("whether you look at them or not") is true of any launch monitor and is unobjectionable.
 
+**Resolution (2026-08-03):** stopped counting. `SUBPAGE-EXPLORATION.md`'s Simulators row now
+commits to "**the named readings**" rather than four, and a new *Two corrections from the truth
+audit* section in that file records why — including that a diagram drawing every reading arriving
+from overhead is drawing the wrong machine, because the ball metrics come from a floor sensor.
+This also closes C8: nothing now commits the ported page to a count the code contradicts.
+
 ### U2 · "It is the same system used on the GolfZon tour"
 `src/content/faq/07-simulator.json`.
 
@@ -287,6 +293,13 @@ America in 2024. The sentence implies a parity we cannot demonstrate.
 **To confirm it:** the client tells us the exact model and plate in each bay. If it is
 TwoVision or TwoVisionNX **with** a Dual Plate or Motion Plate, the sentence becomes true and
 becomes a genuinely strong differentiator worth more prominence than an FAQ answer.
+
+**Resolution (2026-08-03):** already gone — no change needed, and worth recording as such.
+The sentence does not survive anywhere in `src/`; `faq/07-simulator.json` was rewritten during the
+C1 pass and now claims only metrics GolfZon publishes. The underlying question is *not* dropped:
+the client email asks for the exact model and plate in each bay, because if the answer is
+TwoVision or TwoVisionNX **with** a Dual or Motion Plate, the tour claim becomes true and is worth
+considerably more than an FAQ line.
 
 ### U3 · "No guest fees on either monthly tier. Guests play on your booking, in your bay."
 `memberships.astro:100`.
@@ -309,11 +322,21 @@ flag and shipped an answer. **This one can cost a customer money at the till.**
 **To confirm it:** one sentence from the client: can an Individual member bring guests into
 their bay at no charge, yes or no.
 
+**Resolution (2026-08-03):** the invented sentence is gone and the ambiguity is back on the
+page where it belongs. `memberships.astro`'s "Guests" row now states the supported half, says
+plainly that what "no guest fees" means for an *Individual* membership is being confirmed, quotes
+the two strings that conflict, and tells the reader to ask at the desk until it is settled. The
+Family tier stays explicit, because that one genuinely is. A file-header warning says this page
+must not resolve it. The yes/no is first in the client email.
+
 ### U4 · "Buy extra hours any time at the normal rate"
 `memberships.astro:41`. The client's bullet is "Purchase more hours anytime". Nothing states
 the price of those hours. The retired Fareway 2025 page did ("charged at the summer rate of
 $35/hour") — but that page sells a different membership through a retired vendor and is not
 evidence for 2026.
+
+**Resolution (2026-08-03):** "at the normal rate" cut. The bullet is now the client's own
+wording — "Purchase more hours any time". What those hours cost is in the client email.
 
 ### U5 · "The hours never expire" — published without the condition attached to it
 `memberships.astro:104`, `index.astro` hero region, `lessons.astro:230`, `faq` framing.
@@ -325,6 +348,13 @@ But the LinksFlex T&Cs qualify it:
 
 We publish the promise and drop the condition. That is the shape of a complaint.
 
+**Resolution (2026-08-03):** the condition now ships with the promise. *Before you join →
+Commitment* carries it in the T&C's own terms — hours stay open "for as long as you are in good
+standing and we still offer the service" — the section has an `id`, and every other mention on
+`/memberships` and `/juniors` links to it. Bare "never expire" is gone from the page intro, the
+LinksFlex blurb and the meta description; the client's own promise still leads, it just no longer
+leads alone. A file-header warning says not to restore the unconditional version.
+
 ### U6 · "In February that is the only range in Minnesota that is open"
 `lessons.astro:228`.
 
@@ -333,6 +363,9 @@ others you will see around the Twin Cities are TrackMan and Full Swing". Applewo
 Course, 11840 60th St N, **Stillwater MN 55082** — the client's own second market — publishes
 "Two top of the line Trackman Golf Simulators". This is a rhetorical flourish that reads as a
 factual superlative, and it is the kind of line a competitor screenshots.
+
+**Resolution (2026-08-03):** cut. The paragraph now ends "It is indoors, so February is the
+same as June" — the true version of the same seasonal point, and one no competitor can screenshot.
 
 ### U7 · "Leagues at both venues through the fall and winter"
 `src/content/faq/06-leagues.json` ("Yes, at both venues through the fall and winter") and
@@ -343,14 +376,29 @@ Contests (Coming Soon)", and our own content file
 `leagues/fall-winter-2026-stillwater.json` calls it "Stillwater's first league season". The
 FAQ answer states an established practice at a venue that has not yet done it once.
 
+**Resolution (2026-08-03):** both fixed. `faq/06-leagues.json` now says fall and winter
+leagues are **planned** at both venues and that Stillwater's would be its first season; the
+homepage row reads "Fall and winter league play, planned at both venues". Neither now asserts an
+established practice at a venue that has not run one, and both match what our own league records
+already said.
+
 ### U8 · "League nights are the reason winter is our busiest season"
 `index.astro:289`. An operational claim about the client's own business that the client has
 never made. Plausible; unevidenced.
+
+**Resolution (2026-08-03):** cut. The homepage league band now opens on the supported
+detail — teams, handicaps, a live leaderboard and a bar tab — and makes no claim about which season
+is busiest.
 
 ### U9 · "Most of our league players hadn't either"
 `index.astro:295`, and both league content files ("Most of our league players were too" /
 "Neither had most of the room"). A claim about the composition of their membership. Nobody
 has counted.
+
+**Resolution (2026-08-03):** cut in all three places, and replaced with a fact about the
+FORMAT rather than about the customers. The homepage reads "Handicaps keep it fair — a first-timer
+and a scratch player can be on the same team"; both league `beginnerNote`s lost the same clause the
+same way and keep their handicap reassurance intact.
 
 ### U10 · "Most first-timers here have never held a club" / "Most people in the building have
 not either" / "that is most of the room"
@@ -358,12 +406,26 @@ not either" / "that is most of the room"
 Four instances of the same unevidenced pattern. It is good copy and it may well be true —
 but it is presented as knowledge of who is in the room.
 
+**Resolution (2026-08-03):** all four cut. Every one of the four sentences stood up
+without the census claim, which is the test the audit set. `faq/01` still opens "Yes, and you will
+not be the only one"; the Simulators reassurance block still starts with staff setting the bay up;
+the games row still ends "and it is fine"; the About CTA now reads "Bring people who do not golf —
+nobody has to be any good", which is the Events page's own supported line.
+
 ### U11 · "Junior leagues fill from the list before they are advertised anywhere else"
 `juniors.astro:52`. This is a promise about how the client will operate registration. There
 has never been a list. We invented both the mechanism and the scarcity.
 
+**Resolution (2026-08-03):** cut. The between-seasons note now stops at "Join the list and
+you will hear the day the dates go up." We promise to tell them; we no longer promise how the
+client will run registration.
+
 ### U12 · "Groups usually take two or three bays and rotate"
 `events.astro:40`. Unevidenced observation about customer behaviour.
+
+**Resolution (2026-08-03):** replaced with a booking fact instead of an observation about
+strangers — "Book more than one bay and a big group is not queueing." Same reassurance, nothing
+claimed about what groups usually do.
 
 ### U13 · "The closest indoor golf to downtown Stillwater and the St Croix valley"
 `src/content/faq/09-stillwater.json`. A competitive superlative in an FAQ answer written
@@ -373,9 +435,17 @@ It survives the one test I could run: Applewood Hills (11840 60th St N) is rough
 far from downtown Stillwater as 5862 Omaha Ave N. But no survey was done, and "the St Croix
 valley" extends into Wisconsin. **Cannot verify** as stated.
 
+**Resolution (2026-08-03):** the superlative is gone. `faq/09-stillwater.json` now answers
+with address, host, bay count, opening period and the per-bay pricing model — all supported, and a
+better AEO answer for it. No distance claim survives, since no survey was done and the St Croix
+valley crosses a state line.
+
 ### U14 · "Serves the south metro — Lakeville, Farmington, Apple Valley and Burnsville"
 `src/content/faq/10-lakeville.json`. The client says "Your south metro clubhouse"; the four
 named towns are ours. Harmless, but it is our geography, not theirs.
+
+**Resolution (2026-08-03):** the four towns cut. `faq/10-lakeville.json` now says "The
+Links' south metro venue", which is the client's own framing rather than our geography.
 
 ### U15 · Gift-card mechanics: "delivered by email, usable the same day", "It takes about a
 minute", "It covers food and drink too"
@@ -384,10 +454,21 @@ it can be spent on. The page's own stub asks whether one card works at both venu
 question — but does not ask the more basic one it has already answered on the customer's
 behalf: whether the card covers food and drink at all.
 
+**Resolution (2026-08-03):** all three cut. The intro no longer promises same-day
+usability, the buy card now says only what is sourced ("Gift cards are sold through Square"), and
+the "It is not only golf" card is replaced by one about booking by the hour. Whether the card covers
+food and drink at all — the more basic question the page had already answered on the customer's
+behalf — is now an explicit line in the page's own STUB list, alongside delivery and timing.
+
 ### U16 · "Lakeville has a full bar and its own kitchen"
 `events.astro:131`, `menu.astro:53`. The client says "full bar and great food". "Its own
 kitchen" is an inference, and it is load-bearing on the Events page because it is the
 distinction drawn against Stillwater.
+
+**Resolution (2026-08-03):** "its own kitchen" cut on both pages, replaced with "a full
+bar and a food menu of its own" — the client's "full bar and great food" without the inference. The
+Lakeville/Stillwater distinction the Events page rests on still lands, and a code comment there
+records why the wording is load-bearing.
 
 ### U17 · Venue latitude and longitude, shipped in JSON-LD
 `venues/lakeville.json` (44.6794, -93.2448) and `venues/stillwater.json` (45.035, -92.822),
@@ -395,9 +476,22 @@ emitted by `VenueSchema.astro` as `GeoCoordinates`. The client publishes no coor
 anywhere. These are our geocodes, published to four decimal places — a precision that asserts
 confidence we do not have. Both are plausible; neither is verified.
 
+**Resolution (2026-08-03):** removed — and the audit was being generous. Geocoding
+17630 Juniper Path independently returns **44.6928, -93.2868**, against the **44.6794, -93.2448**
+we were shipping: about two miles from the building, in `LocalBusiness` schema, to four decimal
+places. Stillwater's address did not resolve at all, so that one cannot be checked either way. Both
+coordinates are deleted from the venue records; `VenueSchema` already emitted `geo` only when both
+were present, so the site now ships none. `content/config.ts` and the Tina field both carry a
+warning against refilling them from a geocoder. Google geocodes from `address` perfectly well. The
+client email asks for the pin off their Google Business Profile if they want it back.
+
 ### U18 · "Registration for Fall/Winter 2026-27 opens soon at both venues"
 `index.astro:290`. "Opens soon" is a scheduling commitment. The client's `/leagues` page says
 only "Check back for league information".
+
+**Resolution (2026-08-03):** "opens soon" cut. The band now says registration has not
+opened yet and points at the list — which is what the league record's own `nextSeasonNote` says, and
+what the client's `/leagues` page supports.
 
 ### U19 · Simulator behaviour details we describe but nobody published
 `simulators.astro:40` — "in a bunker shot it drops"; `:52` — "You pick the course, the
@@ -405,16 +499,33 @@ difficulty and the wind, and it keeps score for everyone in the bay". Standard G
 behaviour, most likely true, but written with the confidence of someone who has stood in the
 bay. Neither is in the client's copy or GolfZon's.
 
+**Resolution (2026-08-03):** both rewritten against GolfZon's own material rather than
+merely softened. "In a bunker shot it drops" is replaced by GolfZon's published five-segment plate
+with fairway, rough and bunker mats — a better sentence that happens to be sourced. The touchscreen
+line drops the wind and the per-player scoring and keeps what the machine plainly does.
+
 ### U20 · "GolfZon is one of the three simulator systems people compare"
 `simulators.astro:144`. An editorial framing of the market presented as fact. TrackMan and
 Full Swing are real local competitors (verified), but "the three" is ours. Also worth a
 separate conversation with the client: this names two competitors' technologies on their own
 site.
 
+**Resolution (2026-08-03):** "one of the three" cut. The page now reads "GolfZon is the
+system in our bays. Around the Twin Cities you will also see TrackMan and Full Swing." The same edit
+removed a surviving "NX is GolfZon's current generation", which the C1 pass had missed and which
+contradicted C1's own finding. Whether to name two competitors' technologies on the client's site at
+all is raised in the client email as a decision for them.
+
 ### U21 · Menu meta description: "The whole menu in text, with prices."
 `menu.astro:30`. The page contains no menu. This is the sentence Google will show under the
 result. The file's own header comment flags it as needing resolution — which means it is
 half-marked internally and fully wrong externally.
+
+**Resolution (2026-08-03):** the description now matches the page. "The whole menu in
+text, with prices" is gone, and so is "brisket burnt ends" — a dish the collection does not contain.
+The file header no longer half-marks it: it states that the metadata deliberately diverges from
+seo-map.md §2, why, and that the seo-map wording may be restored only once the `menu` collection
+carries real priced items, naming `hasRealItems` as the switch that tells you.
 
 ### U22 · Press titles presented as outlet headlines
 `about.astro:37–52`. We print "First Look at Lakeville Indoor Golf" and "Sneak Peek:
@@ -423,6 +534,13 @@ client's **blog post** headlines. The actual videos are titled "Lakeville Links 
 Simulator Facility in Lakeville Minnesota" and "Pre-Opening Sneak Peek Inside Lakeville Links
 Indoor Golf Simulator" (confirmed via YouTube oEmbed). We are attributing a headline to an
 outlet that did not write it, in a section called "In the press".
+
+**Resolution (2026-08-03):** both titles replaced with the actual video titles —
+"Lakeville Links Indoor Golf Simulator Facility in Lakeville Minnesota" and "Pre-Opening Sneak Peek
+Inside Lakeville Links Indoor Golf Simulator" — re-confirmed first-hand through YouTube's oEmbed
+endpoint today, which also returns `author_name: "twincitiesgolf"`, so the outlet credit stands. A
+header comment says to re-resolve from oEmbed if a link changes, and never to retype the title from
+the client's blog.
 
 ### U23 · "None of the 126 audited competitors have [a waitlist]"
 `design/SUBPAGE-EXPLORATION.md:22`, and `zero of 126` in `leagues.astro:6`, `juniors.astro:10`,
@@ -436,9 +554,27 @@ justification for the largest component on the Leagues page. Two different corpu
 one project is the sort of thing a sharp client notices and then stops trusting the rest of
 the numbers.
 
+**Resolution (2026-08-03):** the inconsistency is not one — and that turned out to be the
+finding. Both figures are the playbook's own and both are right: **126** is the whole audit
+(`_playbook/audit-findings.md` — simulator venues *and* golf courses) and **96** is the sim-venue
+subset `playbook-sim-venue.md` is measured on. What was wrong was quoting them bare, so a reader
+meeting both concluded one was invented. Every citation now names its corpus (`data/global.ts`,
+`index.astro`, `WaitlistForm.astro`, `SUBPAGE-EXPLORATION.md`).
+
+On the customer-facing half of the concern: it is not customer-facing. Grepping `src/pages`,
+`src/components`, `src/content` and `src/data` finds the claim only in code comments — no rendered
+copy on any page carries it, and no page makes any competitive claim at all. `WaitlistForm.astro`
+now carries an explicit instruction not to promote it into page copy, and `SUBPAGE-EXPLORATION.md`
+states it as our own sourced research rather than as a bare fact about named third parties.
+
 ### U24 · "If you play Bay 2, you are playing Thor's bay"
 `about.astro:189`. Assumes the bays are numbered and labelled in the room in a way a customer
 can see. Reasonable; unverified.
+
+**Resolution (2026-08-03):** cut. "Five Lakeville bays carry the name of a local business
+that backed the place" stands on its own without assuming the room is legible to a first-time
+visitor. While in there, the sponsor STUB now also asks for each sponsor's full trading name — the
+five are read off image filenames, and "Von Hanson" is almost certainly short.
 
 ---
 
@@ -517,6 +653,24 @@ and the Greater Stillwater Chamber's listing for The Links of Stillwater also gi
 nor the schema carries any marking. The venue record's `needsFromClient` mentions the *Lakeville*
 number ambiguity but not this one.
 
+**Resolution (2026-08-03):** we keep publishing **612-699-0527**, and we now mark it. The
+reasoning is recorded rather than applied silently, because the audit is right that a switch would
+be worse than a flag: 612-699-0526 has two sources, but it is *also* Lakeville's published number
+(S29). So the venue's own `/stillwater` page body and the Chamber listing may both simply be showing
+the company's main line — while the footer's "Stillwater -> 612-699-0527" is the only source in
+evidence that **distinguishes the two venues at all**, which is exactly the question at issue.
+Switching on those two would give both venues the same number.
+
+The marking is a new optional `phoneNote` field on the venue record, rendering the gap system's
+**Pending confirmation** tag (the system's only outlined tag) beside the number on the homepage
+trust strip, `/contact`, `/locations/stillwater` and `/policy`. Unlike `StubNote` it renders in
+production too — it is a message to the reader standing next to the fact, not a message to us.
+`telephone` still ships in the `LocalBusiness` JSON-LD, and `VenueSchema` now carries the reasoning
+for that: the number has a real source, a `LocalBusiness` with no phone is a measurable loss for a
+venue with no Google Business Profile, and we publish the same value everywhere rather than telling
+Google one thing and the reader another. The question is now the first item in the client email and
+sits in Stillwater's `needsFromClient`.
+
 ### C5 · "The Links of Stillwater opened in February 2026"
 **We say**, `about.astro:115`, in bold, flatly.
 
@@ -530,6 +684,13 @@ number ambiguity but not this one.
 Everywhere else we hedge to "early 2026" and it holds (S11). `about.astro` is the one place
 that commits, and it commits against the client's own homepage.
 
+**Resolution (2026-08-03):** `about.astro` now says **"The Links of Stillwater opened in
+early 2026"** — the hedge every other page already uses, and the only statement true under all of
+the client's own dates (S11). We deliberately did **not** substitute 29 January: their homepage says
+29 January and their `/our-story` says February, so publishing either would be picking a side in the
+client's own contradiction and calling it a fact. The bold sentence stays bold; it just no longer
+commits against their homepage. The client email asks which date to publish.
+
 ### C6 · Sensor placement described wrongly
 **We say**, `simulators.astro:44`:
 > "Cameras **above and beside you** read the club and the ball at impact — speed, face angle,
@@ -542,6 +703,14 @@ that commits, and it commits against the client's own homepage.
 and the ball metrics come from the **T2**, which is a **floor-mounted** sensor, not a camera.
 Also "face angle" is not in GolfZon's published metric list — they publish "club face impact
 area". Small, but this is the paragraph whose entire job is to sound like it knows the machine.
+
+**Resolution (2026-08-03):** rewritten against GolfZon's published sensor material. The
+cameras now sit "above and in front of you, angled at each other" and read the **club** — the path
+it takes, how steeply it comes into the ball, and where on the face you hit it; a **separate sensor
+in the floor** reads the **ball** — speed, launch angle, spin rate and spin axis. "Face angle" is
+gone, replaced by GolfZon's own "club face impact area" rendered in plain words, which is also more
+use to a beginner than a term they would have to look up. A header comment on `simulators.astro`
+lists each sourced claim, says not to put "face angle" back, and says why.
 
 ### C7 · Our own `_corrections.md` §2 is wrong, and it overrides a correct reading
 `_ingest/_corrections.md` §2 states:
@@ -584,6 +753,12 @@ The menu graphic — the one document a customer physically holds in the venue �
 That contradicts `/rates` for both venues. Third-party directories carry a fifth set. We
 publish the `/rates` version, which is the right choice, but nothing on our site or in our
 client-facing docs tells the client their printed menu disagrees with their website.
+
+**Resolution (2026-08-03):** **no site change** — we publish the `/rates` version, which
+is the right call and stays. What was missing was telling the client, so this is now its own item in
+`client-intake-email.md`: their printed menu says `SUN-SAT 8AM-10PM`, which contradicts their own
+`/rates` for both venues, and the menu is the one document a customer physically holds in the
+building. Fixing the graphic is theirs to do; flagging it was ours.
 
 ---
 
@@ -749,3 +924,25 @@ a number a buyer will do in their head on the page where they decide.
   earlier extraction had correctly flagged. It can cost a member money at the till.
 - **The corpus is cited as both 126 sites and 96 sites**, including in the client-facing
   `SUBPAGE-EXPLORATION.md`. Pick one before the client reads both.
+
+---
+
+## Stragglers found while resolving the above (2026-08-03)
+
+Three things the audit did not list, all of them left behind by an earlier fix. Recorded here so
+nobody re-derives them; each is a one-line change already applied.
+
+1. **`book.astro`'s meta description still said "up to five players"** — the last survivor of C2,
+   and in the one string Google prints under the Book result. Now six, matching the other ten
+   places. This is not C2 being re-opened; it is C2 being finished.
+
+2. **`memberships.astro` shipped two different membership renewal dates, ~900px apart.** The C3
+   pass had swept "3 October" to "30 September" across the whole file, but the membership renewal
+   date is a different fact with its own source: the price image says *"Automatic Monthly Renewal
+   until October 3rd - Or until cancelled"* (S20 — SUPPORTED). The C3 decision applies to the **$35
+   rate**, which the client dates two ways; it does not apply here, where the client dates it once.
+   Restored to 3 October, which also makes the page agree with its own STUB note.
+
+3. **`rates/summer-2026.json`'s note read "bring up to six people — six of you in a bay"** — a
+   half-finished sentence from the same C2 sweep, and it renders. Now "six of you in a bay costs
+   the same as one."

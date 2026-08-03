@@ -8,8 +8,7 @@
   "addressRegion": "MN",
   "postalCode": "55082",
   "phone": "612-699-0527",
-  "latitude": 45.035,
-  "longitude": -92.822,
+  "phoneNote": "We publish the number the venue's own site footer gives for Stillwater. Their /stillwater page body and the Greater Stillwater Chamber both list 612-699-0526 - which is also Lakeville's number, so those two may simply be showing the main line. Confirming with the venue.",
   "bays": 4,
   "simulator": "GolfZon",
   "bookingUrl": "https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today",
@@ -66,6 +65,8 @@
   "verified": false,
   "needsFromClient": [
     "Winter hours - the published schedule ends 30 Sept 2026",
+    "THE PHONE NUMBER. We publish 612-699-0527 (their footer). Their own /stillwater page and the Greater Stillwater Chamber both say 612-699-0526, which is Lakeville's number. Which one rings the Stillwater desk?",
+    "The map pin. We removed the latitude/longitude we had been publishing in schema because we geocoded them ourselves and one was about two miles out. Send the pin from the Google Business Profile if you want it back.",
     "Photography - NO photo of this venue exists anywhere today",
     "Capacity, TV count, private/event space",
     "Whether food & beverage is Stillwater Bowl's offer or its own",

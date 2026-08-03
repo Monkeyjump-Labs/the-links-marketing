@@ -60,8 +60,12 @@ const metadata = {
 /**
  * "What you can do here" — jobs, not departments (anti-pattern: org-shaped nav).
  * Each row is labelled with the PAGE IT LINKS TO, not with venue-voice copy.
- * "Celebrate" was On The Green's word for this row and appears once in the whole
- * 96-site corpus; the page is called Events, so the row is too.
+ * "Celebrate" was On The Green's word for this row and appears once across the
+ * 96 SIMULATOR-VENUE sites in the playbook corpus; the page is called Events, so
+ * the row is too. (96 and 126 are both real and both the playbook's: 126 is the
+ * whole corpus, sim venues plus golf courses; 96 is the sim-venue subset that
+ * `playbook-sim-venue.md` is measured on. Always say which — two bare numbers in
+ * one project reads as sloppiness. See truth-audit.md §U23.)
  *
  * `reassure` is the sentence that gets the loudest treatment on the band. The
  * beginner is the segment's largest untapped market and 67% of league pages in
@@ -77,7 +81,7 @@ interface Job {
 
 const things: Job[] = [
   { title: 'Play', body: 'Book a bay by the hour.', reassure: 'Up to six of you, same price.', href: '/book/' },
-  { title: 'Compete', body: 'Fall and winter leagues at both venues.', href: '/leagues/' },
+  { title: 'Compete', body: 'Fall and winter league play, planned at both venues.', href: '/leagues/' },
   { title: 'Events', body: 'Work parties, birthdays, bachelor parties.', href: '/events/' },
   { title: 'Improve', body: 'Lessons and practice on a real launch monitor.', href: '/lessons/' },
   { title: 'Eat & drink', body: 'Full bar, real food, nine screens.', href: '/menu/' },
@@ -286,13 +290,14 @@ const slots: Record<string, { lit: boolean; alt: string; label: string; caption:
             Fall &amp; winter leagues
           </h2>
           <p class="mt-s5 text-lead leading-body text-surface">
-            League nights are the reason winter is our busiest season. Teams, handicaps, a live leaderboard and a bar
-            tab. Registration for {leagues[0]?.data.season ?? 'the coming season'} opens soon at both venues.
+            Teams, handicaps, a live leaderboard and a bar tab. Registration for {
+              leagues[0]?.data.season ?? 'the coming season'
+            } has not opened yet — join the list and you will hear the day it does.
           </p>
           <p
             class="my-s6 border-y-score border-white py-s4 font-display text-row leading-display font-bold tracking-display text-white"
           >
-            Never played in one? Most of our league players hadn't either. Handicaps keep it fair.
+            Never played in one? Handicaps keep it fair — a first-timer and a scratch player can be on the same team.
           </p>
           <a
             href="/leagues/"

@@ -6,11 +6,15 @@
  * menu lives in the `menu` content collection so the client can edit it in
  * TinaCMS rather than exporting another graphic.
  *
- * ⚠️ Metadata below is taken verbatim from seo-map.md §2. It names dishes the
- * collection does not yet contain, because the items are only readable off the
- * menu images and every price needs re-confirming before publication. Resolve the
- * collection stub before launch, or soften the description — a description that
- * promises what the page lacks is the stock-photo anti-pattern in a new costume.
+ * ⚠️ The metadata below NO LONGER matches seo-map.md §2, on purpose. That version
+ * promised "the whole menu in text, with prices" and named brisket burnt ends —
+ * on a page that contains no menu and no prices, because the items are only
+ * readable off the client's menu images and every price needs re-confirming. A
+ * meta description is the sentence Google prints under the result, so it was the
+ * one claim on this page a visitor met BEFORE they could see it was untrue
+ * (truth-audit §U21). It now describes what the page actually holds. Restore the
+ * seo-map wording only once the `menu` collection carries real priced items —
+ * `hasRealItems` below is the switch that tells you.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -27,7 +31,7 @@ const hasRealItems = sections.some((s) => !isStub(s.data.note) && s.data.items.l
 const metadata = {
   metaTitle: 'Food & Drink Menu — The Links, Lakeville MN',
   metaDescription:
-    'Full bar, Minnesota thin-crust pizza, wings and brisket burnt ends at The Links of Lakeville, MN. The whole menu in text, with prices.',
+    'Full bar, Minnesota thin-crust pizza, wings and appetisers at The Links of Lakeville, MN. What to expect, and how paying works.',
 };
 
 const venueName = (scope: VenueScope) =>
@@ -50,7 +54,7 @@ const venueName = (scope: VenueScope) =>
       <div class="rounded border-2 border-ink/15 p-6">
         <h2 class="text-xl font-semibold">Lakeville</h2>
         <p class="mt-2 text-inkMuted">
-          Full bar and its own kitchen. Draft and canned beer, seltzers, cocktails, soft drinks, and a food menu built
+          Full bar and a food menu of its own. Draft and canned beer, seltzers, cocktails, soft drinks, and a menu built
           around Minnesota thin-crust pizza, wings and appetisers. Nine screens, so the game is on whether or not you
           are playing.
         </p>

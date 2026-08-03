@@ -6,6 +6,24 @@
  * multi-location peers NOT ONE shipped correct per-location schema. Two distinct
  * entities — each with its own NAP, geo and hours — under one parent Organization
  * is the whole edge here, and it costs nothing.
+ *
+ * Two deliberate omissions, both from the 2026-08-03 truth audit:
+ *
+ * 1. **`geo` is emitted only when the venue record carries BOTH coordinates,
+ *    and neither venue carries any today.** The coordinates we used to ship were
+ *    our own geocodes to four decimal places; Lakeville's was about two miles
+ *    from the building. Schema is the layer where our honesty markings are
+ *    invisible, so an unverifiable coordinate does not belong in it. Google
+ *    geocodes from `address` perfectly well. §U17.
+ *
+ * 2. **`telephone` still ships even when `phoneNote` is set** — Stillwater's
+ *    number is contested. That is a considered call, not an oversight: the
+ *    number has a real source (the venue's own footer, the only source that
+ *    distinguishes the two venues at all), and a `LocalBusiness` with no phone
+ *    is a measurable local-SEO loss for a venue that has no Google Business
+ *    Profile. We publish the same value everywhere and mark it everywhere a
+ *    human can read it. If the client says it is wrong, change the record —
+ *    do not start emitting a different number here than the page shows. §C4.
  */
 import { schemaOpeningHours, type Venue } from '../../lib/venues';
 import { globalData } from '../../data/global';

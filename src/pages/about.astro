@@ -30,7 +30,17 @@ const metadata = {
     'Two neighbours, one long Minnesota winter, now two clubhouses — Lakeville since 2022, Stillwater since 2026. The story, the press, the sponsors.',
 };
 
-/** Coverage. Titles, outlets and dates as published — links, not pull quotes. */
+/**
+ * Coverage. Titles, outlets and dates as published — links, not pull quotes.
+ *
+ * The two YouTube entries carry the TITLE OF THE VIDEO, confirmed first-hand
+ * through YouTube's oEmbed endpoint (which also returns
+ * `author_name: "twincitiesgolf"`, so the outlet credit is sound). They used to
+ * carry the client's own blog-post headlines instead, which credited
+ * TwinCitiesGolf with a headline TwinCitiesGolf did not write — in a section
+ * called "In the press". If a link changes, re-resolve the title from oEmbed;
+ * do not retype it from the client's blog. See truth-audit.md §U22.
+ */
 const press = [
   {
     outlet: 'TwinCitiesGolf.com',
@@ -40,13 +50,13 @@ const press = [
   },
   {
     outlet: 'TwinCitiesGolf.com',
-    title: 'First Look at Lakeville Indoor Golf',
+    title: 'Lakeville Links Indoor Golf Simulator Facility in Lakeville Minnesota',
     date: '25 October 2022',
     href: 'https://www.youtube.com/watch?v=3_T1b032Zew',
   },
   {
     outlet: 'TwinCitiesGolf.com',
-    title: 'Sneak Peek: Pre-Opening Look Inside Lakeville Links',
+    title: 'Pre-Opening Sneak Peek Inside Lakeville Links Indoor Golf Simulator',
     date: '19 October 2022',
     href: 'https://www.youtube.com/watch?v=WXRRgKPt4lM',
   },
@@ -112,7 +122,7 @@ const sponsors = [
         After more planning, more due diligence and several conversations that started with "are we really doing this
         again?", it turned out to be a genuinely good opportunity: a chance to give the Stillwater golf community
         somewhere to play, hang out, and get through a long Minnesota winter without losing their swing or their sanity.
-        <strong>The Links of Stillwater opened in February 2026.</strong>
+        <strong>The Links of Stillwater opened in early 2026.</strong>
       </p>
 
       <h2 class="mt-12 text-3xl font-bold">The rebrand</h2>
@@ -185,8 +195,7 @@ const sponsors = [
     <section class="mt-section" id="sponsors">
       <h2 class="text-3xl font-bold">The bay sponsors</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
-        Five Lakeville bays carry the name of a local business that backed the place. If you play Bay 2, you are playing
-        Thor's bay.
+        Five Lakeville bays carry the name of a local business that backed the place.
       </p>
       <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {
@@ -201,7 +210,9 @@ const sponsors = [
       <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
         <strong>STUB —</strong> sponsor logo files and each sponsor's website, so these become links rather than names. Bay
         3 has no sponsor listed — confirm whether it is unsold or simply missing from the handover. No Stillwater sponsors
-        exist yet.
+        exist yet. Also confirm each sponsor's full trading name: these five are read off image filenames, so "Von Hanson"
+        is almost certainly an abbreviation, and a paying sponsor's name printed short is a small error with a large apology
+        attached.
       </p>
     </section>
 
@@ -219,7 +230,7 @@ const sponsors = [
     <section class="mt-section rounded bg-surface p-8">
       <h2 class="text-2xl font-bold">Come and see it</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
-        Book an hour at either venue. Bring people who do not golf — that is most of the room anyway.
+        Book an hour at either venue. Bring people who do not golf — nobody has to be any good.
       </p>
       <div class="mt-6"><BookButton size="lg" /></div>
     </section>
