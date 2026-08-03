@@ -130,7 +130,7 @@ fully ours — every other transaction ends on someone else's domain.
 1. **Which venue is the growth priority?** Stillwater is six months old, has no photography, no
    reviews, and no independent search presence. Lakeville has four years of authority. The site
    treats them as peers; the business may not.
-2. **Is Stillwater's F&B its own offer or Stillwater Bowl's?** Changes whether `/food-and-drink`
+2. **Is Stillwater's F&B its own offer or Stillwater Bowl's?** Changes whether `/menu`
    is one page with a venue column or genuinely per-venue.
 3. **Does LinksFlex extend to Stillwater?** Currently Lakeville-only, and it is the strongest
    differentiator on the site.

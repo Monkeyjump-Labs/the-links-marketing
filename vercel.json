@@ -57,11 +57,6 @@
       "permanent": true
     },
     {
-      "source": "/menu",
-      "destination": "/food-and-drink/",
-      "permanent": true
-    },
-    {
       "source": "/stillwater",
       "destination": "/locations/stillwater/",
       "permanent": true

@@ -5,6 +5,42 @@
 > 14-page sim-venue sitemap) + `playbook-core.md` §3 (page system). Deviations are logged in §4.
 > Companion: `strategy.md`, `brief.md`, `seo-map.md`.
 
+## 0. Correction — IA labels detached from a reference site's voice (2026-08-02)
+
+The first pass of this sitemap inherited **On The Green's vocabulary** rather than the
+market's, because the playbook's own first draft did. The playbook has since been revised
+(`fareway-brain` commits `4563575` "Separate generic structure from On The Green's own
+vocabulary" and `8e3774c` "One name per page") and now states the rule explicitly:
+
+| Layer | Comes from |
+|---|---|
+| Page types, section order, component set | the playbook |
+| Page and nav **labels** | **the most common name in the audited corpus** |
+| Headlines, body copy, voice | **the client** |
+
+A reference site supplies the first row only. What changed here:
+
+| Was | Now | Why |
+|---|---|---|
+| `The Bays` | **Simulators** | An invented label. Corpus: slug `/simulators` ×9, nav "Simulators" ×8 |
+| `/food-and-drink` | **`/menu`** | Corpus: `/menu` ×10 vs `/food-drink` ×4. Nav label "Food & Drink" stays |
+| `Celebrate` (home card) | **Events** | Appears **once** in 96 sites — and that once is On The Green |
+| `Book` | **Book Now** | nav "Book Now" ×24 |
+| `Rates & Hours` (nav) | **Rates** | Nav label follows the corpus; the PAGE keeps the title *Rates & Hours*, which the playbook explicitly permits where hours are seasonal — ours are |
+| `Lessons & Practice` | **Lessons** | nav "Lessons" ×20 |
+| `FAQ` | **FAQs** | nav "FAQs" ×15 vs "FAQ" ×9 |
+
+**Checked and clean:** no On The Green *prose* ever reached this site — no "Trash talk
+encouraged", no "Tuesday feels like Sunday at Pebble", no "Sip. Swing. Socialize." The
+contamination was confined to the IA layer, which is the layer this correction fixes.
+
+**One consequence for the redirect map:** `/menu` on the old site now maps to `/menu` on
+the new one, so that redirect is an identity and has been removed. 28 redirects, not 29.
+
+**Still open:** the playbook now says voice should be bound from intake Q24 rather than
+taken from the playbook's "warm and slightly irreverent" default. We have no intake
+answers, so our voice remains an assumption — flagged in `brief.md` §5.
+
 ## 1. The two-venue adaptation
 
 The playbook's canonical sitemap assumes a **single-location** venue — the segment norm
@@ -29,7 +65,7 @@ are the local-SEO anchor pages and the only place per-venue `LocalBusiness` sche
 **Top nav — the playbook's 7, unchanged:**
 
 ```
-Book · Rates & Hours · Leagues · Memberships · Events · Food & Drink · Contact
+Book Now · Rates · Leagues · Memberships · Events · Food & Drink · Contact
 ```
 
 `Leagues` stays in the top nav deliberately — only 38% of independent venues put it there despite
@@ -45,8 +81,8 @@ on `/book` and pre-filters the venue columns on `/rates` and `/leagues`.
 > puts the venue choice on every page rather than one. `/locations/*` remain real, indexable
 > pages, linked from the switcher, the footer, and `/contact`.
 
-**Footer:** full NAP for **both** venues · hours for both · Lessons · Juniors · The Bays ·
-Gift Cards · FAQ · About · Locations · social · legal. Footer NAP must match each Google Business
+**Footer:** full NAP for **both** venues · hours for both · Lessons · Juniors · Simulators ·
+Gift Cards · FAQs · About · Locations · social · legal. Footer NAP must match each Google Business
 Profile character-for-character (playbook `core.md` §7).
 
 ## 3. The pages
@@ -58,19 +94,19 @@ a marked placeholder pending client input (decision #4).
 | # | Route | Nav label | The job it does | Primary CTA | Venue | Content |
 |---|---|---|---|---|---|---|
 | 1 | `/` | Home | Answer all five visitor questions above the fold-to-bounce point | Book a Bay | shared | mixed |
-| 2 | `/book` | Book | The transaction. No marketing interstitial | Venue chooser → Whoosh | shared | have |
-| 3 | `/rates` | Rates & Hours | Screening: can I afford it, is it open | Book a Bay | shared (columns) | **stub — winter** |
+| 2 | `/book` | Book Now | The transaction. No marketing interstitial | Venue chooser → Whoosh | shared | have |
+| 3 | `/rates` | Rates | Screening: can I afford it, is it open | Book a Bay | shared (columns) | **stub — winter** |
 | 4 | `/leagues` | Leagues | The retention engine + the waitlist | Register / Join waitlist | shared (rows) | **stub** |
 | 5 | `/memberships` | Memberships | Retention lever — tiers + LinksFlex | Buy / Enquire | shared | have |
-| 6 | `/events` | Events & Parties | Highest revenue per visit | Lead-capture form | shared | **stub — pricing** |
-| 7 | `/food-and-drink` | Food & Drink | Hospitality proof; HTML menu | Book a Bay | shared | have (de-image) |
+| 6 | `/events` | Events | Highest revenue per visit | Lead-capture form | shared | **stub — pricing** |
+| 7 | `/menu` | Food & Drink | Hospitality proof; HTML menu | Book a Bay | shared | have (de-image) |
 | 8 | `/lessons` | Lessons | Low-commitment entry point | Book an evaluation | shared | **stub — pricing** |
-| 9 | `/juniors` | — (footer) | Junior programs + camps | Register / waitlist | shared | **stub — season** |
-| 10 | `/simulators` | — (footer) | Name the tech; answer "is it any good" | Book a Bay | shared | have |
-| 11 | `/about` | — (footer) | Who runs it, the story, the press | Book a Bay | shared | have |
+| 9 | `/juniors` | Juniors & Camps (footer) | Junior programs + camps | Register / waitlist | shared | **stub — season** |
+| 10 | `/simulators` | Simulators (footer) | Name the tech; answer "is it any good" | Book a Bay | shared | have |
+| 11 | `/about` | About (footer) | Who runs it, the story, the press | Book a Bay | shared | have |
 | 12 | `/contact` | Contact | Local SEO anchor + logistics | Directions / Call | shared (both NAPs) | have |
-| 13 | `/gift-cards` | — (footer) | Seasonal revenue, Nov–Dec spike | Buy (Square/Toast) | shared | have |
-| 14 | `/faq` | — (footer) | AEO surface + objection handling | Book a Bay | shared | **stub** |
+| 13 | `/gift-cards` | Gift Cards (footer) | Seasonal revenue, Nov–Dec spike | Buy (Square/Toast) | shared | have |
+| 14 | `/faq` | FAQs (footer) | AEO surface + objection handling | Book a Bay | shared | **stub** |
 | 15 | `/locations/lakeville` | switcher | Venue anchor: NAP, hours, photos, schema | Book at Lakeville | per-venue | have |
 | 16 | `/locations/stillwater` | switcher | Venue anchor: NAP, hours, photos, schema | Book at Stillwater | per-venue | **stub — hours, photos** |
 
@@ -83,7 +119,7 @@ the acceptance criteria for Phase 2 content and Phase 4 assembly.
 
 **Home** — hero (promise + geo + one CTA, real venue photography, never a stock golf ball) →
 **trust strip: hours, address, phone, rating, immediately under the hero** → "what you can do
-here" cards (Play · Compete · Celebrate · Improve · Eat & Drink) → proof → featured seasonal
+here" cards (Play · Compete · Events · Improve · Eat & Drink — each labelled with the page it links to) → proof → featured seasonal
 offer (swappable without touching layout) → the space → email capture with a stated reason →
 footer NAP. *67% of the segment has no hours on the homepage; this is the cheapest win available.*
 
@@ -111,7 +147,7 @@ lead time, and photos of a real event.
 **Food & Drink** — HTML, never a PDF, never a PNG. The current menu is six images; that is a
 straight port to text.
 
-**The Bays** — name the technology (GolfZon NX). 42% of the segment names none.
+**Simulators** — name the technology (GolfZon NX). 42% of the segment names none.
 
 **Contact** — NAP for both venues, embedded map each, full hours, parking, phone, email, form.
 
@@ -135,5 +171,5 @@ Priority is conversion value, so a partial site is still a working site:
 1. `/`, `/book`, `/rates`, `/locations/*` — the venue-selection and transaction spine
 2. `/leagues` — highest-value page, and the waitlist is the differentiator
 3. `/memberships`, `/events` — the revenue pages
-4. `/food-and-drink`, `/simulators`, `/lessons`, `/contact`
+4. `/menu`, `/simulators`, `/lessons`, `/contact`
 5. `/about`, `/faq`, `/gift-cards`, `/juniors`, legal

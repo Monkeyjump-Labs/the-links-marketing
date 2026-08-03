@@ -26,13 +26,18 @@ const metadata = {
     'Two indoor golf venues in the Twin Cities. Book a GolfZon NX bay by the hour, bring up to five friends, full bar and food. Lakeville and Stillwater, MN.',
 };
 
-/** "What you can do here" — jobs, not departments (anti-pattern: org-shaped nav). */
+/**
+ * "What you can do here" — jobs, not departments (anti-pattern: org-shaped nav).
+ * Each card is labelled with the PAGE IT LINKS TO, not with venue-voice copy.
+ * "Celebrate" was On The Green's word for this card and appears once in the whole
+ * 96-site corpus; the page is called Events, so the card is too.
+ */
 const things = [
   { title: 'Play', body: 'Book a bay by the hour. Up to five of you, same price.', href: '/book/', wide: true },
   { title: 'Compete', body: 'Fall and winter leagues at both venues.', href: '/leagues/' },
-  { title: 'Celebrate', body: 'Work parties, birthdays, bachelor parties.', href: '/events/' },
+  { title: 'Events', body: 'Work parties, birthdays, bachelor parties.', href: '/events/' },
   { title: 'Improve', body: 'Lessons and practice on a real launch monitor.', href: '/lessons/' },
-  { title: 'Eat & drink', body: 'Full bar, real food, nine screens.', href: '/food-and-drink/' },
+  { title: 'Eat & drink', body: 'Full bar, real food, nine screens.', href: '/menu/' },
 ];
 ---
 

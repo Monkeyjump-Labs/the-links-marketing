@@ -13,18 +13,28 @@ export const globalData = {
   defaultShareImage: '/share-image.png',
 
   /**
-   * Top nav — the playbook's canonical 7 for a simulator venue, unchanged.
+   * Top nav — the playbook's canonical 7 for a simulator venue.
+   *
+   * These labels are IA, not voice. Each is the most common name for that concept
+   * across the 96 audited sim-venue sites, so a visitor scanning the nav is
+   * pattern-matching rather than reading. The brand's personality belongs in the
+   * headlines and body copy; the navigation is not where to spend it.
+   *
+   * Corrected 2026-08-02 after the playbook was revised: our first pass inherited
+   * On The Green's vocabulary from the playbook's own first draft — "The Bays",
+   * "/food-and-drink" and "Celebrate", none of which the corpus supports.
+   * "Celebrate" appears exactly once across 96 sites, and that once is On The Green.
    * `Leagues` stays here deliberately: only 38% of independent venues put it in
    * the top nav despite 56% having league content.
    * Venue selection is handled by the header switcher, not a nav slot.
    */
   nav: [
-    { label: 'Book', href: '/book/' },
-    { label: 'Rates & Hours', href: '/rates/' },
+    { label: 'Book Now', href: '/book/' },
+    { label: 'Rates', href: '/rates/' },
     { label: 'Leagues', href: '/leagues/' },
     { label: 'Memberships', href: '/memberships/' },
     { label: 'Events', href: '/events/' },
-    { label: 'Food & Drink', href: '/food-and-drink/' },
+    { label: 'Food & Drink', href: '/menu/' },
     { label: 'Contact', href: '/contact/' },
   ],
 
@@ -32,9 +42,9 @@ export const globalData = {
   footerLinks: [
     { label: 'Lessons', href: '/lessons/' },
     { label: 'Juniors', href: '/juniors/' },
-    { label: 'The Bays', href: '/simulators/' },
+    { label: 'Simulators', href: '/simulators/' },
     { label: 'Gift Cards', href: '/gift-cards/' },
-    { label: 'FAQ', href: '/faq/' },
+    { label: 'FAQs', href: '/faq/' },
     { label: 'About', href: '/about/' },
   ],
 

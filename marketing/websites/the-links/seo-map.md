@@ -90,7 +90,7 @@ the two-venue architecture in `current-site-audit.md` §5, and the audit's centr
 | `/leagues` | Leagues & Competitions | `/leagues` | **top — non-negotiable** |
 | `/memberships` | Memberships | `/memberships` | top |
 | `/events` | Events & Parties | `/groups` | top |
-| `/food-and-drink` | Food & Drink | `/menu` | top |
+| `/menu` | Food & Drink | `/menu` | top |
 | `/lessons` | Lessons & Practice | `/instruction` | footer |
 | `/juniors` | Juniors & Camps | — | footer |
 | `/simulators` | The Bays | — | footer |
@@ -173,7 +173,7 @@ Intent codes: **N** navigational (branded) · **I** informational · **C** comme
 | **Notes** | Lead with the **lead-capture form**, not 1,500 words of packages. Publish **capacity as a number** — X-Golf Eden Prairie publishes "up to 75 guests" and surfaced on the live query; The Links has a real number to use (*"6 bays and room for up to 36 golfers"*, `operating-facts.md` §7) and currently buries it. |
 | **Blocking gaps** | `{{GROUP_PRICING}}` · `{{EVENT_MINIMUM_SPEND}}` · `{{BUYOUT_PRICE_LAKEVILLE}}` · `{{BUYOUT_PRICE_STILLWATER}}` · `{{EVENT_LEAD_TIME}}` · `{{STILLWATER_EVENT_CAPACITY}}`. The reference site publishes $399/$699/$1,599 packages; The Links publishes "groups of 12 or more" with no numbers (audit §1). |
 
-#### `/food-and-drink` — Food & Drink
+#### `/menu` — Food & Drink
 | | |
 |---|---|
 | **Primary** | `indoor golf with food and drinks Lakeville MN` *(C · Med — est.)* |
@@ -292,7 +292,7 @@ characters and unique (*"20% of sim venues have none at all"*). Character counts
 | 4 | `/leagues` | `Indoor Golf Leagues — Lakeville & Stillwater, MN` | 48 | Indoor golf leagues at The Links in Lakeville and Stillwater, MN. Format, night, price and how to join — beginners welcome. Waitlist always open. |
 | 5 | `/memberships` | `Golf Memberships & LinksFlex — Lakeville & Stillwater` | 53 | Monthly memberships and LinksFlex prepaid hours at The Links, Lakeville and Stillwater MN. Hours never expire. Compare tiers and join online. |
 | 6 | `/events` | `Golf Simulator Parties & Corporate Events — Twin Cities` | 55 | Corporate outings, birthdays and bachelor parties on golf simulators in Lakeville and Stillwater, MN. Capacity, packages and an inquiry form. |
-| 7 | `/food-and-drink` | `Food & Drink Menu — The Links, Lakeville MN` | 43 | Full bar, Minnesota thin-crust pizza, wings and brisket burnt ends at The Links of Lakeville, MN. The whole menu in text, with prices. |
+| 7 | `/menu` | `Food & Drink Menu — The Links, Lakeville MN` | 43 | Full bar, Minnesota thin-crust pizza, wings and brisket burnt ends at The Links of Lakeville, MN. The whole menu in text, with prices. |
 | 8 | `/lessons` | `Golf Lessons & Practice — Lakeville, MN \| The Links` | 51 | Golf lessons and swing work on GolfZon NX in Lakeville, MN. PGA and varsity coaching staff, 1:1 or group. Start with a swing evaluation. |
 | 9 | `/juniors` | `Junior Golf Leagues & Camps — Lakeville, MN` | 43 | Junior golf leagues and camps at The Links of Lakeville, MN. Boys and girls divisions, eight weeks of match play, indoors all winter. |
 | 10 | `/simulators` | `GolfZon NX Simulator Bays — Lakeville & Stillwater MN` | 53 | Six GolfZon NX bays in Lakeville, four in Stillwater MN — moving swing plate, auto tee-up, real ball flight. Five of six bays suit lefties. |
@@ -355,7 +355,7 @@ characters and unique (*"20% of sim venues have none at all"*). Character counts
   SportsActivityLocation + BarOrPub          SportsActivityLocation
   @id …/locations/lakeville#venue            @id …/locations/stillwater#venue
   own NAP · geo · hours · sameAs             own NAP · geo · hours · sameAs
-  hasMenu → …/food-and-drink#menu            containedInPlace → Stillwater Bowl
+  hasMenu → …/menu#menu            containedInPlace → Stillwater Bowl
   parentOrganization → #organization         parentOrganization → #organization
               │                                          │
               └───────────────┬──────────────────────────┘
@@ -388,7 +388,7 @@ characters and unique (*"20% of sim venues have none at all"*). Character counts
 | `src/components/schema/Breadcrumbs.astro` | `BreadcrumbList` | every page except `/` |
 | `src/components/schema/LeagueEvent.astro` | `SportsEvent` | `/leagues`, `/juniors`, per league |
 | `src/components/schema/RateCatalog.astro` | `OfferCatalog` | `/rates`, `/memberships` |
-| `src/components/schema/MenuSchema.astro` | `Menu` | `/food-and-drink` |
+| `src/components/schema/MenuSchema.astro` | `Menu` | `/menu` |
 | `src/components/schema/FaqSchema.astro` | `FAQPage` | `/faq` |
 
 Venue data lives in **one** TinaCMS collection (`content/venues/lakeville.json`,
@@ -539,7 +539,7 @@ honest description — Lakeville runs a full bar and its own kitchen, so `hasMen
   "paymentAccepted": "Cash, Credit Card, Debit Card, Gift Card",
   "priceRange": "$$",
   "servesCuisine": ["Pizza", "American", "Bar Food"],
-  "hasMenu": { "@id": "https://thelinks.golf/food-and-drink#menu" },
+  "hasMenu": { "@id": "https://thelinks.golf/menu#menu" },
   "smokingAllowed": false,
   "publicAccess": true,
   "isAccessibleForFreeYesNo": false,
@@ -913,9 +913,9 @@ Referenced by the Lakeville venue's `hasMenu`. Abridged to two sections; the ful
 {
   "@context": "https://schema.org",
   "@type": "Menu",
-  "@id": "https://thelinks.golf/food-and-drink#menu",
+  "@id": "https://thelinks.golf/menu#menu",
   "name": "The Links of Lakeville menu",
-  "url": "https://thelinks.golf/food-and-drink",
+  "url": "https://thelinks.golf/menu",
   "inLanguage": "en-US",
   "hasMenuSection": [
     {
@@ -1069,8 +1069,8 @@ be **reversed**, and the reversal has an ordering hazard.
    query-string variants, and Squarespace's ?format= URLs)
 ```
 
-**One hop, always.** `www.lakevillelinks.com/menu` must go straight to `https://thelinks.golf/food-and-drink`
-— never `www.lakevillelinks.com/menu` → `thelinks.golf/menu` → `thelinks.golf/food-and-drink`. Chained
+**One hop, always.** `www.lakevillelinks.com/menu` must go straight to `https://thelinks.golf/menu`
+— never `www.lakevillelinks.com/menu` → `thelinks.golf/menu` → `thelinks.golf/menu`. Chained
 redirects across a domain move are where link equity actually leaks.
 
 **Implementation:** add `lakevillelinks.com` and `www.lakevillelinks.com` as domains on the same Vercel
@@ -1120,7 +1120,7 @@ Old URLs are relative to `https://www.lakevillelinks.com`. New URLs are relative
 | 13 | `/juniorleagues` | 301 | `/juniors` | **Cut as-is** (Jan–Mar 2026 season still saying "Sign-Up Now"); the *content pattern* moves to `/juniors` |
 | 14 | `/groups` | 301 | `/events` | Renamed to the playbook's canonical slug |
 | 15 | `/instruction` | 301 | `/lessons` | Renamed to the playbook's canonical slug |
-| 16 | `/menu` | 301 | `/food-and-drink` | Renamed; content moves from six PNGs to HTML |
+| 16 | `/menu` | 301 | `/menu` | Renamed; content moves from six PNGs to HTML |
 | 17 | `/contact` | 301 | `/contact` | Keep & rebuild |
 | 18 | `/stillwater` | 301 | `/locations/stillwater` | **The most important single redirect in the table** — the second venue gets a real page |
 | 19 | `/booking` | 301 | `/book?venue=lakeville` | Interstitial removed; venue intent preserved in the query |
@@ -1178,7 +1178,7 @@ the refresh, it gets removed, not archived.**
     { "source": "/our-story", "destination": "https://thelinks.golf/about", "permanent": true },
     { "source": "/stillwater", "destination": "https://thelinks.golf/locations/stillwater", "permanent": true },
     { "source": "/bookingstillwater", "destination": "https://thelinks.golf/book?venue=stillwater", "permanent": true },
-    { "source": "/menu", "destination": "https://thelinks.golf/food-and-drink", "permanent": true },
+    { "source": "/menu", "destination": "https://thelinks.golf/menu", "permanent": true },
     { "source": "/news/:slug", "destination": "https://thelinks.golf/about#press", "permanent": true },
     {
       "source": "/:path*",
@@ -1416,7 +1416,7 @@ greatplacesminnesota.com, teebly.io, visitlakeville.org, screengolfers.com,** an
 | 4 | Supply **winter rates + winter hours, per venue** | Client | `/rates`, both `LocalBusiness` blocks, FAQ cluster A. **Hard deadline 2026-10-03** — the published rate expires |
 | 5 | Supply the **adult league lineup** — format, night, price, dates, per venue | Client | `/leagues`, all `Event` schema, FAQ cluster C. The highest-value page of the year |
 | 6 | Reverse the domain redirect, then ship the §4 map in one change window | Build | Everything |
-| 7 | Transcribe menu / memberships / rates out of images into HTML + schema | Build | `/food-and-drink`, `/memberships`, `/rates` |
+| 7 | Transcribe menu / memberships / rates out of images into HTML + schema | Build | `/menu`, `/memberships`, `/rates` |
 | 8 | Write the 49 FAQ answers that are not token-blocked | Build | `/faq`, AEO |
 | 9 | Correct the directory listings carrying the TwoVision and 10-bay claims | Build | AEO |
 | 10 | Instrument GA4 events: booking click, league registration, **waitlist signup**, event enquiry | Build | Measurement |

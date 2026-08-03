@@ -77,8 +77,12 @@ accessibility fix.
 - **LinksFlex is the differentiated product** — prepaid hours that never expire. No peer scanned
   offers it. It is currently a terms-and-conditions page. *(Fix the pricing anomaly first — see
   audit §4.5, "Anytime" costs more per hour than walking in.)*
-- **Reference structure:** `onthegreen-golf.com`'s verb-based IA (`Play · Compete · Celebrate`)
-  and its self-documenting price cards. **Not** its three failure modes (audit §5).
+- **Reference structure — corrected 2026-08-02.** We took `onthegreen-golf.com`'s verb-based
+  IA as a model. The playbook has since been revised to forbid exactly this: a reference site
+  supplies the *shape*, never the vocabulary, and `Celebrate` appears once in 96 audited sites
+  — on On The Green. What we keep is structural and corpus-backed: an intent split on the
+  homepage, and price cards that carry their own eligibility windows. The labels now follow
+  the market (`sitemap.md` §0). **Not** its three failure modes (audit §5).
 
 ## 6. Scope & sitemap (first cut — Phase 1 owns the final IA)
 

@@ -35,7 +35,7 @@ const ROUTES = [
   '/locations/stillwater/',
   '/memberships/',
   '/events/',
-  '/food-and-drink/',
+  '/menu/',
   '/contact/',
   '/faq/',
   '/about/',
