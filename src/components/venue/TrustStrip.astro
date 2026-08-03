@@ -1,42 +1,89 @@
 ---
 /**
- * Hours, address, phone — immediately under the hero.
+ * Hours, address, phone — immediately under the hero, on a hard white cut out
+ * of the dark hero.
+ *
  * The playbook's single highest-leverage block: 67% of simulator venues have no
- * hours on the homepage at all (playbook-core.md §4).
+ * hours on the homepage at all (playbook-core.md §4), so this is a PRIMARY
+ * block, not a caption bar. It is a readout rail — two cells on a visibly ruled
+ * grid between two 4px ember scores, hours at scoreboard scale in
+ * `ink.displayOnLight` (13.31:1), every fact under its own caps label.
+ *
+ * What it used to be, and why that was wrong: every line set in `inkMuted` at
+ * `text-sm`, with "(hours being confirmed)" in exactly the same grey as the
+ * hours themselves — so the unverified state was invisible and the whole block
+ * read as fine print. Unverified data has to SAY it is unverified
+ * (STYLE-GUIDE §6.9); here it is an `accent.caution` tag with a 2px rule at
+ * 4.76:1 — the only warm object on a cold light band, so it is visibly a
+ * different KIND of thing rather than more grey.
  */
 import { getVenues, summariseHours, formatAddress, telHref, venuePath } from '../../lib/venues';
+import ReadoutCell from './ReadoutCell.astro';
 
 const venues = await getVenues();
+
+const napLink =
+  'flex min-h-tap items-center gap-s3 text-small text-inkBody transition-colors duration-fast ease-standard hover:text-ember hover:underline';
+const napKey = 'caps-label text-label-sm w-s9 shrink-0 text-inkMuted';
 ---
 
-<section class="border-y border-ink/10 bg-surface" aria-label="Hours and locations">
-  <div class="mx-auto grid max-w-content gap-6 px-gutter py-6 sm:grid-cols-2 lg:px-gutter-lg">
-    {
-      venues.map((venue) => (
-        <div class="flex flex-col gap-1">
-          <a href={venuePath(venue)} class="font-semibold hover:underline">
-            {venue.data.name}
-          </a>
-          <p class="text-sm text-inkMuted">
-            {summariseHours(venue).join(' · ')}
-            {!venue.data.verified && <span class="ml-1 text-inkMuted">(hours being confirmed)</span>}
-          </p>
-          <p class="text-sm text-inkMuted">
+<section class="bg-white" aria-label="Hours and locations">
+  <div class="mx-auto max-w-content px-gutter py-s7 lg:px-gutter-lg">
+    <div class="grid border-y-score border-ember md:grid-cols-2">
+      {
+        venues.map((venue, i) => (
+          <div
+            class:list={[
+              'py-cell md:py-cell-lg',
+              i === 0
+                ? 'md:pr-cell-lg'
+                : 'border-t-hairline border-navy md:border-t-0 md:border-l-hairline md:pl-cell-lg',
+            ]}
+          >
             <a
-              href={`https://maps.google.com/?q=${encodeURIComponent(formatAddress(venue))}`}
-              class="hover:underline"
-              target="_blank"
-              rel="noopener"
+              href={venuePath(venue)}
+              class="inline-flex min-h-tap items-center border-b-rule border-navy font-display text-card leading-display font-bold tracking-display text-navy transition-colors duration-fast ease-standard hover:bg-navy hover:text-white"
             >
-              {formatAddress(venue)}
+              {venue.data.name}
             </a>
-            {' · '}
-            <a href={telHref(venue.data.phone)} class="hover:underline">
-              {venue.data.phone}
-            </a>
-          </p>
-        </div>
-      ))
-    }
+
+            <ReadoutCell label="Hours" size="xl" class="mt-s5">
+              {summariseHours(venue).map((run, j) => (
+                <>
+                  {j > 0 && <span class="text-ember"> · </span>}
+                  {run}
+                </>
+              ))}
+            </ReadoutCell>
+
+            {!venue.data.verified && (
+              <p class="caps-label mt-s3 inline-block rounded-surface border-rule border-accent px-s2 py-s1 text-accent">
+                Hours being confirmed
+              </p>
+            )}
+
+            <ul class="mt-s5">
+              <li class="border-t-hairline border-inkMuted">
+                <a
+                  href={`https://maps.google.com/?q=${encodeURIComponent(formatAddress(venue))}`}
+                  class={napLink}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <span class={napKey}>Address</span>
+                  <span>{formatAddress(venue)}</span>
+                </a>
+              </li>
+              <li class="border-t-hairline border-inkMuted">
+                <a href={telHref(venue.data.phone)} class={napLink}>
+                  <span class={napKey}>Phone</span>
+                  <span class="scoreboard text-score-md leading-score">{venue.data.phone}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>

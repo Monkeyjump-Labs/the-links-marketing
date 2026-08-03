@@ -1,9 +1,36 @@
 ---
 /**
- * Homepage. Section order is the playbook's, ordered by the decision the
- * visitor is making (playbook-core.md §4) — not by what the client is proudest
- * of. The trust strip sits immediately under the hero because 67% of simulator
- * venues have no hours on the homepage at all.
+ * Homepage — the `blue-navy` composition (design/candidates/home-blue-navy.html,
+ * wisplet rv_TPEdpfhufWV9Me variant var_m5Ht7Z, chosen 2026-08-02).
+ *
+ * Section order is the playbook's, ordered by the decision the visitor is
+ * making (playbook-core.md §4) — not by what the client is proudest of. The
+ * trust strip sits immediately under the hero because 67% of simulator venues
+ * have no hours on the homepage at all.
+ *
+ * The direction's one committed idea, in its own words: *the page is one blue
+ * ramp of six stops — from the room at night to the screen on the wall — plus
+ * one warm accent*, rendered as **a scoreboard, not a brochure**. In practice
+ * that means three things this file is responsible for:
+ *
+ * 1. **Full-bleed ground alternation.** midnight → white → midnight → white →
+ *    EMBER → white. The ember band is used ONCE, at full strength; a second one
+ *    would spend the only heat on the page.
+ * 2. **Facts in labelled cells on a visibly ruled grid.** Hours, phone and bay
+ *    counts are `ReadoutCell`s — a caps label over a figure at scoreboard scale
+ *    — not sentences a visitor has to read to find a number in.
+ * 3. **Hierarchy from weight and scale, never from decoration.** No shadows, no
+ *    gradients, one 3px radius on interactive controls and nothing else.
+ *
+ * COPY: unchanged from what was already here, which was written for The Links
+ * and audited clean of the reference site's vocabulary. Nothing was imported
+ * from the candidate HTML that was not already on the site — notably the
+ * candidate's "Celebrate" card stays **Events** and its `/food-and-drink/`
+ * stays `/menu/`, per sitemap.md §0 (labels come from the corpus, not from a
+ * reference site). The one change is a treatment, not a rewrite: *"Up to five
+ * of you, same price."* is split out of the Play row's sentence so the
+ * reassurance can carry the loudest type on the band, which is the direction's
+ * stated beginner move.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -11,6 +38,10 @@ import TrustStrip from '../components/venue/TrustStrip.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import WaitlistForm from '../components/venue/WaitlistForm.astro';
 import StubNote from '../components/venue/StubNote.astro';
+import SectionHead from '../components/venue/SectionHead.astro';
+import ReadoutCell from '../components/venue/ReadoutCell.astro';
+import MediaSlot from '../components/venue/MediaSlot.astro';
+import { buttonClasses } from '../lib/buttons';
 import { getVenues, venuePath } from '../lib/venues';
 
 const venues = await getVenues();
@@ -28,90 +59,170 @@ const metadata = {
 
 /**
  * "What you can do here" — jobs, not departments (anti-pattern: org-shaped nav).
- * Each card is labelled with the PAGE IT LINKS TO, not with venue-voice copy.
- * "Celebrate" was On The Green's word for this card and appears once in the whole
- * 96-site corpus; the page is called Events, so the card is too.
+ * Each row is labelled with the PAGE IT LINKS TO, not with venue-voice copy.
+ * "Celebrate" was On The Green's word for this row and appears once in the whole
+ * 96-site corpus; the page is called Events, so the row is too.
+ *
+ * `reassure` is the sentence that gets the loudest treatment on the band. The
+ * beginner is the segment's largest untapped market and 67% of league pages in
+ * the corpus fail beginner reassurance, so the volume is spent here rather than
+ * on the flex.
  */
-const things = [
-  { title: 'Play', body: 'Book a bay by the hour. Up to five of you, same price.', href: '/book/', wide: true },
+interface Job {
+  title: string;
+  body: string;
+  reassure?: string;
+  href: string;
+}
+
+const things: Job[] = [
+  { title: 'Play', body: 'Book a bay by the hour.', reassure: 'Up to five of you, same price.', href: '/book/' },
   { title: 'Compete', body: 'Fall and winter leagues at both venues.', href: '/leagues/' },
   { title: 'Events', body: 'Work parties, birthdays, bachelor parties.', href: '/events/' },
   { title: 'Improve', body: 'Lessons and practice on a real launch monitor.', href: '/lessons/' },
   { title: 'Eat & drink', body: 'Full bar, real food, nine screens.', href: '/menu/' },
 ];
+
+/**
+ * The media slots, per venue. **Deliberately asymmetric, because the truth is.**
+ * Lakeville's room has been photographed professionally and the files are not
+ * here yet; Stillwater's has never been photographed at all, so its slot is the
+ * same drawing with the light off. That asymmetry is an approved decision, not
+ * a placeholder to fill — using Lakeville's frames for Stillwater is the exact
+ * trust defect this rebuild exists to fix.
+ */
+const slots: Record<string, { lit: boolean; alt: string; label: string; caption: string; needs: string }> = {
+  lakeville: {
+    lit: true,
+    alt: 'Photo slot at 3:2 — the frame that belongs here is a wide interior of the Lakeville room, evening, occupied: a near-black navy room, warm pendant light over the bar, and the lit simulator projection as the one bright cool thing in it.',
+    label: 'Photo slot · 3:2 · wide interior, evening, occupied',
+    caption:
+      'A professional shoot of this room exists — warm, dark, pendant-lit, with the simulator projection as the only cool note. The files are not on the site yet.',
+    needs: 'deliver the files',
+  },
+  stillwater: {
+    lit: false,
+    alt: 'Empty photo slot at 3:2 — no professional photograph of the Stillwater room exists. The slot is drawn unlit and hatched, with no simulator projection in it.',
+    label: 'Photo slot · 3:2 · empty',
+    caption:
+      'No professional photograph of this room exists yet. We will not use Lakeville’s photography to stand in for it.',
+    needs: 'commission the shoot',
+  },
+};
 ---
 
 <BaseLayout metadata={metadata}>
   {
-    /* 1. Hero — promise + what it is + where, one CTA. Venue-neutral by design:
-      the venue question is asked at the Book click, not the front door. */
+    /* 1. HERO — the room at night. Promise + what it is + where, one primary
+      CTA. Venue-neutral by design: the venue question is asked at the Book
+      click, not the front door. The subhead carries an 8px amber slab rather
+      than an opacity — the block this replaced set its eyebrow at opacity-70
+      and its subhead at opacity-80, both of which re-derive their own contrast
+      against whatever ground they land on. */
   }
-  <section class="bg-ink text-surface">
-    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <p class="text-sm font-semibold tracking-widest uppercase opacity-70">Lakeville &amp; Stillwater, Minnesota</p>
-      <h1 class="mt-4 max-w-4xl text-4xl leading-tight font-bold lg:text-6xl">
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
+      <p class="caps-label text-amber">Lakeville &amp; Stillwater, Minnesota</p>
+      <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">
         Indoor golf that's actually a night out.
       </h1>
-      <p class="mt-6 max-w-2xl text-lg opacity-80">
+      <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
         Ten GolfZon NX bays across two Twin Cities venues. Book by the hour, bring up to five friends for the same
         price, and let the simulator keep score while you order another round.
       </p>
-      <div class="mt-8 flex flex-wrap gap-4">
+      <div class="mt-s6 flex flex-wrap gap-s4">
         <BookButton size="lg" variant="onDark" />
-        <a
-          href="/rates/"
-          class="inline-block rounded border-2 border-surface/60 px-8 py-4 font-semibold text-surface hover:bg-surface/10"
-        >
-          See rates &amp; hours
-        </a>
+        <a href="/rates/" class={buttonClasses('lg', 'ghostDark')}>See rates &amp; hours</a>
       </div>
-      {
-        /* TODO(content): replace with real venue photography once the Stillwater
-          shoot exists. Stock golf imagery is a ship-blocker (playbook §9). */
-      }
     </div>
   </section>
 
-  {/* 2. Trust strip — hours, address, phone. The cheapest, highest-impact block. */}
+  {
+    /* 2. TRUST STRIP — hours, address, phone on a hard white cut out of the
+      hero. The cheapest, highest-impact block in the segment, so it is a
+      readout rail rather than a caption bar. */
+  }
   <TrustStrip />
 
-  {/* 3. What you can do here */}
-  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
-    <h2 class="text-3xl font-bold">What you can do here</h2>
-    <ul class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        things.map((t) => (
-          <li class:list={[t.wide ? 'lg:col-span-2' : '']}>
-            <a href={t.href} class="block h-full rounded border-2 border-ink/15 p-6 transition hover:border-primary">
-              <h3 class="text-xl font-semibold">{t.title}</h3>
-              <p class="mt-2 text-inkMuted">{t.body}</p>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+  {
+    /* 3. WHAT YOU CAN DO HERE — a row list, not a card grid. Rows put the five
+      jobs in one scannable column at one scale, and the first row is weighted
+      because booking a bay is the job most visitors came for. Hover moves ONE
+      STOP UP THE SAME RAMP (midnight → navy) rather than changing hue, so it
+      reads as lit rather than as a different colour — and because slate on navy
+      is 4.16:1, no muted text is allowed inside a row. */
+  }
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead tone="dark">What you can do here</SectionHead>
+
+      <ul class="border-t-hairline border-t-paper">
+        {
+          things.map((t, i) => (
+            <li class:list={['border-b-hairline border-b-paper', i === 0 && 'border-t-slab border-t-amber']}>
+              <a
+                href={t.href}
+                class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-s5 gap-y-s3 py-row transition-colors duration-fast ease-standard hover:bg-navy md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto] md:items-center md:py-s7"
+              >
+                <h3
+                  class:list={[
+                    'col-start-1 row-start-1 leading-display font-bold tracking-display text-white',
+                    i === 0 ? 'text-row-lead' : 'text-row',
+                  ]}
+                >
+                  {t.title}
+                </h3>
+                <p class="col-start-1 col-end-3 row-start-2 text-lead leading-body text-paper md:col-start-2 md:col-end-3 md:row-start-1">
+                  {t.body}
+                  {t.reassure && (
+                    <span class="mt-s2 block font-display text-card leading-display font-bold tracking-display text-amber">
+                      {t.reassure}
+                    </span>
+                  )}
+                </p>
+                <span
+                  aria-hidden="true"
+                  class="col-start-2 row-start-1 justify-self-end font-display text-row leading-score font-extrabold text-amber md:col-start-3"
+                >
+                  →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </section>
 
   {
-    /* 4. Proof. 81% of the segment shows no reviews at all — but we will not
-      invent testimonials. Real quotes go here once the client supplies them. */
+    /* 4. PROOF. 81% of the segment shows no reviews at all — but we will not
+      invent testimonials, and an empty "What players say" heading is worse than
+      no section. So the band exists in production only when there is real,
+      attributed proof to put in it; on staging it renders the DESIGNED
+      reservation instead — three ruled slots naming what each one is waiting
+      for — so a client reviewing the link sees the shape of the gap. */
   }
   {
-    /* Proof. The section only exists when there is real, attributed proof to put
-       in it — an empty "What players say" heading is worse than no section. */
     testimonials.length > 0 && (
-      <section class="bg-surface">
-        <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
-          <h2 class="text-3xl font-bold">What players say</h2>
-          <ul class="mt-8 grid gap-6 md:grid-cols-3">
-            {testimonials.slice(0, 3).map((t) => (
-              <li class="rounded border-2 border-ink/15 bg-white p-6">
-                <blockquote class="text-lg">&ldquo;{t.data.quote}&rdquo;</blockquote>
-                <p class="mt-4 text-sm font-semibold">{t.data.name}</p>
-                {t.data.source && <p class="text-sm text-inkMuted">{t.data.source}</p>}
-              </li>
+      <section class="bg-white">
+        <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+          <SectionHead>What players say</SectionHead>
+          <div class="grid border-t-score border-navy md:grid-cols-3">
+            {testimonials.slice(0, 3).map((t, i) => (
+              <div
+                class:list={[
+                  'flex flex-col justify-between gap-s5 border-b-hairline border-navy p-cell',
+                  i > 0 && 'md:border-l-hairline',
+                ]}
+              >
+                <blockquote class="text-lead leading-body text-inkBody">&ldquo;{t.data.quote}&rdquo;</blockquote>
+                <p class="border-t-hairline border-inkMuted pt-s3 font-display text-small font-semibold text-inkMuted">
+                  {t.data.name}
+                  {t.data.source && ` · ${t.data.source}`}
+                </p>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
     )
@@ -119,64 +230,142 @@ const things = [
 
   {
     testimonials.length === 0 && isStaging && (
-      <div class="mx-auto max-w-content px-gutter pt-section lg:px-gutter-lg">
-        <StubNote needs="the proof section is not rendered — no attributed testimonials exist yet. Needed: three real quotes with permission to publish name and venue, plus the Google Business Profile link for each venue. 81% of comparable venues show no reviews at all, so this is a differentiator worth chasing." />
-      </div>
+      <section class="bg-white">
+        <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+          <SectionHead>What players say</SectionHead>
+          <div class="grid border-t-score border-navy md:grid-cols-3">
+            {[
+              { state: 'awaiting', attr: 'Name · The Links of Lakeville' },
+              { state: 'awaiting', attr: 'Name · The Links of Lakeville' },
+              { state: 'blocked', attr: 'Name · The Links of Stillwater — no Google Business Profile on record' },
+            ].map((slot, i) => (
+              <div
+                class:list={[
+                  'hatch-reserved flex min-h-s10 flex-col justify-between gap-s5 border-b-hairline border-navy p-cell',
+                  i > 0 && 'md:border-l-hairline',
+                ]}
+              >
+                <p class="caps-label text-ink">Attributed review — {slot.state}</p>
+                <div class="flex flex-1 flex-col justify-center gap-s4">
+                  <span class="h-rule block w-full bg-inkMuted" />
+                  <span class="h-rule block w-11/12 bg-inkMuted" />
+                  <span class="h-rule block w-2/3 bg-inkMuted" />
+                </div>
+                <p class="border-t-hairline border-inkMuted pt-s3 font-display text-small font-semibold text-inkMuted">
+                  {slot.attr}
+                </p>
+              </div>
+            ))}
+          </div>
+          <StubNote
+            class="mt-s6"
+            needs="the proof section is not rendered in production — no attributed testimonials exist yet. Needed: three real quotes with permission to publish name and venue, plus the Google Business Profile link for each venue. 81% of comparable venues show no reviews at all, so this is a differentiator worth chasing."
+          />
+        </div>
+      </section>
     )
   }
 
   {
-    /* 5. The featured offer — the slot that changes monthly (strategy.md §5).
-      Launching in the Sep–Oct window, so it is league registration. */
+    /* 5. THE FEATURED OFFER — the slot that changes monthly (strategy.md §5),
+      and the page's ONE ember band, at full strength. Launching in the Sep–Oct
+      window, so it is league registration.
+
+      Nothing dark goes on this band: midnight on ember is 2.35:1 and navy
+      1.79:1, which is the same measurement that forbids an ember fill on the
+      hero, read the other way round. The waitlist therefore sits in a paper
+      slab punched out of the band, and inside that slab everything reverts to
+      light-field styling. */
   }
-  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
-    <div class="grid gap-10 lg:grid-cols-2">
-      <div>
-        <p class="text-sm font-semibold tracking-widest uppercase text-primary">This season</p>
-        <h2 class="mt-3 text-3xl font-bold">Fall &amp; winter leagues</h2>
-        <p class="mt-4 text-inkMuted">
-          League nights are the reason winter is our busiest season. Teams, handicaps, a live leaderboard and a bar tab.
-          Registration for {leagues[0]?.data.season ?? 'the coming season'} opens soon at both venues.
-        </p>
-        <p class="mt-4 text-inkMuted">
-          Never played in one? Most of our league players hadn't either. Handicaps keep it fair.
-        </p>
-        <a href="/leagues/" class="mt-6 inline-block font-semibold underline">See how leagues work</a>
+  <section class="on-accent-band bg-primary">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
+        <div>
+          <p class="caps-label text-white">This season</p>
+          <h2 class="mt-s4 text-section leading-display font-extrabold tracking-display-tight text-white">
+            Fall &amp; winter leagues
+          </h2>
+          <p class="mt-s5 text-lead leading-body text-surface">
+            League nights are the reason winter is our busiest season. Teams, handicaps, a live leaderboard and a bar
+            tab. Registration for {leagues[0]?.data.season ?? 'the coming season'} opens soon at both venues.
+          </p>
+          <p
+            class="my-s6 border-y-score border-white py-s4 font-display text-row leading-display font-bold tracking-display text-white"
+          >
+            Never played in one? Most of our league players hadn't either. Handicaps keep it fair.
+          </p>
+          <a
+            href="/leagues/"
+            class="inline-flex min-h-tap items-center font-bold text-surface underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-white"
+          >
+            See how leagues work
+          </a>
+        </div>
+
+        <WaitlistForm
+          listName="league-general"
+          heading="Get first word on league sign-ups"
+          blurb="One email when registration opens. Nothing else."
+        />
       </div>
-      <WaitlistForm
-        listName="league-general"
-        heading="Get first word on league sign-ups"
-        blurb="One email when registration opens. Nothing else."
-      />
     </div>
   </section>
 
-  {/* 6. The space / the venues */}
-  <section class="bg-surface">
-    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
-      <h2 class="text-3xl font-bold">Two venues</h2>
-      <ul class="mt-8 grid gap-6 md:grid-cols-2">
-        {
-          venues.map((venue) => (
-            <li class="rounded border-2 border-ink/15 bg-white p-6">
-              <h3 class="text-xl font-semibold">{venue.data.name}</h3>
-              <p class="mt-2 text-inkMuted">{venue.data.intro}</p>
-              <p class="mt-4 text-sm text-inkMuted">
-                {venue.data.bays} bays · {venue.data.simulator}
-              </p>
-              <div class="mt-6 flex flex-wrap gap-3">
-                <BookButton venue={venue} size="sm" />
-                <a
-                  href={venuePath(venue)}
-                  class="inline-flex min-h-tap items-center rounded border-2 border-ink/20 px-4 py-2 text-sm font-semibold hover:bg-ink/5"
-                >
-                  Venue details
-                </a>
+  {
+    /* 6. TWO VENUES — alternating rows on a ruled grid, each carrying its bay
+      count and its simulator as labelled cells. The media column is a drawn
+      spec at the real 3:2, never a fake photograph: there is no venue
+      photography in this project and stock golf imagery is a ship-blocker
+      (playbook §9). See MediaSlot for why the two slots differ. */
+  }
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead>Two venues</SectionHead>
+
+      {
+        venues.map((venue, i) => {
+          const slot = slots[venue.data.slug];
+          const last = i === venues.length - 1;
+          return (
+            <div
+              class:list={[
+                'grid gap-s6 border-navy py-s7 lg:grid-cols-[minmax(0,4fr)_minmax(0,3fr)] lg:items-center lg:gap-s8',
+                i === 0 ? 'border-t-score' : 'border-t-hairline',
+                last && 'border-b-score',
+              ]}
+            >
+              <div class:list={[i % 2 === 1 && 'lg:order-2']}>
+                {slot && <MediaSlot id={venue.data.slug} {...slot} />}
               </div>
-            </li>
-          ))
-        }
-      </ul>
+
+              <div class:list={[i % 2 === 1 && 'lg:order-1']}>
+                <h3 class="text-row leading-display font-extrabold tracking-display text-ink">{venue.data.name}</h3>
+
+                <div class="mt-s4 flex flex-wrap items-end gap-s7 border-y-quiet border-navy py-s4">
+                  <ReadoutCell label="Bays" size="xl">
+                    {venue.data.bays}
+                  </ReadoutCell>
+                  <ReadoutCell label="Simulator" size="name">
+                    {venue.data.simulator}
+                  </ReadoutCell>
+                </div>
+
+                <p class="mt-s5 max-w-prose-page text-lead leading-body text-inkBody">{venue.data.intro}</p>
+
+                <div class="mt-s5 flex flex-wrap items-center gap-s5">
+                  <BookButton venue={venue} />
+                  <a
+                    href={venuePath(venue)}
+                    class="inline-flex min-h-tap items-center font-bold text-inkBody underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+                  >
+                    Venue details
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
     </div>
   </section>
 </BaseLayout>

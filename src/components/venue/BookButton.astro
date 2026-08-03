@@ -5,21 +5,26 @@
  * warning". Without a venue it routes to /book, which asks which one.
  */
 import type { Venue } from '../../lib/venues';
+import { buttonClasses, type ButtonSize, type ButtonVariant } from '../../lib/buttons';
 
 interface Props {
   venue?: Venue;
   label?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: ButtonSize;
   /**
-   * `solid`/`outline` are for LIGHT surfaces. On a dark field use `onDark`.
+   * `solid`/`outline` are for LIGHT surfaces. On a dark field use `onDark`
+   * (amber fill, midnight ink) or `ghostDark` (paper outline).
    *
-   * This is not cosmetic: an ember fill on the forest-green hero measures
-   * 1.36:1 — effectively invisible. A solid action colour on a near-black field
-   * is mathematically unreachable here (white text at 4.5:1 caps the fill's
-   * luminance below the level a 3:1 boundary against #124B2E demands), so on
-   * dark the CTA inverts to a paper fill instead. See brand-direction.md.
+   * This is not cosmetic. A solid ember fill on the midnight hero measures
+   * 2.35:1 — `rules.noEmberOnDark` — and that is the same measurement as
+   * `noDarkOnAccentBand` read the other way round. `semantic.primary.onDarkFill`
+   * answers it: an amber fill with midnight ink is 9.48:1 in both directions,
+   * so the action keeps a colour on the band the visitor sees most.
+   *
+   * (This component used to render a paper fill on dark. It cleared AA but it
+   * was not the system — the divergence STYLE-GUIDE §10 flagged is now closed.)
    */
-  variant?: 'solid' | 'outline' | 'onDark';
+  variant?: 'solid' | ButtonVariant;
   class?: string;
 }
 
@@ -29,30 +34,17 @@ const href = venue ? venue.data.bookingUrl : '/book/';
 const isExternal = Boolean(venue);
 const text = label ?? (venue ? `Book at ${venue.data.shortName}` : 'Book a Bay');
 
-// min-h-tap on every size: these are controls, and size.tapMin is a hard floor.
-const sizes = {
-  sm: 'min-h-tap px-4 py-2 text-sm',
-  md: 'min-h-tap px-6 py-3 text-base',
-  lg: 'min-h-tap px-8 py-4 text-lg',
-};
-const variants = {
-  solid: 'bg-primary text-surface hover:opacity-90',
-  outline: 'border-2 border-current text-ink hover:bg-ink hover:text-surface',
-  onDark: 'bg-surface text-ink hover:opacity-90',
-};
+// `solid` is the starter's name for the light-ground fill; the token layer
+// calls it `primary`. Both are accepted so no other page has to change.
+const resolved: ButtonVariant = variant === 'solid' ? 'primary' : variant;
 ---
 
 <a
   href={href}
-  class:list={[
-    'inline-flex items-center justify-center rounded font-semibold transition',
-    sizes[size],
-    variants[variant],
-    className,
-  ]}
+  class:list={[buttonClasses(size, resolved), className]}
   {...isExternal ? { target: '_blank', rel: 'noopener' } : {}}
   data-analytics={venue ? `book:${venue.data.slug}` : 'book:chooser'}
 >
-  {text}{isExternal && <span aria-hidden="true"> →</span>}
+  {text}{isExternal && <span aria-hidden="true">→</span>}
   {isExternal && <span class="sr-only">(opens Whoosh booking in a new tab)</span>}
 </a>

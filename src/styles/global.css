@@ -111,6 +111,12 @@
   --color-screen: var(--brand-screen-light);
   --color-amber: var(--brand-amber);
   --color-ember: var(--brand-ember);
+  /* The two computed hover/active steps of the ember family. They are tokens,
+     not `hover:opacity-90` — fading a filled control fades its LABEL too, and
+     ember's exact darkness was chosen so the BRIGHTENED form still clears
+     4.91:1 (rules.hoverIsComputed). */
+  --color-emberHover: var(--brand-primary-hover);
+  --color-emberActive: var(--brand-primary-active);
   --color-paper: var(--brand-paper);
   --color-greige: var(--brand-greige);
   --color-forest: var(--brand-forest);
@@ -141,15 +147,196 @@
   --font-sans: var(--brand-font-sans);
   --font-mono: var(--brand-font-mono);
 
+  /* The two faces addressed by their real names. `font-mono` above is the
+     starter's alias for the DISPLAY slot and is kept only so unmigrated
+     components keep rendering; new work says what it means. */
+  --font-display: var(--brand-font-display);
+  --font-body: var(--brand-font-body);
+
+  /* -- Type scale (text-hero … text-label-sm) ----------------------------- *
+   * The eleven steps of typeScale.*, so a font size is never a literal.
+   * Four display, two scoreboard, three body, two label. Display and
+   * scoreboard steps are fluid clamp(); everything from `card` down is fixed.
+   * ---------------------------------------------------------------------- */
+  --text-hero: var(--brand-type-scale-display-hero);
+  --text-section: var(--brand-type-scale-display-section);
+  --text-row: var(--brand-type-scale-display-row);
+  --text-card: var(--brand-type-scale-display-card);
+  --text-score-xl: var(--brand-type-scale-scoreboard-xl);
+  --text-score-md: var(--brand-type-scale-scoreboard-md);
+  --text-lead: var(--brand-type-scale-body-lead);
+  --text-body: var(--brand-type-scale-body-base);
+  --text-small: var(--brand-type-scale-body-small);
+  --text-label: var(--brand-type-scale-label-base);
+  --text-label-sm: var(--brand-type-scale-label-small);
+
+  /* -- Weight ladder ------------------------------------------------------ *
+   * fontWeight.* lands exactly on Tailwind's own four steps, so rather than
+   * inventing parallel names we REPOINT the defaults at the tokens. After
+   * this, `font-extrabold` / `font-bold` / `font-semibold` / `font-normal`
+   * are token references, not coincidences.
+   * ---------------------------------------------------------------------- */
+  --font-weight-extrabold: var(--brand-font-weight-display-heavy);
+  --font-weight-bold: var(--brand-font-weight-display-bold);
+  --font-weight-semibold: var(--brand-font-weight-display-semi);
+  --font-weight-normal: var(--brand-font-weight-body-regular);
+
+  /* -- Tracking and line height ------------------------------------------ *
+   * tracking.* and lineHeight.* are independent scales with no declared
+   * binding (STYLE-GUIDE §4), so they are exposed as separate utilities and
+   * paired by hand at the call site.
+   * ---------------------------------------------------------------------- */
+  --tracking-display-tight: var(--brand-tracking-display-tight);
+  --tracking-display: var(--brand-tracking-display-normal);
+  --tracking-label: var(--brand-tracking-label-wide);
+  --tracking-label-wide: var(--brand-tracking-label-wider);
+
+  --leading-hero: var(--brand-line-height-display-hero);
+  --leading-display: var(--brand-line-height-display);
+  --leading-score: var(--brand-line-height-scoreboard);
+  --leading-body: var(--brand-line-height-body);
+  --leading-label: var(--brand-line-height-label);
+
   /* -- Spacing tokens (p-section, my-section, px-gutter, etc.) ------------ */
   --spacing-section: var(--brand-section-y);
   --spacing-section-lg: var(--brand-section-y-lg);
   --spacing-gutter: var(--brand-gutter-x);
   --spacing-gutter-lg: var(--brand-gutter-x-lg);
 
+  /* The space.* ramp itself (p-s6, gap-s4, mt-s2 …). It is NOT linear — the
+     jumps widen deliberately so "one step up" is always a visible change. */
+  --spacing-s1: var(--brand-space-s1);
+  --spacing-s2: var(--brand-space-s2);
+  --spacing-s3: var(--brand-space-s3);
+  --spacing-s4: var(--brand-space-s4);
+  --spacing-s5: var(--brand-space-s5);
+  --spacing-s6: var(--brand-space-s6);
+  --spacing-s7: var(--brand-space-s7);
+  --spacing-s8: var(--brand-space-s8);
+  --spacing-s9: var(--brand-space-s9);
+  --spacing-s10: var(--brand-space-s10);
+
+  /* The named jobs above the ramp. Bind to these, not to the step they
+     happen to equal today (STYLE-GUIDE §5). */
+  --spacing-cell: var(--brand-space-cell-padding);
+  --spacing-cell-lg: var(--brand-space-cell-padding-lg);
+  --spacing-row: var(--brand-space-row-padding-block);
+
+  /* -- Motion ------------------------------------------------------------- */
+  --duration-fast: var(--brand-duration-fast);
+  --duration-slow: var(--brand-duration-slow);
+  --ease-standard: var(--brand-ease-standard);
+
   /* -- Content widths (max-w-content, max-w-prose-page) ------------------- */
   --container-content: var(--brand-content-max);
   --container-prose-page: var(--brand-prose-max);
+}
+
+/* -- Structural utilities Tailwind has no theme namespace for -------------- *
+ * Border WIDTH is a literal in Tailwind (`border-2`), so the five-step border
+ * ladder cannot be expressed as theme keys. These bind it instead, which is
+ * what keeps the ruled grid a token system rather than a set of numbers that
+ * happen to agree. The step carries meaning — STYLE-GUIDE §5:
+ *   hairline 1px  a divider INSIDE a block (the ledger rules)
+ *   quiet    1px  a secondary internal boundary (2px before the softening)
+ *   rule     2px  a component boundary: inputs, media slots, cards
+ *   score    4px  band separators, and the focus slab
+ *   slab     8px  the lead rule above a section heading
+ * ------------------------------------------------------------------------ */
+@utility border-hairline {
+  border-width: var(--brand-border-hairline);
+}
+@utility border-t-hairline {
+  border-top-width: var(--brand-border-hairline);
+}
+@utility border-b-hairline {
+  border-bottom-width: var(--brand-border-hairline);
+}
+@utility border-l-hairline {
+  border-left-width: var(--brand-border-hairline);
+}
+@utility border-y-quiet {
+  border-block-width: var(--brand-border-rule-quiet);
+}
+@utility border-l-quiet {
+  border-left-width: var(--brand-border-rule-quiet);
+}
+@utility border-r-quiet {
+  border-right-width: var(--brand-border-rule-quiet);
+}
+@utility border-rule {
+  border-width: var(--brand-border-rule);
+}
+@utility border-t-rule {
+  border-top-width: var(--brand-border-rule);
+}
+@utility border-b-rule {
+  border-bottom-width: var(--brand-border-rule);
+}
+@utility border-y-score {
+  border-block-width: var(--brand-border-score);
+}
+@utility border-t-score {
+  border-top-width: var(--brand-border-score);
+}
+@utility border-b-score {
+  border-bottom-width: var(--brand-border-score);
+}
+@utility border-t-slab {
+  border-top-width: var(--brand-border-slab);
+}
+@utility border-l-slab {
+  border-left-width: var(--brand-border-slab);
+}
+
+/* The same ladder as a standalone rule element (an <hr>, not a border). */
+@utility h-rule {
+  height: var(--brand-border-rule);
+}
+@utility h-score {
+  height: var(--brand-border-score);
+}
+@utility h-slab {
+  height: var(--brand-border-slab);
+}
+
+/* Scoreboard figures. font.numeric ALWAYS carries tabular + lining numerals so
+   columns align, and the expanded width axis is what makes a figure read as a
+   figure rather than as heavy text (STYLE-GUIDE §4). */
+@utility scoreboard {
+  font-family: var(--brand-font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: var(--brand-font-weight-display-heavy);
+  font-stretch: calc(var(--brand-font-width-display-expanded) * 1%);
+  letter-spacing: var(--brand-tracking-display-tight);
+}
+
+/* The caps label — the top half of every labelled cell on the page. Display
+   face, 600, wide tracking. Caps is a LABEL treatment; never a sentence. */
+@utility caps-label {
+  font-family: var(--brand-font-display);
+  font-weight: var(--brand-font-weight-display-semi);
+  font-size: var(--brand-type-scale-label-base);
+  letter-spacing: var(--brand-tracking-label-wide);
+  line-height: var(--brand-line-height-label);
+  text-transform: uppercase;
+}
+
+/* The weighted lead row in a row list. Derived from the row step rather than
+   introduced as a twelfth size — the ladder stays eleven steps. */
+@utility text-row-lead {
+  font-size: calc(var(--brand-type-scale-display-row) * 1.5);
+}
+
+/* Decorative hatch for a reserved (empty) cell. Carries no content — it
+   measures 1.30:1, which is exactly why nothing is ever set on top of it. */
+@utility hatch-reserved {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 var(--brand-space-s3),
+    var(--brand-greige) var(--brand-space-s3),
+    var(--brand-greige) calc(var(--brand-space-s3) + var(--brand-border-hairline))
+  );
 }
 
 /* -- Base element defaults -------------------------------------------------- */
@@ -197,6 +384,35 @@
 
   h1 {
     letter-spacing: var(--brand-tracking-display-tight);
+  }
+
+  /*
+   * Focus is a SLAB, not a glow — consistent with the register and with having
+   * no shadows anywhere (tokens.json `focus`). Until now the site had no
+   * :focus-visible styling at all, which was an open ship-gate item.
+   *
+   * The ring colour depends on the GROUND, and a ground is a section-level
+   * fact the element itself cannot know, so dark and ember bands opt in by
+   * carrying `.on-dark` / `.on-accent-band`. Ratios: ember on white 7.45:1,
+   * amber on midnight 9.48:1, white on ember 7.45:1.
+   */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: var(--brand-focus-width) solid var(--brand-state-focus);
+    outline-offset: var(--brand-focus-offset);
+  }
+
+  .on-dark :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline-color: var(--brand-state-focus-on-dark);
+  }
+
+  .on-accent-band :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline-color: var(--brand-state-focus-on-accent-band);
+  }
+
+  /* …and inside a paper slab punched out of the ember band, everything reverts
+     to light-field styling, focus included. */
+  .on-accent-band .on-light :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline-color: var(--brand-state-focus);
   }
 }
 

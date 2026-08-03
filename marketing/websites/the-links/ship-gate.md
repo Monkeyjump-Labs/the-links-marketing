@@ -59,7 +59,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 ## Not covered by the playbook — test independently
 
 - ⬜ Core Web Vitals / Lighthouse pass
-- 🟡 WCAG AA contrast — **token-level pairings verified by recomputation** (body 10.14:1, secondary text 6.89:1, solid CTA 6.85:1, dark-field CTA 9.32:1; 184 failing `text-ink/70` instances fixed). Keyboard navigation and focus-visible styling still need a pass.
+- 🟡 WCAG AA contrast — **token-level pairings verified by recomputation** (body 10.14:1, secondary text 6.89:1, solid CTA 6.85:1, dark-field CTA 9.32:1; 184 failing `text-ink/70` instances fixed), and **re-verified in the browser**: `npm run audit:visual` runs axe over 12 routes at desktop and mobile and reports zero colour-contrast violations. **focus-visible styling now ships** — a 4px `focus.width` slab at `focus.offset` 2px, in `state.focus` / `state.focusOnDark` / `state.focusOnAccentBand` depending on the ground (`global.css`, `@layer base`). Keyboard navigation ORDER still needs a manual pass.
 - ⬜ Mobile rendering on a real device
 
 ---
