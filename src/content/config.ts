@@ -220,6 +220,24 @@ const menu = defineCollection({
   }),
 });
 
+/**
+ * Testimonials. 81% of the audited sim-venue corpus shows no reviews at all, so
+ * this is a real differentiator — but only with attributed, real quotes. The
+ * reference competitor runs three unsourced ones; we do not copy that. An empty
+ * collection is the honest state until the client supplies them.
+ */
+const testimonials = defineCollection({
+  type: 'data',
+  schema: z.object({
+    quote: z.string(),
+    name: z.string(),
+    venue: z.enum(['lakeville', 'stillwater', 'both']).default('both'),
+    source: z.string().optional(),
+    sourceUrl: z.string().url().optional(),
+    order: z.number().default(0),
+  }),
+});
+
 /** FAQ — the AEO surface. Renders FAQPage schema; 4% of the corpus has it. */
 const faq = defineCollection({
   type: 'data',
@@ -231,4 +249,4 @@ const faq = defineCollection({
   }),
 });
 
-export const collections = { blog, articles, caseStudies, pages, venues, leagues, rates, menu, faq };
+export const collections = { blog, articles, caseStudies, pages, venues, leagues, rates, menu, faq, testimonials };

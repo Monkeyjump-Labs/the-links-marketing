@@ -1,0 +1,34 @@
+---
+/**
+ * A pre-launch gap marker.
+ *
+ * Renders ONLY on staging (PUBLIC_SITE_NOINDEX=true). In production it emits
+ * nothing at all.
+ *
+ * Why: the homepage was shipping "STUB — awaiting real, attributed reviews…" as
+ * visible UI under a real section heading. That is the right message for us and
+ * the wrong one for a customer, and a client reviewing the staging link should
+ * see exactly what is still missing without that text being one env var away
+ * from going live. So the marker is loud where it is useful and absent where it
+ * is not — rather than relying on someone remembering to delete it.
+ */
+interface Props {
+  /** What is missing, in the team's words. */
+  needs: string;
+  class?: string;
+}
+const { needs, class: className = '' } = Astro.props;
+const isStaging = import.meta.env.PUBLIC_SITE_NOINDEX === 'true';
+---
+
+{
+  isStaging && (
+    <p
+      class:list={['rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted', className]}
+      data-stub="true"
+    >
+      <strong>Pre-launch note —</strong> {needs}
+      <span class="mt-1 block text-xs">This note is visible on staging only; production renders nothing here.</span>
+    </p>
+  )
+}

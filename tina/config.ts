@@ -195,6 +195,33 @@ export default defineConfig({
         ],
       },
       {
+        name: 'testimonial',
+        label: 'Testimonials',
+        path: 'src/content/testimonials',
+        format: 'json',
+        fields: [
+          {
+            type: 'string',
+            name: 'quote',
+            label: 'The quote',
+            isTitle: true,
+            required: true,
+            ui: { component: 'textarea' },
+          },
+          {
+            type: 'string',
+            name: 'name',
+            label: 'Who said it',
+            required: true,
+            description: 'Only publish a name you have permission to use.',
+          },
+          { type: 'string', name: 'venue', label: 'Which venue', options: VENUE_SCOPE },
+          { type: 'string', name: 'source', label: 'Where it came from', description: 'e.g. Google review, in person' },
+          { type: 'string', name: 'sourceUrl', label: 'Link to the source' },
+          { type: 'number', name: 'order', label: 'Display order' },
+        ],
+      },
+      {
         name: 'faqItem',
         label: 'FAQ',
         path: 'src/content/faq',
