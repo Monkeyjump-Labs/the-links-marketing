@@ -1,0 +1,28 @@
+---
+/**
+ * A section heading with the score rule above it — the recurring device that
+ * tells you a new band has started before you have read a word of it.
+ *
+ * `border.score` (4px), in `rule.scoreOnDark` (amber, 9.48:1) or
+ * `rule.scoreOnLight` (ember, 7.45:1). The rule is short and left-aligned so it
+ * reads as a marker, not as a divider — the dividers are the band edges.
+ */
+interface Props {
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+
+const { tone = 'light', class: className = '' } = Astro.props;
+---
+
+<div class:list={['mb-s7 flex flex-col gap-s4', className]}>
+  <hr class:list={['h-score w-s10 border-0', tone === 'dark' ? 'bg-amber' : 'bg-ember']} />
+  <h2
+    class:list={[
+      'text-section leading-display font-extrabold tracking-display-tight',
+      tone === 'dark' ? 'text-white' : 'text-ink',
+    ]}
+  >
+    <slot />
+  </h2>
+</div>

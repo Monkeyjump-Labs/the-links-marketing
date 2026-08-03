@@ -998,10 +998,10 @@ const screenLight = value('palette.screenLight');
 
       <h3 class="mt-8 text-lg font-bold" style={`color: ${navy};`}>BookButton</h3>
       <p class="mt-1 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
-        <code>solid</code> and <code>outline</code> are light-ground variants; <code>onDark</code> is for a dark field and
-        is shown twice — on light, where it is wrong, and on dark, where it belongs. Note the divergence flagged under Pending:
-        <code>onDark</code> renders a paper fill, while <code>semantic.primary.onDarkFill</code> in the token file is an amber
-        fill with midnight ink.
+        <code>solid</code> and <code>outline</code> are light-ground variants; <code>onDark</code> and
+        <code>ghostDark</code> are for a dark field. <code>onDark</code> is shown twice — on light, where it is wrong, and
+        on dark, where it belongs. It now renders <code>semantic.primary.onDarkFill</code> (an amber fill with midnight ink,
+        9.48:1 both directions); the paper-fill divergence this page used to flag is closed.
       </p>
       <div class="mt-4 grid gap-0 lg:grid-cols-2">
         <div class="flex flex-wrap items-center gap-4 p-6" style={`background: ${value('semantic.ground.base')};`}>

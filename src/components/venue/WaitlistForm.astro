@@ -5,14 +5,25 @@
  * closed" and simply stop (playbook-core.md §5).
  *
  * Posts to PUBLIC_LEAD_ENDPOINT. With no endpoint configured it degrades to a
- * mailto so a lead is never silently dropped.
+ * mailto so a lead is never silently dropped, and it says so rather than
+ * pretending.
+ *
+ * **It is a paper slab, and on the ember band it is punched out of it.** Nothing
+ * dark is legible on ember — midnight 2.35:1, navy 1.79:1 — so the form cannot
+ * simply sit on the band (`rules.noDarkOnAccentBand`). Inside the slab
+ * everything reverts to light-field styling: navy heading 12.24:1, navyMid body
+ * 9.13:1, inkMuted placeholders 6.32:1, paper on an ember submit 6.85:1. The
+ * `on-light` class restores the light-ground focus slab inside the dark band.
  */
+import { buttonClasses } from '../../lib/buttons';
+
 interface Props {
   heading?: string;
   blurb?: string;
   listName: string;
   venue?: string;
   email?: string;
+  class?: string;
 }
 
 const {
@@ -21,55 +32,52 @@ const {
   listName,
   venue,
   email = 'info@lakevillelinks.com',
+  class: className = '',
 } = Astro.props;
 
 const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT;
 const formId = `waitlist-${listName.replace(/\W+/g, '-').toLowerCase()}`;
+
+const field =
+  'min-h-tap min-w-0 rounded-control border-rule border-navy bg-white px-s4 py-s3 text-body text-navy placeholder:text-inkMuted';
 ---
 
-<form
-  class="rounded border-2 border-ink/15 bg-surface p-6"
-  action={endpoint ?? `mailto:${email}`}
-  method={endpoint ? 'POST' : 'GET'}
-  data-analytics={`waitlist:${listName}`}
-  id={formId}
->
-  <h3 class="text-lg font-semibold">{heading}</h3>
-  <p class="mt-1 text-sm text-inkMuted">{blurb}</p>
+<div class:list={['on-light rounded-surface bg-paper p-cell-lg text-inkBody', className]}>
+  <h3 class="text-row leading-display font-extrabold tracking-display text-ink">{heading}</h3>
+  <p class="mt-s3 text-small leading-body text-inkBody">{blurb}</p>
 
-  <input type="hidden" name="list" value={listName} />
-  {venue && <input type="hidden" name="venue" value={venue} />}
-  <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+  <form
+    class="mt-s5"
+    action={endpoint ?? `mailto:${email}`}
+    method={endpoint ? 'POST' : 'GET'}
+    data-analytics={`waitlist:${listName}`}
+    id={formId}
+  >
+    <input type="hidden" name="list" value={listName} />
+    {venue && <input type="hidden" name="venue" value={venue} />}
+    <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
-  <div class="mt-4 flex flex-col gap-3 sm:flex-row">
-    <label class="sr-only" for={`${formId}-name`}>Your name</label>
-    <input
-      id={`${formId}-name`}
-      name="name"
-      type="text"
-      required
-      placeholder="Your name"
-      class="min-h-tap min-w-0 flex-1 rounded border border-ink/20 px-3 py-2 text-sm"
-    />
-    <label class="sr-only" for={`${formId}-email`}>Email address</label>
-    <input
-      id={`${formId}-email`}
-      name="email"
-      type="email"
-      required
-      placeholder="you@example.com"
-      class="min-h-tap min-w-0 flex-1 rounded border border-ink/20 px-3 py-2 text-sm"
-    />
-    <button
-      type="submit"
-      class="min-h-tap shrink-0 rounded bg-primary px-5 py-2 text-sm font-semibold whitespace-nowrap text-surface hover:opacity-90"
-    >
+    <div class="grid gap-s4 sm:grid-cols-2">
+      <div class="flex flex-col">
+        <label class="sr-only" for={`${formId}-name`}>Your name</label>
+        <input id={`${formId}-name`} name="name" type="text" required placeholder="Your name" class={field} />
+      </div>
+      <div class="flex flex-col">
+        <label class="sr-only" for={`${formId}-email`}>Email address</label>
+        <input id={`${formId}-email`} name="email" type="email" required placeholder="you@example.com" class={field} />
+      </div>
+    </div>
+
+    <button type="submit" class:list={[buttonClasses('md', 'primary'), 'mt-s5 w-full cursor-pointer']}>
       Notify me
     </button>
-  </div>
+  </form>
+
   {
     !endpoint && (
-      <p class="mt-3 text-xs text-inkMuted">Lead endpoint not configured — this form opens an email instead.</p>
+      <p class="mt-s5 border-t-hairline border-inkMuted pt-s4 text-small leading-body text-inkMuted">
+        Lead endpoint not configured — this form opens an email instead.
+      </p>
     )
   }
-</form>
+</div>

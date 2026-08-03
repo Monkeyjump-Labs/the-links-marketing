@@ -11,6 +11,13 @@
  * see exactly what is still missing without that text being one env var away
  * from going live. So the marker is loud where it is useful and absent where it
  * is not — rather than relying on someone remembering to delete it.
+ *
+ * Styling: `accent.caution` (emberMid, 4.76:1 on white) with an 8px slab down
+ * its left edge and a 1px `border.ruleQuiet` around the rest — one of the two
+ * dividers the softening delta dropped from 2px. Warm means caution here, the
+ * same rule the unverified-hours tag follows, so a build-state note and a
+ * verified fact never look alike. Never on a greige field: emberMid is 3.66:1
+ * there (`rules.noWarningOnGreige`).
  */
 interface Props {
   /** What is missing, in the team's words. */
@@ -23,12 +30,18 @@ const isStaging = import.meta.env.PUBLIC_SITE_NOINDEX === 'true';
 
 {
   isStaging && (
-    <p
-      class:list={['rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted', className]}
+    <div
+      class:list={[
+        'max-w-prose-page rounded-surface border-y-quiet border-r-quiet border-l-slab border-accent p-cell',
+        className,
+      ]}
       data-stub="true"
     >
-      <strong>Pre-launch note —</strong> {needs}
-      <span class="mt-1 block text-xs">This note is visible on staging only; production renders nothing here.</span>
-    </p>
+      <p class="caps-label text-accent">Build state — needs-client-data</p>
+      <p class="mt-s3 text-small leading-body text-inkBody">{needs}</p>
+      <p class="mt-s3 text-small leading-body text-inkMuted">
+        This note is visible on staging only; production renders nothing here.
+      </p>
+    </div>
   )
 }

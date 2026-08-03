@@ -123,7 +123,18 @@ Two of these are worth restating because they are counter-intuitive:
 | `z-sticky` `z-overlay` `z-modal` `z-toast` … | `zIndex.*` |
 | `min-h-tap` | `size.tapMin` — put it on anything tappable |
 | `max-w-content` / `max-w-prose-page` | `size.contentMax` / `size.proseMax` |
-| `px-gutter` `py-section` | `space.gutterX` / `space.sectionY` |
+| `px-gutter` `py-section` `py-section-lg` | `space.gutterX` / `space.sectionY` / `sectionYLg` |
+| `p-s1` … `p-s10`, `gap-s5`, `mt-s4` | the `space.*` ramp |
+| `p-cell` `p-cell-lg` `py-row` | `space.cellPadding` / `cellPaddingLg` / `rowPaddingBlock` |
+| `text-hero` `text-section` `text-row` `text-card` `text-score-xl` `text-score-md` `text-lead` `text-body` `text-small` `text-label` `text-label-sm` | the eleven `typeScale.*` steps |
+| `font-display` / `font-body` | `font.display` / `font.body` (`font-mono` is the starter's alias for the display slot) |
+| `font-extrabold` `font-bold` `font-semibold` `font-normal` | `fontWeight.*` — the defaults are repointed at the tokens |
+| `tracking-display-tight` `tracking-display` `tracking-label` `tracking-label-wide` | `tracking.*` |
+| `leading-hero` `leading-display` `leading-score` `leading-body` `leading-label` | `lineHeight.*` |
+| `border-hairline` `border-*-quiet` `border-rule` `border-*-score` `border-*-slab` (and `h-rule` / `h-score` / `h-slab` for a standalone rule) | the five-step `border.*` ladder — Tailwind has no border-width namespace, so these are `@utility` definitions in `global.css` |
+| `scoreboard` | `font.numeric` + tabular/lining figures + `fontWidth.displayExpanded` + `fontWeight.displayHeavy`, in one class |
+| `caps-label` | the caps label treatment: display face, 600, `labelBase`, `tracking.labelWide` |
+| `duration-fast` `duration-slow` `ease-standard` | `motion.*` |
 
 Most semantic roles have **no** utility — every `ground.*`, every `rule.*`, `primary.hover`,
 `state.focus`, all of `media.*`. Use the compiled custom property directly
@@ -433,9 +444,9 @@ Rendered honestly at the foot of `/styleguide`, and repeated here so this docume
 
 **Found while writing this guide and the styleguide page — not yet in the token file:**
 
-- **No `@font-face` exists anywhere in the repository.** `public/fonts/open-sans-*.woff2` ships but
-  nothing references it, so `font.body` is falling back too, not just `font.display`. The token file
-  describes Open Sans as "already self-hosted"; it is present, not wired.
+- ~~**No `@font-face` exists anywhere in the repository.**~~ **STALE — no longer true.** `global.css`
+  now declares five `@font-face` blocks against `public/fonts/`, Archivo included, so both faces load.
+  (`notes.pendingImplementation.archivoNotSelfHosted` in the token file is stale in the same way.)
 - **`typeScale`, `tracking` and `lineHeight` have no declared binding.** Three independent scales
   with no statement of which pairs with which, so every surface infers its own.
 - **`rules.noInkOpacityForText` cites a stale number.** Its 4.39:1 for `ink/70` is the retired forest
@@ -446,14 +457,15 @@ Rendered honestly at the foot of `/styleguide`, and repeated here so this docume
   the shape `rules.noInkOpacityForText` forbids. It happens to pass — 7.17:1 on white, computed —
   but it re-derives itself against whatever ground the card lands on, which is the reason for the
   ban. It should be `text-inkBody`.
-- **`semantic.primary.onDarkFill` and `BookButton`'s `onDark` variant disagree.** The token says the
-  dark-field CTA is an amber fill with midnight ink (9.48:1); the component renders a paper fill with
-  navy ink (12.24:1). Both clear AA, but only one is the system, and the component's docstring still
-  argues from the retired forest palette.
-- **The `-lg` spacing utilities do not resolve.** `tokens.css` emits `--brand-space-section-ylg` and
-  `--brand-space-gutter-xlg`, while the legacy aliases at the foot of the same file point at
-  `--brand-space-section-y-lg` and `--brand-space-gutter-x-lg`. Those names do not exist, so
-  `py-section-lg`, `mt-section-lg` and `px-gutter-lg` compute to nothing wherever they are used.
+- ~~**`semantic.primary.onDarkFill` and `BookButton`'s `onDark` variant disagree.**~~ **CLOSED**
+  (homepage port, 2026-08-02). `BookButton` now renders the token — an amber fill with midnight ink
+  at 9.48:1 — and gained a `ghostDark` variant for the secondary action on a dark field. Its hover
+  states are `primary.hover` / `primary.active` rather than `hover:opacity-90`, which used to fade
+  the label along with the fill.
+- ~~**The `-lg` spacing utilities do not resolve.**~~ **STALE — no longer true.** `tokens.css` emits
+  `--brand-space-section-y-lg` and `--brand-space-gutter-x-lg` and the legacy aliases point at exactly
+  those names. Re-measured in the browser during the homepage port: `py-section-lg` computes to 128px
+  (8rem) and `px-gutter-lg` to 64px (4rem) on every band of `/`.
 - **`palette.forest`'s retreat path names a token that does not exist.** It says "repoint
   `semantic.ground.jobs` to forest", but `semantic.ground` has no `jobs` entry — the grounds are
   `chrome`, `hero`, `base`, `raised`, `alt`, `accentBand`, `rowHover`, `media`. The jobs band uses
