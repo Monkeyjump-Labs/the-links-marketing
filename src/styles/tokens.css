@@ -110,9 +110,9 @@
   --brand-font-weight-body-bold: 700;
   --brand-font-width-display-normal: 100;
   --brand-font-width-display-expanded: 112;
-  --brand-type-scale-display-hero: clamp(3rem, 10.5vw, 8.25rem);
-  --brand-type-scale-display-section: clamp(2.125rem, 5.5vw, 4rem);
-  --brand-type-scale-display-row: clamp(1.5rem, 2.6vw, 2.125rem);
+  --brand-type-scale-display-hero: clamp(2.5rem, 7vw, 5.25rem);
+  --brand-type-scale-display-section: clamp(1.875rem, 4vw, 2.75rem);
+  --brand-type-scale-display-row: clamp(1.375rem, 2.2vw, 1.75rem);
   --brand-type-scale-display-card: 1.375rem;
   --brand-type-scale-scoreboard-xl: clamp(1.875rem, 4.2vw, 3rem);
   --brand-type-scale-scoreboard-md: 1.25rem;

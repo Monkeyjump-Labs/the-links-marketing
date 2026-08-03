@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Seo from '../components/Seo.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import VenueBar from '../components/venue/VenueBar.astro';
 import OrganizationSchema from '../components/venue/OrganizationSchema.astro';
 import type { PageMetadata } from '../lib/types';
 
@@ -34,7 +35,14 @@ const noIndex = metadata.noIndex || import.meta.env.PUBLIC_SITE_NOINDEX === 'tru
     />
   </head>
   <body class="flex min-h-screen flex-col">
-    {chrome && <Header />}
+    {
+      chrome && (
+        <div class="sticky top-0 z-sticky">
+          <Header />
+          <VenueBar />
+        </div>
+      )
+    }
     <main class="flex-1">
       <slot />
     </main>

@@ -1,0 +1,100 @@
+---
+/**
+ * The venue bar — a permanent strip under the header that owns location choice.
+ *
+ * WHY IT EXISTS. Venue selection used to be a small switcher crammed into the
+ * header's right-hand cluster, competing with the wordmark, seven nav items and
+ * the CTA. For an operator whose defining structural problem is that a second
+ * venue is invisible, that was the wrong amount of room to give it.
+ *
+ * As a bar it gets its own line, carries each venue's hours for TODAY rather than
+ * just a name, and marks which venue you are looking at on the location pages. It
+ * answers "which of these two is open right now", which is the actual question at
+ * 8pm on a Tuesday.
+ *
+ * Progressive enhancement: two real links, so it works with JS off. The script only
+ * corrects the day (the server renders the BUILD day) and stores a preference.
+ */
+import { getVenues, venuePath, orderedHours, formatTime, type Day } from '../../lib/venues';
+
+const venues = await getVenues();
+const currentPath = Astro.url.pathname;
+
+const DAY_INDEX: Day[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as Day[];
+const buildDay = DAY_INDEX[new Date().getDay()];
+
+/** Every day's hours, so the client script can relabel without a refetch. */
+const hoursFor = (venue: (typeof venues)[number]) =>
+  Object.fromEntries(
+    orderedHours(venue).map((r) => [r.day, r.closed ? 'Closed' : `${formatTime(r.opens)}–${formatTime(r.closes)}`]),
+  );
+---
+
+<div class="on-dark border-t-hairline border-paper/20 bg-midnight" data-venue-bar>
+  <div
+    class="mx-auto flex max-w-content flex-wrap items-stretch gap-x-6 px-gutter lg:px-gutter-lg"
+    role="group"
+    aria-label="Choose a venue"
+  >
+    <span
+      class="hidden shrink-0 items-center pr-2 text-label-sm tracking-label-wider text-slate uppercase sm:flex"
+      aria-hidden="true"
+    >
+      Venue
+    </span>
+
+    {
+      venues.map((venue) => {
+        const here = currentPath.startsWith(venuePath(venue));
+        const map = hoursFor(venue);
+        return (
+          <a
+            href={venuePath(venue)}
+            data-venue-tab={venue.data.slug}
+            data-hours={JSON.stringify(map)}
+            aria-current={here ? 'page' : undefined}
+            class:list={[
+              'flex min-h-tap flex-1 items-center gap-x-3 border-b-score py-2 transition sm:flex-none',
+              here ? 'border-amber' : 'border-transparent hover:border-slate',
+            ]}
+          >
+            <span class:list={['text-body font-semibold', here ? 'text-white' : 'text-paper']}>
+              {venue.data.shortName}
+            </span>
+            <span class="text-label tracking-label-wide text-slate uppercase" data-venue-hours>
+              {buildDay} {map[buildDay]}
+            </span>
+          </a>
+        );
+      })
+    }
+  </div>
+</div>
+
+<script>
+  // The server rendered the BUILD day. Relabel to the visitor's real day, and
+  // remember the venue so /book can pre-select it. Both are enhancements — the
+  // links and the rendered hours are already correct for the day shown.
+  const bar = document.querySelector('[data-venue-bar]');
+  if (bar) {
+    const today = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date().getDay()];
+
+    bar.querySelectorAll('[data-venue-tab]').forEach((node) => {
+      const tab = node as HTMLElement;
+      const label = tab.querySelector('[data-venue-hours]');
+      try {
+        const map = JSON.parse(tab.dataset.hours ?? '{}') as Record<string, string>;
+        if (label && map[today]) label.textContent = `${today} ${map[today]}`;
+      } catch {
+        /* keep the server-rendered day */
+      }
+      tab.addEventListener('click', () => {
+        try {
+          localStorage.setItem('preferredVenue', tab.dataset.venueTab ?? '');
+        } catch {
+          /* private browsing — the preference is optional */
+        }
+      });
+    });
+  }
+</script>
