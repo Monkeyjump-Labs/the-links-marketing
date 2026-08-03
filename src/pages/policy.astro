@@ -60,26 +60,29 @@ const rules = [
       itself happens in Whoosh, our reservation system.
     </p>
 
-    {/* The stub goes FIRST because it is the question people came for. */}
-    <section class="mt-10 rounded border-2 border-dashed border-ink/40 p-6">
+    {
+      /* The cancellation window goes FIRST because it is the question people came
+         for — the segment's top pre-booking objection, and almost nobody answers it.
+
+         This section previously said the policy "is not confirmed and must not be
+         guessed." That was wrong: the venue publishes it, verbatim, on /booking and
+         /bookingstillwater. Withholding it was the right instinct applied to a fact we
+         actually had — and it read as though the client had failed to supply something
+         they had in fact published. Source: _ingest/raw/booking.html. */
+    }
+    <section class="mt-10 border-l-slab border-primary bg-surface p-6">
       <h2 class="text-2xl font-bold">Cancellations</h2>
-      <p class="mt-3 font-semibold">STUB — the cancellation window is not confirmed and must not be guessed.</p>
-      <p class="mt-3 text-inkMuted">
-        This is the most common question anyone asks before booking a simulator bay, and almost nobody in this industry
-        answers it. We are not going to publish a number we have not had confirmed, because being wrong about it costs a
-        customer money.
+      <p class="mt-3 text-lg">
+        <strong>Cancel at least 48 hours before your reservation and it is free.</strong> Inside 48 hours you may be charged
+        for the full bay reservation.
       </p>
-      <p class="mt-4 font-semibold">Needed from the client, before launch:</p>
-      <ul class="mt-3 list-disc space-y-1 pl-5 text-inkMuted">
-        <li>How far ahead a booking can be cancelled free of charge</li>
-        <li>What is charged inside that window, and whether it differs by venue</li>
-        <li>How you cancel — in the Whoosh app, by phone, or either</li>
-        <li>Whether a booking can be moved rather than cancelled, and by when</li>
-        <li>What happens to a no-show</li>
-        <li>Weather and closure policy: what happens if we close and you had a booking</li>
-      </ul>
+      <p class="mt-3 text-inkMuted">
+        You cancel the same way you booked — in Whoosh, the reservation system. At Stillwater, cancel through the Whoosh
+        app.
+      </p>
       <p class="mt-4 text-sm text-inkMuted">
-        Whatever the answer is, it must appear in the same words here and on the booking page.
+        Still to confirm with the venue: whether a booking can be moved rather than cancelled and by when, what happens
+        to a no-show, and what happens if the venue closes and you had a booking. Those three are genuinely unpublished.
       </p>
     </section>
 

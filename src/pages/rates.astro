@@ -18,7 +18,7 @@ const cards = (await getCollection('rates')).sort((a, b) => a.data.order - b.dat
 const metadata = {
   metaTitle: 'Rates & Hours — Indoor Golf, Lakeville & Stillwater MN',
   metaDescription:
-    'What an hour costs at The Links and when we are open. $35 per bay per hour through 3 October 2026. Full weekly hours for both Twin Cities venues.',
+    'What an hour costs at The Links and when we are open. $35 per bay per hour through 30 September 2026. Full weekly hours for both Twin Cities venues.',
 };
 ---
 
@@ -26,7 +26,7 @@ const metadata = {
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">Rates &amp; hours</h1>
     <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      A bay is priced by the hour, not by the person. Bring up to five people for the same price.
+      A bay is priced by the hour, not by the person. Bring up to six people for the same price.
     </p>
 
     {cards.map((card) => <RatesTable card={card} />)}
