@@ -24,11 +24,11 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 
 | | Check | Status |
 |---|---|---|
-| ✅ | Transactional CTA in the header on every page | `Book a Bay`, persistent |
+| ✅ | Transactional CTA in the header on every page | `Book a bay`, persistent. Sentence case as of FW-3967 — caps is reserved for the 12px label role |
 | ✅ | Booking reachable in ≤2 clicks from every page | Header → venue chooser → Whoosh. The old "ACKNOWLEDGE AND GO TO BOOKING" interstitial is deleted |
 | ✅ | Leagues page has a registration path **and** a waitlist in all three states | The one component no audited competitor has |
 | ✅ | Email capture present with a stated reason to subscribe | |
-| ⬜ | Every form tested end-to-end; submissions arrive somewhere a human reads | **`PUBLIC_LEAD_ENDPOINT` is not configured.** Forms currently degrade to `mailto:`. This must be wired and tested before launch |
+| ⬜ | Every form tested end-to-end; submissions arrive somewhere a human reads | **`PUBLIC_LEAD_ENDPOINT` is not configured.** Forms currently degrade to `mailto:` and say so. This must be wired and tested before launch. Note the waitlist needs a *list*, not an inbox — its promise is "one email when registration opens", which nobody can keep from a pile of `mailto:` messages months later. There is also no `/thanks/` page yet, and a native form POST navigates away |
 
 ## Content
 
@@ -39,7 +39,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ⬜ | At least three attributed testimonials or a live review widget | None supplied. We will not ship unsourced quotes |
 | ✅ | No PDFs in place of menus, rates or rules | |
 | 🟡 | Venue photography, not stock | Lakeville's shoot is strong. **Stillwater has one usable frame** — a pre-opening phone night shot |
-| ✅ | Simulator technology named | GolfZon NX — pending the NX-vs-TwoVision confirmation below |
+| ✅ | Simulator technology named | GolfZon, with the model question carried as a `PendingTag` beside it rather than picking a side in the NX-vs-TwoVision contradiction below |
 | ✅ | Every seasonal page dated, with a named refresh owner | Season carried in content; **owner still to be named at handoff** |
 
 ## Sim-venue additions
@@ -108,3 +108,28 @@ because even the `.vercel.app` production deploy is staging until the real domai
 - **Branch protection** is not enabled on the repo. Turn it on at handoff.
 - **On-site league registration.** The playbook says own it; we link to ply.golf for v1 because
   there is no on-site registration surface yet. Logged in `brief.md` §11.
+
+---
+
+## Deploy note — the Vercel git-author block
+
+`vercel --prod` reads the **local HEAD commit's author** and refuses to build when that
+author is not a member of the Vercel team:
+
+```
+Git author 26395706+daranhan@users.noreply.github.com must have access to the
+team daran-7928's projects on Vercel to create deployments.   blockCode: TEAM_ACCESS_REQUIRED
+```
+
+This bites specifically after **merging a PR on GitHub**: GitHub authors the merge commit
+server-side as `<user>@users.noreply.github.com`, not as the local `daranhan-mjl
+<daran.han@monkeyjumplabs.com>` that every hand-made commit here uses. The build never
+starts — the deployment goes straight to `BLOCKED` with a 0ms build, and the previous
+production deployment stays live, so **the symptom is "nothing changed" rather than an
+error.** Check `readyStateReason` on the deployment, not the build logs; there are none.
+
+Two fixes, and the second is the one that actually ends it:
+
+1. **Per-deploy:** put a commit authored by the linked identity at HEAD before deploying.
+2. **Permanent:** add `26395706+daranhan@users.noreply.github.com` to the Vercel account's
+   emails (Account Settings → Emails), so GitHub-authored merge commits stop tripping it.
