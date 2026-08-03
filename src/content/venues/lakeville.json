@@ -12,10 +12,10 @@
   "latitude": 44.6794,
   "longitude": -93.2448,
   "bays": 6,
-  "simulator": "GolfZon NX",
+  "simulator": "GolfZon",
   "bookingUrl": "https://app.whoosh.io/patron/club/the-links-indoor-golf/agenda/simulators/today",
   "openedYear": 2022,
-  "intro": "Six GolfZon NX bays, a full bar and nine screens in the south metro. Five bays play both-handed; one is right-handed only.",
+  "intro": "Six GolfZon bays, a full bar and nine screens in the south metro. Five bays play both-handed; one is right-handed only.",
   "hours": [
     {
       "day": "Mon",
@@ -60,7 +60,7 @@
       "closed": false
     }
   ],
-  "hoursNote": "SUMMER HOURS ONLY (through 3 Oct 2026). Winter hours are not yet supplied.",
+  "hoursNote": "Summer hours. Winter hours have not been supplied.",
   "amenities": [
     "Full bar",
     "Food menu",
@@ -71,9 +71,9 @@
   ],
   "verified": false,
   "needsFromClient": [
-    "Winter hours (the published schedule ends 3 Oct 2026)",
-    "Confirm 11am-9pm daily is LAKEVILLE's schedule - the source page shows one schedule under two venue headings",
-    "Confirm which phone number is correct (612-699-0526 vs 612-619-1747 both appear)"
+    "Winter hours (the published schedule ends 30 Sept 2026)",
+    "Confirm which phone number is correct (612-699-0526 vs 612-619-1747 both appear)",
+    "Which GolfZon model is installed. 'GolfZon NX' is not a product GolfZon sells - their line is TwoVision and TwoVisionNX, and TwoVisionNX was only announced in Nov 2024, after Lakeville opened. So: were the bays refitted, or has the old site been calling TwoVision 'NX'?"
   ],
   "schemaTypes": [
     "SportsActivityLocation",

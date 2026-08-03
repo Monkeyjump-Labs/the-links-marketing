@@ -121,7 +121,7 @@ const venues = defineCollection({
     latitude: z.number().optional(),
     longitude: z.number().optional(),
     bays: z.number(),
-    simulator: z.string().default('GolfZon NX'),
+    simulator: z.string().default('GolfZon'),
     /**
      * schema.org types for this venue. Lakeville is also a BarOrPub (full bar);
      * Stillwater's F&B belongs to its host, so it is not.

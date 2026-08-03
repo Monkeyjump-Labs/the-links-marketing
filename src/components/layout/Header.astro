@@ -5,7 +5,6 @@
  * transactional ("Book a Bay"), never "Learn More".
  */
 import { globalData } from '../../data/global';
-import VenueSwitcher from '../venue/VenueSwitcher.astro';
 import BookButton from '../venue/BookButton.astro';
 
 const { nav, siteName } = globalData;
@@ -25,7 +24,7 @@ const currentPath = Astro.url.pathname;
    * step at lg and relaxes again at xl. The right-hand cluster never wraps.
    */
 }
-<header class="sticky top-0 z-sticky border-b border-ink/20 bg-white/95 backdrop-blur">
+<header class="z-sticky border-b border-ink/20 bg-white/95 backdrop-blur">
   <div
     class="mx-auto flex max-w-content flex-wrap items-center gap-x-6 gap-y-3 px-gutter py-3 lg:flex-nowrap lg:px-gutter-lg"
   >
@@ -53,7 +52,6 @@ const currentPath = Astro.url.pathname;
     </nav>
 
     <div class="ml-auto flex shrink-0 items-center gap-4">
-      <VenueSwitcher />
       <BookButton size="sm" />
     </div>
   </div>

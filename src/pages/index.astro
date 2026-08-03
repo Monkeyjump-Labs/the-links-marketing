@@ -27,7 +27,7 @@
  * from the candidate HTML that was not already on the site — notably the
  * candidate's "Celebrate" card stays **Events** and its `/food-and-drink/`
  * stays `/menu/`, per sitemap.md §0 (labels come from the corpus, not from a
- * reference site). The one change is a treatment, not a rewrite: *"Up to five
+ * reference site). The one change is a treatment, not a rewrite: *"Up to six
  * of you, same price."* is split out of the Play row's sentence so the
  * reassurance can carry the loudest type on the band, which is the direction's
  * stated beginner move.
@@ -54,7 +54,7 @@ const isStaging = import.meta.env.PUBLIC_SITE_NOINDEX === 'true';
 const metadata = {
   metaTitle: 'Indoor Golf & Simulators — Lakeville & Stillwater, MN',
   metaDescription:
-    'Two indoor golf venues in the Twin Cities. Book a GolfZon NX bay by the hour, bring up to five friends, full bar and food. Lakeville and Stillwater, MN.',
+    'Two indoor golf venues in the Twin Cities. Book a GolfZon bay by the hour, bring up to six people, full bar and food. Lakeville and Stillwater, MN.',
 };
 
 /**
@@ -76,7 +76,7 @@ interface Job {
 }
 
 const things: Job[] = [
-  { title: 'Play', body: 'Book a bay by the hour.', reassure: 'Up to five of you, same price.', href: '/book/' },
+  { title: 'Play', body: 'Book a bay by the hour.', reassure: 'Up to six of you, same price.', href: '/book/' },
   { title: 'Compete', body: 'Fall and winter leagues at both venues.', href: '/leagues/' },
   { title: 'Events', body: 'Work parties, birthdays, bachelor parties.', href: '/events/' },
   { title: 'Improve', body: 'Lessons and practice on a real launch monitor.', href: '/lessons/' },
@@ -127,8 +127,8 @@ const slots: Record<string, { lit: boolean; alt: string; label: string; caption:
         Indoor golf that's actually a night out.
       </h1>
       <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
-        Ten GolfZon NX bays across two Twin Cities venues. Book by the hour, bring up to five friends for the same
-        price, and let the simulator keep score while you order another round.
+        Ten GolfZon bays across two Twin Cities venues. Book by the hour, bring up to six people for the same price, and
+        let the simulator keep score while you order another round.
       </p>
       <div class="mt-s6 flex flex-wrap gap-s4">
         <BookButton size="lg" variant="onDark" />

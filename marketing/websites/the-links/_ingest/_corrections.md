@@ -63,7 +63,24 @@ It also contradicts the line directly above it in the same section: *"Summer 202
 Rates: $35/Hour (May 3rd, 2026 through October 3, 2026) **11am to 9pm Daily**"* — which
 matches none of the four day rows.
 
-**Consequence for the plan:** treat "a golfer cannot determine Stillwater's hours from this
+> ### ⚠️ RETRACTED 2026-08-03 — this section was wrong, and it did damage
+>
+> A later truth audit resolved the page from its **CSS grid**: Lakeville's
+> "11am to 9pm Daily" is its own block in the left column at `grid-area: 13/2/17/13`,
+> and the mobile stack order confirms the binding independently. The hours ARE
+> attributable to venues. `operating-facts.md` had this right; this file overrode a
+> correct reading with an incorrect one.
+>
+> **The damage:** the false claim propagated into `venues/stillwater.json` and
+> rendered on three live pages as *"UNVERIFIED … it may belong to Lakeville"* — telling
+> visitors we were unsure of hours we could in fact source. Now removed.
+>
+> **The lesson:** I verified §1 of this file first-hand and was right; I reasoned about
+> §2 from a text dump and was wrong. A text extraction flattens a CSS grid, so
+> "the labels and the values are not adjacent in the source" is not evidence that
+> they are unbound. Read the layout, not the text stream.
+
+**Original text, retained so the error is legible:** treat "a golfer cannot determine Stillwater's hours from this
 website" as a **confirmed defect**, not a nice-to-have. Per-venue hours are a launch
 requirement and a client-input blocker (Stillwater's real hours are not recoverable from the
 site — they must be asked for). Do not cite `/rates` as prior art for the two-venue pattern;

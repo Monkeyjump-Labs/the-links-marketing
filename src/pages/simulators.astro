@@ -6,7 +6,7 @@
  *
  * ⚠️ NX vs TwoVision is contradicted across the client's own live pages and this
  * is the single most consequential fact on the site.
- *   - Current pages (homepage, /stillwater) say "GolfZon NX".
+ *   - Current pages (homepage, /stillwater) say "GolfZon".
  *   - /home-old, /home-2 and /news/golfzon-twovision — all still live, all still
  *     indexed — say "6 GolfZon TwoVision simulators".
  *   - AI-generated search summaries are repeating the TwoVision claim today,
@@ -28,9 +28,9 @@ import { getVenues, venuePath } from '../lib/venues';
 const venues = await getVenues();
 
 const metadata = {
-  metaTitle: 'GolfZon NX Simulator Bays — Lakeville & Stillwater MN',
+  metaTitle: 'GolfZon Simulator Bays — Lakeville & Stillwater MN',
   metaDescription:
-    'Six GolfZon NX bays in Lakeville, four in Stillwater MN — moving swing plate, auto tee-up, real ball flight. Five of six bays suit lefties.',
+    'Six GolfZon bays in Lakeville, four in Stillwater MN — moving swing plate, auto tee-up, real ball flight. Five of six bays suit lefties.',
 };
 
 /** What the hardware actually does, described for someone who has never used one. */
@@ -74,9 +74,9 @@ const modes = [
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">The bays</h1>
     <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      Ten <strong>GolfZon NX</strong> simulator bays across two venues. You hit a real ball with a real club into a screen,
-      the cameras read what happened, and the floor under you tilts to match the lie. Nothing is strapped to you and nothing
-      needs setting up.
+      Ten <strong>GolfZon</strong> simulator bays across two venues. You hit a real ball with a real club into a screen, the
+      cameras read what happened, and the floor under you tilts to match the lie. Nothing is strapped to you and nothing needs
+      setting up.
     </p>
 
     {/* 1. Per venue, with the numbers a golfer actually screens on. */}
@@ -140,7 +140,7 @@ const modes = [
 
     {/* 2. The technology, named and explained. */}
     <section class="mt-section">
-      <h2 class="text-3xl font-bold">What GolfZon NX does</h2>
+      <h2 class="text-3xl font-bold">What GolfZon does</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
         GolfZon is one of the three simulator systems people compare — the others you will see around the Twin Cities
         are TrackMan and Full Swing. NX is GolfZon's current generation. Four things separate it from hitting into a
@@ -158,10 +158,10 @@ const modes = [
       </dl>
 
       <p class="mt-8 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB — confirm before launch.</strong> The current site says GolfZon NX; three older pages that are still
-        live say GolfZon TwoVision, and third-party directories and AI search summaries are repeating TwoVision today. We
-        need a straight answer on which system is in the Lakeville bays and, if it was re-fitted, when. This is the single
-        most consequential unconfirmed fact on the site.
+        <strong>STUB — confirm before launch.</strong> The current site says GolfZon; three older pages that are still live
+        say GolfZon TwoVision, and third-party directories and AI search summaries are repeating TwoVision today. We need
+        a straight answer on which system is in the Lakeville bays and, if it was re-fitted, when. This is the single most
+        consequential unconfirmed fact on the site.
       </p>
     </section>
 
@@ -203,7 +203,7 @@ const modes = [
     <section class="mt-section">
       <h2 class="text-2xl font-bold">Try one</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
-        A bay is $35 an hour through 3 October 2026 — per bay, not per person, up to five of you.
+        A bay is $35 an hour through 30 September 2026 — per bay, not per person, up to six of you.
       </p>
       <div class="mt-6 flex flex-wrap gap-4">
         <BookButton size="lg" />

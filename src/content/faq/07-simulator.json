@@ -1,1 +1,6 @@
-{ "question": "Which simulators do you use?", "answer": "GolfZon NX at both venues - six bays in Lakeville, four in Stillwater. It is the same system used on the GolfZon tour, and it reads ball speed, launch, spin and club path on every shot.", "category": "The bays", "order": 8 }
+{
+  "question": "Which simulators do you use?",
+  "answer": "GolfZon simulators at both venues - six bays in Lakeville, four in Stillwater. They read your shot as you hit it, including ball speed, launch angle, spin and club path, and put the result on the screen a second later.",
+  "category": "The bays",
+  "order": 8
+}

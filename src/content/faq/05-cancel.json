@@ -1,1 +1,6 @@
-{ "question": "What happens if I need to cancel?", "answer": "STUB - the cancellation window has not been supplied by the client. This is the top pre-booking question in the category and needs a real answer before launch.", "category": "Booking", "order": 6 }
+{
+  "question": "What happens if I need to cancel?",
+  "answer": "Cancel at least 48 hours before your reservation and it is free. Inside 48 hours you may be charged for the full bay reservation. At Stillwater you cancel through the Whoosh app, the same place you booked.",
+  "category": "Booking",
+  "order": 6
+}
