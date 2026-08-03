@@ -441,10 +441,21 @@ here, the answer is that it does not exist.
 - Stub: `STUB — awaiting real, attributed reviews and the Google Business Profile links for both venues. Unsourced quotes are not shipped.`
 
 **§3.5 Featured offer**
+
+> ⚠️ **Superseded copy — 2026-08-03 truth audit (§U8, §U9, §U18).** The two paragraphs below were
+> written before the audit and three of their claims did not survive it: that league nights make
+> winter the busiest season (an operational claim the client has never made), that most league
+> players had not played in one before (nobody has counted), and that registration "opens soon"
+> (a scheduling commitment the client has not given). **The shipped strings are in
+> `src/pages/index.astro` and they are the ones to build from.** The originals are kept here
+> because this file is the record of what the design round rendered.
+
 - Eyebrow: `This season`
 - H2: `Fall & winter leagues`
-- Para 1: `League nights are the reason winter is our busiest season. Teams, handicaps, a live leaderboard and a bar tab. Registration for Fall/Winter 2026-27 opens soon at both venues.`
-- Para 2: `Never played in one? Most of our league players hadn't either. Handicaps keep it fair.`
+- Para 1 *(superseded)*: `League nights are the reason winter is our busiest season. Teams, handicaps, a live leaderboard and a bar tab. Registration for Fall/Winter 2026-27 opens soon at both venues.`
+- Para 1 *(shipped)*: `Teams, handicaps, a live leaderboard and a bar tab. Registration for Fall/Winter 2026-27 has not opened yet — join the list and you will hear the day it does.`
+- Para 2 *(superseded)*: `Never played in one? Most of our league players hadn't either. Handicaps keep it fair.`
+- Para 2 *(shipped)*: `Never played in one? Handicaps keep it fair — a first-timer and a scratch player can be on the same team.`
 - Link: `See how leagues work`
 - Form H3: `Get first word on league sign-ups`
 - Form blurb: `One email when registration opens. Nothing else.`
@@ -643,8 +654,12 @@ how it looks.
    and correctly does *not* claim to open Whoosh — do not add the disclosure there, and do not
    point the hero CTA straight at a venue.
 5. **Beginner-friendly tone.** Never imply the reader already golfs. The two reassurance strings
-   ("Never played in one? Most of our league players hadn't either." and "Up to five of you, same
-   price.") must stay visible, not be demoted to fine print.
+   ("Never played in one? Handicaps keep it fair — a first-timer and a scratch player can be on the
+   same team." and "Up to six of you, same price.") must stay visible, not be demoted to fine
+   print. Both were restated after the truth audit: the first because it claimed something about
+   the client's customers nobody has counted (§U9), the second because the client publishes six,
+   not five (§C2). **The reassurance keeps the loudest treatment on the band — that rule is
+   unchanged.**
 6. **Banned words: "premier", "state-of-the-art", "ultimate".** They are in every page title of
    the current site and carry no information.
 7. **WCAG AA for all text** — 4.5:1 body, 3:1 large text and non-text boundaries. Honour the

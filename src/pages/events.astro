@@ -37,7 +37,7 @@ const jobs = [
   },
   {
     title: 'Bachelor and bachelorette parties',
-    body: 'A first stop that is warm, indoors, has food, and does not depend on the weather in Minnesota. Groups usually take two or three bays and rotate.',
+    body: 'A first stop that is warm, indoors, has food, and does not depend on the weather in Minnesota. Book more than one bay and a big group is not queueing.',
   },
 ];
 
@@ -124,13 +124,19 @@ const capacity = [
       </div>
     </section>
 
-    {/* 5. Food. Lakeville has its own kitchen; Stillwater's comes from its host. */}
+    {
+      /* 5. Food. Lakeville runs its own bar and menu; Stillwater's comes from its
+       host. NOT "its own kitchen" — the client says "full bar and great food" and
+       nothing about a kitchen, and this is the sentence the Lakeville/Stillwater
+       distinction rests on, so it has to be the one we can source
+       (truth-audit §U16). */
+    }
     <section class="mt-section">
       <h2 class="text-3xl font-bold">Food and drink</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
-        Lakeville has a full bar and its own kitchen — pizza, wings, appetisers, and the tab runs through the venue so
-        one person can settle it at the end. Stillwater's food and drink comes from Stillwater Bowl &amp; Lounge, the
-        business the bays sit inside.
+        Lakeville has a full bar and a food menu of its own — pizza, wings, appetisers — and the tab runs through the
+        venue so one person can settle it at the end. Stillwater's food and drink comes from Stillwater Bowl &amp;
+        Lounge, the business the bays sit inside.
       </p>
       <a href="/menu/" class="mt-4 inline-block font-semibold underline">See the menu</a>
     </section>

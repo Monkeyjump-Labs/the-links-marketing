@@ -23,6 +23,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import PendingTag from '../components/venue/PendingTag.astro';
 import { getVenues, telHref } from '../lib/venues';
 
 const venues = await getVenues();
@@ -142,11 +143,12 @@ const rules = [
       <ul class="mt-4 space-y-1 text-inkMuted">
         {
           venues.map((venue) => (
-            <li>
+            <li class="mt-s3">
               {venue.data.name}:{' '}
               <a href={telHref(venue.data.phone)} class="font-semibold underline">
                 {venue.data.phone}
               </a>
+              {venue.data.phoneNote && <PendingTag class="mt-s2" reason={venue.data.phoneNote} />}
             </li>
           ))
         }

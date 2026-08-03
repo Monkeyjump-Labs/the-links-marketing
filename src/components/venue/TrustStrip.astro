@@ -19,6 +19,7 @@
  */
 import { getVenues, summariseHours, formatAddress, telHref, venuePath } from '../../lib/venues';
 import ReadoutCell from './ReadoutCell.astro';
+import PendingTag from './PendingTag.astro';
 
 const venues = await getVenues();
 
@@ -79,6 +80,7 @@ const napKey = 'caps-label text-label-sm w-s9 shrink-0 text-inkMuted';
                   <span class={napKey}>Phone</span>
                   <span class="scoreboard text-score-md leading-score">{venue.data.phone}</span>
                 </a>
+                {venue.data.phoneNote && <PendingTag class="pb-s3" label="Number being confirmed" />}
               </li>
             </ul>
           </div>

@@ -3,6 +3,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HoursTable from '../components/venue/HoursTable.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import PendingTag from '../components/venue/PendingTag.astro';
 import { getVenues, formatAddress, telHref, venuePath } from '../lib/venues';
 
 const venues = await getVenues();
@@ -41,6 +42,7 @@ const metadata = {
               <a href={telHref(venue.data.phone)} class="mt-3 block hover:underline">
                 {venue.data.phone}
               </a>
+              {venue.data.phoneNote && <PendingTag class="mt-s3" reason={venue.data.phoneNote} />}
               {venue.data.email && (
                 <a href={`mailto:${venue.data.email}`} class="mt-1 block hover:underline">
                   {venue.data.email}

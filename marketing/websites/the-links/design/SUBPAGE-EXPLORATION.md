@@ -19,10 +19,10 @@ it. This is design-factory step 0; an unbound brand is a preflight failure.
 
 | Page | The idea |
 |---|---|
-| **Leagues** | The season as a **track** — `01 NOW / 02 NEXT / 03 THEN` under a progress rule. Venue blocks, not cards. The capture band is the largest thing after the hero, because the waitlist is the component **none of the 126 audited competitors have**. |
+| **Leagues** | The season as a **track** — `01 NOW / 02 NEXT / 03 THEN` under a progress rule. Venue blocks, not cards. The capture band is the largest thing after the hero, because the waitlist is the component **not one of the 126 sites in our own playbook audit offered**. |
 | **Memberships** | Two unlike products get **different grammars**: monthly is a card comparison, LinksFlex is a **fuel gauge** — bank sizes across, tiers down, a proportional amber bar per cell. An hour bank is a punch card, not a SaaS plan. |
 | **Events** | **"Room for 36."** answers the four-second question in the headline. Form is a white card on midnight — the brightest object on the page — with headcount and date as the first two fields at scoreboard scale. |
-| **Simulators** | The machine measures things, so the page does too. Four readings as small diagrams, a bay schematic, and a **handedness row** — five `L|R` cells and one `R` for the right-handed-only bay at Lakeville, four `?` cells for Stillwater. |
+| **Simulators** | The machine measures things, so the page does too. **The named readings** as small diagrams, a bay schematic, and a **handedness row** — five `L|R` cells and one `R` for the right-handed-only bay at Lakeville, four `?` cells for Stillwater. |
 
 ## Ideas worth keeping regardless of what ships
 
@@ -98,6 +98,29 @@ partly filled to show where in the season you are.
    where the rule is an amber fill with midnight text. Not a problem — but a page that is
    mostly dark will never show the brand's action colour, which is worth knowing when judging
    whether the accent is carrying its weight.
+
+## Two corrections from the truth audit (2026-08-03)
+
+Both were caught before any of this shipped. They are recorded here rather than quietly
+edited away, because this file is the brief for whoever ports these pages.
+
+**"Four readings" was a design conceit that read as a product specification.** No source
+says four. GolfZon's own sensors page lists five ball metrics from the T2 alone (ball speed,
+direction and trajectory, spin rate, launch angle, spin axis), then club path and angle of
+attack from the overhead unit; `simulators.astro` shipped five; and the Simulators design
+committed to four diagrams. Three different counts for one machine. **Do not count the
+readings — name them.** They are all real and they are all GolfZon's own, which is a better
+diagram anyway: the reading has a name on it. Note also that the ball metrics come from a
+**floor-mounted** sensor and the club metrics from the overhead cameras, so a diagram that
+draws every reading arriving from above is drawing the wrong machine.
+
+**The corpus figures.** `126` and `96` are both correct and both the playbook's own: **126**
+is the whole audit (`_playbook/audit-findings.md` — simulator venues *and* golf courses) and
+**96** is the simulator-venue subset that `playbook-sim-venue.md` is measured on. Nothing was
+wrong; what was wrong was quoting them bare, so a reader meeting both concluded one of them
+was made up. **Always say which corpus a number is from.** And because the waitlist claim is
+a competitive statement about named third parties, it belongs in documents like this one and
+in our own code comments — it is not on any customer-facing page and should not go on one.
 
 ## Open decisions for the human
 

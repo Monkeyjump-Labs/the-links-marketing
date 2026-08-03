@@ -117,7 +117,25 @@ const venues = defineCollection({
     addressRegion: z.string().default('MN'),
     postalCode: z.string(),
     phone: z.string(),
+    /**
+     * Set when the published number is believed-but-unverified. Renders the
+     * gap system's "Pending confirmation" tag beside the number everywhere it
+     * appears. Clear it the moment the venue confirms — a permanent caution tag
+     * stops being read.
+     */
+    phoneNote: z.string().optional(),
     email: z.string().optional(),
+    /**
+     * ⚠️ Leave these EMPTY unless the coordinates come from the venue itself
+     * (their Google Business Profile pin, or a pin they have confirmed).
+     * `VenueSchema` only emits `GeoCoordinates` when both are present, and a
+     * geocode we invented is worse than no geo at all: a wrong point in
+     * `LocalBusiness` schema sends people to the wrong building, and four
+     * decimal places asserts a precision nobody here has earned. Both venues
+     * shipped invented coordinates until 2026-08-03; Lakeville's was ~2 miles
+     * from the actual address. Google geocodes fine from `address` alone.
+     * See truth-audit.md §U17.
+     */
     latitude: z.number().optional(),
     longitude: z.number().optional(),
     bays: z.number(),

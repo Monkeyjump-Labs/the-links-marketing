@@ -20,7 +20,7 @@ import { globalData } from '../data/global';
 const metadata = {
   metaTitle: 'Golf Gift Cards — The Links, Lakeville & Stillwater',
   metaDescription:
-    'Buy a The Links gift card online for indoor golf, food and drinks in Lakeville or Stillwater, MN — or check a balance in a couple of clicks.',
+    'Buy a The Links gift card online for indoor golf in Lakeville or Stillwater, MN — or check a balance in a couple of clicks.',
 };
 
 /** Why this is a good present, written for the non-golfer buying it. */
@@ -30,8 +30,8 @@ const whyItWorks = [
     'A bay is booked by the hour and the difficulty is a setting. Someone who has never held a club has a decent night; so does a single-figure handicap.',
   ],
   [
-    'It is not only golf',
-    'It covers food and drink too. If they end up using it on pizza and a round of beers with three friends, that still counts.',
+    'They pick the night',
+    'A bay is booked by the hour, so it fits a Tuesday evening as easily as a Saturday afternoon. Nothing has to be scheduled at the point you buy it.',
   ],
   [
     'It works in February',
@@ -44,8 +44,7 @@ const whyItWorks = [
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">Gift cards</h1>
     <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      An hour in a bay, food, drinks, or all three. Bought online, delivered by email, usable the same day — which makes
-      it a reasonable present to buy on 23 December.
+      An hour in a bay, bought online in a couple of clicks. They pick the night.
     </p>
 
     {/* 1. Buy and check balance, together, at the top. */}
@@ -53,7 +52,7 @@ const whyItWorks = [
       <div class="rounded border-2 border-primary p-6">
         <h2 class="text-2xl font-bold">Buy a gift card</h2>
         <p class="mt-3 text-inkMuted">
-          Choose an amount, add a message, and it is emailed to whoever you are giving it to. It takes about a minute.
+          Gift cards are sold through Square. Choose an amount and pay; Square handles the rest.
         </p>
         <a
           href={globalData.external.giftCardBuy}
@@ -100,16 +99,24 @@ const whyItWorks = [
       </dl>
     </section>
 
-    {/* 3. The two questions a gift-card buyer asks that nobody answers. */}
+    {/* 3. The questions a gift-card buyer asks that nobody answers. */}
     <section class="mt-section">
       <h2 class="text-3xl font-bold">The details</h2>
       <div class="mt-6 rounded border-2 border-dashed border-ink/25 p-6">
         <p class="text-inkMuted">
-          <strong>STUB —</strong> two things a buyer needs before they will click, and neither is published today.
+          <strong>STUB —</strong> what a buyer needs before they will click, and none of it is published today.
         </p>
         <ul class="mt-4 list-disc space-y-2 pl-5 text-inkMuted">
           <li>
             <strong>Denominations.</strong> Whether the amount is free-choice or a fixed set, and whether there is a minimum.
+          </li>
+          <li>
+            <strong>Does it cover food and drink, or only bay time?</strong> This page used to say it covered both. Nothing
+            the venue publishes says either way, and it is the first thing the person receiving it will try to do with it.
+          </li>
+          <li>
+            <strong>Delivery.</strong> Whether the card arrives by email, how quickly, and whether it can be used the same
+            day — the December buyer's whole question.
           </li>
           <li>
             <strong>Does one card work at both venues?</strong> The two locations run separate booking accounts, so this is
@@ -131,9 +138,9 @@ const whyItWorks = [
     <section class="mt-section rounded bg-surface p-8">
       <h2 class="text-2xl font-bold">If it is November or December</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
-        This is when most of these get bought, and it is also when the bays are busiest — league nights, work parties
-        and everyone in Minnesota realising the season is over. If you are giving one as a Christmas present, tell them
-        to book early in January rather than waiting for a Saturday in February to be free.
+        Winter is the season this whole business exists for — league nights, work parties, and no golf outdoors. If you
+        are giving one as a Christmas present, suggest they put the date in as soon as they have one, rather than
+        leaving it until a Saturday in February happens to be free.
       </p>
       <p class="mt-4 max-w-2xl text-inkMuted">
         Planning a work party rather than a present? <a href="/events/" class="font-semibold underline"
