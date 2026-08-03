@@ -1,0 +1,74 @@
+---
+/**
+ * Which bays a left-hander can play in, drawn as one cell per bay.
+ *
+ * **The unknown is legible at a glance.** Lakeville's row is five `L|R` cells
+ * and one `R` — the sixth bay is right-handed only, which is a real constraint a
+ * lefty in a group of six needs before they book, not after. Stillwater's row is
+ * four `?` cells in the same diagram at the same size. A left-handed golfer in
+ * Stillwater currently cannot find out whether they can play at all, and drawing
+ * that as four question marks says so more honestly than a paragraph does, while
+ * still showing there are four bays to ask about.
+ *
+ * The `?` cells carry the gap system's middle mark, `PendingTag` — *Pending
+ * confirmation*, not *Not yet set*. The distinction was settled by the human
+ * (FW-3967 §"Three decisions"): Stillwater is an operating venue that knows
+ * perfectly well how its own bays are set up. Nothing here is undecided; it is
+ * unverified, and those are different promises. *Not yet set* would tell a
+ * reader the venue has not made up its mind, which would be untrue.
+ *
+ * Never `L/R` with a slash — `L|R` reads as two states of one bay rather than as
+ * a fraction.
+ */
+import PendingTag from './PendingTag.astro';
+
+interface Props {
+  /** One entry per bay: 'both' = plays either way · 'right' = right-handed only · 'unknown'. */
+  bays: ('both' | 'right' | 'unknown')[];
+  tone?: 'light' | 'dark';
+  /** Shown under the row when any bay is `unknown`. */
+  pendingReason?: string;
+  class?: string;
+}
+
+const { bays, tone = 'light', pendingReason, class: className = '' } = Astro.props;
+
+const MARK = { both: 'L|R', right: 'R', unknown: '?' } as const;
+const DESCRIPTION = {
+  both: 'plays left- or right-handed',
+  right: 'right-handed only',
+  unknown: 'handedness not confirmed',
+} as const;
+
+const hasUnknown = bays.some((b) => b === 'unknown');
+
+// A known cell is a filled cell; an unknown one takes the tinted ground the gap
+// system gives an absence. On dark that tint is navy, so its ink is screenLight
+// at 8.42:1 — slate would be 4.16:1 and fail (`rules.noMutedOnDarkOverNavy`).
+const cell = tone === 'dark' ? 'border-paper' : 'border-navy';
+const known = tone === 'dark' ? 'text-white' : 'text-ink';
+const unknown = tone === 'dark' ? 'bg-navy text-screen' : 'bg-greige text-inkMuted';
+const label = tone === 'dark' ? 'text-slate' : 'text-inkMuted';
+---
+
+<div class:list={[className]}>
+  <ol class="flex flex-wrap gap-s3" role="list">
+    {
+      bays.map((bay, i) => (
+        <li
+          class:list={[
+            'flex min-h-tap min-w-tap flex-col items-center justify-center border-rule px-s4 py-s3',
+            cell,
+            bay === 'unknown' ? unknown : known,
+          ]}
+        >
+          <span class="scoreboard text-score-md leading-score">{MARK[bay]}</span>
+          <span class:list={['caps-label mt-s1 text-label-sm', bay === 'unknown' ? '' : label]}>Bay {i + 1}</span>
+          <span class="sr-only">— {DESCRIPTION[bay]}</span>
+        </li>
+      ))
+    }
+  </ol>
+
+  {hasUnknown && pendingReason && <PendingTag class="mt-s4" tone={tone} reason={pendingReason} />}
+</div>

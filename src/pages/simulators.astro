@@ -1,56 +1,87 @@
 ---
 /**
- * "Simulators". Name the technology — 42% of the segment names none, and GolfZon,
+ * Simulators. Ported to the converged Paper design 2026-08-03 (FW-3967); spec in
+ * `design/SUBPAGE-EXPLORATION.md`.
+ *
+ * **The idea: the machine measures things, so the page does too.** A bay
+ * schematic, the readings named on the part of the machine that takes them, and
+ * a handedness row that draws the unknown at the same size as the known.
+ *
+ * **Name the readings; do not count them.** This is a correction, not a style
+ * choice. Three different counts for one machine shipped across this project:
+ * this page said five, the Paper design committed to four diagrams, and
+ * GolfZon's own sensors page lists more than either depending on how you group
+ * them. No source says four. A reading with a NAME on it is a better diagram
+ * than a total, and it cannot be contradicted by a recount — so nothing on this
+ * page states how many there are (truth-audit.md §C6).
+ *
+ * Name the technology, too: 42% of the segment names none, and GolfZon,
  * TrackMan and Full Swing are search terms with real credibility weight
  * (playbook-core.md §8, playbook-sim-venue.md §4).
  *
- * ⚠️ NX vs TwoVision is contradicted across the client's own live pages and this
- * is the single most consequential fact on the site.
+ * ⚠️ NX vs TwoVision is contradicted across the client's own live pages and is
+ * the single most consequential unconfirmed fact on the site.
  *   - Current pages (homepage, /stillwater) say "GolfZon".
  *   - /home-old, /home-2 and /news/golfzon-twovision — all still live, all still
  *     indexed — say "6 GolfZon TwoVision simulators".
  *   - AI-generated search summaries are repeating the TwoVision claim today,
  *     i.e. the site is actively teaching answer engines a fact that may be false
  *     (seo-map.md §0).
- * This page publishes NX because that is what the current pages say, but the
- * claim MUST be confirmed with the client before launch, along with whether and
- * when Lakeville was re-fitted. Everything downstream — schema, titles, the
- * homepage hero — inherits this answer.
+ * The page publishes "GolfZon", which every current page agrees on, and carries
+ * the model question as a `PendingTag` beside it rather than picking a side.
+ * Everything downstream — schema, titles, the homepage hero — inherits this.
  *
- * ⚠️ Also unconfirmed: the "240+ courses" figure appears ONLY on the retired
- * homepages and is not repeated on the current site, so it is stubbed rather
- * than republished.
+ * ⚠️ Stillwater's blanks are all *Pending confirmation*, never *Not yet set*.
+ * Settled by the human (FW-3967 §"Three decisions"): Stillwater is an operating
+ * venue that knows how its own room is laid out. Nothing there is undecided; it
+ * is unverified, and those are different promises to a reader.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import SectionHead from '../components/venue/SectionHead.astro';
+import HeroStrip from '../components/venue/HeroStrip.astro';
+import ReadoutCell from '../components/venue/ReadoutCell.astro';
+import GapCell from '../components/venue/GapCell.astro';
+import PendingTag from '../components/venue/PendingTag.astro';
+import StubNote from '../components/venue/StubNote.astro';
+import BaySchematic from '../components/venue/BaySchematic.astro';
+import HandednessRow from '../components/venue/HandednessRow.astro';
+import { buttonClasses } from '../lib/buttons';
 import { getVenues, venuePath } from '../lib/venues';
 
 const venues = await getVenues();
+const lakeville = venues.find((v) => v.data.slug === 'lakeville');
+const stillwater = venues.find((v) => v.data.slug === 'stillwater');
+const totalBays = venues.reduce((n, v) => n + v.data.bays, 0);
 
 const metadata = {
   metaTitle: 'GolfZon Simulator Bays — Lakeville & Stillwater MN',
   metaDescription:
-    'Six GolfZon bays in Lakeville, four in Stillwater MN — moving swing plate, auto tee-up, real ball flight. Five of six bays suit lefties.',
+    'Ten GolfZon bays in Lakeville and Stillwater MN — a tilting swing plate, auto tee-up and real ball flight. Five of the six Lakeville bays suit lefties.',
 };
 
 /**
- * What the hardware actually does, described for someone who has never used one.
+ * The readings, by the part of the machine that takes them. GolfZon's own, from
+ * golfzongolf.com/global/user/technology/sensors.do.
  *
- * The four titles are the client's own homepage feature bullets, verbatim. The
- * bodies are constrained to what GolfZon publishes about its own sensors
- * (golfzongolf.com/global/user/technology/sensors.do), because this is the one
- * paragraph on the site whose whole job is to sound like it knows the machine:
- *   - the sensors are "positioned above and in FRONT of the player" and "meet at
- *     90 degrees" — not "above and beside you", which is what this said before;
- *   - BALL data (speed, direction and trajectory, spin rate, launch angle, spin
- *     axis) comes from the T2, which is FLOOR-mounted and is not a camera;
- *   - CLUB data (club path, angle of attack, club face impact area) comes from
- *     the overhead TwoVision unit;
- *   - GolfZon publishes "club face impact area", NOT "face angle". Do not put
- *     "face angle" back — it is not a metric they claim.
- * The plate detail ("five-segment", fairway/rough/bunker mats) is likewise
- * GolfZon's own, and replaced an invented "in a bunker shot it drops".
- * See truth-audit.md §C6 and §U19.
+ * ⚠️ "Club face impact area" is what GolfZon publishes. Do NOT put "face angle"
+ * back — it is not a metric they claim, and it was removed once already
+ * (truth-audit §U19). And do not add a count anywhere near these lists.
+ */
+const CLUB_READINGS = ['Club path', 'Angle of attack', 'Club face impact area'];
+const BALL_READINGS = ['Ball speed', 'Direction and trajectory', 'Spin rate', 'Launch angle', 'Spin axis'];
+
+/**
+ * What the hardware does, for someone who has never used one. Titles are the
+ * client's own homepage feature bullets; the bodies are constrained to what
+ * GolfZon publishes about its own sensors, because this is the one section whose
+ * job is to sound like it knows the machine. The plate detail ("five-segment",
+ * fairway/rough/bunker mats) is likewise GolfZon's own and replaced an invented
+ * "in a bunker shot it drops".
+ *
+ * NOTE the ordering claim in the sensor bullet: the cameras are "positioned
+ * above and in FRONT of the player" and "meet at 90 degrees" — not "above and
+ * beside you", which is what this said before.
  */
 const hardware = [
   [
@@ -58,20 +89,20 @@ const hardware = [
     'The floor you stand on tilts to match the lie. GolfZon builds it in five segments — one under the ball, four under your stance — with fairway, rough and bunker mats. That is the part people do not expect, and it is why the ball behaves like it does outdoors rather than like a video game.',
   ],
   [
-    'High-speed camera sensors',
-    'The cameras sit above and in front of you, angled at each other, and read the club: the path it takes, how steeply it comes into the ball, and where on the face you hit it. A separate sensor in the floor reads the ball — speed, launch angle, spin rate and spin axis. Nothing is attached to you and nothing is attached to the club.',
-  ],
-  [
     'Auto tee-up and ball return',
-    'The machine tees the next ball for you. You do not bend down between shots, and you do not run out of balls — they are included, you never bring your own.',
+    'The machine tees the next ball for you. You do not bend down between shots, and you do not run out of balls — they are included, and you never bring your own.',
   ],
   [
     'A touchscreen next to you',
     'You pick the course and the settings from the screen in the bay, and it scores the round for you. Staff set it up on your first visit; you do not need to know anything going in.',
   ],
+  [
+    'Nothing attached to you',
+    'No tags on the club, nothing clipped to your belt, no calibration ritual. You walk in, and the bay is already watching the ball.',
+  ],
 ];
 
-/** Practice and play are different products in the same bay. */
+/** Practice and play are different products in the same bay. No numerals — not steps. */
 const modes = [
   [
     'Play a course',
@@ -86,148 +117,234 @@ const modes = [
     'Closest-to-the-pin, longest drive, and the arcade-style formats. This is what a group who do not really golf ends up playing, and it is fine.',
   ],
 ];
+
+/**
+ * Stillwater's unverified specifics. Each one is something the venue knows and
+ * we have not confirmed — the middle mark, every time.
+ */
+const stillwaterPending = [
+  ['Left-handed bays', 'How many of the four bays are set up for left-handers. Lakeville has five of six.'],
+  ['Screens', 'The TV count in the room. Lakeville has nine.'],
+  ['Seating', 'How many people the room seats, and whether the bowling side can take the overflow.'],
+  ['Club rental', 'Whether rental sets are available there at all, and whether they are the $15 Lakeville charges.'],
+];
 ---
 
 <BaseLayout metadata={metadata}>
-  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
-    <h1 class="text-4xl font-bold lg:text-5xl">The bays</h1>
-    <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      Ten <strong>GolfZon</strong> simulator bays across two venues. You hit a real ball with a real club into a screen, the
-      cameras read what happened, and the floor under you tilts to match the lie. Nothing is strapped to you and nothing needs
-      setting up.
-    </p>
-
-    {/* 1. Per venue, with the numbers a golfer actually screens on. */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">What is where</h2>
-      <ul class="mt-8 grid gap-6 md:grid-cols-2">
-        {
-          venues.map((venue) => (
-            <li class="rounded border-2 border-ink/15 p-6">
-              <h3 class="text-xl font-semibold">
-                <a href={venuePath(venue)} class="hover:underline">
-                  {venue.data.name}
-                </a>
-              </h3>
-              <p class="mt-2 text-inkMuted">
-                {venue.data.bays} bays · {venue.data.simulator}
-              </p>
-              {venue.data.intro && <p class="mt-3 text-inkMuted">{venue.data.intro}</p>}
-              <div class="mt-6">
-                <BookButton venue={venue} size="sm" variant="outline" />
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-
-      <dl class="mt-10 grid gap-6 sm:grid-cols-2">
-        <div>
-          <dt class="font-semibold">Left-handed players</dt>
-          <dd class="mt-1 text-inkMuted">
-            Five of the six Lakeville bays are set up for both right and left handers. One is right-handed only, so if
-            you are a lefty in a group of six, say so when you book.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-semibold">Clubs and balls</dt>
-          <dd class="mt-1 text-inkMuted">
-            Balls are included — every bay has its own. Bring your own clubs if you have them; rental sets are $15 at
-            Lakeville and they are basic, not fitted.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-semibold">How many in a bay</dt>
-          <dd class="mt-1 text-inkMuted">
-            Up to six people, though four is the number that keeps a round moving. Lakeville seats up to 36 golfers
-            across all six bays.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-semibold">Screens</dt>
-          <dd class="mt-1 text-inkMuted">Nine TVs at Lakeville, so whatever is on is on while you play.</dd>
-        </div>
-      </dl>
-
-      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> the Stillwater equivalents are unknown: how many of the four bays play left-handed, the TV
-        count, seating, whether club rental is available there, and whether it is $15. A left-handed golfer in Stillwater
-        currently cannot find out whether they can play at all.
+  {/* 1. HERO + the 4-cell strip. */}
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
+      <p class="caps-label text-amber">GolfZon · Lakeville &amp; Stillwater</p>
+      <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">The bays</h1>
+      <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
+        You hit a real ball with a real club into a screen. The floor under you tilts to match the lie, a sensor in that
+        floor reads the ball, and cameras overhead read the club. Nothing is strapped to you and nothing needs setting
+        up.
       </p>
-    </section>
 
-    {/* 2. The technology, named and explained. */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">What GolfZon does</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
-        GolfZon is the system in our bays. Around the Twin Cities you will also see TrackMan and Full Swing. Four things
-        separate it from hitting into a net.
+      <HeroStrip
+        class="mt-s8"
+        tone="dark"
+        cells={[
+          { label: 'Bays', value: String(totalBays), qualifier: 'across two venues' },
+          { label: 'Lefty-friendly', value: '5 of 6', qualifier: 'at Lakeville — one bay is right-handed only' },
+          { label: 'Balls', value: 'Included', qualifier: 'every bay has its own — never bring your own' },
+          {
+            label: 'Course list',
+            gap: {
+              state: 'notSet',
+              reason:
+                'A "240+ courses" figure exists only on two retired homepages and is not repeated on the current site, so we do not republish it.',
+            },
+          },
+        ]}
+      />
+    </div>
+  </section>
+
+  {
+    /* 2. THE MACHINE. The schematic and the named readings — the page's central
+      idea, and the section that has to be physically correct. See BaySchematic
+      for why the ball arrows point UP. */
+  }
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead tone="dark" index={1}>What the machine reads</SectionHead>
+      <p class="max-w-prose-page text-lead leading-body text-paper">
+        GolfZon is the system in our bays; around the Twin Cities you will also see TrackMan and Full Swing. Two
+        different parts of it are watching, and they are watching two different things.
       </p>
-      <dl class="mt-8 grid gap-8 md:grid-cols-2">
+
+      <BaySchematic class="mt-s7" club={CLUB_READINGS} ball={BALL_READINGS} />
+
+      <p class="mt-s6 max-w-prose-page text-body leading-body text-paper">
+        That is why the numbers mean something. The ball data is measured off the ball itself rather than inferred from
+        the swing, so what comes back is what actually happened.
+      </p>
+
+      <div class="mt-s7 max-w-prose-page border-t-hairline border-slate pt-s5">
+        <ReadoutCell label="System" tone="dark" size="name">GolfZon</ReadoutCell>
+        <PendingTag
+          class="mt-s4"
+          tone="dark"
+          label="Model pending confirmation"
+          reason="The venue's current pages say GolfZon. Three of their older pages, still live and still indexed, say GolfZon TwoVision, and third-party directories are repeating that today. We publish what the current pages agree on and are confirming which system is actually in the bays."
+        />
+      </div>
+
+      <StubNote
+        class="mt-s7"
+        needs="Confirm before launch: which GolfZon system is in the Lakeville bays, whether they were ever re-fitted, and when. Three older client pages that are still live say TwoVision; the current ones say GolfZon. AI search summaries are repeating TwoVision, so the site may be actively teaching answer engines a false fact. This is the single most consequential unconfirmed fact on the site — schema, titles and the homepage hero all inherit the answer. Also needed: the current course count, and five or six named courses people would recognise."
+      />
+    </div>
+  </section>
+
+  {/* 3. WHAT IS WHERE, per venue — including who can play in which bay. */}
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={2}>What is where</SectionHead>
+
+      <div class="grid gap-s8 border-t-score border-navy pt-s6 lg:grid-cols-2">
+        {/* LAKEVILLE — known, in detail. */}
+        <div>
+          <h3 class="font-display text-card leading-display font-bold tracking-display text-ink">
+            <a
+              href={lakeville ? venuePath(lakeville) : '/locations/lakeville/'}
+              class="underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+            >
+              {lakeville?.data.name}
+            </a>
+          </h3>
+
+          <div class="mt-s5 flex flex-wrap gap-s7">
+            <ReadoutCell label="Bays" size="xl">{lakeville?.data.bays}</ReadoutCell>
+            <ReadoutCell label="Screens" size="xl">9</ReadoutCell>
+            <ReadoutCell label="Seats" size="xl">36</ReadoutCell>
+          </div>
+
+          <p class="caps-label mt-s6 text-label-sm text-inkMuted">Which bays a lefty can play</p>
+          <HandednessRow class="mt-s3" bays={['both', 'both', 'both', 'both', 'both', 'right']} />
+          <p class="mt-s4 max-w-prose-page text-small leading-body text-inkBody">
+            Five of the six take either handedness; the sixth is right-handed only. If you are a lefty in a group of
+            six, say so when you book and we will put you in the right bay.
+          </p>
+
+          <div class="mt-s6">
+            <ReadoutCell label="Club rental" size="name">$15 a set</ReadoutCell>
+            <p class="mt-s2 max-w-prose-page text-small leading-body text-inkMuted">
+              Basic sets, not fitted. Bring your own clubs if you have them.
+            </p>
+          </div>
+
+          <div class="mt-s6"><BookButton venue={lakeville} size="sm" variant="outline" /></div>
+        </div>
+
+        {/* STILLWATER — the same diagram, with the parts we cannot vouch for marked. */}
+        <div>
+          <h3 class="font-display text-card leading-display font-bold tracking-display text-ink">
+            <a
+              href={stillwater ? venuePath(stillwater) : '/locations/stillwater/'}
+              class="underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+            >
+              {stillwater?.data.name}
+            </a>
+          </h3>
+
+          <div class="mt-s5 flex flex-wrap gap-s7">
+            <ReadoutCell label="Bays" size="xl">{stillwater?.data.bays}</ReadoutCell>
+          </div>
+
+          <p class="caps-label mt-s6 text-label-sm text-inkMuted">Which bays a lefty can play</p>
+          <HandednessRow
+            class="mt-s3"
+            bays={['unknown', 'unknown', 'unknown', 'unknown']}
+            pendingReason="We have not confirmed how many of Stillwater's four bays take left-handers. The venue knows; we have asked. Until it comes back we would rather draw four question marks than guess on your behalf."
+          />
+
+          <ul class="mt-s6 border-t-hairline border-navy">
+            {
+              stillwaterPending.map(([what, why]) => (
+                <li class="border-b-hairline border-navy py-s4">
+                  <p class="caps-label text-label-sm text-inkMuted">{what}</p>
+                  <PendingTag class="mt-s2" reason={why} />
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="mt-s6"><BookButton venue={stillwater} size="sm" variant="outline" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 4. THE HARDWARE, explained. Rows at one scale — a set of things, so no numerals. */}
+  <section class="bg-greige">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={3}>What separates it from hitting into a net</SectionHead>
+      <dl class="border-t-score border-navy">
         {
           hardware.map(([title, body]) => (
-            <div>
-              <dt class="text-lg font-semibold">{title}</dt>
-              <dd class="mt-2 text-inkMuted">{body}</dd>
+            <div class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
+              <dt class="font-display text-card leading-display font-bold tracking-display text-ink">{title}</dt>
+              <dd class="max-w-prose-page text-body leading-body text-inkBody">{body}</dd>
             </div>
           ))
         }
       </dl>
+    </div>
+  </section>
 
-      <p class="mt-8 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB — confirm before launch.</strong> The current site says GolfZon; three older pages that are still live
-        say GolfZon TwoVision, and third-party directories and AI search summaries are repeating TwoVision today. We need
-        a straight answer on which system is in the Lakeville bays and, if it was re-fitted, when. This is the single most
-        consequential unconfirmed fact on the site.
-      </p>
-    </section>
-
-    {/* 3. What you can do with it. Practice vs play, per the spec. */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">Practice, play, or just mess about</h2>
-      <dl class="mt-8 grid gap-8 md:grid-cols-3">
+  {/* 5. WHAT YOU CAN DO WITH IT. */}
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={4}>Practice, play, or just mess about</SectionHead>
+      <dl class="border-t-score border-navy">
         {
           modes.map(([title, body]) => (
-            <div>
-              <dt class="text-lg font-semibold">{title}</dt>
-              <dd class="mt-2 text-inkMuted">{body}</dd>
+            <div class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
+              <dt class="font-display text-card leading-display font-bold tracking-display text-ink">{title}</dt>
+              <dd class="max-w-prose-page text-body leading-body text-inkBody">{body}</dd>
             </div>
           ))
         }
       </dl>
 
-      <p class="mt-8 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> the course list. A "240+ courses and 6 arcade games" figure exists only on two retired homepages
-        and is not repeated on the current site, so it is not republished here. We need the current course count and, ideally,
-        five or six named courses people would recognise — that is what the golfer comparing venues is looking for.
-      </p>
-    </section>
+      <div class="mt-s7 max-w-prose-page">
+        <GapCell
+          label="Courses on the machines"
+          state="notSet"
+          size="name"
+          reason='A "240+ courses and 6 arcade games" figure exists only on two retired homepages and is not repeated on the current site, so we do not republish it. We have asked for the current list.'
+        />
+      </div>
+    </div>
+  </section>
 
-    {/* 4. Never used one. The largest addressable market (playbook-core.md §8). */}
-    <section class="mt-section rounded bg-surface p-8">
-      <h2 class="text-2xl font-bold">Never used one?</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
+  {/* 6. NEVER USED ONE. The largest addressable market (playbook-core.md §8). */}
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead tone="dark" index={5}>Never used one?</SectionHead>
+      <p class="max-w-prose-page text-lead leading-body text-paper">
         Staff start the bay for you and show you the screen. Turn the difficulty down, turn the wind off, and take as
         many shots as you like — there is no group behind you and the bay is yours for the hour. If you top one, the
         machine tees another ball up.
       </p>
-      <p class="mt-4 max-w-2xl text-inkMuted">
+      <p
+        class="mt-s6 max-w-prose-page border-y-score border-amber py-s4 font-display text-row leading-display font-bold tracking-display text-white"
+      >
         You do not need clubs, you do not need shoes, and you do not need to know the rules.
       </p>
-    </section>
 
-    {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
-    <section class="mt-section">
-      <h2 class="text-2xl font-bold">Try one</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
-        A bay is $35 an hour through 30 September 2026 — per bay, not per person, up to six of you.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-4">
-        <BookButton size="lg" />
-        <a href="/rates/" class="inline-block rounded border-2 border-current px-8 py-4 font-semibold hover:bg-ink/5">
-          See rates &amp; hours
-        </a>
+      <div class="mt-s7">
+        <p class="text-body leading-body text-paper">
+          A bay is $35 an hour through 30 September 2026 — per bay, not per person, up to six of you.
+        </p>
+        <div class="mt-s5 flex flex-wrap gap-s4">
+          <BookButton size="lg" variant="onDark" />
+          <a href="/rates/" class={buttonClasses('lg', 'ghostDark')}>See rates &amp; hours</a>
+        </div>
       </div>
-    </section>
+    </div>
   </section>
 </BaseLayout>

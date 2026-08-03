@@ -1,0 +1,121 @@
+---
+/**
+ * LinksFlex as a **fuel gauge** — bank sizes across, tiers down, a proportional
+ * amber bar in every cell.
+ *
+ * **Why this is not a third and fourth pricing card.** A monthly membership and
+ * a bank of prepaid hours are unlike products, and drawing them the same way was
+ * what made the old page read as four near-identical boxes. A subscription is a
+ * recurring decision, so it compares well as a card. An hour bank is a PUNCH
+ * CARD: the thing you are buying is a quantity, the quantities come in three
+ * sizes, and the only question is how much you want. A gauge answers that at a
+ * glance in a way a table of numbers does not.
+ *
+ * **What the bar is proportional to, precisely: the size of the bank.** 12 hours
+ * fills a quarter, 24 a half, 48 all of it, against the largest bank on offer.
+ * It is a picture of how much you are buying — not of the saving, and not of
+ * value, both of which would be us drawing a conclusion on the buyer's behalf.
+ * The saving is right there as a number they can divide themselves.
+ *
+ * **The per-hour figure is arithmetic, done here, never stored.** It is
+ * `price ÷ hours` on the venue's own price. Storing it as a second field is how
+ * a rounded "$33.25 an hour" survives a price change and starts contradicting
+ * the price beside it — and on this page the per-hour figure is the whole
+ * argument, because it is what a buyer compares against the $35 walk-up rate.
+ *
+ * Every bar is also stated in text in the cell, so the gauge is a second reading
+ * of a number that is already legible. Nothing here depends on seeing colour.
+ */
+interface Bank {
+  hours: number;
+  price: number;
+}
+
+export interface GaugeRow {
+  name: string;
+  window?: string;
+  recommended?: boolean;
+  recommendedNote?: string;
+  banks: Bank[];
+}
+
+interface Props {
+  rows: GaugeRow[];
+  /** The walk-up hourly rate every bank is measured against. */
+  walkUp: number;
+  class?: string;
+}
+
+const { rows, walkUp, class: className = '' } = Astro.props;
+
+/** The largest bank anywhere in the gauge — the full tank the bars scale to. */
+const maxHours = Math.max(...rows.flatMap((r) => r.banks.map((b) => b.hours)));
+
+/** The bank sizes, as columns. Every row is expected to offer the same three. */
+const sizes = [...new Set(rows.flatMap((r) => r.banks.map((b) => b.hours)))].sort((a, b) => a - b);
+
+const money = (n: number) => `$${n.toLocaleString('en-US')}`;
+const perHour = (b: Bank) => b.price / b.hours;
+const money2 = (n: number) => `$${n.toFixed(2)}`;
+---
+
+<div class:list={[className]}>
+  <table class="w-full border-collapse text-left">
+    <caption class="sr-only">
+      LinksFlex prepaid hour banks. For each tier and bank size: the price, and what it works out at per hour compared
+      with the {money(walkUp)} walk-up rate.
+    </caption>
+    <thead>
+      <tr class="border-b-score border-navy">
+        <th scope="col" class="caps-label py-s4 pr-s5 text-label-sm text-inkMuted">Bank</th>
+        {
+          sizes.map((h) => (
+            <th scope="col" class="py-s4 pr-s5">
+              <span class="scoreboard block text-score-md leading-score text-ink">{h}</span>
+              <span class="caps-label block text-label-sm text-inkMuted">hours</span>
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr class="border-b-hairline border-navy align-top last:border-b-score">
+            <th scope="row" class="py-s5 pr-s5">
+              <span class="block font-display text-card leading-display font-bold tracking-display text-ink">
+                {row.name}
+              </span>
+              {row.window && <span class="mt-s2 block text-small leading-body text-inkMuted">{row.window}</span>}
+              {row.recommended && row.recommendedNote && (
+                <span class="mt-s3 block border-l-slab border-ember pl-s3 text-small leading-body text-inkBody">
+                  {row.recommendedNote}
+                </span>
+              )}
+            </th>
+            {sizes.map((h) => {
+              const bank = row.banks.find((b) => b.hours === h);
+              if (!bank) return <td class="py-s5 pr-s5" />;
+              const rate = perHour(bank);
+              return (
+                <td class="py-s5 pr-s5">
+                  <span class="scoreboard block text-score-md leading-score text-ink">{money(bank.price)}</span>
+                  <span class="mt-s2 block text-small leading-body text-inkBody">{money2(rate)} an hour</span>
+                  {/* The gauge. Decorative: the quantity is in the column head
+                      and the price is in the cell, so this adds a reading rather
+                      than carrying one. */}
+                  <span class="mt-s3 block h-score w-full bg-greige" aria-hidden="true">
+                    <span class="block h-full bg-amber" style={`width: ${(bank.hours / maxHours) * 100}%`} />
+                  </span>
+                  <span class="mt-s2 block text-small leading-body text-inkMuted">
+                    {money2(walkUp - rate)} an hour less than walking in
+                  </span>
+                </td>
+              );
+            })}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

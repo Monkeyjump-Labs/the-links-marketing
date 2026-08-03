@@ -1,0 +1,106 @@
+---
+/**
+ * The gap system's first and third marks. One grammar, three marks
+ * (SUBPAGE-EXPLORATION.md §"The gap system, as converged"):
+ *
+ *   1. Not yet set          — an absence. The venue has not decided.
+ *   2. Pending confirmation — an absence with an answer coming. `PendingTag`.
+ *   3. Quoted · Ask us      — NOT an absence. A decision to give it on request.
+ *
+ * This component is 1 and 3; `PendingTag` is 2, because that one is structurally
+ * different — it RIDES BESIDE a stated value rather than replacing it.
+ *
+ * **The grammar.** A gap is typeset exactly like the filled cell beside it: the
+ * label stays, the value slot holds an em-dash AT THE NEIGHBOURING VALUE'S SIZE,
+ * the status word sits on its baseline, and the reason goes underneath. That is
+ * why the size map is imported from `lib/readout.ts` rather than restated here —
+ * a gap one step off its neighbour reads as an unfinished page, which is the
+ * exact impression the system exists to prevent. Pass the same `size` you passed
+ * the `ReadoutCell` next to it.
+ *
+ * **Form carries the distinction, not colour.**
+ *
+ *   notSet  TINTED cell   · bare word · no accent colour
+ *   quoted  UNTINTED      · bare word in the ground's action colour
+ *
+ * Colour only ever signals which ground you are on. A reader who cannot tell
+ * ember from amber still gets the distinction from the tint and the reason line.
+ *
+ * **The tinted cell changes the ground, so it changes the arithmetic.** On dark,
+ * `notSet` tints to NAVY, and slate on navy is 4.16:1 — the trap that three of
+ * four design agents hit independently and that the token contrast gate cannot
+ * see, because the tokens are correct and only the pairing is wrong. So text on
+ * a navy-tinted cell is `screenLight` at 8.42:1, which is also what gives navy
+ * bands the cooler readout tone that distinguishes them from midnight ones.
+ * The build now fails if that pairing ever regresses — see the FORBIDDEN gate in
+ * `scripts/build-tokens.mjs`.
+ *
+ * Measured, all four combinations:
+ *   notSet  light   inkMuted on greige     5.29:1
+ *   notSet  dark    screenLight on navy    8.42:1
+ *   quoted  light   ember on white         7.45:1  · label inkMuted 6.87:1
+ *   quoted  dark    amber on midnight      9.48:1  · label slate    5.48:1
+ *
+ * **Which band a `notSet` cell can sit on.** Its tint is greige on light and
+ * navy on dark, and a tint the same colour as its ground is not a tint — the
+ * mark keeps its words but loses the form that distinguishes it from a `quoted`
+ * one. So a `notSet` cell does not belong directly on a `bg-greige` band or a
+ * `bg-navy` one; give it a white or midnight slab to sit in, the same way
+ * `WaitlistForm` brings its own paper ground onto the ember band. Contrast is
+ * fine either way; this is about the mark staying legible AS a mark.
+ *
+ * **`reason` is mandatory on `quoted` and the component enforces it.** "Ask us"
+ * without a reason is indistinguishable from a page we forgot to finish, and the
+ * commercial point of the third mark is that an unpublished price reads as
+ * policy. On `notSet` a reason is optional — the mark already says everything.
+ *
+ * **Clay is not a gap colour.** It reads as an error and none of these are
+ * errors; it survives only as the "design note, not page content" colour. Do not
+ * reintroduce a clay "NOT CONFIRMED" chip — that was one of the four competing
+ * answers convergence removed.
+ */
+import {
+  READOUT_VALUE,
+  GAP_STYLE,
+  GAP_WORD,
+  type GapState,
+  type ReadoutSize,
+  type ReadoutTone,
+} from '../../lib/readout';
+
+interface Props {
+  label: string;
+  /** `notSet` = the venue has not decided · `quoted` = we know, and give it on request. */
+  state: GapState;
+  /** Match the `ReadoutCell` beside this one, or the mark lands at the wrong size. */
+  size?: ReadoutSize;
+  tone?: ReadoutTone;
+  /** Overrides the default status word. Keep it to one or two words. */
+  word?: string;
+  /** Required when `state` is `quoted`. One line, plain, no hedging. */
+  reason?: string;
+  class?: string;
+}
+
+const { label, state, size = 'xl', tone = 'light', word, reason, class: className = '' } = Astro.props;
+
+if (state === 'quoted' && !reason) {
+  throw new Error(
+    `GapCell "${label}": a "quoted" gap MUST carry a reason line. An "Ask us" with no reason is ` +
+      `indistinguishable from an unfinished page, which is the one thing the gap system exists to prevent.`,
+  );
+}
+
+// Ground, label and value come from `lib/readout.ts` so that a gap rendered
+// inside a `HeroStrip` slot and a standalone one are the same object.
+const STYLE = GAP_STYLE[state][tone];
+---
+
+<div class:list={[STYLE.tint && `${STYLE.tint} p-cell`, className]} data-gap={state}>
+  <p class:list={['caps-label text-label-sm', STYLE.label]}>{label}</p>
+  <p class:list={['mt-s2', READOUT_VALUE[size], STYLE.value]}>
+    <span aria-hidden="true">&mdash;</span>{' '}
+    <span>{word ?? GAP_WORD[state]}</span>
+  </p>
+  {reason && <p class:list={['mt-s2 max-w-prose-page text-small leading-body', STYLE.label]}>{reason}</p>}
+</div>

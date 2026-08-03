@@ -20,9 +20,22 @@
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonVariant = 'primary' | 'outline' | 'onDark' | 'ghostDark';
 
+/**
+ * **Buttons are sentence case.** They were `uppercase tracking-label`, which put
+ * the header's `BOOK A BAY` in caps while every in-page CTA written with ad-hoc
+ * classes was sentence case — a split nobody had decided, just a leftover.
+ * Resolved 2026-08-03 (FW-3967 §"Three decisions for the human"): the system
+ * reserves caps for the 12px label role, so a capitalised button was borrowing a
+ * treatment that means "this is a label, not a sentence".
+ *
+ * `tracking-label` went with it. Wide tracking is PART of the caps treatment —
+ * kept on sentence case it reads as a spacing defect rather than as emphasis —
+ * so the recipe takes `tracking-display`, the display face's normal step. Caps
+ * now survives in exactly one place on the site: `caps-label`.
+ */
 const BASE =
   'inline-flex items-center justify-center gap-s3 min-h-tap rounded-control border-rule ' +
-  'font-display font-bold uppercase tracking-label leading-label text-center ' +
+  'font-display font-bold tracking-display leading-label text-center ' +
   'transition-colors duration-fast ease-standard';
 
 const SIZES: Record<ButtonSize, string> = {

@@ -1,0 +1,95 @@
+---
+/**
+ * The season as a track — Leagues' justified exception to `HeroStrip`.
+ *
+ * It sits in the strip position and carries the SAME FURNITURE (a 4px rule
+ * above, 1px dividers between cells, 12px caps labels, a 15px qualifier line),
+ * so it reads as the same component doing a different job. The one difference is
+ * the one that earns the exception: **the rule is only partly filled**, and how
+ * far it is filled says where in the season you are.
+ *
+ * That is also the site's one sanctioned use of the `01 / 02 / 03` motif on this
+ * page. After convergence the numerals mean exactly one thing — STEPS IN ORDER
+ * OVER TIME — and a season is the clearest case of that on the site. Section
+ * indexes use `SECTION 0X` in a fixed lane instead, and sets of items (packages,
+ * jobs, tiers) carry no numerals at all.
+ *
+ * Why a track and not three cards: registration for the coming season has not
+ * opened, so the honest thing the page has to communicate is not "here is the
+ * league" but "here is where the season is, and here is when the thing you want
+ * happens". A card grid flattens that into three equal options; a track keeps
+ * the order and the position.
+ *
+ * The filled portion is derived from `activeIndex`, not hand-set, so the rule
+ * cannot drift out of agreement with which step is marked NOW.
+ */
+import { type ReadoutTone } from '../../lib/readout';
+
+export interface TrackStep {
+  /** NOW / NEXT / THEN — the step's place in time, not its name. */
+  marker: string;
+  title: string;
+  body: string;
+}
+
+interface Props {
+  steps: TrackStep[];
+  /** 0-based. Which step the season is currently in — drives the filled rule. */
+  activeIndex: number;
+  tone?: ReadoutTone;
+  class?: string;
+}
+
+const { steps, activeIndex, tone = 'dark', class: className = '' } = Astro.props;
+
+if (steps.length !== 3) {
+  throw new Error(`SeasonTrack takes exactly 3 steps (01 NOW / 02 NEXT / 03 THEN), got ${steps.length}.`);
+}
+
+/**
+ * The rule fills to the END of the active step, so "we are in 01" reads as a
+ * third of a season gone. A midpoint fill would imply a precision about where
+ * inside the step we are that nobody here has.
+ */
+const filledPct = ((activeIndex + 1) / steps.length) * 100;
+
+const rule = tone === 'dark' ? 'bg-amber' : 'bg-ember';
+const track = tone === 'dark' ? 'bg-navy' : 'bg-greige';
+const divider = tone === 'dark' ? 'border-paper' : 'border-navy';
+const labelTone = tone === 'dark' ? 'text-slate' : 'text-inkMuted';
+const titleTone = tone === 'dark' ? 'text-white' : 'text-ink';
+const bodyTone = tone === 'dark' ? 'text-paper' : 'text-inkBody';
+---
+
+<div class:list={[className]}>
+  {
+    /* The partly-filled rule. `role="img"` with a label, because the fill is
+      carrying meaning — a screen reader gets the sentence, not a bare div. */
+  }
+  <div
+    class:list={['h-score w-full', track]}
+    role="img"
+    aria-label={`Season progress: step ${activeIndex + 1} of ${steps.length}, ${steps[activeIndex]?.marker}.`}
+  >
+    <div class:list={['h-full', rule]} style={`width: ${filledPct}%`}></div>
+  </div>
+
+  <ol class:list={['grid md:grid-cols-3', divider]}>
+    {
+      steps.map((step, i) => (
+        <li
+          class:list={['py-s5 md:pr-s5', i >= 1 && 'border-t-hairline md:border-t-0 md:border-l-hairline md:pl-s5']}
+          aria-current={i === activeIndex ? 'step' : undefined}
+        >
+          <p class:list={['caps-label text-label-sm', i === activeIndex ? titleTone : labelTone]}>
+            <span class="scoreboard">{String(i + 1).padStart(2, '0')}</span> {step.marker}
+          </p>
+          <p class:list={['mt-s3 font-display text-card leading-display font-bold tracking-display', titleTone]}>
+            {step.title}
+          </p>
+          <p class:list={['mt-s2 text-small leading-body', bodyTone]}>{step.body}</p>
+        </li>
+      ))
+    }
+  </ol>
+</div>

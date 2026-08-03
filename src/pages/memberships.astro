@@ -1,37 +1,99 @@
 ---
 /**
- * The retention lever. 41% of venues have no membership page at all
- * (playbook-sim-venue.md §4), and the spec for the ones that do is explicit:
- * tiers as cards with one marked recommended, and state what's included, hours
- * restrictions, guest policy, whether the member must be present, commitment
- * length, and how to cancel.
+ * Memberships — the retention lever. 41% of venues have no membership page at
+ * all (playbook-sim-venue.md §4). Ported to the converged Paper design
+ * 2026-08-03 (FW-3967); spec in `design/SUBPAGE-EXPLORATION.md`.
  *
- * Prices here are HTML text (playbook-core.md §8). On the current site every one
- * of these numbers lives inside a JPEG.
+ * **The idea: two unlike products get two grammars.** Monthly is a card
+ * comparison. LinksFlex is a `FuelGauge` — bank sizes across, tiers down, a
+ * proportional bar per cell — because an hour bank is a punch card, not a SaaS
+ * plan. Drawing both as pricing cards is what made this page read as four
+ * near-identical boxes, and it also flattered the wrong product: a bank of hours
+ * compared card-to-card against a subscription looks like a worse subscription.
+ *
+ * **Two honest things this page keeps, both of which cost us a sale sometimes:**
+ *
+ * 1. *The recommendation is arithmetic.* Individual is flagged "Start here if
+ *    you are not sure" because $149 ÷ $35 pays back after about 4¼ hours of bay
+ *    time a month — a reason the customer can check, not a "Most popular"
+ *    sticker, which is a claim about other people that we have no data for.
+ * 2. *The chooser's last row is "neither".* Play now and then, and the right
+ *    answer is to book a bay at $35 and buy nothing. A page willing to tell you
+ *    not to buy is more persuasive than one that isn't.
+ *
+ * Prices are HTML text (playbook-core.md §8). On the current live site every one
+ * of these numbers is inside a JPEG. They now live in the `memberships`
+ * collection as NUMBERS, so the per-hour figures are divided rather than stored
+ * and cannot drift out of agreement with the prices beside them.
  *
  * ⚠️ "Hours never expire" is the CLIENT'S marketing line and it is true as far
- * as it goes, but the LinksFlex T&Cs attach a condition to it: hours stay valid
- * "for as long as the customer is in good standing with the Company and the
- * Company continues to offer the associated service". This page states that
- * condition once, in the "Before you join" small print, and every other mention
- * of the promise points at it. Do not restore a bare "never expire" — a promise
- * published without its condition is the shape of a complaint (truth-audit §U5).
+ * as it goes, but the LinksFlex T&Cs attach a condition: hours stay valid "for
+ * as long as the customer is in good standing with the Company and the Company
+ * continues to offer the associated service". This page states that condition
+ * once, in "Before you join", and every other mention points at it. Do not
+ * restore a bare "never expire" — a promise published without its condition is
+ * the shape of a complaint (truth-audit §U5).
  *
  * ⚠️ The guest policy is NOT resolved, and this page must not resolve it. The
  * Individual price card says "only available for the package purchaser" and "No
  * Guest Fees" in the same breath, and the membership T&Cs say a package is
  * "ONLY FOR THE PURCHASER". An earlier draft answered it in the customer's
- * favour ("Guests play on your booking, in your bay") without saying it was
- * guessing. That one can cost a member money at the till (truth-audit §U3).
+ * favour without saying it was guessing. That one can cost a member money at the
+ * till (truth-audit §U3), so it carries a `PendingTag` and nothing more.
  *
  * ⚠️ The LinksFlex "Anytime" tier is deliberately NOT published as a buyable
  * card. At $39.56–$45.75 an hour effective it costs MORE than the $35 walk-up
  * rate, so selling it would be selling a worse deal to a loyal customer. That is
- * a repricing decision, not a copy fix (strategy.md §7.4).
+ * a repricing decision, not a copy fix (strategy.md §7.4), so it lives in a
+ * `StubNote` — a message to us, staging only — rather than on the page.
  */
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import SectionHead from '../components/venue/SectionHead.astro';
+import HeroStrip from '../components/venue/HeroStrip.astro';
+import FuelGauge from '../components/venue/FuelGauge.astro';
+import ReadoutCell from '../components/venue/ReadoutCell.astro';
+import GapCell from '../components/venue/GapCell.astro';
+import PendingTag from '../components/venue/PendingTag.astro';
+import StubNote from '../components/venue/StubNote.astro';
+import { buttonClasses } from '../lib/buttons';
 import { globalData } from '../data/global';
+
+/** The walk-up rate every membership on this page is measured against. */
+const WALK_UP = 35;
+
+const all = (await getCollection('memberships'))
+  .filter((m) => m.data.published)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const monthly = all.filter((m) => m.data.kind === 'monthly');
+const flex = all.filter((m) => m.data.kind === 'flex');
+
+/**
+ * The strip's LinksFlex headline: the best per-hour rate a general reader can
+ * ACTUALLY BUY, so age-restricted tiers are excluded from it.
+ *
+ * The Junior bank is the cheapest per hour on the page by a distance, and a
+ * "LinksFlex from $20.81" headline computed over every tier is arithmetic that
+ * is technically correct and still misleads — an adult reads a price and then
+ * discovers they are not eligible. `ageRestricted` exists for this one line.
+ */
+const bestPerHour = Math.min(
+  ...flex.filter((f) => !f.data.ageRestricted).flatMap((f) => f.data.banks.map((b) => b.price / b.hours)),
+);
+const cheapestMonthly = Math.min(...monthly.map((m) => m.data.price ?? Infinity));
+
+/**
+ * The payback point, divided rather than asserted: $149 ÷ $35 = 4.257…
+ *
+ * Shown to ONE decimal. The exact quotient is false precision in a sentence that
+ * already says "about", and the division is printed beside it either way, so a
+ * reader who wants the exact number can do it themselves — which is the whole
+ * argument for a reason over a "Most popular" sticker.
+ */
+const paybackHours = cheapestMonthly / WALK_UP;
+const payback = paybackHours.toFixed(1);
 
 const metadata = {
   metaTitle: 'Golf Memberships & LinksFlex — Lakeville & Stillwater',
@@ -39,66 +101,26 @@ const metadata = {
     'Monthly memberships and LinksFlex prepaid hours at The Links, Lakeville and Stillwater MN. No expiry date on LinksFlex hours. Compare tiers and join online.',
 };
 
-/** Monthly memberships. Both venues. Client-supplied figures. */
-const monthly = [
-  {
-    name: 'Summer Monthly — Individual',
-    price: '$149',
-    cadence: 'a month',
-    recommended: true,
-    recommendedNote: 'Most people start here',
-    forWho: 'One golfer who wants to play most weeks.',
-    includes: [
-      'Two hours of bay time every day',
-      '21-day booking window — you book before everyone else',
-      '10% off food and drink',
-      'No guest fees',
-      'Purchase more hours any time',
-    ],
-  },
-  {
-    name: 'Summer Monthly — Family',
-    price: '$199',
-    cadence: 'a month',
-    recommended: false,
-    forWho: 'The purchaser plus immediate family, sharing one membership.',
-    includes: [
-      'Two hours of bay time every day',
-      '21-day booking window',
-      '10% off food and drink',
-      'No guest fees',
-      'Usable by the purchaser and immediate family',
-    ],
-  },
-];
-
 /**
- * LinksFlex — prepaid hours that never expire. Lakeville only today.
- * The effective hourly figures are arithmetic on the client's own prices, not
- * new claims: they exist so a first-time buyer can see the saving without doing
- * long division in their head.
+ * The chooser. Its last row is the point of it — see the file header. Ordered by
+ * how often the answer applies, so the reader meets themselves early.
  */
-const linksFlex = [
+const chooser = [
   {
-    name: 'LinksFlex Off Peak',
-    window: 'Monday to Friday 8am–5pm, and Sundays after 3pm',
-    recommended: true,
-    recommendedNote: 'Best value per hour',
-    rows: [
-      { hours: '12 hours', price: '$399', perHour: '$33.25 an hour' },
-      { hours: '24 hours', price: '$749', perHour: '$31.21 an hour' },
-      { hours: '48 hours', price: '$1,399', perHour: '$29.15 an hour' },
-    ],
+    when: 'You play most weeks',
+    answer: 'Monthly membership',
+    why: `Two hours a day and the 21-day booking window. It pays for itself past about ${payback} hours a month.`,
   },
   {
-    name: 'LinksFlex Junior',
-    window: 'Monday to Friday 2pm–5pm, for players aged 13 to 18',
-    recommended: false,
-    rows: [
-      { hours: '12 hours', price: '$299', perHour: '$24.92 an hour' },
-      { hours: '24 hours', price: '$549', perHour: '$22.88 an hour' },
-      { hours: '48 hours', price: '$999', perHour: '$20.81 an hour' },
-    ],
+    when: 'You play in bursts',
+    answer: 'LinksFlex hours',
+    why: 'A bank you draw down whenever, with no monthly bill and no expiry date. A quiet month costs you nothing.',
+  },
+  {
+    when: 'You play now and then',
+    answer: 'Neither',
+    why: `Book a bay at $${WALK_UP} an hour and buy nothing. Up to six of you, same price. Come back to this page when that stops being the cheapest way.`,
+    none: true,
   },
 ];
 
@@ -112,10 +134,6 @@ const smallPrint = [
     'Hours restrictions',
     'The monthly memberships include two hours a day and are subject to opening hours — a membership does not guarantee a walk-in bay. LinksFlex Off Peak and Junior hours are limited to the windows above; there is no restriction on how long you take to use them.',
   ],
-  [
-    'Guests',
-    'Both monthly tiers say "no guest fees". What that means for an Individual membership is being confirmed: the same price card also says "only available for the package purchaser", and the membership terms say a package is "only for the purchaser". Until the venue settles it, ask at the desk before you bring people on an Individual membership. The Family tier is explicit — the purchaser and immediate family.',
-  ],
   ['Do you have to be there?', 'Yes. The member has to be present at the tee time.'],
   [
     'Commitment',
@@ -125,44 +143,107 @@ const smallPrint = [
 ---
 
 <BaseLayout metadata={metadata}>
-  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
-    <h1 class="text-4xl font-bold lg:text-5xl">Memberships</h1>
-    <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      Two ways to pay less per hour: a monthly membership if you play most weeks, or a bank of prepaid LinksFlex hours
-      with no expiry date if you play in bursts. You do not need to be any good at golf to be worth one.
-    </p>
+  {
+    /* 1. HERO + the 4-cell strip. The strip answers the four things a visitor
+      screens on before reading a word of the page: what the two products cost at
+      their entry point, what the best hourly rate is, and what it costs to buy
+      nothing — which is the number everything else is compared against. */
+  }
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
+      <p class="caps-label text-amber">Two ways to pay less per hour</p>
+      <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Memberships</h1>
+      <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
+        A monthly membership if you play most weeks, or a bank of prepaid LinksFlex hours with no expiry date if you
+        play in bursts. You do not need to be any good at golf to be worth one.
+      </p>
 
-    {/* 1. Monthly tiers as cards, one marked recommended (playbook sim-venue.md §4). */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">Monthly membership</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
+      <HeroStrip
+        class="mt-s8"
+        tone="dark"
+        cells={[
+          { label: 'Monthly from', value: `$${cheapestMonthly}`, qualifier: 'a month, both venues' },
+          { label: 'LinksFlex from', value: `$${bestPerHour.toFixed(2)}`, qualifier: 'an hour, Lakeville only' },
+          { label: 'Walk up', value: `$${WALK_UP}`, qualifier: 'an hour, no membership at all' },
+          {
+            label: 'Winter pricing',
+            gap: {
+              state: 'notSet',
+              reason:
+                'The winter terms are not set yet. These are the summer ones, and winter is the real season here.',
+            },
+          },
+        ]}
+      />
+    </div>
+  </section>
+
+  {/* 2. THE CHOOSER. Three rows, and the third one sells nothing. */}
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={1}>Which one, if either</SectionHead>
+      <ul class="border-t-score border-navy">
+        {
+          chooser.map((row) => (
+            <li class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)] md:items-baseline md:gap-s6">
+              <p class="caps-label text-label-sm text-inkMuted">{row.when}</p>
+              <p
+                class:list={[
+                  'font-display text-card leading-display font-bold tracking-display',
+                  row.none ? 'text-inkMuted' : 'text-ink',
+                ]}
+              >
+                {row.answer}
+              </p>
+              <p class="max-w-prose-page text-body leading-body text-inkBody">{row.why}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* 3. MONTHLY — a card comparison, because a subscription compares as a card. */}
+  <section class="bg-greige">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={2}>Monthly membership</SectionHead>
+      <p class="max-w-prose-page text-lead leading-body text-inkBody">
         Available at both venues. Two hours of bay time a day, every day, plus the booking window that gets you the
         Saturday slot before anyone else asks for it.
       </p>
 
-      <ul class="mt-8 grid gap-6 md:grid-cols-2">
+      <ul class="mt-s7 grid gap-s6 md:grid-cols-2">
         {
           monthly.map((tier) => (
             <li
               class:list={[
-                'relative flex flex-col rounded border-2 p-6',
-                tier.recommended ? 'border-primary' : 'border-ink/15',
+                'flex flex-col bg-white p-cell',
+                tier.data.recommended ? 'border-t-score border-ember' : 'border-t-hairline border-navy',
               ]}
             >
-              {tier.recommended && (
-                <span class="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-surface">
-                  {tier.recommendedNote}
-                </span>
-              )}
-              <h3 class="text-xl font-semibold">{tier.name}</h3>
-              <p class="mt-3">
-                <span class="text-3xl font-bold">{tier.price}</span>
-                <span class="text-inkMuted"> {tier.cadence}</span>
+              <h3 class="font-display text-card leading-display font-bold tracking-display text-ink">
+                {tier.data.name}
+              </h3>
+
+              <p class="mt-s4 flex items-baseline gap-s3">
+                <span class="scoreboard text-score-xl leading-score text-ink">${tier.data.price}</span>
+                <span class="text-small leading-body text-inkMuted">{tier.data.cadence}</span>
               </p>
-              <p class="mt-3 text-inkMuted">{tier.forWho}</p>
-              <ul class="mt-4 flex-1 list-disc space-y-1 pl-5 text-sm text-inkMuted">
-                {tier.includes.map((line) => (
-                  <li>{line}</li>
+
+              {/* The recommendation is a REASON, not a sticker. */}
+              {tier.data.recommended && tier.data.recommendedNote && (
+                <p class="mt-s4 border-l-slab border-ember pl-s4 text-small leading-body text-inkBody">
+                  <span class="font-display font-bold tracking-display text-ink">{tier.data.recommendedNote}</span> — $
+                  {tier.data.price} ÷ ${WALK_UP} means it pays for itself past about {payback} hours of bay time a
+                  month. Fewer than that and you are better off booking by the hour.
+                </p>
+              )}
+
+              <p class="mt-s5 text-body leading-body text-inkBody">{tier.data.forWho}</p>
+
+              <ul class="mt-s5 flex-1 border-t-hairline border-navy">
+                {tier.data.includes.map((line) => (
+                  <li class="border-b-hairline border-navy py-s3 text-small leading-body text-inkBody">{line}</li>
                 ))}
               </ul>
             </li>
@@ -170,10 +251,10 @@ const smallPrint = [
         }
       </ul>
 
-      <div class="mt-8 flex flex-wrap gap-4">
+      <div class="mt-s7 flex flex-wrap gap-s5">
         <a
           href={globalData.external.membershipsLakeville}
-          class="inline-block rounded bg-primary px-6 py-3 font-semibold text-surface transition hover:opacity-90"
+          class={buttonClasses('md', 'primary')}
           target="_blank"
           rel="noopener"
           data-analytics="membership:lakeville"
@@ -183,7 +264,7 @@ const smallPrint = [
         </a>
         <a
           href={globalData.external.membershipsStillwater}
-          class="inline-block rounded border-2 border-current px-6 py-3 font-semibold text-ink transition hover:bg-ink hover:text-surface"
+          class={buttonClasses('md', 'outline')}
           target="_blank"
           rel="noopener"
           data-analytics="membership:stillwater"
@@ -193,76 +274,65 @@ const smallPrint = [
         </a>
       </div>
 
-      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> these are the <em>summer</em> membership terms (May to September, renewing until 3 October
-        2026). The winter equivalent has not been supplied, and winter is this venue's real season. Winter membership pricing,
-        included hours and start date are needed before launch.
-      </p>
-    </section>
+      {
+        /* The winter gap, stated where a buyer meets the summer price rather
+          than in a footnote. Untinted `quoted` would be wrong here: nobody is
+          holding a winter number back, it genuinely does not exist yet.
 
-    {
-      /* 2. LinksFlex. No peer in the competitive scan offers prepaid hours that
-       never expire — it is the strongest differentiator on the site and is
-       currently buried in a terms-and-conditions page (strategy.md §2). */
-    }
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">LinksFlex — prepaid hours</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
-        Buy a block of hours up front, use them whenever. There is no expiry date on them, so a bad month costs you
-        nothing. Cheaper per hour than walking in, and there is no monthly bill. The one condition is in
-        <a href="#before-you-join" class="font-semibold underline">the small print</a> below.
-      </p>
-      <p class="mt-3 max-w-2xl text-inkMuted">
-        <strong>Lakeville only</strong> at the moment. Every LinksFlex block also carries the 21-day booking window and 10%
-        off food and drink.
-      </p>
-
-      <div class="mt-8 grid gap-6 lg:grid-cols-2">
-        {
-          linksFlex.map((pack) => (
-            <div class:list={['relative rounded border-2 p-6', pack.recommended ? 'border-primary' : 'border-ink/15']}>
-              {pack.recommended && (
-                <span class="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-surface">
-                  {pack.recommendedNote}
-                </span>
-              )}
-              <h3 class="text-xl font-semibold">{pack.name}</h3>
-              <p class="mt-2 text-sm text-inkMuted">{pack.window}</p>
-              <table class="mt-4 w-full text-left text-sm">
-                <caption class="sr-only">{pack.name} prices</caption>
-                <thead>
-                  <tr class="border-b-2 border-ink/20">
-                    <th scope="col" class="py-2 pr-4">
-                      Block
-                    </th>
-                    <th scope="col" class="py-2 pr-4">
-                      Price
-                    </th>
-                    <th scope="col" class="py-2">
-                      Works out at
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pack.rows.map((row) => (
-                    <tr class="border-b border-ink/10 last:border-0">
-                      <th scope="row" class="py-3 pr-4 font-medium">
-                        {row.hours}
-                      </th>
-                      <td class="py-3 pr-4 font-semibold">{row.price}</td>
-                      <td class="py-3 text-inkMuted">{row.perHour}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))
-        }
+          On a WHITE slab, because this band is greige and a `notSet` cell tints
+          itself greige — on the alternating field the tint is the same colour as
+          the ground, so the mark loses the very form that distinguishes it from
+          a `quoted` one. See the ground note in `GapCell`. */
+      }
+      <div class="mt-s7 max-w-prose-page bg-white p-cell">
+        <GapCell
+          label="Winter membership"
+          state="notSet"
+          size="name"
+          reason="These are the summer terms, renewing until 3 October 2026. Winter pricing, included hours and start date have not been set — and winter is this venue's real season."
+        />
       </div>
+    </div>
+  </section>
+
+  {
+    /* 4. LINKSFLEX — the fuel gauge. No peer in the competitive scan offers
+      prepaid hours with no expiry date; it is the strongest differentiator on the
+      site and currently lives in a terms-and-conditions page (strategy.md §2). */
+  }
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={3}>LinksFlex — prepaid hours</SectionHead>
+      <p class="max-w-prose-page text-lead leading-body text-inkBody">
+        Buy a block of hours up front and use them whenever. There is no expiry date on them, so a bad month costs you
+        nothing, and there is no monthly bill. The one condition is in{' '}
+        <a
+          href="#before-you-join"
+          class="font-bold underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+          >the small print</a
+        > below.
+      </p>
+
+      <div class="mt-s5 flex flex-wrap items-baseline gap-x-s6 gap-y-s3">
+        <ReadoutCell label="Where" size="name">Lakeville only</ReadoutCell>
+        <ReadoutCell label="Also included" size="name">21-day booking window · 10% off food</ReadoutCell>
+      </div>
+
+      <FuelGauge
+        class="mt-s7"
+        walkUp={WALK_UP}
+        rows={flex.map((f) => ({
+          name: f.data.name,
+          window: f.data.window,
+          recommended: f.data.recommended,
+          recommendedNote: f.data.recommendedNote,
+          banks: f.data.banks,
+        }))}
+      />
 
       <a
         href={globalData.external.membershipsLakeville}
-        class="mt-8 inline-block rounded bg-primary px-6 py-3 font-semibold text-surface transition hover:opacity-90"
+        class:list={[buttonClasses('md', 'primary'), 'mt-s7']}
         target="_blank"
         rel="noopener"
         data-analytics="linksflex:lakeville"
@@ -271,61 +341,99 @@ const smallPrint = [
         <span class="sr-only">(opens the Whoosh store in a new tab)</span>
       </a>
 
-      {/* The Anytime tier, held back on purpose. See the file header. */}
-      <div class="mt-8 rounded border-2 border-dashed border-ink/25 p-6">
-        <h3 class="text-lg font-semibold">
-          <span class="text-inkMuted">STUB —</span> LinksFlex Anytime is not published
-        </h3>
-        <p class="mt-3 text-sm text-inkMuted">
-          A third block, "LinksFlex Anytime" (no day or time restriction), is priced at $549 / $1,049 / $1,899 for 12 /
-          24 / 48 hours. That works out at $45.75, $43.71 and $39.56 an hour — <strong
-            >more than the $35 walk-up rate</strong
-          >. A premium tier that costs more than simply turning up is not something we will sell, so it is held back.
-        </p>
-        <p class="mt-3 text-sm text-inkMuted">
-          <strong>Needed from the client:</strong> a repriced Anytime tier, or a decision to retire it. This is a pricing
-          call, not a wording one.
-        </p>
+      <div class="mt-s7 max-w-prose-page">
+        <GapCell
+          label="LinksFlex at Stillwater"
+          state="notSet"
+          size="name"
+          reason="Whether the hour banks can be spent at Stillwater has not been settled. Today they are Lakeville-only."
+        />
       </div>
 
-      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> two open questions on LinksFlex. (1) Whether the hour banks can be used at Stillwater, or
-        stay Lakeville-only. (2) The Off Peak window starts at 8am and the Junior window at 2pm, but Lakeville currently opens
-        at 11am — either the windows were written for winter hours or the published hours are wrong.
-      </p>
-    </section>
+      <StubNote
+        class="mt-s6"
+        needs="LinksFlex Anytime is held back on purpose. At $549 / $1,049 / $1,899 for 12 / 24 / 48 hours it works out at $45.75, $43.71 and $39.56 an hour — MORE than the $35 walk-up rate. Selling a premium tier that costs more than turning up is not something we will do, so it is not on the page. Needed from the client: a repriced Anytime tier, or a decision to retire it. This is a pricing call, not a wording one."
+      />
+      <StubNote
+        class="mt-s5"
+        needs="The Off Peak window starts at 8am and the Junior window at 2pm, but Lakeville currently opens at 11am. Either the windows were written for winter hours, or the published hours are wrong. One of the two has to change."
+      />
+    </div>
+  </section>
 
-    {/* 3. The small print the playbook requires, in plain words. */}
-    <section class="mt-section" id="before-you-join">
-      <h2 class="text-3xl font-bold">Before you join</h2>
-      <dl class="mt-6 grid gap-6 sm:grid-cols-2">
+  {/* 5. THE SMALL PRINT the playbook requires, in plain words. */}
+  <section class="bg-greige" id="before-you-join">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={4}>Before you join</SectionHead>
+      <dl class="border-t-score border-navy">
         {
           smallPrint.map(([q, a]) => (
-            <div>
-              <dt class="font-semibold">{q}</dt>
-              <dd class="mt-1 text-inkMuted">{a}</dd>
+            <div class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
+              <dt class="caps-label text-label-sm text-inkMuted">{q}</dt>
+              <dd class="max-w-prose-page text-body leading-body text-inkBody">{a}</dd>
             </div>
           ))
         }
-        <div>
-          <dt class="font-semibold">How to cancel</dt>
-          <dd class="mt-1 text-inkMuted">
-            <span class="font-semibold text-ink">STUB —</span> the cancellation mechanism and notice period for a monthly
-            membership have not been supplied. "Automatic monthly renewal until cancelled" is the only language that exists
-            today, and it does not tell anyone how to cancel. Needed from the client before launch.
+
+        {
+          /* Guests: a real contradiction in the client's own documents. It gets
+            the middle mark — a stated value that rides beside its caution — not
+            an answer we invented in the customer's favour. */
+        }
+        <div
+          class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6"
+        >
+          <dt class="caps-label text-label-sm text-inkMuted">Guests</dt>
+          <dd class="max-w-prose-page text-body leading-body text-inkBody">
+            <p>
+              Both monthly tiers say &ldquo;no guest fees&rdquo;, and the Family tier is explicit — the purchaser and
+              immediate family.
+            </p>
+            {
+              /* The tag sits in a WHITE slab punched out of the greige band.
+                `accent.caution` (emberMid) is 4.76:1 on white and 3.66:1 on
+                greige, so a caution tag on the alternating field fails AA —
+                `rules.noWarningOnGreige`, which this page tripped on its first
+                audit run. Same move `WaitlistForm` makes on the ember band: when
+                a ground cannot legibly carry a component, the component brings
+                its own ground rather than the colour being quietly restyled. */
+            }
+            <div class="mt-s4 bg-white p-cell">
+              <PendingTag
+                label="Pending confirmation"
+                reason="What that means on an Individual membership is being confirmed: the same price card also says
+                “only available for the package purchaser”, and the membership terms say a package is “only for the
+                purchaser”. Until the venue settles it, ask at the desk before you bring people."
+              />
+            </div>
+          </dd>
+        </div>
+
+        {/* Cancellation: nobody has told us the mechanism. That is an absence. */}
+        <div class="grid gap-s3 border-b-score border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
+          <dt class="caps-label text-label-sm text-inkMuted">How to cancel</dt>
+          <dd class="max-w-prose-page">
+            <GapCell
+              label="Notice period and mechanism"
+              state="notSet"
+              size="text"
+              reason="“Automatic monthly renewal until cancelled” is the only language that exists today, and it does not tell anyone how to cancel. We have asked."
+            />
           </dd>
         </div>
       </dl>
-    </section>
+    </div>
+  </section>
 
-    {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
-    <section class="mt-section rounded bg-surface p-8">
-      <h2 class="text-2xl font-bold">Not sure yet?</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
-        Book an hour at the normal rate first. Three hours in a month costs $105, so the membership only starts paying
-        for itself past about four and a quarter hours — $149 ÷ $35.
+  {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead tone="dark">Not sure yet?</SectionHead>
+      <p class="max-w-prose-page text-lead leading-body text-paper">
+        Book an hour at the normal rate first. Three hours in a month costs ${WALK_UP * 3}, so a membership only starts
+        paying for itself past about {payback} hours — ${cheapestMonthly} ÷ ${WALK_UP}. Buy nothing until then.
       </p>
-      <div class="mt-6"><BookButton size="lg" /></div>
-    </section>
+      <div class="mt-s6"><BookButton size="lg" variant="onDark" /></div>
+    </div>
   </section>
 </BaseLayout>

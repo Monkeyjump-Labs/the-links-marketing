@@ -1,0 +1,19 @@
+{
+  "name": "Summer Monthly - Individual",
+  "kind": "monthly",
+  "order": 1,
+  "venue": "both",
+  "recommended": true,
+  "recommendedNote": "Start here if you are not sure",
+  "price": 149,
+  "cadence": "a month",
+  "forWho": "One golfer who wants to play most weeks.",
+  "includes": [
+    "Two hours of bay time every day",
+    "21-day booking window - you book before everyone else",
+    "10% off food and drink",
+    "No guest fees",
+    "Purchase more hours any time"
+  ],
+  "published": true
+}

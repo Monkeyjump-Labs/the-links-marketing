@@ -66,6 +66,7 @@ const GATE = [
   ['semantic.ink.bodyOnLight', 'palette.white', 4.5],
   ['semantic.ink.mutedOnLight', 'palette.white', 4.5],
   ['semantic.ink.mutedOnLight', 'palette.greige', 4.5],
+  ['semantic.ink.mutedOnNavy', 'palette.navy', 4.5],
   ['semantic.ink.onAccentBand', 'palette.ember', 4.5],
   ['semantic.primary.on', 'palette.ember', 4.5],
   ['semantic.primary.on', 'palette.emberHover', 4.5],
@@ -84,6 +85,27 @@ const GATE = [
   ['semantic.rule.onDark', 'palette.midnight', 3],
 ];
 
+/**
+ * [token, ground, floor, useInstead] — pairings that are BANNED because they
+ * measure under the floor, re-measured here so the ban cannot go stale.
+ *
+ * The GATE above asks "is this pairing still good enough?". This asks the
+ * opposite question: "is this pairing still bad?" — and that matters because a
+ * ban nobody re-checks outlives the measurement it was based on. If a palette
+ * edit ever lifts one of these over the floor, the entry is obsolete and the
+ * build says so instead of leaving a rule in the style guide that is no longer
+ * true.
+ *
+ * What this canNOT do is catch the pairing being USED: the tokens are correct
+ * and only the combination is wrong, so a component that puts slate on navy
+ * compiles clean. That is caught at runtime by axe in `npm run audit:visual`,
+ * and prevented at design time by there being a right answer to reach for
+ * (`ink.mutedOnNavy`). Three gates, because one was demonstrably not enough —
+ * the unlayered-CSS regression shipped a site-wide 1.78:1 button while every
+ * token in this file was correct.
+ */
+const FORBIDDEN = [['semantic.ink.mutedOnDark', 'palette.navy', 4.5, 'semantic.ink.mutedOnNavy (screenLight, 8.42:1)']];
+
 const failures = [];
 for (const [tokenPath, groundPath, floor] of GATE) {
   const fg = resolveValue(flat[tokenPath]);
@@ -97,6 +119,24 @@ if (failures.length) {
   console.error(`\n✖ Contrast gate failed — ${failures.length} pairing(s) below the floor:\n`);
   console.error(failures.join('\n'));
   console.error('\nFix the token values. Do not lower the gate.\n');
+  process.exit(1);
+}
+
+const stale = [];
+for (const [tokenPath, groundPath, floor, useInstead] of FORBIDDEN) {
+  const r = ratio(resolveValue(flat[tokenPath]), resolveValue(flat[groundPath]));
+  if (r >= floor) {
+    stale.push(
+      `  ${tokenPath} on ${groundPath} now measures ${r.toFixed(2)}:1 (floor ${floor}:1).\n` +
+        `    The ban is obsolete. Remove it from FORBIDDEN and from rules.noMutedOnDarkOverNavy,\n` +
+        `    or the style guide keeps telling people to use ${useInstead} for no reason.`,
+    );
+  }
+}
+if (stale.length) {
+  console.error(`\n✖ FORBIDDEN gate: ${stale.length} ban(s) no longer describe the palette:\n`);
+  console.error(stale.join('\n'));
+  console.error('');
   process.exit(1);
 }
 

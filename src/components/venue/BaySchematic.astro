@@ -1,0 +1,127 @@
+---
+/**
+ * A bay, drawn as a schematic — where the machine is, and which part of it reads
+ * what.
+ *
+ * **This diagram has to be physically right, and the obvious version is wrong.**
+ * The intuitive drawing puts a camera on the ceiling and runs every measurement
+ * down from it. GolfZon's own sensors page does not describe that machine:
+ *
+ *   - BALL data — speed, direction and trajectory, spin rate, launch angle,
+ *     spin axis — comes from the **T2, which is mounted in the FLOOR** and is
+ *     not a camera at all.
+ *   - CLUB data — club path, angle of attack, club face impact area — comes
+ *     from the **overhead unit**, whose cameras sit above and in front of the
+ *     player and meet at 90 degrees.
+ *
+ * So the ball readings rise from the floor and the club readings come down from
+ * above, and a diagram that draws everything arriving from overhead is drawing
+ * the wrong machine (truth-audit.md §C6, SUBPAGE-EXPLORATION.md §"Two
+ * corrections").
+ *
+ * **Name the readings; do not count them.** Three different counts for one
+ * machine shipped across this project — the page said five, the design said
+ * four, GolfZon's page lists more than either depending on how you group them.
+ * The count was never the interesting part: a reading with a NAME on it is a
+ * better diagram than a number, and it cannot be contradicted by a recount. No
+ * caller of this component should pass a total, and none of the copy says one.
+ *
+ * `club` and `ball` are the reading names, straight from GolfZon. Do not add
+ * "face angle" — GolfZon publishes "club face impact area", which is a different
+ * claim, and the invented one was removed once already.
+ */
+interface Props {
+  club: string[];
+  ball: string[];
+  class?: string;
+}
+
+const { club, ball, class: className = '' } = Astro.props;
+
+const ground = 'fill: var(--brand-media-slot-ground)';
+const screenFill = 'fill: var(--brand-media-slot-screen)';
+const warm = 'fill: var(--brand-media-slot-pendant)';
+const hairline = 'stroke: var(--brand-media-slot-label)';
+
+const alt =
+  'Cross-section of one simulator bay. The screen is at the left. The player stands at the right on a tilting swing ' +
+  'plate. A camera unit is mounted on the ceiling above and in front of the player, and its arrows point DOWN to the ' +
+  'club: it reads club path, angle of attack and club face impact area. A separate sensor is set into the floor in ' +
+  'front of the player, and its arrows point UP from the ball: it reads ball speed, direction and trajectory, spin ' +
+  'rate, launch angle and spin axis.';
+---
+
+<figure class:list={['m-0', className]}>
+  <div class="border-rule border-paper bg-midnight">
+    <svg viewBox="0 0 320 200" role="img" aria-label={alt} class="block h-auto w-full">
+      <rect width="320" height="200" style={ground}></rect>
+
+      {/* THE SCREEN — the one bright thing, as everywhere else in the system. */}
+      <rect x="14" y="30" width="86" height="110" style={screenFill}></rect>
+      <rect x="14" y="30" width="86" height="8" style="fill: var(--brand-white)"></rect>
+      <rect x="14" y="112" width="86" height="28" style="fill: var(--brand-media-slot-fairway)"></rect>
+
+      {/* THE CEILING and THE FLOOR. */}
+      <line x1="0" y1="16" x2="320" y2="16" stroke-width="1" style={hairline}></line>
+      <line x1="0" y1="164" x2="320" y2="164" stroke-width="1" style={hairline}></line>
+
+      {/* THE OVERHEAD UNIT — above and IN FRONT of the player, not over them. */}
+      <rect x="150" y="18" width="44" height="12" style={warm}></rect>
+      {/* Its readings come DOWN. Two lines, meeting near the club. */}
+      <g stroke-width="1.5" style="stroke: var(--brand-media-slot-pendant)">
+        <line x1="160" y1="32" x2="196" y2="120" marker-end="url(#down)"></line>
+        <line x1="186" y1="32" x2="204" y2="120" marker-end="url(#down)"></line>
+      </g>
+
+      {/* THE SWING PLATE — the floor that tilts, drawn tilted. */}
+      <polygon points="196,150 300,142 300,156 196,164" style={warm} opacity="0.55"></polygon>
+
+      {/* THE PLAYER, as a mass rather than a figure. */}
+      <rect x="248" y="96" width="10" height="54" style="fill: var(--brand-media-slot-mass)"></rect>
+      <circle cx="253" cy="88" r="9" style="fill: var(--brand-media-slot-mass)"></circle>
+      {/* the club, down to the ball */}
+      <line x1="248" y1="112" x2="208" y2="150" stroke-width="2" style={hairline}></line>
+
+      {/* THE BALL, on the plate. */}
+      <circle cx="204" cy="150" r="4" style="fill: var(--brand-white)"></circle>
+
+      {/* THE FLOOR SENSOR — set INTO the floor, in front of the player. */}
+      <rect x="150" y="164" width="52" height="10" style="fill: var(--brand-screen-light)"></rect>
+      {/* Its readings come UP. This is the half everyone draws wrong. */}
+      <g stroke-width="1.5" style="stroke: var(--brand-screen-light)">
+        <line x1="166" y1="164" x2="140" y2="96" marker-end="url(#up)"></line>
+        <line x1="190" y1="164" x2="176" y2="92" marker-end="url(#up)"></line>
+      </g>
+
+      <defs>
+        <marker id="down" markerWidth="6" markerHeight="6" refX="3" refY="5" orient="auto">
+          <path d="M0,0 L3,6 L6,0" fill="none" stroke-width="1.2" style="stroke: var(--brand-media-slot-pendant)"
+          ></path>
+        </marker>
+        <marker id="up" markerWidth="6" markerHeight="6" refX="3" refY="1" orient="auto">
+          <path d="M0,6 L3,0 L6,6" fill="none" stroke-width="1.2" style="stroke: var(--brand-screen-light)"></path>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  {
+    /* The named readings, grouped by WHICH PART OF THE MACHINE reads them —
+      which is the whole point of the diagram. Amber for the overhead unit and
+      screenLight for the floor sensor, matching their arrows above. */
+  }
+  <figcaption class="grid gap-s5 border-r-quiet border-b-quiet border-l-quiet border-slate p-cell md:grid-cols-2">
+    <div>
+      <p class="caps-label text-label-sm text-amber">From the overhead unit</p>
+      <ul class="mt-s3">
+        {club.map((r) => <li class="text-small leading-body text-paper">{r}</li>)}
+      </ul>
+    </div>
+    <div>
+      <p class="caps-label text-label-sm text-screen">From the sensor in the floor</p>
+      <ul class="mt-s3">
+        {ball.map((r) => <li class="text-small leading-body text-paper">{r}</li>)}
+      </ul>
+    </div>
+  </figcaption>
+</figure>

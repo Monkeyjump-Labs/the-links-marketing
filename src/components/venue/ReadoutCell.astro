@@ -5,38 +5,30 @@
  * on it, so a visitor can find the one they came for without reading a
  * paragraph.
  *
- * The value slot takes the `scoreboard` treatment at `xl`/`md` (tabular, lining,
- * expanded, 800) because published figures are the brand's proof; `text` is for
- * a value that is words rather than a figure.
- *
- * `tone` names the GROUND, because the muted label colour differs by it and
- * getting it wrong is an arithmetic failure, not a preference:
- *   light  → ink.mutedOnLight  6.87:1 on white
- *   dark   → ink.mutedOnDark   5.48:1 on midnight (midnight ONLY — 4.16:1 on
- *            navy, which is why muted text never appears in a hoverable row)
+ * The typesetting now lives in `lib/readout.ts`, because `GapCell` has to match
+ * it EXACTLY — a gap is typeset like the filled cell beside it, and two
+ * components each keeping their own copy of the size map is how that stops being
+ * true. See that file for the rule and the contrast arithmetic behind `tone`.
  */
+import {
+  READOUT_VALUE,
+  READOUT_LABEL,
+  READOUT_VALUE_TONE,
+  type ReadoutSize,
+  type ReadoutTone,
+} from '../../lib/readout';
+
 interface Props {
   label: string;
-  tone?: 'light' | 'dark';
-  size?: 'xl' | 'md' | 'name' | 'text';
+  tone?: ReadoutTone;
+  size?: ReadoutSize;
   class?: string;
 }
 
 const { label, tone = 'light', size = 'xl', class: className = '' } = Astro.props;
-
-const labelTone = tone === 'dark' ? 'text-slate' : 'text-inkMuted';
-const valueTone = tone === 'dark' ? 'text-white' : 'text-ink';
-const valueSize = {
-  xl: 'scoreboard text-score-xl leading-score',
-  md: 'scoreboard text-score-md leading-score',
-  // A value that is a NAME rather than a figure — a product, a technology.
-  // Display face, not the numeric one: tabular figures on a word are noise.
-  name: 'font-display text-card leading-display font-bold tracking-display',
-  text: 'text-small leading-body',
-}[size];
 ---
 
 <div class:list={[className]}>
-  <p class:list={['caps-label text-label-sm', labelTone]}>{label}</p>
-  <p class:list={['mt-s2', valueSize, valueTone]}><slot /></p>
+  <p class:list={['caps-label text-label-sm', READOUT_LABEL[tone]]}>{label}</p>
+  <p class:list={['mt-s2', READOUT_VALUE[size], READOUT_VALUE_TONE[tone]]}><slot /></p>
 </div>
