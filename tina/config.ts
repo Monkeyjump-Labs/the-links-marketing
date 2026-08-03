@@ -149,7 +149,14 @@ export default defineConfig({
             description: 'Required. Two-thirds of league pages skip this and it is the top reason people do not join.',
             ui: { component: 'textarea' },
           },
-          { type: 'string', name: 'format', label: 'Format', required: true },
+          /**
+           * NOT required. An empty season fact renders as the gap system's
+           * "Not yet set" mark — same label, same size, an em-dash where the
+           * value goes. Leave it blank rather than typing "TBC": a sentinel
+           * string prints in the value slot and makes the page look unfinished,
+           * which is exactly what the mark exists to avoid.
+           */
+          { type: 'string', name: 'format', label: 'Format (leave blank if not decided)' },
           { type: 'string', name: 'night', label: 'Night of the week' },
           { type: 'string', name: 'startDate', label: 'Start date (YYYY-MM-DD)' },
           { type: 'number', name: 'weeks', label: 'Number of weeks' },
@@ -160,6 +167,73 @@ export default defineConfig({
           { type: 'string', name: 'standingsUrl', label: 'Standings / results URL' },
           { type: 'string', name: 'season', label: 'Season and year', required: true },
           { type: 'boolean', name: 'published', label: 'Published' },
+        ],
+      },
+      {
+        name: 'membership',
+        label: 'Memberships',
+        path: 'src/content/memberships',
+        format: 'json',
+        fields: [
+          { type: 'string', name: 'name', label: 'Name', isTitle: true, required: true },
+          {
+            type: 'string',
+            name: 'kind',
+            label: 'Kind',
+            required: true,
+            options: [
+              { value: 'monthly', label: 'Monthly membership — drawn as a card' },
+              { value: 'flex', label: 'LinksFlex hour bank — drawn as a fuel gauge' },
+            ],
+          },
+          { type: 'number', name: 'order', label: 'Display order' },
+          { type: 'string', name: 'venue', label: 'Which venue', options: VENUE_SCOPE },
+          { type: 'boolean', name: 'recommended', label: 'Recommend this one' },
+          {
+            type: 'string',
+            name: 'recommendedNote',
+            label: 'Why we recommend it',
+            description:
+              'Give a REASON the customer can check ("$149 ÷ $35 pays back after about 4.3 hours a month"), never "Most popular" — that is a claim about other people that a buyer cannot verify.',
+            ui: { component: 'textarea' },
+          },
+          { type: 'boolean', name: 'published', label: 'Published' },
+
+          {
+            type: 'number',
+            name: 'price',
+            label: 'Monthly price (number only, no $)',
+            description: 'A NUMBER, e.g. 149. The page adds the $ and does the per-hour arithmetic itself.',
+          },
+          { type: 'string', name: 'cadence', label: 'Monthly: cadence, e.g. "a month"' },
+          { type: 'string', name: 'forWho', label: 'Monthly: who it is for', ui: { component: 'textarea' } },
+          { type: 'string', name: 'includes', label: 'Monthly: what is included', list: true },
+
+          { type: 'string', name: 'window', label: 'LinksFlex: when the hours can be used' },
+          {
+            type: 'boolean',
+            name: 'ageRestricted',
+            label: 'LinksFlex: age-restricted tier',
+            description:
+              'Tick for Junior. Keeps this tier out of the "LinksFlex from $X an hour" headline, so we never quote a price most readers cannot buy.',
+          },
+          {
+            type: 'object',
+            name: 'banks',
+            label: 'LinksFlex: hour banks',
+            list: true,
+            ui: { itemProps: (item) => ({ label: `${item?.hours ?? ''} hours — $${item?.price ?? ''}` }) },
+            fields: [
+              { type: 'number', name: 'hours', label: 'Hours in the bank', required: true },
+              {
+                type: 'number',
+                name: 'price',
+                label: 'Price (number only, no $)',
+                required: true,
+                description: 'The per-hour figure is divided from this. Do not enter it separately.',
+              },
+            ],
+          },
         ],
       },
       {

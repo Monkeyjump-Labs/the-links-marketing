@@ -6,23 +6,39 @@
  * `border.score` (4px), in `rule.scoreOnDark` (amber, 9.48:1) or
  * `rule.scoreOnLight` (ember, 7.45:1). The rule is short and left-aligned so it
  * reads as a marker, not as a divider — the dividers are the band edges.
+ *
+ * **`index` is how a section carries a numeral without stealing the `01/02/03`
+ * motif.** Convergence gave those numerals exactly one meaning — STEPS IN ORDER
+ * OVER TIME (`SeasonTrack`) — because four agents had used them for a timeline,
+ * two section indexes and a plain list of items, and a reader meeting all four
+ * learns the numbers mean nothing. A section index therefore renders as
+ * `SECTION 0X` in its own fixed lane beside the rule: still countable, visibly
+ * not a step. Sets of items — packages, tiers, jobs — carry no numerals at all.
  */
 interface Props {
   tone?: 'light' | 'dark';
+  /** 1-based. Renders as `SECTION 0X` in the index lane. */
+  index?: number;
   class?: string;
 }
 
-const { tone = 'light', class: className = '' } = Astro.props;
+const { tone = 'light', index, class: className = '' } = Astro.props;
+
+const rule = tone === 'dark' ? 'bg-amber' : 'bg-ember';
+const heading = tone === 'dark' ? 'text-white' : 'text-ink';
+// The index is meta, not content, so it takes the ground's muted ink — slate on
+// midnight (5.48:1), inkMuted on light (6.87:1 on white). Never on a navy band.
+const indexTone = tone === 'dark' ? 'text-slate' : 'text-inkMuted';
 ---
 
 <div class:list={['mb-s7 flex flex-col gap-s4', className]}>
-  <hr class:list={['h-score w-s10 border-0', tone === 'dark' ? 'bg-amber' : 'bg-ember']} />
-  <h2
-    class:list={[
-      'text-section leading-display font-extrabold tracking-display-tight',
-      tone === 'dark' ? 'text-white' : 'text-ink',
-    ]}
-  >
+  <hr class:list={['h-score w-s10 border-0', rule]} />
+  {
+    index !== undefined && (
+      <p class:list={['caps-label text-label-sm', indexTone]}>Section {String(index).padStart(2, '0')}</p>
+    )
+  }
+  <h2 class:list={['text-section leading-display font-extrabold tracking-display-tight', heading]}>
     <slot />
   </h2>
 </div>

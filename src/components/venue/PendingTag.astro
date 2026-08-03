@@ -4,14 +4,15 @@
  *
  * One of three marks (SUBPAGE-EXPLORATION.md §"The gap system, as converged"):
  *
- *   Not yet set          — an absence. The venue has not decided.
+ *   Not yet set          — an absence. The venue has not decided.        `GapCell`
  *   Pending confirmation — a stated value we believe but have not verified.
- *   Quoted / Ask us      — not an absence. A decision to give it on request.
+ *   Quoted / Ask us      — not an absence. A decision to give it on request. `GapCell`
  *
  * This is the middle one, and the system's ONLY outlined tag: 1px rule, 12px
- * caps, `accent.caution` (emberMid, 4.76:1 on white). It RIDES BESIDE a stated
- * value rather than replacing it — the value still ships, because a marked value
- * is more use to a visitor than a blank, and more honest than an unmarked one.
+ * caps. It RIDES BESIDE a stated value rather than replacing it — the value
+ * still ships, because a marked value is more use to a visitor than a blank, and
+ * more honest than an unmarked one. That is what makes it structurally different
+ * from the other two marks, which occupy the value slot themselves.
  *
  * Unlike `StubNote`, this renders in PRODUCTION as well as staging. A stub note
  * is a message to us; this is a message to the reader standing next to a fact we
@@ -19,22 +20,38 @@
  * defect it exists to fix.
  *
  * Warm means caution here, the same rule the unverified-hours tag in
- * `TrustStrip` follows. Never on a greige field: emberMid is 3.66:1 there
- * (`rules.noWarningOnGreige`).
+ * `TrustStrip` follows, so a build-state note and a verified fact never look
+ * alike.
+ *
+ * **Two grounds, two colours, and the difference is arithmetic:**
+ *   light  emberMid  4.76:1 on white.     NEVER on greige — 3.66:1
+ *                                          (`rules.noWarningOnGreige`).
+ *   dark   amber     9.48:1 on midnight.  Midnight grounds; on navy it is
+ *                                          7.21:1, which still clears AA.
+ *
+ * The reason line follows its ground's muted ink: inkMuted 6.87:1 on white,
+ * slate 5.48:1 on midnight. Slate is a MIDNIGHT token — it is 4.16:1 on navy and
+ * fails, so a dark PendingTag with a reason belongs on midnight, not on a navy
+ * band. See the FORBIDDEN gate in `scripts/build-tokens.mjs`.
  */
 interface Props {
   /** The tag word. Keep it to two or three words — it is 12px caps. */
   label?: string;
   /** The one-line reason, shown under the tag. Optional but strongly preferred. */
   reason?: string;
+  /** Names the GROUND. `dark` = midnight bands. */
+  tone?: 'light' | 'dark';
   class?: string;
 }
-const { label = 'Pending confirmation', reason, class: className = '' } = Astro.props;
+const { label = 'Pending confirmation', reason, tone = 'light', class: className = '' } = Astro.props;
+
+const tag = tone === 'dark' ? 'border-amber text-amber' : 'border-accent text-accent';
+const reasonTone = tone === 'dark' ? 'text-slate' : 'text-inkMuted';
 ---
 
 <span class:list={['block', className]}>
-  <span class="caps-label inline-block rounded-surface border-rule border-accent px-s2 py-s1 text-accent">
+  <span class:list={['caps-label inline-block rounded-surface border-hairline px-s2 py-s1', tag]}>
     {label}
   </span>
-  {reason && <span class="mt-s2 block text-small leading-body text-inkMuted">{reason}</span>}
+  {reason && <span class:list={['mt-s2 block text-small leading-body', reasonTone]}>{reason}</span>}
 </span>

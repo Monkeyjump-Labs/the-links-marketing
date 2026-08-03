@@ -1,55 +1,177 @@
 ---
 /**
- * The retention engine, and the worst-executed page type in the corpus.
- * The waitlist is mandatory in ALL THREE registration states — zero of 126
- * audited sites offered one (playbook-core.md §5). In August both venues are
- * between seasons, so the waitlist IS the page's primary action at launch.
+ * Leagues — the retention engine, and the worst-executed page type in the
+ * corpus. Ported to the converged Paper design 2026-08-03 (FW-3967);
+ * spec in `design/SUBPAGE-EXPLORATION.md`.
+ *
+ * **The idea: the season is a TRACK, not a catalogue.** In August both venues
+ * are between seasons, so a page built as a list of leagues you can join is a
+ * page whose every row says "no". A track says something true and useful
+ * instead — here is where the season is, and here is when the thing you want
+ * happens. That is why `SeasonTrack` sits in the hero-strip position: it is the
+ * ONE justified exception to the 4-cell strip, same furniture, but its rule is
+ * only partly filled because progress is the fact it exists to show.
+ *
+ * **The capture band is the largest thing after the hero**, deliberately. Across
+ * all 126 audited simulator and golf-course sites, exactly ZERO offered a
+ * waitlist, while 11% of league pages say "registration closed" and simply stop
+ * (playbook-core.md §5). The one component nobody else has should not be a
+ * footnote. (126 is the WHOLE audit — sim venues plus golf courses; the 96 in
+ * `data/global.ts` is the sim-venue subset. Always name which. And keep the
+ * comparison internal: it is a competitive claim about named third parties and
+ * belongs in comments, never in copy a customer reads.)
+ *
+ * **The band is also this page's one ember field.** SUBPAGE-EXPLORATION §"Paper
+ * quirks" flags that ember goes unused on dark-heavy pages, because every CTA on
+ * a dark block inverts to an amber fill. A page that never shows the brand's
+ * action colour is worth avoiding, so the capture band is ember at full strength
+ * — once, like the homepage's.
+ *
+ * **"On the blanks" is the page's closing note and it is a promise, not an
+ * apology.** Four facts are unpublished for both venues; the note commits to
+ * publishing night, format, length and price TOGETHER, before registration
+ * opens rather than after you have paid. Nobody asked for that. It turns the
+ * page's largest gap into the reason to trust it, and it is the single idea from
+ * this page's exploration most worth keeping.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import LeagueCard from '../components/venue/LeagueCard.astro';
+import LeagueBlock from '../components/venue/LeagueBlock.astro';
 import LeagueSchema from '../components/venue/LeagueSchema.astro';
+import SeasonTrack from '../components/venue/SeasonTrack.astro';
+import SectionHead from '../components/venue/SectionHead.astro';
+import WaitlistForm from '../components/venue/WaitlistForm.astro';
 
 const leagues = (await getCollection('leagues'))
   .filter((l) => l.data.published)
   .sort((a, b) => a.data.order - b.data.order);
+
+const season = leagues[0]?.data.season ?? 'the coming season';
 
 const metadata = {
   metaTitle: 'Indoor Golf Leagues — Lakeville & Stillwater, MN',
   metaDescription:
     'Fall and winter simulator golf leagues at The Links, Lakeville and Stillwater MN. Handicapped and beginner-friendly. Join the list for the next season.',
 };
+
+/**
+ * The three steps of a season, in order over time — the site's ONE sanctioned
+ * use of the `01 / 02 / 03` numerals after convergence. `activeIndex` is 0
+ * because both venues are between seasons today; move it when the lineup lands
+ * and the filled rule moves with it.
+ */
+const steps = [
+  {
+    marker: 'Now',
+    title: 'Between seasons',
+    body: 'Summer play has wound down. There is nothing to register for yet, and we are not going to pretend otherwise.',
+  },
+  {
+    marker: 'Next',
+    title: 'The lineup is published',
+    body: 'Night, format, length and price — all four at once, so you can decide with the whole picture in front of you.',
+  },
+  {
+    marker: 'Then',
+    title: 'Registration opens',
+    body: 'Everyone on the list hears the day it does. Teams fill fastest in the first week.',
+  },
+];
 ---
 
 <BaseLayout metadata={metadata}>
-  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
-    <h1 class="text-4xl font-bold lg:text-5xl">Leagues</h1>
-    <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      A league is the cheapest way to play all winter and the fastest way to meet people who also think Tuesday is a
-      golf night. Handicaps keep matches fair, so a first-timer and a scratch player can be on the same team.
-    </p>
-
-    <div class="mt-10 grid gap-8 lg:grid-cols-2">
-      {leagues.map((league) => <LeagueCard league={league} />)}
-    </div>
-
-    <section class="mt-section rounded bg-surface p-8">
-      <h2 class="text-2xl font-bold">How league nights work</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
-        STUB — the season format, night, length, price and prizes have not been supplied for either venue. The structure
-        below is what the page needs before launch.
+  {
+    /* 1. HERO — midnight, venue-neutral. The season is named in the eyebrow
+      because "which season is this page about" is the first question a returning
+      player has, and half the corpus never answers it. */
+  }
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
+      <p class="caps-label text-amber">{season}</p>
+      <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Leagues</h1>
+      <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
+        The cheapest way to play all winter, and the fastest way to meet people who also think Tuesday is a golf night.
+        Handicaps keep matches fair, so a first-timer and a scratch player can be on the same team.
       </p>
-      <ul class="mt-4 list-disc space-y-1 pl-5 text-inkMuted">
-        <li>What it is, in one line — the format and the commitment</li>
-        <li>Who it is for — explicit beginner reassurance</li>
-        <li>The format — scramble, stroke play or match play; team size; handicapping</li>
-        <li>When — night, start date, number of weeks</li>
-        <li>What it costs — a number</li>
-        <li>What you win</li>
-        <li>How to register, and the waitlist when registration is closed</li>
-        <li>Standings and past winners — the returning-player hook</li>
-      </ul>
-    </section>
+
+      {
+        /* 2. THE SEASON TRACK, in the hero-strip position. The justified
+          exception — see the file header and `SeasonTrack`. */
+      }
+      <SeasonTrack class="mt-s8" steps={steps} activeIndex={0} tone="dark" />
+    </div>
+  </section>
+
+  {
+    /* 3. THE CAPTURE BAND. The largest thing after the hero, and the page's one
+      ember field at full strength.
+
+      Nothing dark goes on this band: midnight on ember is 2.35:1 and navy
+      1.79:1 — the same measurement that forbids an ember fill on the hero, read
+      the other way round. The form therefore sits in a paper slab punched out of
+      the band, and inside that slab everything reverts to light-field styling. */
+  }
+  <section class="on-accent-band bg-primary">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
+        <div>
+          <p class="caps-label text-white">Before anyone else</p>
+          <h2 class="mt-s4 text-section leading-display font-extrabold tracking-display-tight text-white">
+            Get first word on {season}
+          </h2>
+          <p class="mt-s5 text-lead leading-body text-surface">
+            Registration has not opened at either venue. One email the day it does — that is the whole arrangement, and
+            it is the only mail you will get from us.
+          </p>
+          <p
+            class="my-s6 border-y-score border-white py-s4 font-display text-row leading-display font-bold tracking-display text-white"
+          >
+            Teams fill fastest in the first week. The list is how you are in it.
+          </p>
+        </div>
+
+        <WaitlistForm
+          listName="league-general"
+          heading="Join the list"
+          blurb="One email when registration opens. Nothing else, ever."
+        />
+      </div>
+    </div>
+  </section>
+
+  {/* 4. THE VENUE BLOCKS — one ruled column, not two cards. */}
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={1}>League play at both venues</SectionHead>
+      {leagues.map((league, i) => <LeagueBlock league={league} first={i === 0} last={i === leagues.length - 1} />)}
+    </div>
+  </section>
+
+  {
+    /* 5. ON THE BLANKS. The closing note, and a commitment rather than a
+      disclaimer. It is on greige so it reads as the page's own aside — and note
+      that emberMid is 3.66:1 on greige (`rules.noWarningOnGreige`), which is why
+      nothing here is set in the caution colour. */
+  }
+  <section class="bg-greige">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={2}>On the blanks</SectionHead>
+      <div class="max-w-prose-page">
+        <p class="text-lead leading-body text-inkBody">
+          You will have noticed how much of the season above is not filled in. Night, format, length and price are not
+          set for either venue yet, and we would rather show you the shape of the question than a number we would have
+          to take back.
+        </p>
+        <p
+          class="mt-s5 border-l-slab border-ember pl-s4 font-display text-card leading-display font-bold tracking-display text-ink"
+        >
+          When they are set, we will publish all four together — before registration opens, not after you have paid.
+        </p>
+        <p class="mt-s5 text-body leading-body text-inkBody">
+          If a league night has to change once it is running, everyone playing hears it from us first.
+        </p>
+      </div>
+    </div>
   </section>
 
   <LeagueSchema leagues={leagues} />

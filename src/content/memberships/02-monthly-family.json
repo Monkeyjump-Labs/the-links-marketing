@@ -1,0 +1,18 @@
+{
+  "name": "Summer Monthly - Family",
+  "kind": "monthly",
+  "order": 2,
+  "venue": "both",
+  "recommended": false,
+  "price": 199,
+  "cadence": "a month",
+  "forWho": "The purchaser plus immediate family, sharing one membership.",
+  "includes": [
+    "Two hours of bay time every day",
+    "21-day booking window",
+    "10% off food and drink",
+    "No guest fees",
+    "Usable by the purchaser and immediate family"
+  ],
+  "published": true
+}

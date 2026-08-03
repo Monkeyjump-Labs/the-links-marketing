@@ -32,7 +32,9 @@ const { venue, label, size = 'md', variant = 'solid', class: className = '' } = 
 
 const href = venue ? venue.data.bookingUrl : '/book/';
 const isExternal = Boolean(venue);
-const text = label ?? (venue ? `Book at ${venue.data.shortName}` : 'Book a Bay');
+// Sentence case, not Title Case — the recipe no longer uppercases, so this
+// string is literally what the visitor reads. See the caps note in `lib/buttons.ts`.
+const text = label ?? (venue ? `Book at ${venue.data.shortName}` : 'Book a bay');
 
 // `solid` is the starter's name for the light-ground fill; the token layer
 // calls it `primary`. Both are accepted so no other page has to change.

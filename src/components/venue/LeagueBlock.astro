@@ -1,0 +1,137 @@
+---
+/**
+ * One league, as a **venue block on a ruled grid** — not a card.
+ *
+ * Cards were the previous answer and convergence rejected them here: a card is a
+ * container for a thing you can choose between, and these two are not
+ * alternatives — they are the same league at two venues, one of which has never
+ * run one before. Boxing them side by side implies a choice and hides that the
+ * two rows carry different amounts of truth. A ruled block puts them in one
+ * column at one scale, with the season facts in the same labelled cells the rest
+ * of the site uses.
+ *
+ * **The six season facts are the gap system's main event on this page.** None of
+ * them are published yet for either venue. They render as `GapCell`s marked
+ * *Not yet set* — same label, same size, an em-dash in the value slot — so the
+ * row reads as "the venue has not decided" rather than as a page we abandoned.
+ * When the client supplies a night, the gap becomes a `ReadoutCell` and nothing
+ * else on the page moves.
+ *
+ * Leagues are the worst-executed page type in the corpus: 46% offer no way to
+ * register, 50% state no price, 67% give no beginner reassurance. All three
+ * registration states get an action here — never a dead end.
+ */
+import type { CollectionEntry } from 'astro:content';
+import WaitlistForm from './WaitlistForm.astro';
+import ReadoutCell from './ReadoutCell.astro';
+import GapCell from './GapCell.astro';
+import { buttonClasses } from '../../lib/buttons';
+
+interface Props {
+  league: CollectionEntry<'leagues'>;
+  /** First block carries the heavy top rule; the rest carry a hairline. */
+  first?: boolean;
+  last?: boolean;
+}
+const { league, first = false, last = false } = Astro.props;
+const d = league.data;
+
+const stateLabel = {
+  open: 'Registration open',
+  full: 'Full — waitlist open',
+  between: 'Between seasons',
+}[d.state];
+
+/**
+ * The six facts, in the order a player asks for them. `value: undefined` is not
+ * a missing row — it is a row whose value is a gap, and it still renders.
+ * Dropping the row instead would hide that the question exists, which is the
+ * thing the season track promises we will not do.
+ */
+const facts: { label: string; value?: string }[] = [
+  { label: 'Night', value: d.night },
+  { label: 'Format', value: d.format },
+  { label: 'Length', value: d.weeks ? `${d.weeks} weeks` : undefined },
+  { label: 'Starts', value: d.startDate },
+  { label: 'Cost', value: d.price },
+  { label: 'Prizes', value: d.prizes },
+];
+---
+
+<article class:list={['border-navy py-s7', first ? 'border-t-score' : 'border-t-hairline', last && 'border-b-score']}>
+  <div class="flex flex-wrap items-baseline justify-between gap-s4">
+    <h3 class="text-row leading-display font-extrabold tracking-display text-ink">{d.name}</h3>
+    <p class="caps-label text-label-sm text-inkMuted">{stateLabel} · {d.season}</p>
+  </div>
+
+  <p class="mt-s4 max-w-prose-page text-lead leading-body text-inkBody">{d.oneLiner}</p>
+
+  {
+    /* Beginner reassurance is REQUIRED, not optional: it is the top reason
+      people do not join, and two thirds of the corpus omits it entirely. It
+      carries the 8px slab so it reads as the page's own voice rather than as
+      another fact in the grid. */
+  }
+  <p class="mt-s5 max-w-prose-page border-l-slab border-ember pl-s4 text-body leading-body text-inkBody">
+    {d.beginnerNote}
+  </p>
+
+  <div class="mt-s6 grid grid-cols-2 gap-s5 border-y-quiet border-navy py-s5 md:grid-cols-3">
+    {
+      facts.map((fact) =>
+        fact.value ? (
+          <ReadoutCell label={fact.label} size="name">
+            {fact.value}
+          </ReadoutCell>
+        ) : (
+          <GapCell label={fact.label} state="notSet" size="name" />
+        ),
+      )
+    }
+  </div>
+
+  <div class="mt-s6">
+    {
+      d.state === 'open' && d.registerUrl && (
+        <a
+          href={d.registerUrl}
+          target="_blank"
+          rel="noopener"
+          class={buttonClasses('md', 'primary')}
+          data-analytics={`league-register:${league.id}`}
+        >
+          Register now <span aria-hidden="true">→</span>
+        </a>
+      )
+    }
+    {
+      d.state !== 'open' && (
+        <>
+          {d.nextSeasonNote && (
+            <p class="mb-s5 max-w-prose-page text-small leading-body text-inkMuted">{d.nextSeasonNote}</p>
+          )}
+          <WaitlistForm
+            listName={`league-${league.id}`}
+            venue={d.venue}
+            heading={d.state === 'full' ? 'Join the waitlist' : 'Tell me when it opens'}
+          />
+        </>
+      )
+    }
+  </div>
+
+  {
+    d.standingsUrl && (
+      <p class="mt-s5">
+        <a
+          href={d.standingsUrl}
+          class="inline-flex min-h-tap items-center font-bold text-inkBody underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+          target="_blank"
+          rel="noopener"
+        >
+          Current standings and results
+        </a>
+      </p>
+    )
+  }
+</article>

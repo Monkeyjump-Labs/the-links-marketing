@@ -1,0 +1,15 @@
+{
+  "name": "LinksFlex Off Peak",
+  "kind": "flex",
+  "order": 3,
+  "venue": "lakeville",
+  "recommended": true,
+  "recommendedNote": "Lowest cost per hour of anything we sell",
+  "window": "Monday to Friday 8am-5pm, and Sundays after 3pm",
+  "banks": [
+    { "hours": 12, "price": 399 },
+    { "hours": 24, "price": 749 },
+    { "hours": 48, "price": 1399 }
+  ],
+  "published": true
+}

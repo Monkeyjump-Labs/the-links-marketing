@@ -180,7 +180,20 @@ const leagues = defineCollection({
     state: z.enum(['open', 'full', 'between']),
     oneLiner: z.string(), // "Eight weeks. Two-person teams. Wednesday nights."
     beginnerNote: z.string(), // required — 67% of the corpus omits this
-    format: z.string(),
+    /**
+     * All six season facts are OPTIONAL, and an absent one is not a defect.
+     *
+     * `format` used to be required, which forced the content to carry the string
+     * "TBC" — and "TBC" printed in a value slot is the flat-page behaviour the
+     * gap system replaces. An undecided fact now renders as a `GapCell` marked
+     * *Not yet set*: same label, same size, an em-dash where the value goes. The
+     * page says "the venue has not decided this yet" instead of shipping a
+     * placeholder that looks like an unfinished page.
+     *
+     * Do not reintroduce sentinel strings ("TBC", "STUB", "-") in these fields.
+     * Leave the field out; the page knows what to draw.
+     */
+    format: z.string().optional(),
     night: z.string().optional(),
     startDate: z.string().optional(),
     weeks: z.number().optional(),
@@ -192,6 +205,70 @@ const leagues = defineCollection({
     standingsUrl: z.string().url().optional(),
     season: z.string(), // every dated page carries its season + year
     published: z.boolean().default(true),
+  }),
+});
+
+/**
+ * Memberships. Two unlike products that the page deliberately gives DIFFERENT
+ * GRAMMARS, which is why one collection carries both and `kind` decides how a
+ * row is drawn:
+ *
+ *   monthly  a recurring subscription  → card comparison
+ *   flex     a prepaid bank of hours   → fuel gauge
+ *
+ * An hour bank is a punch card, not a SaaS plan, and drawing it as a third and
+ * fourth pricing card was the thing that made the old page read as four
+ * near-identical boxes (SUBPAGE-EXPLORATION.md §"What each page committed to").
+ *
+ * **Prices are NUMBERS here, not strings.** The per-hour figure a buyer uses to
+ * compare a bank against the $35 walk-up rate is arithmetic on the venue's own
+ * price, so the page divides rather than storing a second number that can drift
+ * out of agreement with the first. Store 399, not "$399".
+ */
+const memberships = defineCollection({
+  type: 'data',
+  schema: z.object({
+    name: z.string(),
+    kind: z.enum(['monthly', 'flex']),
+    order: z.number().default(0),
+    venue: z.enum(['lakeville', 'stillwater', 'both']).default('both'),
+    /**
+     * Marks the tier the page recommends. `recommendedNote` must state a REASON
+     * the customer can check — "$149 ÷ $35 pays back after about 4¼ hours a
+     * month" — never "Most popular", which is a claim about other people that a
+     * buyer cannot verify and we have no data for.
+     */
+    recommended: z.boolean().default(false),
+    recommendedNote: z.string().optional(),
+    published: z.boolean().default(true),
+
+    // ── monthly ──
+    price: z.number().optional(),
+    cadence: z.string().optional(),
+    forWho: z.string().optional(),
+    includes: z.array(z.string()).default([]),
+
+    // ── flex ──
+    /** When these hours can be used. The restriction IS the product. */
+    window: z.string().optional(),
+    /**
+     * True when a tier is limited by age (LinksFlex Junior is 13–18).
+     *
+     * It exists so a "from $X an hour" headline cannot quote a price most
+     * readers are not eligible for. The Junior bank is the cheapest per hour on
+     * the page by some way, and an adult reading "LinksFlex from $20.81" and
+     * then finding they cannot buy it has been misled by arithmetic that was
+     * technically correct.
+     */
+    ageRestricted: z.boolean().default(false),
+    banks: z
+      .array(
+        z.object({
+          hours: z.number(),
+          price: z.number(),
+        }),
+      )
+      .default([]),
   }),
 });
 
@@ -267,4 +344,16 @@ const faq = defineCollection({
   }),
 });
 
-export const collections = { blog, articles, caseStudies, pages, venues, leagues, rates, menu, faq, testimonials };
+export const collections = {
+  blog,
+  articles,
+  caseStudies,
+  pages,
+  venues,
+  leagues,
+  memberships,
+  rates,
+  menu,
+  faq,
+  testimonials,
+};

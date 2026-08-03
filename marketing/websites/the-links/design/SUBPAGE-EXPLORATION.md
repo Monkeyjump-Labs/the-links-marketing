@@ -122,20 +122,50 @@ was made up. **Always say which corpus a number is from.** And because the waitl
 a competitive statement about named third parties, it belongs in documents like this one and
 in our own code comments — it is not on any customer-facing page and should not go on one.
 
-## Open decisions for the human
+## Open decisions for the human — RESOLVED 2026-08-03
 
-1. **Caps split.** The shipped header button is `BOOK A BAY` in caps; every in-page CTA is now
-   sentence case. **Recommendation: bring the header down.** The system reserves caps for 12px
-   labels, and a single capitalised button is a leftover rather than a decision.
-2. **Events' reply time.** It's marked *Ask us*, but the copy says they will not promise a number
-   at all. **Recommendation: it isn't a gap — remove the mark and state the policy.** "Ask us"
-   implies a number exists on request; the point is that it deliberately doesn't.
-3. **Simulators' Stillwater blanks** are all *Pending confirmation*. That's right where the venue
-   knows the answer and we haven't verified it (seating, screens, handedness). Flip any to *Not
-   yet set* where the venue genuinely hasn't decided.
+All three were put to the human before the port started, not after.
+
+1. **Caps split.** → **Bring the header down.** Buttons are now sentence case site-wide. The
+   `uppercase` lived in the shared button recipe (`lib/buttons.ts`), so this was one change, not
+   a header patch — and `tracking-label` went with it, because wide tracking is part of the caps
+   treatment and reads as a spacing defect without it. Caps now survives in exactly one place:
+   `caps-label`, the 12px label role.
+2. **Events' reply time.** → **No mark, and keep the copy generic.** It is prose, not a cell:
+   *"We will get back to you as soon as possible."* An *Ask us* would have implied a number
+   exists on request, and the point is that one deliberately does not.
+3. **Simulators' Stillwater blanks.** → **All stay *Pending confirmation*.** None flip. Stillwater
+   is an operating venue that knows how its own room is laid out; nothing there is undecided, it
+   is unverified, and those are different promises to a reader.
 
 ## Status
 
-Exploration only. **Nothing here is in the codebase.** Porting a page is a separate step and
-should follow the homepage precedent: real content collections as the data source, tokens for
-every value, and the visual audit clean before merge.
+**Ported — FW-3967, 2026-08-03.** All four pages are in the codebase, on the homepage precedent:
+content collections as the data source, every value from a token, six gates green.
+
+What the port added beyond the four pages:
+
+* `GapCell` (marks 1 and 3), `PendingTag` gaining a dark tone (mark 2), and `lib/readout.ts` —
+  the shared size map that makes "a gap is typeset exactly like the filled cell beside it" a
+  code guarantee rather than a thing you check by eye.
+* `HeroStrip` (the specified 4-cell strip) and `SeasonTrack` (Leagues' justified exception).
+* `SectionHead` gained `index`, rendering `SECTION 0X` in its own lane, so the `01/02/03`
+  numerals mean one thing: steps in order over time.
+* `FuelGauge`, `BaySchematic`, `HandednessRow`, `LeagueBlock`; `LeagueCard` is gone.
+* A `memberships` content collection, prices stored as NUMBERS so per-hour figures are divided
+  rather than stored and cannot drift.
+* **The slate-on-navy trap is encoded.** `semantic.ink.mutedOnNavy` (screenLight, 8.42:1) now
+  exists as the right answer to reach for, and `scripts/build-tokens.mjs` gained a FORBIDDEN
+  gate that re-measures the banned pairing so the ban cannot silently go stale.
+* `/simulators/` was missing from the visual-audit route list and is now in it — one of the four
+  pages had never been contrast-checked at all.
+
+Two things this port found that the exploration did not:
+
+* **A `notSet` gap cannot sit directly on a greige band.** Its tint IS greige, so on the
+  alternating field the mark keeps its words and loses the form that distinguishes it from a
+  `quoted` one. Give it a white slab, the way `WaitlistForm` brings its own ground onto the
+  ember band.
+* **`accent.caution` on greige is 3.66:1** — the already-documented `noWarningOnGreige` rule,
+  which this port tripped on its first audit run. A `PendingTag` on the alternating field needs
+  its own white ground.

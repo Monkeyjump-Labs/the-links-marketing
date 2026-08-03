@@ -18,7 +18,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import WaitlistForm from '../components/venue/WaitlistForm.astro';
-import LeagueCard from '../components/venue/LeagueCard.astro';
+import LeagueBlock from '../components/venue/LeagueBlock.astro';
 import HoursTable from '../components/venue/HoursTable.astro';
 import TrustStrip from '../components/venue/TrustStrip.astro';
 import { getVenues } from '../lib/venues';
@@ -80,6 +80,9 @@ const SPEC: Record<string, RoleSpec> = {
   'semantic.ink.onDarkStrong': { mode: 'text', ground: 'palette.midnight' },
   'semantic.ink.onDark': { mode: 'text', ground: 'palette.midnight' },
   'semantic.ink.mutedOnDark': { mode: 'text', ground: 'palette.midnight' },
+  // Measured against NAVY, not midnight — that is the whole point of the token.
+  // mutedOnDark on this same ground is 4.16:1 and fails; this is 8.42:1.
+  'semantic.ink.mutedOnNavy': { mode: 'text', ground: 'palette.navy' },
   'semantic.ink.displayOnLight': { mode: 'text', ground: 'palette.white' },
   'semantic.ink.bodyOnLight': { mode: 'text', ground: 'palette.white' },
   'semantic.ink.mutedOnLight': { mode: 'text', ground: 'palette.white' },
@@ -455,7 +458,7 @@ const screenLight = value('palette.screenLight');
                             class="px-6 py-3 text-sm font-bold"
                             style={`background: ${row.resolved}; color: ${value(spec.ink as string)}; border-radius: ${value('radius.control')};`}
                           >
-                            Book a Bay
+                            Book a bay
                           </span>
                         </div>
                       )}
@@ -849,7 +852,7 @@ const screenLight = value('palette.screenLight');
                 class="flex items-center justify-center px-5 text-sm font-semibold"
                 style={`height: ${control.height}; background: ${ember}; color: ${value('semantic.primary.on')}; border-radius: ${value('radius.control')};`}
               >
-                Book a Bay
+                Book a bay
               </div>
               <p class="mt-1 font-mono text-xs" style={`color: ${inkMuted};`}>
                 {control.path} = {control.height}
@@ -1051,7 +1054,7 @@ const screenLight = value('palette.screenLight');
         <WaitlistForm listName="styleguide" heading="Join the list" />
       </div>
 
-      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>LeagueCard — all three registration states</h3>
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>LeagueBlock — all three registration states</h3>
       <p class="mt-1 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
         One real league entry with <code>state</code> swapped, so the three are honestly comparable. No state is a dead end:
         <code>open</code> registers, <code>full</code> and <code>between</code> both fall through to the waitlist.
@@ -1063,7 +1066,7 @@ const screenLight = value('palette.screenLight');
               <p class="mb-2 font-mono text-xs" style={`color: ${ember};`}>
                 {demo.label}
               </p>
-              <LeagueCard league={demo.entry} />
+              <LeagueBlock league={demo.entry} first={true} last={true} />
             </div>
           ))
         }

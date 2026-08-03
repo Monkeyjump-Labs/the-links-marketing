@@ -2,7 +2,11 @@
 /**
  * Persistent transactional CTA + the venue switcher.
  * Playbook core.md §6: two clicks to book from any page, and the primary CTA is
- * transactional ("Book a Bay"), never "Learn More".
+ * transactional ("Book a bay"), never "Learn More".
+ *
+ * That button is sentence case as of 2026-08-03. It was the site's last
+ * capitalised CTA, which left caps meaning two different things — a 12px label
+ * and one button. See the caps note in `lib/buttons.ts`.
  */
 import { globalData } from '../../data/global';
 import BookButton from '../venue/BookButton.astro';

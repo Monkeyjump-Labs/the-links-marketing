@@ -35,6 +35,11 @@ const ROUTES = [
   '/locations/stillwater/',
   '/memberships/',
   '/events/',
+  // /simulators/ was missing from this list until 2026-08-03, so one of the four
+  // pages FW-3967 rebuilt had never been contrast- or overflow-checked at all.
+  // Every route the site publishes should be here; a page absent from the audit
+  // is a page whose regressions nobody sees.
+  '/simulators/',
   '/menu/',
   '/contact/',
   '/faq/',

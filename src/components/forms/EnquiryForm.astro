@@ -1,17 +1,33 @@
 ---
 /**
- * The events lead-capture form. Events are the highest revenue per visit in the
- * segment, and the playbook is explicit: "Lead with a lead-capture form — do not
- * bury it under 1,500 words of packages" (playbook-sim-venue.md §4).
+ * The events lead-capture form — and, on that page, **the brightest object on
+ * the page**: a white card on midnight.
  *
- * Same shape and degradation behaviour as WaitlistForm: posts to
- * PUBLIC_LEAD_ENDPOINT, and with no endpoint configured falls back to a mailto so
- * an enquiry is never silently dropped.
+ * The playbook is explicit about the order: "Lead with a lead-capture form — do
+ * not bury it under 1,500 words of packages" (playbook-sim-venue.md §4). Events
+ * are the highest revenue per visit in the segment, the visitor is usually a
+ * planner rather than a golfer, and the whole page exists to start one
+ * conversation. So the form is not a section of the page; it is the object the
+ * page is built around, and the composition says so — white on midnight is the
+ * strongest contrast the palette can make (17.50:1), spent here and nowhere else.
  *
- * "Which venue" is a required field. It is the only two-location accommodation
+ * **Headcount and date come first, at scoreboard scale.** They are the two facts
+ * the venue needs before it can answer at all, and the two the planner already
+ * knows before they arrive. Name and email first — the previous order — asks a
+ * stranger to identify themselves before the form has shown it understands what
+ * they want. These two take `text-score-md` with tabular figures, so the form
+ * opens with the same scoreboard treatment the site gives a published number.
+ *
+ * "Which venue" stays required. It is the only two-location accommodation
  * anywhere in the current site's forms and it is the one we must not lose.
+ *
+ * Posts to PUBLIC_LEAD_ENDPOINT, and with no endpoint configured degrades to a
+ * mailto so an enquiry is never silently dropped — and says so rather than
+ * pretending. ⚠️ That endpoint is UNSET today, so every form on the site is
+ * currently inert; see FW-3966 §"Unblock the client-facing loop".
  */
 import { getVenues } from '../../lib/venues';
+import { buttonClasses } from '../../lib/buttons';
 
 interface Props {
   heading?: string;
@@ -19,81 +35,105 @@ interface Props {
   listName: string;
   email?: string;
   id?: string;
+  class?: string;
 }
 
 const {
   heading = 'Tell us about your event',
-  blurb = 'Give us the date and rough numbers and we will come back with what it costs. No obligation.',
+  blurb = 'The date and rough numbers are enough to get a price back. No obligation.',
   listName,
   email = 'info@lakevillelinks.com',
   id,
+  class: className = '',
 } = Astro.props;
 
 const venues = await getVenues();
 const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT;
 const formId = id ?? `enquiry-${listName.replace(/\W+/g, '-').toLowerCase()}`;
 
-const field = 'w-full rounded border border-ink/20 px-3 py-2 text-sm';
-const labelClass = 'block text-sm font-medium';
+// Inside the white card everything reverts to light-field styling — navy on
+// white 13.31:1, navyMid body 9.92:1, inkMuted placeholders 6.87:1. `on-light`
+// restores the light-ground focus slab inside the dark band.
+const field =
+  'min-h-tap w-full min-w-0 rounded-control border-rule border-navy bg-white px-s4 py-s3 text-body text-navy placeholder:text-inkMuted';
+/** The two lead fields: same control, scoreboard figures. */
+const leadField = `${field} scoreboard text-score-md leading-score`;
+const labelClass = 'caps-label block text-label-sm text-inkMuted';
 ---
 
-<form
-  class="rounded border-2 border-ink/15 bg-surface p-6"
-  action={endpoint ?? `mailto:${email}`}
-  method={endpoint ? 'POST' : 'GET'}
-  data-analytics={`enquiry:${listName}`}
-  id={formId}
->
-  <h2 class="text-2xl font-bold">{heading}</h2>
-  <p class="mt-2 text-inkMuted">{blurb}</p>
+<div class:list={['on-light bg-white p-cell lg:p-cell-lg', className]}>
+  <h2 class="text-section leading-display font-extrabold tracking-display-tight text-ink">{heading}</h2>
+  <p class="mt-s3 max-w-prose-page text-body leading-body text-inkBody">{blurb}</p>
 
-  <input type="hidden" name="list" value={listName} />
-  <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
-
-  <div class="mt-6 grid gap-4 sm:grid-cols-2">
-    <div>
-      <label class={labelClass} for={`${formId}-name`}>Your name</label>
-      <input id={`${formId}-name`} name="name" type="text" required class={`mt-1 ${field}`} />
-    </div>
-    <div>
-      <label class={labelClass} for={`${formId}-venue`}>Which venue</label>
-      <select id={`${formId}-venue`} name="venue" required class={`mt-1 ${field}`}>
-        {venues.map((venue) => <option value={venue.data.slug}>{venue.data.name}</option>)}
-        <option value="either">Either — help me choose</option>
-      </select>
-    </div>
-    <div>
-      <label class={labelClass} for={`${formId}-email`}>Email</label>
-      <input id={`${formId}-email`} name="email" type="email" required class={`mt-1 ${field}`} />
-    </div>
-    <div>
-      <label class={labelClass} for={`${formId}-phone`}>Phone</label>
-      <input id={`${formId}-phone`} name="phone" type="tel" class={`mt-1 ${field}`} />
-    </div>
-    <div>
-      <label class={labelClass} for={`${formId}-date`}>Date you have in mind</label>
-      <input id={`${formId}-date`} name="date" type="date" class={`mt-1 ${field}`} />
-    </div>
-    <div>
-      <label class={labelClass} for={`${formId}-size`}>How many people</label>
-      <input id={`${formId}-size`} name="groupSize" type="number" min="1" inputmode="numeric" class={`mt-1 ${field}`} />
-    </div>
-    <div class="sm:col-span-2">
-      <label class={labelClass} for={`${formId}-message`}>Anything else we should know</label>
-      <textarea id={`${formId}-message`} name="message" rows="4" class={`mt-1 ${field}`}></textarea>
-    </div>
-  </div>
-
-  <button
-    type="submit"
-    class="min-h-tap mt-6 inline-block rounded bg-primary px-6 py-3 font-semibold text-surface transition hover:opacity-90"
+  <form
+    class="mt-s6"
+    action={endpoint ?? `mailto:${email}`}
+    method={endpoint ? 'POST' : 'GET'}
+    data-analytics={`enquiry:${listName}`}
+    id={formId}
   >
-    Send my enquiry
-  </button>
+    <input type="hidden" name="list" value={listName} />
+    <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+    {
+      /* The two that matter, first and loud. The 4px rule under them separates
+        "what you want" from "who you are" without needing a second heading. */
+    }
+    <div class="grid gap-s5 border-b-score border-navy pb-s6 sm:grid-cols-2">
+      <div>
+        <label class={labelClass} for={`${formId}-size`}>How many people</label>
+        <input
+          id={`${formId}-size`}
+          name="groupSize"
+          type="number"
+          min="1"
+          inputmode="numeric"
+          placeholder="24"
+          class={`mt-s2 ${leadField}`}
+        />
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-date`}>Date you have in mind</label>
+        <input id={`${formId}-date`} name="date" type="date" class={`mt-s2 ${leadField}`} />
+      </div>
+    </div>
+
+    <div class="mt-s6 grid gap-s5 sm:grid-cols-2">
+      <div>
+        <label class={labelClass} for={`${formId}-venue`}>Which venue</label>
+        <select id={`${formId}-venue`} name="venue" required class={`mt-s2 ${field}`}>
+          {venues.map((venue) => <option value={venue.data.slug}>{venue.data.name}</option>)}
+          <option value="either">Either — help me choose</option>
+        </select>
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-name`}>Your name</label>
+        <input id={`${formId}-name`} name="name" type="text" required class={`mt-s2 ${field}`} />
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-email`}>Email</label>
+        <input id={`${formId}-email`} name="email" type="email" required class={`mt-s2 ${field}`} />
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-phone`}>Phone</label>
+        <input id={`${formId}-phone`} name="phone" type="tel" class={`mt-s2 ${field}`} />
+      </div>
+      <div class="sm:col-span-2">
+        <label class={labelClass} for={`${formId}-message`}>Anything else we should know</label>
+        <textarea id={`${formId}-message`} name="message" rows="4" class={`mt-s2 ${field}`}></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class:list={[buttonClasses('md', 'primary'), 'mt-s6 w-full cursor-pointer']}>
+      Send my enquiry
+    </button>
+  </form>
 
   {
     !endpoint && (
-      <p class="mt-3 text-xs text-inkMuted">Lead endpoint not configured — this form opens an email instead.</p>
+      <p class="mt-s5 border-t-hairline border-inkMuted pt-s4 text-small leading-body text-inkMuted">
+        Lead endpoint not configured — this form opens an email instead.
+      </p>
     )
   }
-</form>
+</div>

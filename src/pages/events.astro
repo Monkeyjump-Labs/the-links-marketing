@@ -1,31 +1,59 @@
 ---
 /**
- * The highest revenue-per-visit page in the segment. The playbook is blunt about
- * the order: "Lead with a lead-capture form — do not bury it under 1,500 words
- * of packages" (playbook-sim-venue.md §4). So the form is the first thing after
- * the h1, and the packages sit under it.
+ * Events — the highest revenue-per-visit page in the segment. Ported to the
+ * converged Paper design 2026-08-03 (FW-3967); spec in
+ * `design/SUBPAGE-EXPLORATION.md`.
  *
- * The visitor here is usually a planner, not a golfer. They need a number they
- * can put in a calendar invite and a number they can put in a budget.
+ * **The idea: answer the four-second question in the headline.** A planner
+ * arrives with exactly one question — *will my people fit?* — and the old page
+ * made them read three paragraphs to find out. "Room for 36." is the h1's second
+ * line. X-Golf Eden Prairie publishes "up to 75 guests" and surfaces on the live
+ * query; The Links has a real number and was burying it (seo-map.md §1.3).
  *
- * Competitors publish capacity as a number — X-Golf Eden Prairie publishes "up
- * to 75 guests" and surfaces on the live query. The Links has a real number and
- * currently buries it (seo-map.md §1.3).
+ * **This page originated the gap system**, and it is still where the third mark
+ * earns its keep. Event pricing is not published — but it is not missing either.
+ * The venue quotes it per event, so it is typeset identically to the filled
+ * cells beside it, labelled *Ask us*, with a one-line reason. The absence reads
+ * as policy rather than as a page we forgot to finish, which is a commercial
+ * distinction: a planner comparing three venues will not send an enquiry to the
+ * one that looks unfinished, but will to the one that says "we price these
+ * individually, ask us".
+ *
+ * **The reply time carries NO mark.** It was drafted as *Ask us*, which was
+ * wrong — "Ask us" implies a number exists on request, and the point is that one
+ * deliberately does not. Resolved by the human 2026-08-03 (FW-3967 §"Three
+ * decisions"): drop the mark, state the policy in plain words, keep it generic.
+ * It is prose, not a cell.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EnquiryForm from '../components/forms/EnquiryForm.astro';
 import BookButton from '../components/venue/BookButton.astro';
-import { getVenues } from '../lib/venues';
+import SectionHead from '../components/venue/SectionHead.astro';
+import ReadoutCell from '../components/venue/ReadoutCell.astro';
+import GapCell from '../components/venue/GapCell.astro';
+import StubNote from '../components/venue/StubNote.astro';
+import { buttonClasses } from '../lib/buttons';
+import { getVenues, telHref } from '../lib/venues';
 
 const venues = await getVenues();
+const lakeville = venues.find((v) => v.data.slug === 'lakeville');
+const stillwater = venues.find((v) => v.data.slug === 'stillwater');
+
+/**
+ * The headline number. Sourced from Lakeville's own amenities list ("Up to 36
+ * golfers"), not computed from bays × 6 — 6 × 6 = 36 is a coincidence here, and
+ * deriving a capacity claim from a multiplication we invented is exactly the
+ * kind of plausible-but-unsourced fact the truth audit spent 38 findings on.
+ */
+const HEADLINE_CAPACITY = 36;
 
 const metadata = {
   metaTitle: 'Golf Simulator Parties & Corporate Events — Twin Cities',
   metaDescription:
-    'Corporate outings, birthdays and bachelor parties on golf simulators in Lakeville and Stillwater, MN. Capacity, packages and an inquiry form.',
+    'Corporate outings, birthdays and bachelor parties on golf simulators in Lakeville and Stillwater, MN. Room for up to 36 at Lakeville. Capacity and an enquiry form.',
 };
 
-/** The three recurring jobs the segment actually gets booked for. */
+/** The three recurring jobs the segment actually gets booked for. No numerals — they are not steps. */
 const jobs = [
   {
     title: 'Work outings and holiday parties',
@@ -40,132 +68,222 @@ const jobs = [
     body: 'A first stop that is warm, indoors, has food, and does not depend on the weather in Minnesota. Book more than one bay and a big group is not queueing.',
   },
 ];
-
-/** Facts the client has published and we can stand behind. */
-const capacity = [
-  [
-    'Lakeville',
-    '6 bays, room for up to 36 golfers across the venue. Each bay takes up to 6 people; 4 per bay is the pace we recommend.',
-  ],
-  [
-    'Stillwater',
-    'STUB — 4 bays. Total venue capacity, seating and whether the bowling alley side can be used for a larger group have not been supplied.',
-  ],
-];
 ---
 
 <BaseLayout metadata={metadata}>
-  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
-    <h1 class="text-4xl font-bold lg:text-5xl">Events &amp; parties</h1>
-    <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      Work outings, birthdays, bachelor parties and anything else that needs a room, a screen and a drink. Tell us the
-      date and the headcount and we will come back with a price — that is the whole process.
-    </p>
+  {
+    /* 1. HERO + THE FORM. The form is the object the page is built around, so it
+      shares the hero band rather than following it — a white card on midnight,
+      the brightest thing on the page. */
+  }
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter pt-s8 pb-s8 lg:px-gutter-lg lg:pt-s9 lg:pb-s9">
+      <div class="grid gap-s8 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-start lg:gap-s9">
+        <div>
+          <p class="caps-label text-amber">Work outings · birthdays · parties</p>
+          <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Room for 36.</h1>
+          <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
+            That is Lakeville, across all six bays. Tell us the date and the headcount and we come back with a price —
+            that is the whole process.
+          </p>
 
-    {/* 1. The form. First, on purpose. */}
-    <div class="mt-10 max-w-3xl">
-      <EnquiryForm listName="event" id="enquiry" />
+          {
+            /* The capacity readout, in the hero where the question is asked.
+              Not a `HeroStrip`: this page's strip position is taken by the form,
+              which is the exception the composition is built on. */
+          }
+          {
+            /* A plain div, NOT a <dl>: `ReadoutCell` renders a div of two
+              paragraphs, and a <dl> whose children are not dt/dd groups is an
+              axe `definition-list` violation. The cell is the site's labelled-
+              value primitive; the list semantics have to come from a component
+              that actually emits dt/dd, like `HeroStrip`. */
+          }
+          <div class="mt-s7 grid grid-cols-2 gap-s5 border-t-score border-amber pt-s5">
+            <ReadoutCell label="Lakeville" tone="dark" size="xl">{HEADLINE_CAPACITY}</ReadoutCell>
+            <ReadoutCell label="Bays there" tone="dark" size="xl">{lakeville?.data.bays}</ReadoutCell>
+            <ReadoutCell label="Per bay" tone="dark" size="name">Up to 6 people</ReadoutCell>
+            <ReadoutCell label="Priced by" tone="dark" size="name">The bay, not the head</ReadoutCell>
+          </div>
+        </div>
+
+        <EnquiryForm listName="event" id="enquiry" />
+      </div>
     </div>
+  </section>
 
-    {/* 2. What people book it for. */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">What people book it for</h2>
-      <ul class="mt-8 grid gap-6 md:grid-cols-3">
+  {/* 2. WHAT PEOPLE BOOK IT FOR. Rows, not a card grid — and no numerals. */}
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={1}>What people book it for</SectionHead>
+      <ul class="border-t-score border-navy">
         {
           jobs.map((job) => (
-            <li class="rounded border-2 border-ink/15 p-6">
-              <h3 class="text-xl font-semibold">{job.title}</h3>
-              <p class="mt-2 text-inkMuted">{job.body}</p>
+            <li class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
+              <h3 class="font-display text-card leading-display font-bold tracking-display text-ink">{job.title}</h3>
+              <p class="max-w-prose-page text-body leading-body text-inkBody">{job.body}</p>
             </li>
           ))
         }
       </ul>
-    </section>
+    </div>
+  </section>
 
-    {/* 3. Capacity as a number. The competitor set publishes theirs. */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">How many people fit</h2>
-      <dl class="mt-6 grid gap-6 sm:grid-cols-2">
-        {
-          capacity.map(([venue, detail]) => (
-            <div>
-              <dt class="font-semibold">{venue}</dt>
-              <dd class="mt-1 text-inkMuted">{detail}</dd>
-            </div>
-          ))
-        }
-      </dl>
-      <p class="mt-6 max-w-2xl text-inkMuted">
-        For timing, use one hour per person for 18 holes. A group of four in one bay takes roughly four hours. If that
-        is longer than you want the event to run, book more bays and play fewer holes — most groups do.
-      </p>
-    </section>
+  {/* 3. HOW MANY FIT, per venue — one honest number and one honest gap. */}
+  <section class="bg-greige">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={2}>How many people fit</SectionHead>
 
-    {/* 4. Packages. All pricing is unpublished; the structure ships, the numbers wait. */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">What it costs</h2>
-      <div class="mt-6 rounded border-2 border-dashed border-ink/25 p-6">
-        <p class="text-inkMuted">
-          <strong>STUB —</strong> no event pricing has been supplied, and "group pricing applies for groups of 12 or more"
-          is not a price. Competitors in the Twin Cities publish package prices and capacity numbers, and the planner comparing
-          three venues on a Tuesday afternoon will not send an enquiry to the one that publishes neither.
-        </p>
-        <p class="mt-4 font-semibold">Needed from the client, before launch:</p>
-        <ul class="mt-3 list-disc space-y-1 pl-5 text-inkMuted">
-          <li>A package price band — even "from $X per person" or two or three named packages</li>
-          <li>Group discount thresholds: what "12 or more" actually saves you, and how it varies by day and season</li>
-          <li>Minimum spend, deposit terms, and whether a deposit is refundable</li>
-          <li>Full-venue buyout price, per venue</li>
-          <li>What is included — bay time only, or food and drink packages too</li>
-          <li>Catering options, and whether outside food or a cake is allowed</li>
-          <li>Lead time: how far ahead a group of 20 needs to book</li>
-          <li>Whether Stillwater takes events at all today, and who runs the food side</li>
-        </ul>
+      <div class="grid gap-s7 border-t-score border-navy pt-s6 md:grid-cols-2 md:gap-s8">
+        <div>
+          <h3 class="font-display text-card leading-display font-bold tracking-display text-ink">
+            {lakeville?.data.name}
+          </h3>
+          <div class="mt-s5 flex flex-wrap gap-s7">
+            <ReadoutCell label="Golfers" size="xl">{HEADLINE_CAPACITY}</ReadoutCell>
+            <ReadoutCell label="Bays" size="xl">{lakeville?.data.bays}</ReadoutCell>
+          </div>
+          <p class="mt-s5 max-w-prose-page text-body leading-body text-inkBody">
+            Each bay takes up to six people. Four per bay is the pace we recommend if you want the round to finish.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-display text-card leading-display font-bold tracking-display text-ink">
+            {stillwater?.data.name}
+          </h3>
+          <div class="mt-s5 flex flex-wrap gap-s7">
+            <ReadoutCell label="Bays" size="xl">{stillwater?.data.bays}</ReadoutCell>
+          </div>
+          {
+            /* The bay count is published; the venue total is not. Rather than
+              multiply four by six and present the product as a fact, the cell
+              says what it is. */
+          }
+          <GapCell
+            class="mt-s5"
+            label="Golfers"
+            state="notSet"
+            size="xl"
+            reason="Stillwater's total headcount, its seating, and whether the bowling side can take a larger group have not been supplied. We are not going to multiply the bays by six and call that a capacity."
+          />
+        </div>
       </div>
-    </section>
 
-    {
-      /* 5. Food. Lakeville runs its own bar and menu; Stillwater's comes from its
-       host. NOT "its own kitchen" — the client says "full bar and great food" and
-       nothing about a kitchen, and this is the sentence the Lakeville/Stillwater
-       distinction rests on, so it has to be the one we can source
-       (truth-audit §U16). */
-    }
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">Food and drink</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
+      <p class="mt-s7 max-w-prose-page text-body leading-body text-inkBody">
+        For timing, use about an hour per person for 18 holes — a group of four in one bay is roughly a four-hour round.
+        If that is longer than you want the event to run, book more bays and play fewer holes. Most groups do.
+      </p>
+    </div>
+  </section>
+
+  {
+    /* 4. WHAT IT COSTS. The gap system's third mark, and the reason it exists.
+      An unpublished price is typeset exactly like a published one — same label,
+      same size, an em-dash where the figure goes — so it reads as a decision
+      about how this venue prices events, not as an unfinished page. */
+  }
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={3}>What it costs</SectionHead>
+
+      <div class="grid gap-s7 border-y-quiet border-navy py-s6 md:grid-cols-3">
+        <ReadoutCell label="A bay, by the hour" size="xl">$35</ReadoutCell>
+        <GapCell
+          label="Event packages"
+          state="quoted"
+          size="xl"
+          reason="Priced per event, on the date and the headcount. Send the form and you get a number back."
+        />
+        <GapCell
+          label="Full-venue buyout"
+          state="quoted"
+          size="xl"
+          reason="Both venues can be taken exclusively. The price depends on the day and the season, so we quote it."
+        />
+      </div>
+
+      <p class="mt-s6 max-w-prose-page text-body leading-body text-inkBody">
+        Groups of twelve or more are priced as a group. Under twelve, there is nothing to quote — the hourly rate above
+        is the whole price, and you can book it yourself right now.
+      </p>
+
+      {
+        /* The reply time. NO gap mark: an "Ask us" would imply a number exists
+          on request, and the point is that one deliberately does not. Human
+          decision, FW-3967. Plain prose, deliberately generic. */
+      }
+      <p class="mt-s6 max-w-prose-page border-l-slab border-ember pl-s4 text-body leading-body text-inkBody">
+        We will get back to you as soon as possible.
+      </p>
+
+      <StubNote
+        class="mt-s7"
+        needs="No event pricing has been supplied, and 'group pricing applies for groups of 12 or more' is not a price. The page now treats this as QUOTED rather than missing, which is honest and holds — but a published band would convert better, and competitors in the Twin Cities publish theirs. Needed: a package price band (even 'from $X per person'), group discount thresholds and how they vary by day and season, minimum spend and deposit terms, full-venue buyout price per venue, what is included, catering and outside-food rules, lead time for a group of 20, and whether Stillwater takes events at all today."
+      />
+    </div>
+  </section>
+
+  {
+    /* 5. FOOD. Lakeville runs its own bar and menu; Stillwater's comes from its
+      host. NOT "its own kitchen" — the client says "full bar and great food" and
+      nothing about a kitchen, and this is the sentence the Lakeville/Stillwater
+      distinction rests on, so it has to be the one we can source
+      (truth-audit §U16). */
+  }
+  <section class="bg-greige">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={4}>Food and drink</SectionHead>
+      <p class="max-w-prose-page text-lead leading-body text-inkBody">
         Lakeville has a full bar and a food menu of its own — pizza, wings, appetisers — and the tab runs through the
-        venue so one person can settle it at the end. Stillwater's food and drink comes from Stillwater Bowl &amp;
-        Lounge, the business the bays sit inside.
+        venue, so one person settles it at the end. Stillwater's food and drink comes from Stillwater Bowl &amp; Lounge,
+        the business the bays sit inside.
       </p>
-      <a href="/menu/" class="mt-4 inline-block font-semibold underline">See the menu</a>
-    </section>
+      <a
+        href="/menu/"
+        class="mt-s5 inline-flex min-h-tap items-center font-bold text-inkBody underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+      >
+        See the menu
+      </a>
 
-    {/* 6. Photography. Real event photos are a spec requirement we cannot yet meet. */}
-    <p class="mt-section rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-      <strong>STUB —</strong> the playbook requires two or three photographs of an actual event on this page. None exist in
-      the handover, and stock party imagery is a ship-blocker. A short shoot at the next corporate booking covers it.
-    </p>
+      <StubNote
+        class="mt-s7"
+        needs="The playbook requires two or three photographs of an actual event on this page. None exist in the handover, and stock party imagery is a ship-blocker. A short shoot at the next corporate booking covers it."
+      />
+    </div>
+  </section>
 
-    {
-      /* Every page ends in a transactional CTA. Here the enquiry is the conversion,
-       so the secondary path is the small-group booking that needs no quote. */
-    }
-    <section class="mt-section rounded bg-surface p-8">
-      <h2 class="text-2xl font-bold">Fewer than twelve people?</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
+  {
+    /* Every page ends in a transactional CTA. Here the enquiry IS the
+      conversion, so the secondary path is the small booking that needs no quote
+      — and telling a twelve-person group they do not need us is the same move as
+      the memberships chooser's "neither" row. */
+  }
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead tone="dark">Fewer than twelve people?</SectionHead>
+      <p class="max-w-prose-page text-lead leading-body text-paper">
         Then you do not need us at all — book a bay or two at the normal hourly rate and turn up. Up to six people per
-        bay, same price.
+        bay, same price, no quote and no conversation.
       </p>
-      <div class="mt-6 flex flex-wrap gap-4">
-        <BookButton size="lg" />
-        <a href="#enquiry" class="inline-block rounded border-2 border-current px-8 py-4 font-semibold hover:bg-ink/5">
-          Back to the enquiry form
-        </a>
+      <div class="mt-s6 flex flex-wrap gap-s4">
+        <BookButton size="lg" variant="onDark" />
+        <a href="#enquiry" class={buttonClasses('lg', 'ghostDark')}>Back to the enquiry form</a>
       </div>
-      <p class="mt-6 text-sm text-inkMuted">
-        Prefer to talk to someone? Call {venues[0]?.data.phone} or email {venues[0]?.data.email}.
-      </p>
-    </section>
+      {
+        lakeville && (
+          <p class="mt-s6 text-small leading-body text-slate">
+            Prefer to talk to someone? Call{' '}
+            <a
+              href={telHref(lakeville.data.phone)}
+              class="font-bold text-paper underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-amber"
+            >
+              {lakeville.data.phone}
+            </a>
+            .
+          </p>
+        )
+      }
+    </div>
   </section>
 </BaseLayout>

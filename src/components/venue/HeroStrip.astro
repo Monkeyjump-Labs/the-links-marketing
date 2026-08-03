@@ -1,0 +1,124 @@
+---
+/**
+ * The 4-cell hero strip — the specified component, not a per-page invention.
+ *
+ * All four design agents put SOMETHING in the position under the hero, and
+ * produced four different things: a status panel, two 4-cell stat strips and a
+ * form. Convergence picked the stat strip and specified it, so it stops being
+ * re-decided per page:
+ *
+ *   4 cells · 12px Archivo caps label · 15px qualifier · 4px rule · 1px dividers
+ *
+ * Every one of those numbers is a token, not a coincidence:
+ *   12px  typeScale.label.base   — which is exactly what `caps-label` sets
+ *   15px  typeScale.body.small   — `text-small`
+ *   4px   border.score           — the band-separator step
+ *   1px   border.hairline        — a divider INSIDE a block
+ *
+ * The value slot borrows `ReadoutCell`'s typesetting and a gap slot borrows
+ * `GapCell`'s, both from `lib/readout.ts`, so a strip cell is the same object as
+ * a readout cell elsewhere on the page and a gap never goes ragged against the
+ * filled cells beside it.
+ *
+ * **Four cells, not "up to four".** If a page has three facts worth this
+ * position, it has three facts and a gap — give the fourth cell a `gap` and the
+ * strip tells the truth. Dropping to a 3-cell strip instead is how the component
+ * becomes per-page again.
+ *
+ * **`tone="dark"` means MIDNIGHT.** The muted label is slate, which is 5.48:1 on
+ * midnight and 4.16:1 on navy. Do not put this strip on a navy band.
+ *
+ * Leagues is the ONE justified exception to the whole component: its season
+ * track sits in this position with the same furniture but a partly-filled rule,
+ * because what it has to show is progress through a season rather than four
+ * facts. That is `SeasonTrack`.
+ */
+import { READOUT_VALUE, GAP_STYLE, GAP_WORD, type GapState, type ReadoutTone } from '../../lib/readout';
+
+export interface StripCell {
+  label: string;
+  /** The figure or name. Mutually exclusive with `gap`. */
+  value?: string;
+  /** The 15px line under the value: what the figure means, or its condition. */
+  qualifier?: string;
+  /**
+   * Turns this slot into a gap mark instead of a value. `reason` is mandatory on
+   * `quoted` for the same reason it is on `GapCell` — an "Ask us" with no reason
+   * reads as a page we forgot to finish.
+   */
+  gap?: { state: GapState; word?: string; reason?: string };
+}
+
+interface Props {
+  cells: StripCell[];
+  tone?: ReadoutTone;
+  class?: string;
+}
+
+const { cells, tone = 'dark', class: className = '' } = Astro.props;
+
+if (cells.length !== 4) {
+  throw new Error(
+    `HeroStrip takes exactly 4 cells, got ${cells.length}. If a page has fewer facts than that, ` +
+      `it has a gap — give the spare slot a \`gap\` rather than shortening the strip.`,
+  );
+}
+for (const cell of cells) {
+  if (cell.gap?.state === 'quoted' && !cell.gap.reason) {
+    throw new Error(`HeroStrip cell "${cell.label}": a "quoted" gap MUST carry a reason line.`);
+  }
+}
+
+// The rule and the dividers name the ground. On dark the 4px rule is amber
+// (9.48:1 on midnight) and the hairlines are paper; on light, ember and navy —
+// the same pairing `SectionHead` uses, so the two devices read as one system.
+const rule = tone === 'dark' ? 'bg-amber' : 'bg-ember';
+const divider = tone === 'dark' ? 'border-paper' : 'border-navy';
+const labelTone = tone === 'dark' ? 'text-slate' : 'text-inkMuted';
+const valueTone = tone === 'dark' ? 'text-white' : 'text-ink';
+---
+
+<div class:list={[className]}>
+  <hr class:list={['h-score w-full border-0', rule]} />
+  <dl class:list={['grid grid-cols-2 md:grid-cols-4', divider]}>
+    {
+      cells.map((cell, i) => {
+        const gap = cell.gap ? GAP_STYLE[cell.gap.state][tone] : null;
+        return (
+          <div
+            class:list={[
+              'py-s5',
+              // 1px dividers BETWEEN cells only — never on the outer edges, which
+              // are the band's own boundary.
+              i % 2 === 1 && 'border-l-hairline pl-s5',
+              i >= 2 && 'border-t-hairline md:border-t-0',
+              i >= 1 && 'md:border-l-hairline md:pl-s5',
+              i <= 2 && 'md:pr-s5',
+              // The `notSet` tint fills its cell, which is what makes the mark
+              // legible as a state rather than as an empty slot.
+              gap?.tint,
+              gap?.tint && 'px-s5',
+            ]}
+            data-gap={cell.gap?.state}
+          >
+            <dt class:list={['caps-label text-label-sm', gap?.label ?? labelTone]}>{cell.label}</dt>
+            <dd class:list={['mt-s2 ml-0', READOUT_VALUE.md, gap?.value ?? valueTone]}>
+              {cell.gap ? (
+                <>
+                  <span aria-hidden="true">&mdash;</span> <span>{cell.gap.word ?? GAP_WORD[cell.gap.state]}</span>
+                </>
+              ) : (
+                cell.value
+              )}
+            </dd>
+            {(cell.gap?.reason ?? cell.qualifier) && (
+              <dd class:list={['mt-s2 ml-0 text-small leading-body', gap?.label ?? labelTone]}>
+                {cell.gap?.reason ?? cell.qualifier}
+              </dd>
+            )}
+          </div>
+        );
+      })
+    }
+  </dl>
+</div>
