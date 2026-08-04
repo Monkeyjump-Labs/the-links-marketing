@@ -1,0 +1,100 @@
+---
+/**
+ * Where a native form POST lands — the no-JavaScript path.
+ *
+ * Most visitors never see this: `LeadFormScript` intercepts the submit and
+ * swaps in an inline confirmation without navigating. This page exists so the
+ * forms work anyway when that script does not run, which on this site guards
+ * the homepage waitlist and the events enquiry — the two conversions the pages
+ * are built around.
+ *
+ * It is `noindex`: a thank-you page in search results is a page that ranks for
+ * nothing and leaks that someone submitted a form.
+ *
+ * It also renders the FAILURE case. `/api/lead` redirects here with `?error=`
+ * when the submission could not be recorded, because the alternative on the
+ * no-JS path is a raw 500 — and a visitor who has just typed their details
+ * deserves a way to reach us rather than a browser error page.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookButton from '../components/venue/BookButton.astro';
+import SectionHead from '../components/venue/SectionHead.astro';
+import { buttonClasses } from '../lib/buttons';
+import { getVenues, telHref } from '../lib/venues';
+
+const venues = await getVenues();
+const lakeville = venues.find((v) => v.data.slug === 'lakeville');
+
+const error = Astro.url.searchParams.get('error');
+
+const metadata = {
+  metaTitle: 'Thanks — The Links',
+  metaDescription: 'We have got your message.',
+  noIndex: true,
+};
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter pt-s8 pb-s8 lg:px-gutter-lg lg:pt-s9 lg:pb-s9">
+      {
+        error ? (
+          <>
+            <p class="caps-label text-amber">That did not go through</p>
+            <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">
+              We did not get that.
+            </h1>
+            <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
+              {error}
+            </p>
+            {lakeville && (
+              <p class="mt-s6 text-lead leading-body text-paper">
+                Call us on{' '}
+                <a
+                  href={telHref(lakeville.data.phone)}
+                  class="font-bold text-amber underline decoration-2 underline-offset-4"
+                >
+                  {lakeville.data.phone}
+                </a>{' '}
+                and we will take the details down the phone.
+              </p>
+            )}
+            <div class="mt-s7 flex flex-wrap gap-s4">
+              <a href="/contact/" class={buttonClasses('lg', 'onDark')}>
+                Try again
+              </a>
+            </div>
+          </>
+        ) : (
+          <>
+            <p class="caps-label text-amber">Got it</p>
+            <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Thanks.</h1>
+            <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
+              Your message is with us and someone will come back to you. Nothing else is needed from you right now.
+            </p>
+          </>
+        )
+      }
+    </div>
+  </section>
+
+  {
+    !error && (
+      <section class="bg-white">
+        <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+          <SectionHead>While you are here</SectionHead>
+          <p class="max-w-prose-page text-lead leading-body text-inkBody">
+            If you were after a bay rather than an answer, you can book one now — $35 an hour, up to six of you, no
+            enquiry needed.
+          </p>
+          <div class="mt-s6 flex flex-wrap gap-s4">
+            <BookButton size="lg" />
+            <a href="/rates/" class={buttonClasses('lg', 'outline')}>
+              See rates &amp; hours
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

@@ -28,7 +28,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ✅ | Booking reachable in ≤2 clicks from every page | Header → venue chooser → Whoosh. The old "ACKNOWLEDGE AND GO TO BOOKING" interstitial is deleted |
 | ✅ | Leagues page has a registration path **and** a waitlist in all three states | The one component no audited competitor has |
 | ✅ | Email capture present with a stated reason to subscribe | |
-| ⬜ | Every form tested end-to-end; submissions arrive somewhere a human reads | **`PUBLIC_LEAD_ENDPOINT` is not configured.** Forms currently degrade to `mailto:` and say so. This must be wired and tested before launch. Note the waitlist needs a *list*, not an inbox — its promise is "one email when registration opens", which nobody can keep from a pile of `mailto:` messages months later. There is also no `/thanks/` page yet, and a native form POST navigates away |
+| 🟡 | Every form tested end-to-end; submissions arrive somewhere a human reads | **Built (FW-3975).** All five forms post to `/api/lead`, which writes to a Google Sheet (the system of record) and then emails `info@lakevillelinks.com`. A submission is never reported successful unless it reached the sheet. Resend is wired and verified; **still needed: the client's shared Sheet + service-account credentials.** `npm run leads:check` fails a production build until they are set |
 
 ## Content
 

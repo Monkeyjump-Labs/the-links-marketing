@@ -14,9 +14,13 @@
  * comments and in our own documents, not in copy a customer reads. Nothing
  * customer-facing carries it today — do not be the one who adds it.
  *
- * Posts to PUBLIC_LEAD_ENDPOINT. With no endpoint configured it degrades to a
- * mailto so a lead is never silently dropped, and it says so rather than
- * pretending.
+ * Posts to `/api/lead` — a fixed, same-origin path. It used to post to
+ * `PUBLIC_LEAD_ENDPOINT` and degrade to a `mailto:` when that was unset, which
+ * is how this site went live with every form inert. A URL you can configure is
+ * a URL you can leave unset, so there is no longer a URL to configure.
+ *
+ * Works with JavaScript disabled — a native POST gets a 303 to `/thanks/`.
+ * `LeadFormScript` upgrades that to an inline confirmation. See FW-3975.
  *
  * **It is a paper slab, and on the ember band it is punched out of it.** Nothing
  * dark is legible on ember — midnight 2.35:1, navy 1.79:1 — so the form cannot
@@ -32,7 +36,6 @@ interface Props {
   blurb?: string;
   listName: string;
   venue?: string;
-  email?: string;
   class?: string;
 }
 
@@ -41,11 +44,9 @@ const {
   blurb = 'We will email you the moment registration opens. No other mail, ever.',
   listName,
   venue,
-  email = 'info@lakevillelinks.com',
   class: className = '',
 } = Astro.props;
 
-const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT;
 const formId = `waitlist-${listName.replace(/\W+/g, '-').toLowerCase()}`;
 
 const field =
@@ -58,13 +59,17 @@ const field =
 
   <form
     class="mt-s5"
-    action={endpoint ?? `mailto:${email}`}
-    method={endpoint ? 'POST' : 'GET'}
+    action="/api/lead"
+    method="POST"
     data-analytics={`waitlist:${listName}`}
+    data-success="You are on the list. We will email you the day registration opens."
     id={formId}
   >
     <input type="hidden" name="list" value={listName} />
     {venue && <input type="hidden" name="venue" value={venue} />}
+    <input type="hidden" name="_page" value={Astro.url.pathname} />
+    {/* Filled at runtime by LeadFormScript; absent on the no-JS path, which is accepted. */}
+    <input type="hidden" name="_ts" value="" />
     <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
     <div class="grid gap-s4 sm:grid-cols-2">
@@ -81,13 +86,14 @@ const field =
     <button type="submit" class:list={[buttonClasses('md', 'primary'), 'mt-s5 w-full cursor-pointer']}>
       Notify me
     </button>
-  </form>
 
-  {
-    !endpoint && (
-      <p class="mt-s5 border-t-hairline border-inkMuted pt-s4 text-small leading-body text-inkMuted">
-        Lead endpoint not configured — this form opens an email instead.
-      </p>
-    )
-  }
+    {/* Only ever shown on failure — success replaces the whole form. */}
+    <p
+      data-lead-status
+      role="alert"
+      hidden
+      class="mt-s4 border-l-slab border-accent pl-s4 text-small leading-body text-inkBody"
+    >
+    </p>
+  </form>
 </div>

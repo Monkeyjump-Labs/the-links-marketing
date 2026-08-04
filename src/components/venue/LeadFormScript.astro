@@ -1,0 +1,123 @@
+---
+/**
+ * The progressive-enhancement layer for every form on the site.
+ *
+ * **Without this script the forms still work.** They are ordinary
+ * `method="POST" action="/api/lead"` forms; the endpoint answers a native POST
+ * with a 303 to `/thanks/`. This script only upgrades that: it intercepts the
+ * submit, posts the same FormData with `Accept: application/json`, and swaps in
+ * an inline confirmation so the visitor never leaves the page.
+ *
+ * That ordering matters on this site more than most. The homepage's ember band
+ * is a waitlist and the events form is the brightest object on its page — a
+ * visitor whose JavaScript failed to load should still be able to reach us,
+ * because the alternative is silently losing the conversion the whole page is
+ * built around.
+ *
+ * It is one delegated listener on `document` rather than per-form wiring, so a
+ * form rendered anywhere (including inside the styleguide) is covered without
+ * the page having to remember to opt in.
+ */
+---
+
+<script>
+  const ENDPOINT = '/api/lead';
+
+  /**
+   * Fetch a signed stamp the first time a visitor touches any lead form.
+   *
+   * Minted at runtime rather than baked into the prerendered HTML, so its age
+   * measures how long the human took rather than how long ago we deployed.
+   * Fired on first focus so it costs nothing on a page nobody interacts with,
+   * and it is a single request shared by every form on the page.
+   */
+  let stampRequested = false;
+  const requestStamp = async () => {
+    if (stampRequested) return;
+    stampRequested = true;
+    try {
+      const res = await fetch(`${ENDPOINT}?stamp=1`, { headers: { Accept: 'application/json' } });
+      const { stamp } = await res.json();
+      if (!stamp) return;
+      // Assigned to a variable first: as a bare expression statement, the
+      // generic parses as a `<` comparison and eslint rejects it.
+      const stampInputs = document.querySelectorAll<HTMLInputElement>(`form[action="${ENDPOINT}"] input[name="_ts"]`);
+      stampInputs.forEach((input) => {
+        input.value = stamp;
+      });
+    } catch {
+      // A missing stamp is accepted server-side, so failing here costs the
+      // visitor nothing. Never block a submission on the anti-spam layer.
+    }
+  };
+
+  document.addEventListener(
+    'focusin',
+    (event) => {
+      const el = event.target;
+      if (el instanceof HTMLElement && el.closest(`form[action="${ENDPOINT}"]`)) requestStamp();
+    },
+    { passive: true },
+  );
+
+  document.addEventListener('submit', async (event) => {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement)) return;
+    if (form.getAttribute('action') !== ENDPOINT) return;
+
+    event.preventDefault();
+
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const original = button?.textContent;
+    const status = form.querySelector<HTMLElement>('[data-lead-status]');
+
+    const setStatus = (message: string, tone: 'ok' | 'error') => {
+      if (!status) return;
+      status.textContent = message;
+      status.hidden = false;
+      // `role="alert"` is on the element already, so assistive tech announces
+      // the change without the page moving.
+      status.setAttribute('data-tone', tone);
+    };
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'Sending…';
+    }
+
+    try {
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+      const result = await response.json().catch(() => ({ ok: false, message: '' }));
+
+      if (response.ok && result.ok) {
+        // Replace the form with its confirmation. The heading stays so the
+        // section keeps its place in the document outline.
+        const success = form.getAttribute('data-success') ?? 'Thanks — we have got it.';
+        const panel = document.createElement('p');
+        panel.className = 'text-lead leading-body font-bold';
+        panel.setAttribute('role', 'status');
+        panel.textContent = success;
+        form.replaceWith(panel);
+        return;
+      }
+
+      setStatus(
+        result.message || 'Something went wrong. Please try again, or call us and we will take the details.',
+        'error',
+      );
+    } catch {
+      // Network failure. Do NOT claim success — the whole design turns on never
+      // telling someone we kept their details when we did not.
+      setStatus('We could not reach the server. Please try again, or call us.', 'error');
+    } finally {
+      if (button) {
+        button.disabled = false;
+        if (original) button.textContent = original;
+      }
+    }
+  });
+</script>

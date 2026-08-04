@@ -4,7 +4,7 @@
  *
  *   npm run audit:visual
  *
- * Serves ./dist, then for every route at desktop and mobile:
+ * Serves the built static output, then for every route at desktop and mobile:
  *   - runs axe-core (colour-contrast, names, landmarks, …)
  *   - screenshots full page into .audit/
  *   - measures real layout facts: horizontal overflow, tap-target sizes,
@@ -22,7 +22,26 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { extname, join, resolve } from 'node:path';
 
-const DIST = resolve('dist');
+/**
+ * Where the built HTML lives.
+ *
+ * Adding the Vercel adapter (for `/api/lead`) moved the prerendered output:
+ * Astro now writes `dist/client`, and the adapter assembles the deployable tree
+ * under `.vercel/output/static`. This script served `dist` and started 404ing on
+ * every route — which reads as "the whole site is broken" rather than "the
+ * harness is looking in the wrong folder", so it is resolved rather than hardcoded.
+ *
+ * Preference order, so it keeps working with or without an adapter, and fails
+ * with something actionable instead of a wall of 404s.
+ */
+const CANDIDATES = ['.vercel/output/static', 'dist/client', 'dist'];
+const DIST = CANDIDATES.map((d) => resolve(d)).find((d) => existsSync(join(d, 'index.html')));
+if (!DIST) {
+  console.error(
+    `\n✖ No built site found. Looked for index.html in:\n${CANDIDATES.map((c) => `    ${c}`).join('\n')}\n\n  Run:  npm run build\n`,
+  );
+  process.exit(1);
+}
 const OUT = resolve('.audit');
 const PORT = 4477;
 
@@ -40,6 +59,7 @@ const ROUTES = [
   // Every route the site publishes should be here; a page absent from the audit
   // is a page whose regressions nobody sees.
   '/simulators/',
+  '/thanks/',
   '/menu/',
   '/contact/',
   '/faq/',
