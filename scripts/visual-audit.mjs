@@ -97,7 +97,27 @@ const server = createServer(async (req, res) => {
 await new Promise((r) => server.listen(PORT, r));
 await mkdir(OUT, { recursive: true });
 
-const browser = await chromium.launch();
+/**
+ * Fail with something actionable when the browser binary is missing.
+ *
+ * A dependency bump can leave Playwright installed but its browser absent, and
+ * the raw error is a wall of stack trace that is easy to skim past — which is
+ * how a run that never happened gets reported as a pass. 2026-08-04: exactly
+ * that, and the gate was claimed green in a commit message before anyone
+ * noticed the audit had not run at all.
+ */
+let browser;
+try {
+  browser = await chromium.launch();
+} catch (err) {
+  if (/Executable doesn't exist|playwright install/i.test(String(err))) {
+    console.error(`\n✖ audit:visual could not start — Playwright's browser is not installed.\n`);
+    console.error('  Run:  npx playwright install chromium\n');
+    console.error('  This gate did NOT run. Do not record it as passing.\n');
+    process.exit(1);
+  }
+  throw err;
+}
 const VIEWPORTS = [
   { name: 'desktop', opts: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 } },
   { name: 'mobile', opts: { ...devices['iPhone 13'] } },
