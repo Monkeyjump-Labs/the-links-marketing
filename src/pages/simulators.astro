@@ -15,21 +15,28 @@
  * than a total, and it cannot be contradicted by a recount — so nothing on this
  * page states how many there are (truth-audit.md §C6).
  *
- * Name the technology, too: 42% of the segment names none, and GolfZon,
- * TrackMan and Full Swing are search terms with real credibility weight
- * (playbook-core.md §8, playbook-sim-venue.md §4).
+ * Name the technology: 42% of the segment names none, and GolfZon is a search
+ * term with real credibility weight (playbook-core.md §8, playbook-sim-venue.md
+ * §4). The client's position, 2026-08-04: golfers want to know what the
+ * technology IS, not have it hidden behind a house brand — which is what the
+ * nearest comparable venue does (see FW-3992).
  *
- * ⚠️ NX vs TwoVision is contradicted across the client's own live pages and is
- * the single most consequential unconfirmed fact on the site.
- *   - Current pages (homepage, /stillwater) say "GolfZon".
- *   - /home-old, /home-2 and /news/golfzon-twovision — all still live, all still
- *     indexed — say "6 GolfZon TwoVision simulators".
- *   - AI-generated search summaries are repeating the TwoVision claim today,
- *     i.e. the site is actively teaching answer engines a fact that may be false
- *     (seo-map.md §0).
- * The page publishes "GolfZon", which every current page agrees on, and carries
- * the model question as a `PendingTag` beside it rather than picking a side.
- * Everything downstream — schema, titles, the homepage hero — inherits this.
+ * ⚠️ TrackMan and Full Swing may be named ONLY inside content arguing why
+ * GolfZon is better, framed as our opinion. They used to appear here as a
+ * neutral "what else you'll see around the Twin Cities" aside; that framing is
+ * retired (client-answers.md §7).
+ *
+ * ⚠️ RESOLVED 2026-08-04 — this was the single most consequential unconfirmed
+ * fact on the site, and it is now settled: **GolfZon TwoVision NX, tour spec**
+ * (client-answers.md §7).
+ *
+ * The history, kept because it explains the redirects and the AEO cleanup: the
+ * client's current pages said "GolfZon", while /home-old, /home-2 and
+ * /news/golfzon-twovision — all still live, all still indexed — said "6 GolfZon
+ * TwoVision simulators", and AI search summaries were repeating TwoVision back
+ * at people (seo-map.md §0). Turned out the older pages were closer: it is a
+ * TwoVision NX. Everything downstream — schema, titles, the homepage hero —
+ * inherits this, so change it here first.
  *
  * ⚠️ Stillwater's blanks are all *Pending confirmation*, never *Not yet set*.
  * Settled by the human (FW-3967 §"Three decisions"): Stillwater is an operating
@@ -171,8 +178,8 @@ const stillwaterPending = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead tone="dark" index={1}>What the machine reads</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-paper">
-        GolfZon is the system in our bays; around the Twin Cities you will also see TrackMan and Full Swing. Two
-        different parts of it are watching, and they are watching two different things.
+        Every bay runs a GolfZon TwoVision NX — the current model. Two different parts of it are watching, and they are
+        watching two different things.
       </p>
 
       <BaySchematic class="mt-s7" club={CLUB_READINGS} ball={BALL_READINGS} />
@@ -182,19 +189,24 @@ const stillwaterPending = [
         the swing, so what comes back is what actually happened.
       </p>
 
-      <div class="mt-s7 max-w-prose-page border-t-hairline border-slate pt-s5">
-        <ReadoutCell label="System" tone="dark" size="name">GolfZon</ReadoutCell>
-        <PendingTag
-          class="mt-s4"
-          tone="dark"
-          label="Model pending confirmation"
-          reason="The venue's current pages say GolfZon. Three of their older pages, still live and still indexed, say GolfZon TwoVision, and third-party directories are repeating that today. We publish what the current pages agree on and are confirming which system is actually in the bays."
-        />
+      {
+        /* Tour spec is a real claim and it needs both halves. GolfZon's tour
+          requires a TwoVision or TwoVisionNX AND a Dual Plate or Motion Plate;
+          confirmed 2026-08-04 that we have both, so the line can be written.
+          Until then the intake note said we would not write it, and we did not. */
+      }
+      <div class="mt-s7 flex flex-wrap gap-s7 border-t-hairline border-slate pt-s5">
+        <ReadoutCell label="System" tone="dark" size="name">GolfZon TwoVision NX</ReadoutCell>
+        <ReadoutCell label="Specification" tone="dark" size="name">Tour spec</ReadoutCell>
       </div>
+      <p class="mt-s5 max-w-prose-page text-body leading-body text-paper">
+        The same equipment GolfZon requires for its own tour — the current TwoVision NX with the motion plate under you.
+        Not an older unit with a new badge on it.
+      </p>
 
       <StubNote
         class="mt-s7"
-        needs="Confirm before launch: which GolfZon system is in the Lakeville bays, whether they were ever re-fitted, and when. Three older client pages that are still live say TwoVision; the current ones say GolfZon. AI search summaries are repeating TwoVision, so the site may be actively teaching answer engines a false fact. This is the single most consequential unconfirmed fact on the site — schema, titles and the homepage hero all inherit the answer. Also needed: the current course count, and five or six named courses people would recognise."
+        needs="Still needed from GolfZon: the current course count, and five or six named courses people would recognise. A comparable venue publishes '100+', which makes the retired '240+' on the client's old pages look stale rather than merely unsourced."
       />
     </div>
   </section>

@@ -102,6 +102,14 @@ export default defineConfig({
             ],
           },
           { type: 'string', name: 'hoursNote', label: 'Note about hours', ui: { component: 'textarea' } },
+          {
+            type: 'string',
+            name: 'closedHolidays',
+            label: 'Closed on these holidays (every year)',
+            list: true,
+            description:
+              'Named holidays, not dates - these recur annually. Shown beside the hours regardless of where they fall in the current schedule.',
+          },
           { type: 'string', name: 'amenities', label: 'Amenities', list: true },
           {
             type: 'boolean',

@@ -34,18 +34,22 @@
  * restore a bare "never expire" — a promise published without its condition is
  * the shape of a complaint (truth-audit §U5).
  *
- * ⚠️ The guest policy is NOT resolved, and this page must not resolve it. The
- * Individual price card says "only available for the package purchaser" and "No
- * Guest Fees" in the same breath, and the membership T&Cs say a package is
- * "ONLY FOR THE PURCHASER". An earlier draft answered it in the customer's
- * favour without saying it was guessing. That one can cost a member money at the
- * till (truth-audit §U3), so it carries a `PendingTag` and nothing more.
+ * ✅ The guest policy is RESOLVED (client-answers.md §13): members bring guests,
+ * there is no guest fee, and the member must be present. It carried a
+ * `PendingTag` because the client's own price card said "only available for the
+ * package purchaser" and "No Guest Fees" in the same breath. We were right not
+ * to guess — an earlier draft had answered it in the customer's favour without
+ * saying so, and this is the one that costs somebody money at the till
+ * (truth-audit §U3) — but the answer is now known, so it is stated plainly.
  *
- * ⚠️ The LinksFlex "Anytime" tier is deliberately NOT published as a buyable
- * card. At $39.56–$45.75 an hour effective it costs MORE than the $35 walk-up
- * rate, so selling it would be selling a worse deal to a loyal customer. That is
- * a repricing decision, not a copy fix (strategy.md §7.4), so it lives in a
- * `StubNote` — a message to us, staging only — rather than on the page.
+ * ⚠️ LinksFlex "Anytime" is still held back, but OUR REASONING WAS WRONG and is
+ * recorded here so nobody reinstates it. We withheld it because at $39.56–$45.75
+ * an hour it costs more than the $35 walk-up rate, and we read that as a pricing
+ * mistake (strategy.md §7.4). It is not: Anytime is an IN-SEASON promo and is
+ * priced for in-season demand, while Summer Monthly is the summer answer
+ * (client-answers.md §13). Publishing it is now a positioning question — does it
+ * read as a premium or as a worse deal — not a repricing one. Decide before
+ * launch rather than leaving it in a `StubNote` by default.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -55,7 +59,6 @@ import HeroStrip from '../components/venue/HeroStrip.astro';
 import FuelGauge from '../components/venue/FuelGauge.astro';
 import ReadoutCell from '../components/venue/ReadoutCell.astro';
 import GapCell from '../components/venue/GapCell.astro';
-import PendingTag from '../components/venue/PendingTag.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import { buttonClasses } from '../lib/buttons';
 import { globalData } from '../data/global';
@@ -135,6 +138,10 @@ const smallPrint = [
     'The monthly memberships include two hours a day and are subject to opening hours — a membership does not guarantee a walk-in bay. LinksFlex Off Peak and Junior hours are limited to the windows above; there is no restriction on how long you take to use them.',
   ],
   ['Do you have to be there?', 'Yes. The member has to be present at the tee time.'],
+  [
+    'Extra hours',
+    'Once you have used the two hours a day your membership includes, anything beyond that is charged at the normal rate — unless a specific package says otherwise.',
+  ],
   [
     'Commitment',
     'The monthly memberships bill automatically each month until 3 October 2026, or until you cancel. LinksFlex is a one-off purchase with no monthly commitment. Its hours have no expiry date — the terms hold them open for as long as you are in good standing and we still offer the service — but they are non-transferable and all sales are final.',
@@ -376,36 +383,20 @@ const smallPrint = [
         }
 
         {
-          /* Guests: a real contradiction in the client's own documents. It gets
-            the middle mark — a stated value that rides beside its caution — not
-            an answer we invented in the customer's favour. */
+          /* Guests: RESOLVED 2026-08-04 (client-answers.md §13). This carried a
+            PendingTag because the client's own price card said "only available
+            for the package purchaser" and "No Guest Fees" in the same breath.
+            The answer is yes — members bring guests, and the member has to be
+            there. It gets stated plainly because this is the one that costs
+            somebody money at the till. */
         }
         <div
           class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6"
         >
           <dt class="caps-label text-label-sm text-inkMuted">Guests</dt>
           <dd class="max-w-prose-page text-body leading-body text-inkBody">
-            <p>
-              Both monthly tiers say &ldquo;no guest fees&rdquo;, and the Family tier is explicit — the purchaser and
-              immediate family.
-            </p>
-            {
-              /* The tag sits in a WHITE slab punched out of the greige band.
-                `accent.caution` (emberMid) is 4.76:1 on white and 3.66:1 on
-                greige, so a caution tag on the alternating field fails AA —
-                `rules.noWarningOnGreige`, which this page tripped on its first
-                audit run. Same move `WaitlistForm` makes on the ember band: when
-                a ground cannot legibly carry a component, the component brings
-                its own ground rather than the colour being quietly restyled. */
-            }
-            <div class="mt-s4 bg-white p-cell">
-              <PendingTag
-                label="Pending confirmation"
-                reason="What that means on an Individual membership is being confirmed: the same price card also says
-                “only available for the package purchaser”, and the membership terms say a package is “only for the
-                purchaser”. Until the venue settles it, ask at the desk before you bring people."
-              />
-            </div>
+            Bring them. There is no guest fee on any membership — the only rule is that you have to be there too, since
+            the membership is yours rather than the bay's.
           </dd>
         </div>
 

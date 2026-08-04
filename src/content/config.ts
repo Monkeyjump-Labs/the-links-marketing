@@ -153,6 +153,16 @@ const venues = defineCollection({
     intro: z.string().optional(),
     hours: z.array(hoursRow).default([]),
     hoursNote: z.string().optional(),
+    /**
+     * Standing annual closures, by name rather than by date.
+     *
+     * Deliberately not dates: these recur every year, and a date list would go
+     * stale the moment the calendar turns. The client's instruction (2026-08-04)
+     * is to publish them "regardless of where they fall this year" — so they are
+     * stated as a standing rule beside the hours, not reconciled against the
+     * current week's schedule. Nobody should drive to a locked door.
+     */
+    closedHolidays: z.array(z.string()).default([]),
     amenities: z.array(z.string()).default([]),
     /**
      * Set false when a field on this venue is inherited/assumed rather than

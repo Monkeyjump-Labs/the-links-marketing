@@ -7,13 +7,12 @@
   "addressLocality": "Stillwater",
   "addressRegion": "MN",
   "postalCode": "55082",
-  "phone": "612-699-0527",
-  "phoneNote": "We publish the number the venue's own site footer gives for Stillwater. Their /stillwater page body and the Greater Stillwater Chamber both list 612-699-0526 - which is also Lakeville's number, so those two may simply be showing the main line. Confirming with the venue.",
+  "phone": "612-699-0526",
   "bays": 4,
-  "simulator": "GolfZon",
+  "simulator": "GolfZon TwoVision NX",
   "bookingUrl": "https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today",
   "openedYear": 2026,
-  "intro": "Four GolfZon bays in the east metro, inside Stillwater Bowl & Lounge. Opened early 2026.",
+  "intro": "Four GolfZon TwoVision NX bays in the east metro, inside Stillwater Bowl & Lounge. Opened February 2026.",
   "hours": [
     {
       "day": "Mon",
@@ -65,7 +64,6 @@
   "verified": false,
   "needsFromClient": [
     "Winter hours - the published schedule ends 30 Sept 2026",
-    "THE PHONE NUMBER. We publish 612-699-0527 (their footer). Their own /stillwater page and the Greater Stillwater Chamber both say 612-699-0526, which is Lakeville's number. Which one rings the Stillwater desk?",
     "The map pin. We removed the latitude/longitude we had been publishing in schema because we geocoded them ourselves and one was about two miles out. Send the pin from the Google Business Profile if you want it back.",
     "Photography - NO photo of this venue exists anywhere today",
     "Capacity, TV count, private/event space",
@@ -73,10 +71,15 @@
     "Whether LinksFlex hour banks apply here (currently Lakeville-only)",
     "A venue email address",
     "The correct legal entity for this location",
-    "Which GolfZon model is installed. 'GolfZon NX' is not a product GolfZon sells - their line is TwoVision and TwoVisionNX, and TwoVisionNX was only announced in Nov 2024, after Lakeville opened. So: were the bays refitted, or has the old site been calling TwoVision 'NX'?"
+    "Whether Stillwater runs its own leagues - the first season is being designed now"
   ],
   "schemaTypes": [
     "SportsActivityLocation"
   ],
-  "containedInPlace": "Stillwater Bowl & Lounge"
+  "containedInPlace": "Stillwater Bowl & Lounge",
+  "closedHolidays": [
+    "Memorial Day",
+    "Independence Day",
+    "Labor Day"
+  ]
 }
