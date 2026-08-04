@@ -20,7 +20,8 @@
     "tokens:build": "node scripts/build-tokens.mjs",
     "tokens:check": "node scripts/build-tokens.mjs --check",
     "audit:visual": "node scripts/visual-audit.mjs",
-    "leads:check": "node scripts/check-leads.mjs"
+    "leads:check": "node scripts/check-leads.mjs",
+    "sheet:provision": "node scripts/provision-sheet.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",

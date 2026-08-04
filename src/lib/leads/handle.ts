@@ -97,7 +97,9 @@ export async function handleLead(input: LeadInput, deps: LeadDeps): Promise<Lead
   }
 
   try {
-    await deps.sheet.append(row);
+    // The tab comes from the routing table, so which sheet a submission lands
+    // on is a reviewable diff rather than a runtime guess.
+    await deps.sheet.append(row, list.tab);
   } catch (err) {
     // The one place we fail the request. The visitor is told the truth.
     log('error', `lead: SHEET WRITE FAILED for list "${listKey}": ${(err as Error).message}`);

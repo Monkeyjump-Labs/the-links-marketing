@@ -152,8 +152,7 @@ const kebab = (s) =>
     .toLowerCase();
 const meta = tokens.$extensions['com.monkeyjumplabs.meta'];
 
-const line = (name, value, comment) =>
-  `  --${name}: ${value};${comment ? ` /* ${comment} */` : ''}`;
+const line = (name, value, comment) => `  --${name}: ${value};${comment ? ` /* ${comment} */` : ''}`;
 
 const section = (title) => `\n  /* ── ${title} ${'─'.repeat(Math.max(0, 66 - title.length))} */`;
 
@@ -253,7 +252,13 @@ out.push(line('brand-gutter-x-lg', 'var(--brand-space-gutter-x-lg)'));
 out.push(line('brand-content-max', 'var(--brand-size-content-max)'));
 out.push(line('brand-prose-max', 'var(--brand-size-prose-max)'));
 out.push(line('brand-font-sans', 'var(--brand-font-body)'));
-out.push(line('brand-font-mono', 'var(--brand-font-display)', 'the starter maps font-mono to the DISPLAY slot — it is not monospace here'));
+out.push(
+  line(
+    'brand-font-mono',
+    'var(--brand-font-display)',
+    'the starter maps font-mono to the DISPLAY slot — it is not monospace here',
+  ),
+);
 
 // The 1.x BrandColor union is still referenced by unmigrated starter components
 // (the dead blog/case-study modules, ContactForm, 404). Without these the

@@ -11,6 +11,7 @@ import { handleLead } from './handle';
 import { signTimestamp } from './spam';
 import type { SheetWriter, LeadRow } from './sheet';
 import type { Notifier } from './notify';
+import { LEAD_LISTS, DATA_TABS } from './config';
 
 const SECRET = 'test-secret';
 const NOW = 1_800_000_000_000;
@@ -25,9 +26,17 @@ const base = () => ({
   _ts: STAMP,
 });
 
-function okSheet(): SheetWriter & { rows: LeadRow[] } {
+function okSheet(): SheetWriter & { rows: LeadRow[]; tabs: string[] } {
   const rows: LeadRow[] = [];
-  return { rows, append: async (r) => void rows.push(r) };
+  const tabs: string[] = [];
+  return {
+    rows,
+    tabs,
+    append: async (r, tab) => {
+      rows.push(r);
+      tabs.push(tab);
+    },
+  };
 }
 const failSheet = (): SheetWriter => ({
   append: async () => {
@@ -123,6 +132,36 @@ describe('handleLead — validation', () => {
     const sheet = okSheet();
     await handleLead({ fields: { ...base(), list: 'league-general' }, now: NOW }, { sheet, formSecret: SECRET });
     expect(sheet.rows[0].consent).toContain('One email when registration opens');
+  });
+});
+
+describe('handleLead — tab routing', () => {
+  // Which tab a submission lands on comes from the routing table, so it is a
+  // reviewable diff. These assert the mapping rather than the mechanism.
+  it('routes an event enquiry to Enquiries', async () => {
+    const sheet = okSheet();
+    await handleLead({ fields: base(), now: NOW }, { sheet, formSecret: SECRET });
+    expect(sheet.tabs).toEqual(['Enquiries']);
+  });
+
+  it('routes every waitlist to Waitlist', async () => {
+    for (const list of ['league-general', 'league-fall-winter-2026-lakeville', 'juniors']) {
+      const sheet = okSheet();
+      await handleLead({ fields: { ...base(), list }, now: NOW }, { sheet, formSecret: SECRET });
+      expect(sheet.tabs, list).toEqual(['Waitlist']);
+    }
+  });
+
+  it('keeps styleguide submissions out of real data', async () => {
+    const sheet = okSheet();
+    await handleLead({ fields: { ...base(), list: 'styleguide' }, now: NOW }, { sheet, formSecret: SECRET });
+    expect(sheet.tabs).toEqual(['Test']);
+  });
+
+  it('every registered list names a tab that actually exists', async () => {
+    for (const [key, list] of Object.entries(LEAD_LISTS)) {
+      expect(DATA_TABS, `list "${key}"`).toContain(list.tab);
+    }
   });
 });
 

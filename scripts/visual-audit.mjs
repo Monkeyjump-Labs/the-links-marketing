@@ -118,9 +118,7 @@ for (const vp of VIEWPORTS) {
     if (!title) throw new Error(`audit harness got an empty document for ${route}`);
 
     // ── axe ────────────────────────────────────────────────────────────────
-    const results = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-      .analyze();
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
 
     for (const v of results.violations) {
       const entry = {
@@ -177,7 +175,12 @@ for (const vp of VIEWPORTS) {
         .filter(isControl)
         .map((el) => {
           const r = el.getBoundingClientRect();
-          return { w: Math.round(r.width), h: Math.round(r.height), text: (el.textContent ?? '').trim().slice(0, 40), tag: el.tagName.toLowerCase() };
+          return {
+            w: Math.round(r.width),
+            h: Math.round(r.height),
+            text: (el.textContent ?? '').trim().slice(0, 40),
+            tag: el.tagName.toLowerCase(),
+          };
         })
         .filter((e) => e.w > 0 && e.h > 0 && e.h < MIN)
         .slice(0, 10);
@@ -187,20 +190,18 @@ for (const vp of VIEWPORTS) {
     // ── section padding (the "padding issues" complaint, measured) ─────────
     if (vp.name === 'desktop') {
       const pads = await page.evaluate(() => {
-        return [...document.querySelectorAll('main section, main > div')]
-          .slice(0, 14)
-          .map((el, i) => {
-            const cs = getComputedStyle(el);
-            const inner = el.querySelector(':scope > div') ?? el;
-            const ics = getComputedStyle(inner);
-            return {
-              i,
-              cls: (el.className ?? '').toString().slice(0, 70),
-              padY: `${cs.paddingTop}/${cs.paddingBottom}`,
-              innerPadY: `${ics.paddingTop}/${ics.paddingBottom}`,
-              innerPadX: `${ics.paddingLeft}/${ics.paddingRight}`,
-            };
-          });
+        return [...document.querySelectorAll('main section, main > div')].slice(0, 14).map((el, i) => {
+          const cs = getComputedStyle(el);
+          const inner = el.querySelector(':scope > div') ?? el;
+          const ics = getComputedStyle(inner);
+          return {
+            i,
+            cls: (el.className ?? '').toString().slice(0, 70),
+            padY: `${cs.paddingTop}/${cs.paddingBottom}`,
+            innerPadY: `${ics.paddingTop}/${ics.paddingBottom}`,
+            innerPadX: `${ics.paddingLeft}/${ics.paddingRight}`,
+          };
+        });
       });
       report.padding.push({ route, sections: pads });
     }

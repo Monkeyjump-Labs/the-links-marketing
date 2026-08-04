@@ -16,12 +16,13 @@
  * `fetch` does the rest, and the serverless cold start stays honest.
  */
 import { GoogleAuth } from 'google-auth-library';
-import { SHEET_COLUMNS, SHEET_TAB, type SheetColumn } from './config';
+import { SHEET_COLUMNS, type SheetColumn, type SheetTab } from './config';
 
 export type LeadRow = Partial<Record<SheetColumn, string>>;
 
 export interface SheetWriter {
-  append(row: LeadRow): Promise<void>;
+  /** `tab` comes from the list's routing entry — see LEAD_LISTS. */
+  append(row: LeadRow, tab: SheetTab): Promise<void>;
 }
 
 /**
@@ -57,7 +58,7 @@ export function toValues(row: LeadRow): string[] {
 
 export function createSheetWriter(opts: { credentialsB64: string; sheetId: string }): SheetWriter {
   return {
-    async append(row) {
+    async append(row, tab) {
       const { client_email, private_key } = decodeCredentials(opts.credentialsB64);
 
       const auth = new GoogleAuth({
@@ -71,7 +72,7 @@ export function createSheetWriter(opts: { credentialsB64: string; sheetId: strin
       // never land on top of one already written.
       const url =
         `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(opts.sheetId)}` +
-        `/values/${encodeURIComponent(SHEET_TAB)}!A1:append` +
+        `/values/${encodeURIComponent(tab)}!A1:append` +
         `?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
 
       const res = await fetch(url, {
@@ -87,8 +88,9 @@ export function createSheetWriter(opts: { credentialsB64: string; sheetId: strin
         const hint =
           res.status === 403
             ? ` — is the spreadsheet shared with ${client_email} as an Editor?`
-            : res.status === 404
-              ? ` — check LEAD_SHEET_ID, and that a tab named "${SHEET_TAB}" exists.`
+            : res.status === 400 || res.status === 404
+              ? ` — check LEAD_SHEET_ID, and that a tab named "${tab}" exists. ` +
+                `Run \`npm run sheet:provision\` to create the workbook's tabs.`
               : '';
         throw new Error(`Sheets append failed (${res.status})${hint} ${detail.slice(0, 300)}`);
       }

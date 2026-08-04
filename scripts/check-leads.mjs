@@ -19,6 +19,8 @@
  * the robots.txt generator use to tell the two apart. A contributor previewing
  * a copy change should never need Google credentials.
  */
+import { readFileSync } from 'node:fs';
+
 const isStaging = process.env.PUBLIC_SITE_NOINDEX === 'true';
 const isCI = process.env.CI === 'true' || process.env.CI === '1';
 
@@ -31,6 +33,31 @@ const REQUIRED = [
 ];
 
 const missing = REQUIRED.filter(([name]) => !process.env[name]);
+
+/**
+ * The notification address is a separate failure from a missing credential, and
+ * a quieter one: everything works, submissions are recorded, and the venue
+ * simply never hears about them. Loud, but a warning rather than an error —
+ * blocking production would stop us deploying while still testing, which is the
+ * exact state this is meant to support.
+ */
+const TESTING_INBOX = 'hello@fareway.golf';
+const VENUE_INBOX = 'info@lakevillelinks.com';
+if (
+  readFileSync(new URL('../src/lib/leads/config.ts', import.meta.url), 'utf8').includes('const INBOX = TESTING_INBOX')
+) {
+  console.warn(`
+┌──────────────────────────────────────────────────────────────────────────┐
+│  ⚠  FORM NOTIFICATIONS ARE STILL GOING TO US, NOT TO THE VENUE           │
+│                                                                          │
+│     currently → ${TESTING_INBOX.padEnd(56)}│
+│     should be → ${VENUE_INBOX.padEnd(56)}│
+│                                                                          │
+│  Submissions ARE recorded in the sheet, so nothing is lost — but no one  │
+│  at the venue is told an enquiry arrived. Fix before launch:             │
+│  src/lib/leads/config.ts → const INBOX = VENUE_INBOX;                    │
+└──────────────────────────────────────────────────────────────────────────┘`);
+}
 
 if (isStaging) {
   console.log(`✓ leads:check skipped — staging build (PUBLIC_SITE_NOINDEX=true)`);
