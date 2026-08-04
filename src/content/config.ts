@@ -305,20 +305,90 @@ const rates = defineCollection({
   }),
 });
 
-/** HTML menu, never a PDF and never a PNG. */
+/**
+ * HTML menu, never a PDF and never a PNG.
+ *
+ * The source was six PNGs — plus a seventh "NEW MENU ITEMS!" graphic on the same
+ * page — and the shape below is what those images ACTUALLY contain. Nothing here
+ * was added speculatively. Three shapes, hence `layout`:
+ *
+ *   plates   name · description · one price   (appetisers, specialty drinks)
+ *   grid     name · description · N prices    (pizzas: 14" regular vs 10" GS)
+ *   choices  grouped lists with NO prices     (sauces, taps, fountain sodas)
+ *
+ * **No dietary field, deliberately.** The only dietary signal in the source is
+ * the gluten-sensitive crust, and that is a PRICE COLUMN rather than a per-item
+ * flag — every pizza is available both ways at a $2 premium. A `dietary` array
+ * would have been a field we invented and then had to fill by guessing, on a
+ * menu whose own footnote is "we cannot guarantee gluten free". Add one when the
+ * client supplies real allergen data, not before.
+ *
+ * **`gaps` is how an ambiguous source gets published.** Two of the graphics give
+ * the Breakfast Bowl DIFFERENT descriptions, and the Hot Italian pizza's topping
+ * list stops mid-sentence on a comma. Neither is guessed and neither gets a
+ * "TBD" string in a value slot: the item ships without the contested field, and
+ * a `GapCell` beside the section says what is unresolved and why — the same
+ * grammar as every other absence on the site (`lib/readout.ts`).
+ */
 const menu = defineCollection({
   type: 'data',
   schema: z.object({
     section: z.string(),
     order: z.number().default(0),
     venue: z.enum(['lakeville', 'stillwater', 'both']).default('both'),
+    /** How the section is drawn. See the three shapes above. */
+    layout: z.enum(['plates', 'grid', 'choices']).default('plates'),
+    /** A standfirst under the section heading. Prose, not a list. */
+    intro: z.string().optional(),
+    /** A footnote under the section — the gluten disclaimer, a serving note. */
     note: z.string().optional(),
+    /**
+     * Column headings for a `grid` section. `label` is SHORT because it heads a
+     * narrow numeric column (`14"`); `qualifier` is the explanation, which rides
+     * above the table where it has room to be a phrase rather than being
+     * squeezed into a column head that then overflows on a phone.
+     */
+    priceColumns: z
+      .array(
+        z.object({
+          label: z.string(),
+          qualifier: z.string().optional(),
+        }),
+      )
+      .default([]),
     items: z
       .array(
         z.object({
           name: z.string(),
           description: z.string().optional(),
+          /** `plates`: the one price. */
           price: z.string().optional(),
+          /** `grid`: one price per entry in `priceColumns`, in the same order. */
+          prices: z.array(z.string()).default([]),
+        }),
+      )
+      .default([]),
+    /** `choices`: unpriced lists — sauces, taps, fountain flavours. */
+    choices: z
+      .array(
+        z.object({
+          label: z.string(),
+          options: z.array(z.string()).default([]),
+        }),
+      )
+      .default([]),
+    /**
+     * What this section does not know, in the gap system's grammar. Never a
+     * sentinel string in a value slot — see the header note.
+     */
+    gaps: z
+      .array(
+        z.object({
+          label: z.string(),
+          state: z.enum(['notSet', 'quoted']).default('notSet'),
+          /** Overrides the default status word. One or two words. */
+          word: z.string().optional(),
+          reason: z.string(),
         }),
       )
       .default([]),
