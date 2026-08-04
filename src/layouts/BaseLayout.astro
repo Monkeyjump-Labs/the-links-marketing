@@ -5,6 +5,7 @@ import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import VenueBar from '../components/venue/VenueBar.astro';
 import OrganizationSchema from '../components/venue/OrganizationSchema.astro';
+import LeadFormScript from '../components/venue/LeadFormScript.astro';
 import type { PageMetadata } from '../lib/types';
 
 interface Props {
@@ -48,5 +49,12 @@ const noIndex = metadata.noIndex || import.meta.env.PUBLIC_SITE_NOINDEX === 'tru
     </main>
     {chrome && <Footer />}
     <OrganizationSchema />
+    {
+      /* Progressive enhancement for every `/api/lead` form. Mounted site-wide
+        rather than per-page: it is one delegated listener that does nothing at
+        all on a page with no form, and mounting it here means a form added
+        anywhere later cannot forget to opt in. The forms work without it. */
+    }
+    <LeadFormScript />
   </body>
 </html>

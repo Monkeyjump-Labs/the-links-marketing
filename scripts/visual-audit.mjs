@@ -4,7 +4,7 @@
  *
  *   npm run audit:visual
  *
- * Serves ./dist, then for every route at desktop and mobile:
+ * Serves the built static output, then for every route at desktop and mobile:
  *   - runs axe-core (colour-contrast, names, landmarks, …)
  *   - screenshots full page into .audit/
  *   - measures real layout facts: horizontal overflow, tap-target sizes,
@@ -22,7 +22,26 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { extname, join, resolve } from 'node:path';
 
-const DIST = resolve('dist');
+/**
+ * Where the built HTML lives.
+ *
+ * Adding the Vercel adapter (for `/api/lead`) moved the prerendered output:
+ * Astro now writes `dist/client`, and the adapter assembles the deployable tree
+ * under `.vercel/output/static`. This script served `dist` and started 404ing on
+ * every route — which reads as "the whole site is broken" rather than "the
+ * harness is looking in the wrong folder", so it is resolved rather than hardcoded.
+ *
+ * Preference order, so it keeps working with or without an adapter, and fails
+ * with something actionable instead of a wall of 404s.
+ */
+const CANDIDATES = ['.vercel/output/static', 'dist/client', 'dist'];
+const DIST = CANDIDATES.map((d) => resolve(d)).find((d) => existsSync(join(d, 'index.html')));
+if (!DIST) {
+  console.error(
+    `\n✖ No built site found. Looked for index.html in:\n${CANDIDATES.map((c) => `    ${c}`).join('\n')}\n\n  Run:  npm run build\n`,
+  );
+  process.exit(1);
+}
 const OUT = resolve('.audit');
 const PORT = 4477;
 
@@ -40,6 +59,7 @@ const ROUTES = [
   // Every route the site publishes should be here; a page absent from the audit
   // is a page whose regressions nobody sees.
   '/simulators/',
+  '/thanks/',
   '/menu/',
   '/contact/',
   '/faq/',
@@ -98,9 +118,7 @@ for (const vp of VIEWPORTS) {
     if (!title) throw new Error(`audit harness got an empty document for ${route}`);
 
     // ── axe ────────────────────────────────────────────────────────────────
-    const results = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-      .analyze();
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
 
     for (const v of results.violations) {
       const entry = {
@@ -157,7 +175,12 @@ for (const vp of VIEWPORTS) {
         .filter(isControl)
         .map((el) => {
           const r = el.getBoundingClientRect();
-          return { w: Math.round(r.width), h: Math.round(r.height), text: (el.textContent ?? '').trim().slice(0, 40), tag: el.tagName.toLowerCase() };
+          return {
+            w: Math.round(r.width),
+            h: Math.round(r.height),
+            text: (el.textContent ?? '').trim().slice(0, 40),
+            tag: el.tagName.toLowerCase(),
+          };
         })
         .filter((e) => e.w > 0 && e.h > 0 && e.h < MIN)
         .slice(0, 10);
@@ -167,20 +190,18 @@ for (const vp of VIEWPORTS) {
     // ── section padding (the "padding issues" complaint, measured) ─────────
     if (vp.name === 'desktop') {
       const pads = await page.evaluate(() => {
-        return [...document.querySelectorAll('main section, main > div')]
-          .slice(0, 14)
-          .map((el, i) => {
-            const cs = getComputedStyle(el);
-            const inner = el.querySelector(':scope > div') ?? el;
-            const ics = getComputedStyle(inner);
-            return {
-              i,
-              cls: (el.className ?? '').toString().slice(0, 70),
-              padY: `${cs.paddingTop}/${cs.paddingBottom}`,
-              innerPadY: `${ics.paddingTop}/${ics.paddingBottom}`,
-              innerPadX: `${ics.paddingLeft}/${ics.paddingRight}`,
-            };
-          });
+        return [...document.querySelectorAll('main section, main > div')].slice(0, 14).map((el, i) => {
+          const cs = getComputedStyle(el);
+          const inner = el.querySelector(':scope > div') ?? el;
+          const ics = getComputedStyle(inner);
+          return {
+            i,
+            cls: (el.className ?? '').toString().slice(0, 70),
+            padY: `${cs.paddingTop}/${cs.paddingBottom}`,
+            innerPadY: `${ics.paddingTop}/${ics.paddingBottom}`,
+            innerPadX: `${ics.paddingLeft}/${ics.paddingRight}`,
+          };
+        });
       });
       report.padding.push({ route, sections: pads });
     }

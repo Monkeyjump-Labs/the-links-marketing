@@ -21,10 +21,13 @@
  * "Which venue" stays required. It is the only two-location accommodation
  * anywhere in the current site's forms and it is the one we must not lose.
  *
- * Posts to PUBLIC_LEAD_ENDPOINT, and with no endpoint configured degrades to a
- * mailto so an enquiry is never silently dropped — and says so rather than
- * pretending. ⚠️ That endpoint is UNSET today, so every form on the site is
- * currently inert; see FW-3966 §"Unblock the client-facing loop".
+ * Posts to `/api/lead` — a fixed, same-origin path. It used to post to
+ * `PUBLIC_LEAD_ENDPOINT` and degrade to a `mailto:` when that was unset, which
+ * is how this site went live with every form inert. A URL you can configure is
+ * a URL you can leave unset, so there is no longer a URL to configure (FW-3975).
+ *
+ * Works with JavaScript disabled — a native POST gets a 303 to `/thanks/`.
+ * `LeadFormScript` upgrades that to an inline confirmation.
  */
 import { getVenues } from '../../lib/venues';
 import { buttonClasses } from '../../lib/buttons';
@@ -33,7 +36,6 @@ interface Props {
   heading?: string;
   blurb?: string;
   listName: string;
-  email?: string;
   id?: string;
   class?: string;
 }
@@ -42,13 +44,11 @@ const {
   heading = 'Tell us about your event',
   blurb = 'The date and rough numbers are enough to get a price back. No obligation.',
   listName,
-  email = 'info@lakevillelinks.com',
   id,
   class: className = '',
 } = Astro.props;
 
 const venues = await getVenues();
-const endpoint = import.meta.env.PUBLIC_LEAD_ENDPOINT;
 const formId = id ?? `enquiry-${listName.replace(/\W+/g, '-').toLowerCase()}`;
 
 // Inside the white card everything reverts to light-field styling — navy on
@@ -67,12 +67,16 @@ const labelClass = 'caps-label block text-label-sm text-inkMuted';
 
   <form
     class="mt-s6"
-    action={endpoint ?? `mailto:${email}`}
-    method={endpoint ? 'POST' : 'GET'}
+    action="/api/lead"
+    method="POST"
     data-analytics={`enquiry:${listName}`}
+    data-success="Thanks — we have got your enquiry and will come back to you with a price."
     id={formId}
   >
     <input type="hidden" name="list" value={listName} />
+    <input type="hidden" name="_page" value={Astro.url.pathname} />
+    {/* Filled at runtime by LeadFormScript; absent on the no-JS path, which is accepted. */}
+    <input type="hidden" name="_ts" value="" />
     <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
     {
@@ -127,13 +131,14 @@ const labelClass = 'caps-label block text-label-sm text-inkMuted';
     <button type="submit" class:list={[buttonClasses('md', 'primary'), 'mt-s6 w-full cursor-pointer']}>
       Send my enquiry
     </button>
-  </form>
 
-  {
-    !endpoint && (
-      <p class="mt-s5 border-t-hairline border-inkMuted pt-s4 text-small leading-body text-inkMuted">
-        Lead endpoint not configured — this form opens an email instead.
-      </p>
-    )
-  }
+    {/* Only ever shown on failure — success replaces the whole form. */}
+    <p
+      data-lead-status
+      role="alert"
+      hidden
+      class="mt-s4 border-l-slab border-accent pl-s4 text-small leading-body text-inkBody"
+    >
+    </p>
+  </form>
 </div>

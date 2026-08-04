@@ -47,7 +47,11 @@ const canonical = (v) =>
   Array.isArray(v)
     ? v.map(canonical)
     : v && typeof v === 'object'
-      ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, canonical(v[k])]))
+      ? Object.fromEntries(
+          Object.keys(v)
+            .sort()
+            .map((k) => [k, canonical(v[k])]),
+        )
       : v;
 
 const names = fresh.schema.collections.map((c) => c.name);

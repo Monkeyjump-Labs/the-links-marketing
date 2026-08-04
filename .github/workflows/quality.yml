@@ -45,6 +45,9 @@ jobs:
         # never contacts Tina Cloud and the client ID is not embedded in the lock.
         run: npm run tina:lock:check
 
+      - name: 📬 Lead capture is configured
+        run: npm run leads:check
+
       - name: Lint
         run: npm run lint
 

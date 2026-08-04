@@ -28,7 +28,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ✅ | Booking reachable in ≤2 clicks from every page | Header → venue chooser → Whoosh. The old "ACKNOWLEDGE AND GO TO BOOKING" interstitial is deleted |
 | ✅ | Leagues page has a registration path **and** a waitlist in all three states | The one component no audited competitor has |
 | ✅ | Email capture present with a stated reason to subscribe | |
-| ⬜ | Every form tested end-to-end; submissions arrive somewhere a human reads | **`PUBLIC_LEAD_ENDPOINT` is not configured.** Forms currently degrade to `mailto:` and say so. This must be wired and tested before launch. Note the waitlist needs a *list*, not an inbox — its promise is "one email when registration opens", which nobody can keep from a pile of `mailto:` messages months later. There is also no `/thanks/` page yet, and a native form POST navigates away |
+| 🟡 | Every form tested end-to-end; submissions arrive somewhere a human reads | **Built and verified live (FW-3975).** All five forms post to `/api/lead`, which writes to the *The Links Website Log* workbook (Enquiries / Waitlist / Test tabs) and then emails a notification. A submission is never reported successful unless it reached the sheet. **⚠️ Notifications currently go to `hello@fareway.golf` for testing — see the launch task below** |
 
 ## Content
 
@@ -108,6 +108,31 @@ because even the `.vercel.app` production deploy is staging until the real domai
 - **Branch protection** is not enabled on the repo. Turn it on at handoff.
 - **On-site league registration.** The playbook says own it; we link to ply.golf for v1 because
   there is no on-site registration surface yet. Logged in `brief.md` §11.
+
+
+---
+
+## ⚠️ Launch task — switch form notifications to the venue
+
+**Owner: us. Blocking launch.**
+
+Form notifications are deliberately routed to `hello@fareway.golf` while we test, set
+2026-08-04. Every enquiry a customer sends currently reaches **nobody who can answer it**.
+
+Nothing is lost while this is true — the row is still written to the sheet, which is the
+system of record — but the venue is not told an enquiry arrived, so in practice it is
+invisible to them.
+
+**The switch is one line:**
+
+```ts
+// src/lib/leads/config.ts
+const INBOX = VENUE_INBOX;   // was TESTING_INBOX
+```
+
+`npm run leads:check` prints a loud banner on every run while the testing address is still
+in place, so this cannot quietly survive to launch. Do it, redeploy, then submit one real
+form and confirm it arrives at `info@lakevillelinks.com`.
 
 ---
 
