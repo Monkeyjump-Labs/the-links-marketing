@@ -18,7 +18,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ✅ | Unique `<title>` with geo cue + unique meta description on every page | From `seo-map.md`; all ≤60 chars with a town in them |
 | ✅ | Exactly one `<h1>` per page | |
 | ✅ | `robots.txt` declares the sitemap and blocks no AI crawler | Generated per-environment; staging serves `Disallow: /` |
-| 🔴 | Footer NAP matches Google Business Profile exactly | **Stillwater appears to have no GBP at all** — see blockers |
+| 🟡 | Footer NAP matches Google Business Profile exactly | **Downgraded from blocker 2026-08-04.** Stillwater's GBP is being checked by the client, who has said explicitly it must not hold up the site. Still worth chasing — six months of local searches going nowhere — but a follow-up, not a gate |
 
 ## Conversion
 
@@ -39,7 +39,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ⬜ | At least three attributed testimonials or a live review widget | None supplied. We will not ship unsourced quotes |
 | ✅ | No PDFs in place of menus, rates or rules | |
 | 🟡 | Venue photography, not stock | Lakeville's shoot is strong. **Stillwater has one usable frame** — a pre-opening phone night shot |
-| ✅ | Simulator technology named | GolfZon, with the model question carried as a `PendingTag` beside it rather than picking a side in the NX-vs-TwoVision contradiction below |
+| ✅ | Simulator technology named | **GolfZon TwoVision NX, tour spec** — confirmed 2026-08-04. This was the single most consequential unconfirmed fact on the site; both halves of the tour-spec claim (model and plate) are now confirmed, so the line is written |
 | ✅ | Every seasonal page dated, with a named refresh owner | Season carried in content; **owner still to be named at handoff** |
 
 ## Sim-venue additions
@@ -49,7 +49,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ✅ | Hourly bay rate published as text | $35/hr |
 | ✅ | Bay capacity stated | Up to five |
 | ✅ | Clubs-provided / left-handed availability stated | $15 rental; 5 of 6 Lakeville bays play both ways |
-| 🟡 | Cancellation policy findable from the booking page | **Stub — the window is unknown.** Top pre-booking objection in the segment |
+| ✅ | Cancellation policy findable from the booking page | Confirmed current 2026-08-04, and the three previously-unpublished cases are now answered: a booking can be moved (deliberately no stated deadline), a no-show is charged for the full bay, and the venue will not close on a day with bookings without reaching out |
 | ✅ | Simulator brand named on the homepage and the Bays page | |
 | ✅ | Beginner reassurance on Leagues **and** Book | Required field on every league record |
 | 🟡 | Menu is HTML | Structure ships; **the six menu PNGs still need transcribing** |

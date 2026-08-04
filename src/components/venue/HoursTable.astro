@@ -1,4 +1,9 @@
 ---
+/** "a, b and c" — an Oxford-less list, because it is read as a sentence. */
+function formatList(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? '';
+  return `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
+}
 import { orderedHours, formatTime, type Venue } from '../../lib/venues';
 
 interface Props {
@@ -26,3 +31,16 @@ const rows = orderedHours(venue);
   </tbody>
 </table>
 {venue.data.hoursNote && <p class="mt-3 text-xs text-inkMuted">{venue.data.hoursNote}</p>}
+
+{
+  /* Standing annual closures, stated as a rule rather than reconciled against
+    the week on screen. The client's instruction (client-answers.md §1) is to
+    publish them "regardless of where they fall this year" — Labor Day sits
+    inside the published schedule, and saying so here is cheaper than somebody
+    driving to a locked door. */
+}
+{
+  venue.data.closedHolidays.length > 0 && (
+    <p class="mt-2 text-xs text-inkMuted">Closed every year on {formatList(venue.data.closedHolidays)}.</p>
+  )
+}
