@@ -26,6 +26,21 @@ const branch = process.env.TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || p
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const VENUE_SCOPE = ['lakeville', 'stillwater', 'both'];
 
+/**
+ * Kept in step with the `menu` collection's Zod enums in `src/content/config.ts`.
+ * Tina writes the value; Astro validates it at build time, so a drift between
+ * these two lists is a build failure rather than a silent bad edit.
+ */
+const MENU_LAYOUTS = [
+  { value: 'plates', label: 'Plates — a dish, a description, one price' },
+  { value: 'grid', label: 'Price grid — one dish priced in more than one column' },
+  { value: 'choices', label: 'Choices — lists with no prices' },
+];
+const GAP_STATES = [
+  { value: 'notSet', label: 'Not yet set — nobody has decided' },
+  { value: 'quoted', label: 'Ask us — we know, and give it on request' },
+];
+
 export default defineConfig({
   branch,
   // Empty in local mode. Populate via env for Tina Cloud.
@@ -280,7 +295,29 @@ export default defineConfig({
           { type: 'string', name: 'section', label: 'Section', isTitle: true, required: true },
           { type: 'number', name: 'order', label: 'Display order' },
           { type: 'string', name: 'venue', label: 'Which venue', options: VENUE_SCOPE },
-          { type: 'string', name: 'note', label: 'Note', ui: { component: 'textarea' } },
+          {
+            type: 'string',
+            name: 'layout',
+            label: 'How this section is drawn',
+            options: MENU_LAYOUTS,
+            description:
+              'Plates = a list of dishes with one price each. Price grid = the same dish priced more than one way (the 14" and 10" pizza crusts). Choices = lists with no prices, like the sauces or the taps.',
+          },
+          { type: 'string', name: 'intro', label: 'Intro line', ui: { component: 'textarea' } },
+          { type: 'string', name: 'note', label: 'Footnote', ui: { component: 'textarea' } },
+          {
+            type: 'object',
+            name: 'priceColumns',
+            label: 'Price columns (price grid only)',
+            list: true,
+            description:
+              'One per price column. Keep the heading short — it sits over a narrow column of figures. Put the explanation in the qualifier.',
+            ui: { itemProps: (item) => ({ label: item?.label ?? 'Column' }) },
+            fields: [
+              { type: 'string', name: 'label', label: 'Column heading (short)', required: true },
+              { type: 'string', name: 'qualifier', label: 'What it means' },
+            ],
+          },
           {
             type: 'object',
             name: 'items',
@@ -291,6 +328,46 @@ export default defineConfig({
               { type: 'string', name: 'name', label: 'Item', required: true },
               { type: 'string', name: 'description', label: 'Description', ui: { component: 'textarea' } },
               { type: 'string', name: 'price', label: 'Price' },
+              {
+                type: 'string',
+                name: 'prices',
+                label: 'Prices (price grid only)',
+                list: true,
+                description: 'One per price column above, in the same order.',
+              },
+            ],
+          },
+          {
+            type: 'object',
+            name: 'choices',
+            label: 'Choice lists (choices only)',
+            list: true,
+            ui: { itemProps: (item) => ({ label: item?.label ?? 'List' }) },
+            fields: [
+              { type: 'string', name: 'label', label: 'List heading', required: true },
+              { type: 'string', name: 'options', label: 'Options', list: true },
+            ],
+          },
+          {
+            type: 'object',
+            name: 'gaps',
+            label: 'What this section does not know',
+            list: true,
+            description:
+              'For anything the printed menu leaves unclear or unpriced. It renders as the site-wide gap mark — never write "TBD" into a price or a description instead.',
+            ui: { itemProps: (item) => ({ label: item?.label ?? 'Gap' }) },
+            fields: [
+              { type: 'string', name: 'label', label: 'What is missing', required: true },
+              {
+                type: 'string',
+                name: 'state',
+                label: 'Kind',
+                options: GAP_STATES,
+                description:
+                  'Not yet set = nobody has decided. Ask us = we know and give it on request; that one needs a reason.',
+              },
+              { type: 'string', name: 'word', label: 'Status word (optional override)' },
+              { type: 'string', name: 'reason', label: 'Why', required: true, ui: { component: 'textarea' } },
             ],
           },
         ],

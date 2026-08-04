@@ -1,0 +1,17 @@
+{
+  "section": "Specialty drinks",
+  "order": 4,
+  "venue": "lakeville",
+  "layout": "plates",
+  "intro": "The house list, and the only drinks the printed menu puts a price on.",
+  "items": [
+    { "name": "Cody’s bloody mary", "description": "With a chaser.", "price": "$12" },
+    { "name": "CJ’s old fashioned", "price": "$12" },
+    { "name": "Azalea", "price": "$12" },
+    { "name": "Transfusion", "price": "$12" },
+    { "name": "Hole in Juan margarita", "price": "$12" },
+    { "name": "Espresso martini", "price": "$9" },
+    { "name": "Bailey’s coffee", "price": "$9" },
+    { "name": "Mimosa", "price": "$9" }
+  ]
+}

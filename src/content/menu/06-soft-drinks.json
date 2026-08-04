@@ -1,0 +1,27 @@
+{
+  "section": "Soft drinks",
+  "order": 6,
+  "venue": "lakeville",
+  "layout": "choices",
+  "choices": [
+    {
+      "label": "Fountain",
+      "options": ["Cola", "Diet cola", "Lemon-lime", "Mist", "Ginger ale"]
+    },
+    {
+      "label": "Juice",
+      "options": ["Cranberry", "Orange", "Lemonade"]
+    },
+    {
+      "label": "Hot",
+      "options": ["Coffee", "Tea"]
+    }
+  ],
+  "gaps": [
+    {
+      "label": "Soft drink prices",
+      "state": "notSet",
+      "reason": "Like the beer, the fountain, the juices, the coffee and the tea are named on the printed menu and priced nowhere on it."
+    }
+  ]
+}

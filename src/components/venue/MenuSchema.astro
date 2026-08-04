@@ -1,0 +1,90 @@
+---
+/**
+ * `Menu` JSON-LD — the node `seo-map.md` §5 draws as `hasMenu → …/menu#menu`,
+ * hanging off the Lakeville venue.
+ *
+ * The ticket's acceptance criterion is that the menu is "readable by search,
+ * assistive tech and an LLM". HTML text gets the first two. This gets the third
+ * one right as well: an assistant answering "what does a pizza cost at The
+ * Links" reads a priced `MenuItem`, not a paragraph it has to parse figures out
+ * of. Four percent of the audited corpus ships any structured data at all.
+ *
+ * **Only what is actually known is emitted.** A `MenuItem` with no price emits
+ * no `offers` rather than a zero or a null — the beer list is genuinely unpriced
+ * and an `Offer` asserting otherwise would be the schema-layer version of
+ * printing "TBD" in a price slot. Same reasoning as `VenueSchema`'s missing
+ * `geo`: structured data is the layer where our honesty markings are invisible,
+ * so nothing unverified goes into it.
+ *
+ * Prices are stored as display strings ("$17") because that is what a human
+ * edits in the CMS. schema.org wants a bare number, so they are parsed here and
+ * an unparseable one is skipped rather than guessed.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { globalData } from '../../data/global';
+
+interface Props {
+  /** Already filtered to the venue whose menu this is. */
+  sections: CollectionEntry<'menu'>[];
+  /** `@id` of the venue that serves it, so the graph joins up. */
+  venueId: string;
+  venueName: string;
+}
+
+const { sections, venueId, venueName } = Astro.props;
+const site = globalData.siteUrl;
+
+/** "$17" → "17". Anything that is not a plain money string is dropped. */
+const toAmount = (price?: string): string | null => {
+  if (!price) return null;
+  const match = /^\$?\s*(\d+(?:\.\d{1,2})?)$/.exec(price.trim());
+  return match ? match[1] : null;
+};
+
+const offer = (amount: string, name?: string) => ({
+  '@type': 'Offer',
+  price: amount,
+  priceCurrency: 'USD',
+  ...(name ? { name } : {}),
+});
+
+const menuSections = sections
+  .map((section) => {
+    const d = section.data;
+    const hasMenuItem = d.items
+      .map((item) => {
+        const offers = d.priceColumns.length
+          ? d.priceColumns
+              .map((col, i) => {
+                const amount = toAmount(item.prices[i]);
+                return amount ? offer(amount, col.label) : null;
+              })
+              .filter((o): o is ReturnType<typeof offer> => o !== null)
+          : [toAmount(item.price)].flatMap((amount) => (amount ? [offer(amount)] : []));
+
+        return {
+          '@type': 'MenuItem',
+          name: item.name,
+          ...(item.description ? { description: item.description } : {}),
+          ...(offers.length ? { offers } : {}),
+        };
+      })
+      .filter((item) => item.name);
+
+    return hasMenuItem.length ? { '@type': 'MenuSection', name: d.section, hasMenuItem } : null;
+  })
+  .filter((s) => s !== null);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Menu',
+  '@id': `${site}/menu/#menu`,
+  url: `${site}/menu/`,
+  name: `Food and drink at ${venueName}`,
+  inLanguage: 'en-US',
+  provider: { '@id': venueId },
+  hasMenuSection: menuSections,
+};
+---
+
+{menuSections.length > 0 && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}

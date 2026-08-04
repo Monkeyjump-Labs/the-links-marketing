@@ -1,9 +1,0 @@
-{
-  "section": "Food & drink",
-  "order": 1,
-  "venue": "lakeville",
-  "note": "STUB - the current site publishes its entire menu as six PNG images, so the items could not be read during ingest. These need transcribing to text before launch: an image menu is invisible to search, to AI answers and to screen readers. A 3% credit-card surcharge is disclosed on the current menu graphic.",
-  "items": [
-    { "name": "Menu transcription required", "description": "Six menu images on the current site need converting to text.", "price": "TBC" }
-  ]
-}

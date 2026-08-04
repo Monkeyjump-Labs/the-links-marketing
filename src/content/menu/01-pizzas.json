@@ -1,0 +1,59 @@
+{
+  "section": "Pizza",
+  "order": 1,
+  "venue": "lakeville",
+  "layout": "grid",
+  "intro": "Minnesota thin crust. Every pizza on the list comes either way — a 14-inch regular crust or a 10-inch gluten-sensitive one, at the same $2 difference across the board.",
+  "note": "We cannot guarantee gluten free.",
+  "priceColumns": [
+    { "label": "14-inch", "qualifier": "Regular crust" },
+    { "label": "10-inch", "qualifier": "Gluten sensitive" }
+  ],
+  "items": [
+    { "name": "Cheese", "prices": ["$12", "$14"] },
+    { "name": "Pepperoni", "prices": ["$15", "$17"] },
+    { "name": "Sausage", "prices": ["$15", "$17"] },
+    { "name": "Pepperoni and sausage", "prices": ["$16", "$18"] },
+    {
+      "name": "Pickle",
+      "description": "Secret white base sauce with sliced pickles.",
+      "prices": ["$17", "$19"]
+    },
+    {
+      "name": "Breakfast",
+      "description": "Secret white base sauce with bacon and eggs.",
+      "prices": ["$17", "$19"]
+    },
+    {
+      "name": "Smokehouse chicken BBQ",
+      "description": "Secret white base sauce with bacon, chicken and pickles, and a BBQ sauce drizzle.",
+      "prices": ["$17", "$19"]
+    },
+    {
+      "name": "Sweet chili",
+      "description": "Sweet chili base sauce with bacon, pepperoni and jalapeños.",
+      "prices": ["$17", "$19"]
+    },
+    {
+      "name": "Nashville hot",
+      "description": "Secret white base sauce with bacon, chicken and pickles, and a Nashville hot sauce drizzle.",
+      "prices": ["$17", "$19"]
+    },
+    {
+      "name": "Reuben",
+      "description": "Secret base sauce with corned beef, sauerkraut and pickles.",
+      "prices": ["$17", "$19"]
+    },
+    {
+      "name": "Hot Italian",
+      "prices": ["$17", "$19"]
+    }
+  ],
+  "gaps": [
+    {
+      "label": "Hot Italian toppings",
+      "state": "notSet",
+      "reason": "Both printed menus stop mid-list — \"secret base sauce, giardiniera, pepperoni, sausage,\" and then nothing. The price is certain, the rest of the topping list is not, so it is not written here. Ask the venue, or send us the full line."
+    }
+  ]
+}
