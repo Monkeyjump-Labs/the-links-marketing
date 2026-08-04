@@ -36,6 +36,23 @@ export default defineConfig({
   adapter: vercel(),
 
   /**
+   * Astro's built-in CSRF check is OFF, and `/api/lead` does the equivalent
+   * check itself instead.
+   *
+   * `security.checkOrigin` (on by default in Astro 5) compares the `Origin`
+   * header against the origin of the request URL as the server sees it. Behind
+   * Vercel's proxy that URL carries an internal host, so it never matches the
+   * public one and EVERY POST is rejected with "Cross-site POST form
+   * submissions are forbidden" — verified in production 2026-08-04, where it
+   * refused same-origin, cross-origin and header-less requests alike. It is not
+   * a security control here; it is a 403 on all form traffic.
+   *
+   * The route's own check reads `x-forwarded-host`, which is what Vercel
+   * actually sets, so it compares the right two things. See `pages/api/lead.ts`.
+   */
+  security: { checkOrigin: false },
+
+  /**
    * Typed environment, with the secrets declared as secrets.
    *
    * `access: 'secret'` is the load-bearing part. Astro inlines any `PUBLIC_*`

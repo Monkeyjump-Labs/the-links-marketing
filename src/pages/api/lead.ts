@@ -38,6 +38,37 @@ const log = (level: 'warn' | 'error', message: string) => {
   /* eslint-enable no-console */
 };
 
+/**
+ * Same-origin check, done here because Astro's cannot work behind Vercel.
+ *
+ * `security.checkOrigin` compares `Origin` to the origin of the request URL,
+ * and behind the proxy that URL carries an internal host — so it rejected
+ * everything, including legitimate same-origin submissions. Verified in
+ * production 2026-08-04: same-origin, cross-origin and header-less POSTs were
+ * all refused identically. This compares `Origin` against `x-forwarded-host`,
+ * which is the header Vercel actually sets to the public hostname.
+ *
+ * A MISSING `Origin` is allowed. Browsers send it on cross-origin form POSTs,
+ * which is the case worth blocking; some privacy tools strip it on same-origin
+ * ones, and rejecting those would break the no-JS path for exactly the people
+ * most likely to be on it.
+ *
+ * The honest scope: this stops another site POSTing to us from a visitor's
+ * browser. It cannot stop a script, and nothing here pretends to — a lead form
+ * has no session to ride and no state to change, so the realistic abuse is junk
+ * submissions, which is what the honeypot and the signed timestamp are for.
+ */
+function isSameOrigin(request: Request, url: URL): boolean {
+  const origin = request.headers.get('origin');
+  if (!origin) return true;
+  const host = request.headers.get('x-forwarded-host') ?? url.host;
+  try {
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+}
+
 export const POST: APIRoute = async ({ request, url }) => {
   const wantsJson = (request.headers.get('accept') ?? '').includes('application/json');
 
@@ -57,6 +88,11 @@ export const POST: APIRoute = async ({ request, url }) => {
       headers: { Location: `/thanks/?error=${encodeURIComponent(result.message)}` },
     });
   };
+
+  if (!isSameOrigin(request, url)) {
+    log('warn', `lead: rejected a cross-origin POST from ${request.headers.get('origin')}`);
+    return respond({ status: 400, ok: false, message: 'That submission did not come from this site.' });
+  }
 
   // Without a sheet there is no system of record, and the rule is that we never
   // report success unless the lead is durable. Failing loudly here beats
