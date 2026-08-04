@@ -1,163 +1,253 @@
 ---
 /**
- * HTML, never a PDF and never a PNG (playbook-core.md §8). The current /menu is
- * 72 characters of text plus six PNGs with empty alt attributes — invisible to
- * search, to AI answers, and to a screen reader. This page is the fix, and the
- * menu lives in the `menu` content collection so the client can edit it in
- * TinaCMS rather than exporting another graphic.
+ * Food & drink — the page that retires the six PNGs.
  *
- * ⚠️ The metadata below NO LONGER matches seo-map.md §2, on purpose. That version
- * promised "the whole menu in text, with prices" and named brisket burnt ends —
- * on a page that contains no menu and no prices, because the items are only
- * readable off the client's menu images and every price needs re-confirming. A
- * meta description is the sentence Google prints under the result, so it was the
- * one claim on this page a visitor met BEFORE they could see it was untrue
- * (truth-audit §U21). It now describes what the page actually holds. Restore the
- * seo-map wording only once the `menu` collection carries real priced items —
- * `hasRealItems` below is the switch that tells you.
+ * HTML, never a PDF and never a PNG (playbook-core.md §8). Until FW-4002 the
+ * live menu was 72 characters of text plus six images with empty alt attributes,
+ * invisible to search, to AI answers and to a screen reader — the one ship-gate
+ * rule the site was still breaking. Everything on this page now comes out of the
+ * `menu` collection, so the client edits it in TinaCMS instead of exporting
+ * another graphic.
+ *
+ * ## Four decisions worth not re-litigating
+ *
+ * **1. The hours here are `/rates`' hours, deliberately.** The printed menu says
+ * `HOURS: SUN-SAT 8AM-10PM`; the venue record and `/rates` say 11am–9pm at
+ * Lakeville. The client is fixing the print side, and the site publishes the
+ * `/rates` version (client-answers.md §9; truth-audit §"the menu graphic"). So
+ * the hero cell below is DERIVED from the venue record rather than typed — this
+ * page cannot drift from the rates page because it does not hold its own copy of
+ * the number. Do not paste 8am–10pm in here off the graphic.
+ *
+ * **2. Venue scope is on every section, not in a footnote.** Lakeville runs its
+ * own bar and kitchen; Stillwater's food and drink are Stillwater Bowl &
+ * Lounge's. Every section carries a `venue` and prints it, and Stillwater gets a
+ * section that publishes no items at all — because there is nothing of ours to
+ * publish there.
+ *
+ * **3. Nothing was invented to fill the layout.** Two of the client's graphics
+ * describe the same $12 breakfast bowl differently, and the Hot Italian pizza's
+ * topping list stops mid-sentence on a comma. Both ship as `GapCell` marks
+ * naming what is unresolved — not as a guess, and not as the string "TBD" in a
+ * value slot, which is the flat-page behaviour the gap system exists to replace.
+ * Beer, seltzers and soft drinks are named on the printed menu and priced
+ * nowhere on it; that is a gap too, not a reason to drop the list.
+ *
+ * **4. Appetisers run high price to low, and that is a design decision.** The
+ * source order is an artefact of two graphics laid out around photographs.
+ * Sorting the ledger by price makes the scoreboard column read as a column —
+ * which is the point of setting prices in the tabular numeric face — and the
+ * dish the venue leads with in print (brisket burnt ends, the dearest thing on
+ * it) still leads here. Items and prices are untouched; only the running order
+ * is ours. Reorder the array in the collection if the venue wants its own
+ * merchandising back.
+ *
+ * ⚠️ The metadata below restores the `seo-map.md` §2 wording. That version
+ * promised "the whole menu in text, with prices" and named brisket burnt ends,
+ * and was correctly retired by the truth audit (§U21) while this page held no
+ * menu at all. The page holds the menu now, so the sentence is true again.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
-import { getVenues, appliesTo, type VenueScope } from '../lib/venues';
+import SectionHead from '../components/venue/SectionHead.astro';
+import HeroStrip from '../components/venue/HeroStrip.astro';
+import MenuSection from '../components/venue/MenuSection.astro';
+import MenuSchema from '../components/venue/MenuSchema.astro';
+import ReadoutCell from '../components/venue/ReadoutCell.astro';
+import { getVenues, appliesTo, orderedHours, formatTime, type VenueScope } from '../lib/venues';
+import { globalData } from '../data/global';
 
 const venues = await getVenues();
 const sections = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
 
-/** A section is a real menu section once it carries priced items and no stub note. */
-const isStub = (note?: string) => Boolean(note && note.trim().toUpperCase().startsWith('STUB'));
-const hasRealItems = sections.some((s) => !isStub(s.data.note) && s.data.items.length > 0);
+const lakeville = venues.find((v) => v.data.slug === 'lakeville');
+const stillwater = venues.find((v) => v.data.slug === 'stillwater');
+const stillwaterHost = stillwater?.data.containedInPlace ?? 'Stillwater Bowl & Lounge';
+
+/**
+ * Lakeville's opening window, read off the venue record — the same record
+ * `/rates` renders. Collapsed to one figure only when all seven days agree; the
+ * moment they stop agreeing the cell becomes a gap instead of quietly publishing
+ * Monday's hours as though they were the week's.
+ */
+const lakevilleRows = lakeville ? orderedHours(lakeville) : [];
+const uniformHours =
+  lakevilleRows.length > 0 &&
+  lakevilleRows.every((r) => !r.closed && r.opens === lakevilleRows[0].opens && r.closes === lakevilleRows[0].closes);
+const hoursValue = uniformHours ? `${formatTime(lakevilleRows[0].opens)}–${formatTime(lakevilleRows[0].closes)}` : null;
+
+/** "$17" → 17. Anything that is not a plain money string is not a figure. */
+const amount = (price?: string): number | null => {
+  const match = price ? /^\$?\s*(\d+(?:\.\d{1,2})?)$/.exec(price.trim()) : null;
+  return match ? Number(match[1]) : null;
+};
+/** Both entry prices are DIVIDED out of the collection, never stored twice. */
+const cheapest = (values: (number | null)[]) => {
+  const found = values.filter((v): v is number => v !== null);
+  return found.length ? Math.min(...found) : null;
+};
+const pizzaFrom = cheapest(
+  sections.filter((s) => s.data.layout === 'grid').flatMap((s) => s.data.items.map((i) => amount(i.prices[0]))),
+);
+const plateFrom = cheapest(
+  sections.filter((s) => s.data.layout === 'plates').flatMap((s) => s.data.items.map((i) => amount(i.price))),
+);
+const appetiserCount = sections.find((s) => s.data.layout === 'plates')?.data.items.length ?? 0;
 
 const metadata = {
   metaTitle: 'Food & Drink Menu — The Links, Lakeville MN',
   metaDescription:
-    'Full bar, Minnesota thin-crust pizza, wings and appetisers at The Links of Lakeville, MN. What to expect, and how paying works.',
+    'Full bar, Minnesota thin-crust pizza, wings and brisket burnt ends at The Links of Lakeville, MN. The whole menu in text, with prices.',
 };
 
 const venueName = (scope: VenueScope) =>
   scope === 'both' ? 'Both venues' : (venues.find((v) => appliesTo(scope, v.data.slug))?.data.name ?? scope);
+
+/**
+ * White, greige, white, greige… so every section owns a band of its own and a
+ * ground change does the work a divider would otherwise have to do. Counted from
+ * the "whose kitchen" band above, which is white — so the first menu section is
+ * index 1 and lands on greige. Two adjacent white bands would put a section
+ * boundary where the eye cannot see one.
+ */
+const isGreige = (i: number) => i % 2 === 1;
+const band = (i: number) => (isGreige(i) ? 'bg-greige' : 'bg-white');
 ---
 
 <BaseLayout metadata={metadata}>
-  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
-    <h1 class="text-4xl font-bold lg:text-5xl">Food &amp; drink</h1>
-    <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      You can eat and drink in the bay. Nobody expects you to stop playing to sit at a table, and the tab runs through
-      the venue so one person settles it at the end.
-    </p>
-
-    {
-      /* Which kitchen you are ordering from depends on which venue you are in.
-       Saying so plainly beats implying one menu across two businesses. */
-    }
-    <section class="mt-10 grid gap-6 md:grid-cols-2">
-      <div class="rounded border-2 border-ink/15 p-6">
-        <h2 class="text-xl font-semibold">Lakeville</h2>
-        <p class="mt-2 text-inkMuted">
-          Full bar and a food menu of its own. Draft and canned beer, seltzers, cocktails, soft drinks, and a menu built
-          around Minnesota thin-crust pizza, wings and appetisers. Nine screens, so the game is on whether or not you
-          are playing.
-        </p>
-      </div>
-      <div class="rounded border-2 border-ink/15 p-6">
-        <h2 class="text-xl font-semibold">Stillwater</h2>
-        <p class="mt-2 text-inkMuted">
-          The bays sit inside Stillwater Bowl &amp; Lounge, and the food and drink come from them — burgers, bites and a
-          full bar. It is one building and one visit; it is not our kitchen.
-        </p>
-        <p class="mt-3 text-sm text-inkMuted">
-          <strong>STUB —</strong> whether Stillwater Bowl's menu is published here, linked, or left to the host has not been
-          decided with the client.
-        </p>
-      </div>
-    </section>
-
-    {/* The menu itself, from the content collection. Prices are text. */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">The menu</h2>
-
-      {
-        !hasRealItems && (
-          <div class="mt-6 rounded border-2 border-dashed border-ink/25 p-6">
-            <p class="font-semibold">STUB — the menu has not been transcribed yet.</p>
-            <p class="mt-3 text-inkMuted">
-              The current site publishes its entire menu as six images with no text alternative, so the items and prices
-              are not machine-readable and could not be lifted safely during handover. Two of those images also give the
-              same dish two different descriptions, so a straight copy would ship a contradiction.
-            </p>
-            <p class="mt-3 text-inkMuted">
-              <strong>Needed from the client:</strong> the current menu as text — every section, every item, every
-              price, including beer and soft drinks, which are not priced on the graphic at all. Once it is in the CMS
-              this page fills itself in.
-            </p>
-          </div>
-        )
-      }
-
-      {
-        sections.map((section) => (
-          <section class="mt-10">
-            <div class="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 class="text-2xl font-semibold">{section.data.section}</h3>
-              <span class="text-sm text-inkMuted">{venueName(section.data.venue)}</span>
-            </div>
-
-            {section.data.items.length > 0 && (
-              <dl class="mt-4 divide-y divide-ink/10">
-                {/*
-                  dt/dd must be direct children of the dl, or of a single div
-                  child of it. Wrapping them in a second nested div broke the
-                  grouping (axe: definition-list / dlitem), so the layout is done
-                  with flex order and a full-width description row instead.
-                */}
-                {section.data.items.map((item) => (
-                  <div class="flex flex-wrap items-baseline justify-between gap-x-6 py-3">
-                    <dt class="max-w-xl font-medium">{item.name}</dt>
-                    {item.price && <dd class="font-semibold">{item.price}</dd>}
-                    {item.description && <dd class="mt-1 w-full max-w-xl text-sm text-inkMuted">{item.description}</dd>}
-                  </div>
-                ))}
-              </dl>
-            )}
-
-            {section.data.note && (
-              <p class="mt-4 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-                {section.data.note}
-              </p>
-            )}
-          </section>
-        ))
-      }
-    </section>
-
-    {
-      /* Paying. The surcharge is disclosed on the menu graphic and nowhere in the
-       booking flow — it belongs in text, before someone is at the till. */
-    }
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">Paying</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
-        There is a <strong>3% surcharge on credit card payments</strong>. Cash and debit avoid it. Members get 10% off
-        food and drink.
+  {
+    /* 1. HERO + the 4-cell strip. What a person screens on before reading a
+      menu: what the two things this kitchen is known for start at, when it is
+      open, and what paying is going to cost them. */
+  }
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
+      <p class="caps-label text-amber">Eat and drink in the bay</p>
+      <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Food &amp; drink</h1>
+      <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
+        Nobody expects you to stop playing to sit at a table. Order from the bay, the tab runs through the venue, and
+        one person settles it at the end.
       </p>
-      <p class="mt-4 max-w-2xl rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> the 3% card surcharge appears only on the menu graphic today and nowhere in the booking flow.
-        Confirm it still applies, and confirm whether it applies at Stillwater, where the till belongs to Stillwater Bowl.
-      </p>
-    </section>
 
-    <p class="mt-section rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-      <strong>STUB —</strong> real food photography. The playbook asks for photographs of the actual food; none were supplied
-      and stock imagery is a ship-blocker.
-    </p>
-
-    {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
-    <section class="mt-section rounded bg-surface p-8">
-      <h2 class="text-2xl font-bold">Hungry and free tonight?</h2>
-      <p class="mt-3 max-w-2xl text-inkMuted">
-        Book a bay by the hour and order from the bay. Up to six of you for the same price.
-      </p>
-      <div class="mt-6"><BookButton size="lg" /></div>
-    </section>
+      <HeroStrip
+        class="mt-s8"
+        tone="dark"
+        cells={[
+          pizzaFrom !== null
+            ? { label: 'Pizza from', value: `$${pizzaFrom}`, qualifier: '14-inch Minnesota thin crust' }
+            : {
+                label: 'Pizza from',
+                gap: { state: 'notSet' as const, reason: 'No pizza is priced in the menu collection yet.' },
+              },
+          plateFrom !== null
+            ? {
+                label: 'Off the menu from',
+                value: `$${plateFrom}`,
+                qualifier: `${appetiserCount} appetisers, all of them shareable`,
+              }
+            : {
+                label: 'Off the menu from',
+                gap: { state: 'notSet' as const, reason: 'Nothing on the food ledger carries a price yet.' },
+              },
+          hoursValue
+            ? { label: 'Kitchen hours', value: hoursValue, qualifier: 'Every day at Lakeville' }
+            : {
+                label: 'Kitchen hours',
+                gap: {
+                  state: 'notSet' as const,
+                  reason: 'The week is no longer one window. The full schedule is on the rates and hours page.',
+                },
+              },
+          { label: 'Card surcharge', value: '3%', qualifier: 'Cash and debit avoid it' },
+        ]}
+      />
+    </div>
   </section>
+
+  {
+    /* 2. WHOSE KITCHEN. Two venues, two different businesses cooking. Saying so
+      plainly beats implying one menu across both, and "one menu across both" is
+      the thing this page is most likely to be misread as claiming. */
+  }
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead>Whose kitchen you are ordering from</SectionHead>
+      <dl class="border-t-score border-navy">
+        <div
+          class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6"
+        >
+          <dt class="caps-label text-label-sm text-inkMuted">{lakeville?.data.name ?? 'The Links of Lakeville'}</dt>
+          <dd class="ml-0 max-w-prose-page text-body leading-body text-inkBody">
+            Ours. A full bar and a food menu of its own — draft and canned beer, seltzers, cocktails, soft drinks, and a
+            kitchen built around Minnesota thin-crust pizza, wings and appetisers. Nine screens, so the game is on
+            whether or not you are playing. Everything priced on this page is theirs.
+          </dd>
+        </div>
+        <div class="grid gap-s3 border-b-score border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
+          <dt class="caps-label text-label-sm text-inkMuted">{stillwater?.data.name ?? 'The Links of Stillwater'}</dt>
+          <dd class="ml-0 max-w-prose-page text-body leading-body text-inkBody">
+            Not ours. The bays sit inside {stillwaterHost}, and the food and drink come from them — burgers, bites and a
+            full bar. One building and one evening out, but not our kitchen, and not the menu below.
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  {/* 3. THE MENU ITSELF. One band per section, alternating ground. */}
+  {
+    sections.map((entry, i) => (
+      <section class={band(i + 1)}>
+        <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+          <MenuSection
+            entry={entry}
+            index={i + 1}
+            venueLabel={venueName(entry.data.venue)}
+            onGreige={isGreige(i + 1)}
+          />
+        </div>
+      </section>
+    ))
+  }
+
+  {
+    /* 4. PAYING. The surcharge is disclosed on the menu graphic and nowhere in
+      the booking flow. It belongs in text, before somebody is at the till. */
+  }
+  <section class={band(sections.length + 1)}>
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={sections.length + 1}>Paying</SectionHead>
+      <div class="flex flex-wrap gap-x-s8 gap-y-s6">
+        <ReadoutCell label="Credit card" size="md">3% surcharge</ReadoutCell>
+        <ReadoutCell label="Cash and debit" size="md">No surcharge</ReadoutCell>
+        <ReadoutCell label="Members" size="md">10% off food and drink</ReadoutCell>
+      </div>
+      <p class="mt-s6 max-w-prose-page text-body leading-body text-inkBody">
+        The card fee covers what the venue is charged to process the payment and is never more than that. At Stillwater
+        the till belongs to {stillwaterHost}, so their rules apply rather than ours.
+      </p>
+    </div>
+  </section>
+
+  {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
+  <section class="on-dark bg-midnight">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead tone="dark">Hungry, and free tonight?</SectionHead>
+      <p class="max-w-prose-page text-lead leading-body text-paper">
+        Book a bay by the hour and order from it. Up to six of you for the same price, and nobody has to be any good.
+      </p>
+      <div class="mt-s6"><BookButton size="lg" variant="onDark" /></div>
+    </div>
+  </section>
+
+  {
+    lakeville && (
+      <MenuSchema
+        sections={sections.filter((s) => s.data.venue === 'lakeville')}
+        venueId={`${globalData.siteUrl}/locations/${lakeville.data.slug}/#venue`}
+        venueName={lakeville.data.name}
+      />
+    )
+  }
 </BaseLayout>
