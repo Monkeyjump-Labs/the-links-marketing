@@ -1,0 +1,14 @@
+{
+  "section": "Eating at Stillwater",
+  "order": 7,
+  "venue": "stillwater",
+  "layout": "choices",
+  "intro": "Everything above is the Lakeville kitchen and the Lakeville bar. Stillwater is a different arrangement: the bays sit inside Stillwater Bowl & Lounge, and the food and drink are theirs — burgers, bites and a full bar, ordered and paid for on their side of the building. One visit, one evening, two businesses.",
+  "gaps": [
+    {
+      "label": "The Stillwater menu",
+      "state": "notSet",
+      "reason": "It is not ours to publish. Whether Stillwater Bowl & Lounge’s menu gets reproduced here, linked to, or left with them has not been settled with either business — and reprinting somebody else’s prices without asking is how a page ends up wrong on the night."
+    }
+  ]
+}

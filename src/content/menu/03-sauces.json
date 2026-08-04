@@ -1,0 +1,35 @@
+{
+  "section": "Sauces, rubs and cheeses",
+  "order": 3,
+  "venue": "lakeville",
+  "layout": "choices",
+  "intro": "No charge, and no limit on asking. This is what “your choice of sauce” means on the list above.",
+  "choices": [
+    {
+      "label": "Sauces and rubs",
+      "options": [
+        "BBQ",
+        "Asian",
+        "Buffalo",
+        "Honey mustard",
+        "Jamaican jerk",
+        "Nashville hot",
+        "Boom boom",
+        "Cajun dry rub",
+        "Buffalo dry rub",
+        "Ground mustard",
+        "Blue cheese",
+        "Ranch",
+        "Salsa"
+      ]
+    },
+    {
+      "label": "Side sauces",
+      "options": ["Ground mustard", "Blue cheese", "Ranch", "Horseradish", "Salsa"]
+    },
+    {
+      "label": "Cheeses",
+      "options": ["Smoked gouda", "Nacho cheese"]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "section": "Beer, seltzers and cider",
+  "order": 5,
+  "venue": "lakeville",
+  "layout": "choices",
+  "intro": "Draft, cans, seltzers and cider, all from the Lakeville bar.",
+  "choices": [
+    {
+      "label": "On tap",
+      "options": [
+        "Coors Light",
+        "Sierra Nevada Hazy IPA",
+        "Castle Danger Cream Ale",
+        "Pseudo Sue",
+        "Kona Big Wave",
+        "Modelo"
+      ]
+    },
+    {
+      "label": "Cans",
+      "options": [
+        "Coors Light (16oz)",
+        "Miller Lite (16oz)",
+        "Busch Light (16oz)",
+        "Michelob Golden Light (16oz)",
+        "Michelob Ultra (16oz)",
+        "Blue Moon (16oz)",
+        "Guinness (16oz)",
+        "Modelo Especial (16oz)",
+        "Surly Furious (16oz)",
+        "Deschutes Fresh (12oz)"
+      ]
+    },
+    {
+      "label": "High Noon (12oz)",
+      "options": ["Grapefruit", "Pineapple", "Mango", "Watermelon", "Original iced tea"]
+    },
+    {
+      "label": "White Claw (12oz)",
+      "options": ["Black cherry", "Lime", "Blackberry", "Peach", "Grape"]
+    },
+    {
+      "label": "Cider",
+      "options": ["Loon Juice Honeycrisp"]
+    }
+  ],
+  "gaps": [
+    {
+      "label": "Beer and seltzer prices",
+      "state": "notSet",
+      "reason": "The printed menu names every beer, seltzer and cider and prices none of them — only the specialty drinks carry figures. We are not going to invent a tap price, so this list is what is available, not what it costs. Send the bar prices and they appear here."
+    }
+  ]
+}
