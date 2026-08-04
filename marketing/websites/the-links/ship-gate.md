@@ -54,7 +54,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ✅ | Beginner reassurance on Leagues **and** Book | Required field on every league record |
 | 🟡 | Menu is HTML | Structure ships; **the six menu PNGs still need transcribing** |
 | ✅ | Leagues in the top nav | |
-| ⬜ | Waitlist live and tested | Renders correctly; untested end-to-end until the lead endpoint exists |
+| ✅ | Waitlist live and tested | Tested end-to-end against live Google and Resend 2026-08-04 (FW-3975). Submissions land on the workbook's Waitlist tab with the consent text recorded, and a notification sends. ⚠️ Notifications currently go to `hello@fareway.golf` — see the launch task |
 
 ## Not covered by the playbook — test independently
 
