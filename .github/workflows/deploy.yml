@@ -1,0 +1,363 @@
+---
+name: 🚀 Deploy (Vercel, CI token)
+
+# Deploys with the Vercel CLI under a CI-owned token instead of Vercel's Git
+# integration. Full rationale, cutover checklist and verification steps:
+# docs/vercel-ci-token-deploys.md  (FW-3994)
+#
+# WHY THIS EXISTS
+# Vercel's Git integration attributes every deployment to the COMMIT AUTHOR, and
+# on a Pro team that author must be a Vercel member who has linked their Git
+# provider. Anyone else's commit is refused with `BLOCKED` — which is NOT a build
+# failure: CI stays green, no error is raised, and the deploy simply never
+# happens. It bit fareway-marketing on PR #37 (production sat a commit behind
+# while every check
+# was green). A CLI deploy is attributed to the TOKEN OWNER instead, so any
+# contributor — marketer, contractor, autofix bot, client staff — can push and
+# the site still ships, against a single paid seat.
+#
+# ⚠️ STAGED CUTOVER — THIS IS NOT THE LIVE DEPLOY PATH YET ⚠️
+# The Vercel Git integration is deliberately still ENABLED. While both are on,
+# a merge to `master` deploys TWICE: once by the Git integration and once by the
+# `production` job below. That is intentional and temporary — it lets us prove
+# the CI path works with the old path still in place as a fallback. Disabling
+# the Git integration is a MANUAL Vercel-dashboard step and must happen ONLY
+# after a green `production` run here. See the cutover checklist in
+# docs/vercel-ci-token-deploys.md. Do not disable it from this workflow.
+
+# NOTE: this fork's production branch is `main`, not the starter's `master`.
+# Left as `master` the workflow is valid YAML that simply never fires — a deploy
+# pipeline that looks configured and silently does nothing, which is the same
+# failure class as the Git-integration block it replaces.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Least privilege by default; the preview job widens this for itself so it can
+# post the deployment URL back onto the PR.
+permissions:
+  contents: read
+
+# Never let two deploys for the same ref race each other. Preview runs are
+# cancellable (only the newest matters); see the production job for why it is not.
+concurrency:
+  group: deploy-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # Deliberately NOT secrets. Vercel org/project IDs are identifiers, not
+  # credentials — they are inert without VERCEL_TOKEN, and Vercel's own CI docs
+  # treat them as plain config. Keeping them inline means forking this workflow
+  # to another client site is a two-line edit instead of a secrets-setup chore.
+  # ⚠️ FORK STEP — replace both with this site's values. After `vercel link`
+  # they are in .vercel/project.json as `orgId` and `projectId`. Not secrets:
+  # they are identifiers, inert without VERCEL_TOKEN.
+  VERCEL_ORG_ID: team_uujdbnHT3BRLjlP0TiUJBrVH
+  VERCEL_PROJECT_ID: prj_9uL9WxKDxU6uss6CUANaudkIKusy
+  # Pin the CLI to a major so a Vercel release can't silently change deploy
+  # behaviour mid-week, while still picking up patches.
+  VERCEL_CLI_VERSION: '58'
+
+jobs:
+  # ───────────────────────────────────────────────────────────────────────────
+  # CONFIGURED? — in the starter itself the IDs are still REPLACE_ME
+  # placeholders and there is no Vercel project, so there is nothing to deploy.
+  # Skip quietly there rather than failing every PR red: a permanently-red check
+  # on a template teaches people to ignore red checks, which is worse than the
+  # thing this workflow exists to prevent. Once a fork replaces the IDs, the
+  # deploy jobs run — and then a missing token fails LOUDLY, as it should.
+  # ───────────────────────────────────────────────────────────────────────────
+  configured:
+    name: Deploy configured?
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+    steps:
+      - id: check
+        run: |
+          if [[ "$VERCEL_ORG_ID" == REPLACE_ME* || "$VERCEL_PROJECT_ID" == REPLACE_ME* ]]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Deploy skipped::VERCEL_ORG_ID / VERCEL_PROJECT_ID are still REPLACE_ME placeholders, so this repo is not wired to a Vercel project. Expected in the starter template. To enable deploys in a fork, replace both in .github/workflows/deploy.yml and add the VERCEL_TOKEN secret — see docs/vercel-ci-token-deploys.md."
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "Vercel project IDs are set; deploy jobs will run."
+          fi
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # PREVIEW — every PR into master.
+  # ───────────────────────────────────────────────────────────────────────────
+  preview:
+    name: Preview deploy
+    needs: configured
+    # Fork PRs get no secrets and no write token, so they can never deploy or be
+    # commented on. Skip them rather than failing red for something unfixable —
+    # this mirrors the same guard in autofix.yml.
+    if: >-
+      needs.configured.outputs.ready == 'true' &&
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pull-requests: write # to post/refresh the preview-URL comment
+
+    steps:
+      - name: Require VERCEL_TOKEN
+        # Fail LOUDLY rather than skipping. A deploy that quietly doesn't happen
+        # is the exact failure mode this workflow was written to eliminate, so we
+        # refuse to reproduce it. Until the secret exists this job goes red on
+        # every PR — that is the intended signal, not a bug. `Quality` is the only
+        # required check on master, so a red deploy job never blocks a merge.
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error title=Missing VERCEL_TOKEN::The VERCEL_TOKEN repo secret is not set, so this preview cannot be deployed. Create a Vercel access token (ideally owned by a dedicated service account, not a person) and add it at Settings → Secrets and variables → Actions → New repository secret, named VERCEL_TOKEN. See docs/vercel-ci-token-deploys.md."
+            exit 1
+          fi
+          echo "VERCEL_TOKEN is present."
+
+      - name: Checkout PR head
+        uses: actions/checkout@v6
+        with:
+          # Build the branch head, not the synthetic merge commit, so what we
+          # deploy matches what Vercel's Git integration would have built (and so
+          # the commit metadata below describes a commit that really exists).
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Vercel CLI
+        run: npm install --global "vercel@${VERCEL_CLI_VERSION}"
+
+      # NOTE: VERCEL_TOKEN must be an ACCOUNT-scoped token. A project-scoped one
+      # (`vercel tokens add … --project prj_…`) authenticates fine against the
+      # REST API but cannot drive the CLI: every CLI command resolves the user
+      # first, and a project-scoped token has no user to resolve. The symptom is
+      # `User not found` from `vercel whoami` and `Could not retrieve Project
+      # Settings` here. See docs/vercel-ci-token-deploys.md.
+      - name: Pull Vercel preview environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
+
+      - name: Build
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # vercel.json's buildCommand runs `tinacms build` before `astro build`,
+          # so the build needs Tina credentials. `vercel pull` only supplies env
+          # vars that are set ON the Vercel project, so we pass these explicitly
+          # from repo secrets rather than assuming the project has them. Belt and
+          # braces: if the project does define them too, these are identical.
+          TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
+          TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+          TINA_BRANCH: ${{ github.event.pull_request.head.ref }}
+          # Lead capture — see docs/lead-capture.md. NOT PUBLIC_LEAD_ENDPOINT,
+          # which is retired. Drop these if the fork has no forms.
+          LEAD_SHEET_ID: ${{ secrets.LEAD_SHEET_ID }}
+          LEAD_FORM_SECRET: ${{ secrets.LEAD_FORM_SECRET }}
+          GOOGLE_SERVICE_ACCOUNT_JSON_B64: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_B64 }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        # No --prod, so VERCEL_ENV=preview and vercel.json takes the
+        # `tinacms build --skip-cloud-checks` branch (no Tina Cloud round-trip).
+        run: vercel build --token="$VERCEL_TOKEN"
+
+      - name: Deploy
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+          COMMIT_REF: ${{ github.event.pull_request.head.ref }}
+          COMMIT_AUTHOR_LOGIN: ${{ github.event.pull_request.user.login }}
+          PR_ID: ${{ github.event.pull_request.number }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        # The --meta flags restore the provenance the Git integration used to
+        # attach for free. Vercel's dashboard renders these specific `github*`
+        # keys as the commit/branch/author of a deployment, so a token deploy
+        # still shows WHERE it came from — only WHO deployed it changes (the
+        # token owner). `githubDeployment` is intentionally NOT set: it would ask
+        # Vercel to write GitHub deployment statuses, which would collide with
+        # the still-enabled Git integration during the staged cutover.
+        run: |
+          COMMIT_AUTHOR_NAME="$(git log -1 --pretty=%an)"
+          COMMIT_MESSAGE="$(git log -1 --pretty=%s)"
+
+          url="$(vercel deploy --prebuilt --yes --token="$VERCEL_TOKEN" \
+            --meta githubCommitSha="$COMMIT_SHA" \
+            --meta githubCommitRef="$COMMIT_REF" \
+            --meta githubCommitMessage="$COMMIT_MESSAGE" \
+            --meta githubCommitAuthorName="$COMMIT_AUTHOR_NAME" \
+            --meta githubCommitAuthorLogin="$COMMIT_AUTHOR_LOGIN" \
+            --meta githubCommitOrg="$REPO_OWNER" \
+            --meta githubCommitRepo="$REPO_NAME" \
+            --meta githubOrg="$REPO_OWNER" \
+            --meta githubRepo="$REPO_NAME" \
+            --meta githubPrId="$PR_ID")"
+
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Preview deployment: $url"
+          {
+            echo "### Preview deployment"
+            echo ""
+            echo "$url"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment the preview URL on the PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          URL: ${{ steps.deploy.outputs.url }}
+          PR_ID: ${{ github.event.pull_request.number }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+        # The Git integration used to comment the preview URL automatically; once
+        # it is disabled nothing else does. Updates one marked comment in place
+        # instead of adding a new one per push, so the PR doesn't fill with noise.
+        run: |
+          body="$(cat <<EOF
+          <!-- vercel-preview-url -->
+          **🔗 Preview deployment:** $URL
+
+          Commit \`${COMMIT_SHA:0:7}\` · deployed by the CI-token workflow (\`.github/workflows/deploy.yml\`), not the Vercel Git integration.
+          EOF
+          )"
+
+          existing="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_ID}/comments?per_page=100" \
+            --jq 'map(select(.body | contains("<!-- vercel-preview-url -->"))) | .[0].id // empty')"
+
+          if [ -n "$existing" ]; then
+            gh api -X PATCH "repos/${GITHUB_REPOSITORY}/issues/comments/${existing}" \
+              -f body="$body" --silent
+            echo "Updated existing preview comment ${existing}."
+          else
+            gh api -X POST "repos/${GITHUB_REPOSITORY}/issues/${PR_ID}/comments" \
+              -f body="$body" --silent
+            echo "Posted new preview comment."
+          fi
+
+  # ───────────────────────────────────────────────────────────────────────────
+  # PRODUCTION — every push to master.
+  #
+  # ⚠️ RUNS ALONGSIDE THE VERCEL GIT INTEGRATION, ON PURPOSE. ⚠️
+  # This is the staged half of the cutover. The Git integration is still enabled,
+  # so until it is switched off each merge to main produces TWO production
+  # deployments of the same commit. They are byte-identical builds of the same
+  # tree and the later one wins, so the site is correct either way — this is
+  # wasted build minutes, not a correctness problem.
+  #
+  # Keeping both live is deliberate: the token path is UNPROVEN (VERCEL_TOKEN
+  # does not exist yet), and until it has produced a green production deploy the
+  # Git integration is the only thing shipping the site. Removing the fallback
+  # before the replacement works would be the riskier order.
+  #
+  # To finish the cutover — MANUAL, in the Vercel dashboard, and only after this
+  # job has gone green at least once:
+  #   Vercel → this site's project → Settings → Git → disable
+  #   "Automatically deploy on push" / disconnect the Git integration.
+  # Nothing in this repo can or should do that step; the Vercel project settings
+  # are not managed from here. Full checklist: docs/vercel-ci-token-deploys.md
+  # ───────────────────────────────────────────────────────────────────────────
+  production:
+    name: Production deploy
+    needs: configured
+    if: needs.configured.outputs.ready == 'true' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - name: Require VERCEL_TOKEN
+        # Same reasoning as the preview job: never skip silently. On master this
+        # matters more — a skipped production deploy is precisely the bug being
+        # fixed. While the Git integration is still enabled a failure here does
+        # not take the site down; the integration still ships the commit.
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error title=Missing VERCEL_TOKEN::The VERCEL_TOKEN repo secret is not set, so this production deploy cannot run. The Vercel Git integration is still enabled and will have shipped this commit, so the site is not down — but the CI deploy path stays unproven until the secret exists. See docs/vercel-ci-token-deploys.md."
+            exit 1
+          fi
+          echo "VERCEL_TOKEN is present."
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Vercel CLI
+        run: npm install --global "vercel@${VERCEL_CLI_VERSION}"
+
+      - name: Pull Vercel production environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # Required, not optional, on this path. --prod means VERCEL_ENV=production,
+          # so vercel.json runs `tinacms build` WITHOUT --skip-cloud-checks: the
+          # build contacts Tina Cloud and fails outright without real credentials.
+          # TINA_BRANCH must be the branch Tina Cloud is configured against.
+          TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
+          TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+          TINA_BRANCH: ${{ github.ref_name }}
+          # Lead capture — see docs/lead-capture.md. NOT PUBLIC_LEAD_ENDPOINT,
+          # which is retired. Drop these if the fork has no forms.
+          LEAD_SHEET_ID: ${{ secrets.LEAD_SHEET_ID }}
+          LEAD_FORM_SECRET: ${{ secrets.LEAD_FORM_SECRET }}
+          GOOGLE_SERVICE_ACCOUNT_JSON_B64: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_B64 }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_REF: ${{ github.ref_name }}
+          COMMIT_AUTHOR_LOGIN: ${{ github.event.head_commit.author.username }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          COMMIT_AUTHOR_NAME="$(git log -1 --pretty=%an)"
+          COMMIT_MESSAGE="$(git log -1 --pretty=%s)"
+
+          url="$(vercel deploy --prebuilt --prod --yes --token="$VERCEL_TOKEN" \
+            --meta githubCommitSha="$COMMIT_SHA" \
+            --meta githubCommitRef="$COMMIT_REF" \
+            --meta githubCommitMessage="$COMMIT_MESSAGE" \
+            --meta githubCommitAuthorName="$COMMIT_AUTHOR_NAME" \
+            --meta githubCommitAuthorLogin="$COMMIT_AUTHOR_LOGIN" \
+            --meta githubCommitOrg="$REPO_OWNER" \
+            --meta githubCommitRepo="$REPO_NAME" \
+            --meta githubOrg="$REPO_OWNER" \
+            --meta githubRepo="$REPO_NAME")"
+
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Production deployment: $url"
+          {
+            echo "### Production deployment"
+            echo ""
+            echo "$url"
+            echo ""
+            echo "> ⚠️ The Vercel Git integration is still enabled, so this commit was"
+            echo "> **also** deployed by the integration. Disabling it is a manual"
+            echo "> dashboard step — see \`docs/vercel-ci-token-deploys.md\`."
+          } >> "$GITHUB_STEP_SUMMARY"
