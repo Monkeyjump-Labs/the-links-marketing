@@ -55,6 +55,16 @@ const schema = {
     ? { geo: { '@type': 'GeoCoordinates', latitude: d.latitude, longitude: d.longitude } }
     : {}),
   openingHours: schemaOpeningHours(venue),
+  /**
+   * `hasMenu` only for a venue that RUNS one — the `BarOrPub` type is the
+   * record's own statement that it has its own bar and kitchen, which today is
+   * Lakeville alone. Stillwater's food belongs to Stillwater Bowl & Lounge, and
+   * pointing Stillwater's `LocalBusiness` at our menu would assert in machine-
+   * readable form the exact thing the page is careful to deny in prose.
+   * The node itself is declared once, on `/menu` (`MenuSchema`); this is the
+   * @id reference the seo-map's schema graph draws (§5).
+   */
+  ...(d.schemaTypes.includes('BarOrPub') ? { hasMenu: { '@id': `${site}/menu/#menu` } } : {}),
   parentOrganization: { '@id': `${site}/#organization` },
   ...(d.containedInPlace ? { containedInPlace: { '@type': 'LocalBusiness', name: d.containedInPlace } } : {}),
   amenityFeature: d.amenities.map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),

@@ -1,0 +1,230 @@
+---
+/**
+ * One section of the menu, drawn in the ruled-grid register.
+ *
+ * The client's instruction was explicit: **do not transcribe the PNGs into a
+ * plain table — custom-code it and make it visually excellent** (client-answers
+ * §9). So the menu is built out of the devices the rest of the site is already
+ * built out of, rather than a fourth invented one:
+ *
+ *   the ruled ledger   `border-t-score` over `border-b-hairline` rows — the
+ *                      device `/memberships` uses for its chooser and its small
+ *                      print, and `/rates` for its cards
+ *   the scoreboard     every price is `scoreboard text-score-md`, the numeric
+ *                      face with tabular lining figures, in a FIXED right lane
+ *                      (`PRICE_LANE`) so the figures form an actual column down
+ *                      the page instead of trailing after ragged dish names
+ *   the gap mark       `GapCell`, for everything the printed menu leaves
+ *                      unclear or unpriced
+ *
+ * **Three layouts, because the source has three shapes.** One row grammar would
+ * have had to lie about one of them: a pizza is one dish at two prices, the
+ * sauces are a list with no prices at all, and forcing either into a
+ * name-description-price row either invents a column or drops one.
+ *
+ *   plates    a dish, its description, one price
+ *   grid      a real `<table>` — a dish priced in two columns IS tabular data,
+ *             and a screen reader should hear "Cheese, 14-inch, $12"
+ *   choices   ruled lists of unpriced options
+ *
+ * **Why `grid` is a table and `plates` is a `<dl>`.** One price per dish is a
+ * name/value pair, and a description list says so — which is what an assistant
+ * reading the page gets for free. Two prices per dish is a matrix, and a `<dl>`
+ * cannot express which figure belongs to which crust. The table carries no
+ * minimum width — both price columns are sized to fit a 390px phone (see
+ * `PRICE_LANE`) — but it keeps the focusable scroll region `RatesTable` ships,
+ * so a long dish name or a third price column degrades into a sideways scroll of
+ * the TABLE rather than of the page body.
+ *
+ * **`dt`/`dd` must be direct children of the `dl`, or of a single `div` child of
+ * it.** A second nested wrapper breaks the grouping and axe fails it
+ * (definition-list / dlitem) — the previous version of this page hit exactly
+ * that. Hence the flat one-`div`-per-row shape below, with a grid doing the
+ * layout rather than extra elements, and `ml-0` on every `dd` because the UA
+ * stylesheet indents them.
+ */
+import type { CollectionEntry } from 'astro:content';
+import SectionHead from './SectionHead.astro';
+import GapCell from './GapCell.astro';
+
+interface Props {
+  entry: CollectionEntry<'menu'>;
+  /** 1-based; renders as `SECTION 0X` in the head's index lane. */
+  index: number;
+  /** Where this section is served. Venue scope is not a footnote here — Lakeville
+   *  runs its own kitchen and Stillwater's food is Stillwater Bowl's, so a
+   *  section that does not say which one it belongs to misrepresents a business. */
+  venueLabel: string;
+  /**
+   * Which ground the section's band is on. It changes exactly one thing: a
+   * `notSet` gap tints itself greige, so on the greige band it needs a white
+   * slab under it or the tint becomes the ground and the mark loses the form
+   * that distinguishes it from a `quoted` one (see `GapCell`). On white it must
+   * NOT get that slab, or the mark sits indented off the page's own grid.
+   */
+  onGreige?: boolean;
+}
+
+const { entry, index, venueLabel, onGreige = false } = Astro.props;
+const d = entry.data;
+
+/**
+ * The fixed price lane, taken off the space ramp rather than eyeballed. Every
+ * price column on the page is this wide, so figures line up down the whole page
+ * and not merely down their own section — which is the point of giving them the
+ * tabular face at all.
+ *
+ * It narrows one step on a phone so that BOTH pizza price columns fit in a
+ * 390px viewport. They have to: a menu that hides the gluten-sensitive price
+ * behind a sideways scroll has published it and not published it at the same
+ * time, and the reader who needs that column is exactly the one who cannot
+ * afford to miss it.
+ */
+const PRICE_LANE = 'w-s8 sm:w-s9';
+/** Matching gutter, so the columns keep their air once the lane narrows. */
+const PRICE_GUTTER = 'pl-s3 sm:pl-s5';
+
+/** Stable in-page anchor, so the section nav can jump to a section. */
+const anchor = d.section
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '');
+---
+
+<section class="scroll-mt-s8" id={anchor}>
+  <div class="flex flex-wrap items-start justify-between gap-s4">
+    <SectionHead index={index} class="grow">{d.section}</SectionHead>
+    <p class="caps-label text-label-sm shrink-0 pt-s4 text-inkMuted">{venueLabel}</p>
+  </div>
+
+  {d.intro && <p class="mb-s7 max-w-prose-page text-lead leading-body text-inkBody">{d.intro}</p>}
+
+  {
+    /* ── plates ──────────────────────────────────────────────────────────────
+      A dish, what is in it, what it costs. The price is pinned to row 1 of its
+      row-grid so it stays level with the dish NAME rather than drifting down
+      beside a two-line description — which is how a price column goes ragged. */
+    d.layout === 'plates' && d.items.length > 0 && (
+      <dl class="border-t-score border-navy">
+        {d.items.map((item) => (
+          <div class="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-s5 border-b-hairline border-navy py-row">
+            <dt class="col-start-1 row-start-1 font-display text-card leading-display font-bold tracking-display text-ink">
+              {item.name}
+            </dt>
+            {item.price && (
+              <dd
+                class:list={[
+                  'col-start-2 row-start-1 ml-0 text-right',
+                  'scoreboard text-score-md leading-score text-ink',
+                  PRICE_LANE,
+                ]}
+              >
+                {item.price}
+              </dd>
+            )}
+            {item.description && (
+              <dd class="col-start-1 row-start-2 mt-s2 ml-0 max-w-prose-page text-body leading-body text-inkBody">
+                {item.description}
+              </dd>
+            )}
+          </div>
+        ))}
+      </dl>
+    )
+  }
+
+  {
+    /* ── grid ────────────────────────────────────────────────────────────────
+      Tabular data, drawn as a table. `tabindex`/`role` make the scroll region
+      keyboard-reachable (axe: scrollable-region-focusable) — the same guard
+      `RatesTable` carries. */
+    d.layout === 'grid' && d.items.length > 0 && (
+      <div class="overflow-x-auto" tabindex="0" role="region" aria-label={`${d.section} prices`}>
+        <table class="w-full text-left">
+          <thead>
+            <tr class="border-b-score border-navy">
+              <th scope="col" class="caps-label text-label-sm pr-s3 pb-s4 align-bottom text-inkMuted sm:pr-s5">
+                {d.section}
+              </th>
+              {d.priceColumns.map((col) => (
+                <th scope="col" class:list={['pb-s4 text-right align-bottom', PRICE_GUTTER, PRICE_LANE]}>
+                  <span class="caps-label text-label-sm block text-ink">{col.label}</span>
+                  {col.qualifier && (
+                    <span class="mt-s1 block text-small leading-body text-inkMuted">{col.qualifier}</span>
+                  )}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {d.items.map((item) => (
+              <tr class="border-b-hairline border-navy">
+                <th scope="row" class="py-row pr-s3 text-left font-normal sm:pr-s5">
+                  <span class="block font-display text-card leading-display font-bold tracking-display text-ink">
+                    {item.name}
+                  </span>
+                  {item.description && (
+                    <span class="mt-s2 block max-w-prose-page text-body leading-body text-inkBody">
+                      {item.description}
+                    </span>
+                  )}
+                </th>
+                {d.priceColumns.map((_col, i) => (
+                  <td
+                    class:list={[
+                      'py-row text-right align-top',
+                      PRICE_GUTTER,
+                      'scoreboard text-score-md leading-score text-ink',
+                      PRICE_LANE,
+                    ]}
+                  >
+                    {item.prices[i]}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+
+  {
+    /* ── choices ─────────────────────────────────────────────────────────────
+      Unpriced lists. Each list is its own ruled column so thirteen sauces read
+      as a set of options rather than as a menu section with the prices missing.
+      The absence of a price here is the SHAPE of the thing; where a price
+      genuinely should exist and does not, that is declared as a gap below. */
+    d.layout === 'choices' && d.choices.length > 0 && (
+      <div class="grid gap-x-s6 gap-y-s7 sm:grid-cols-2 lg:grid-cols-3">
+        {d.choices.map((group) => (
+          <div>
+            <h3 class="caps-label text-label-sm border-t-score border-navy pt-s4 text-ink">{group.label}</h3>
+            <ul>
+              {group.options.map((option) => (
+                <li class="border-b-hairline border-navy py-s4 text-body leading-body text-inkBody">{option}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  {d.note && <p class="mt-s5 max-w-prose-page text-small leading-body text-inkMuted">{d.note}</p>}
+
+  {
+    /* On the greige band each gap gets its own white slab — same treatment
+      `/memberships` gives its winter-pricing gap, and for the same reason. On
+      white it is already on the ground it needs. */
+    d.gaps.length > 0 && (
+      <div class="mt-s7 grid max-w-prose-page gap-s5">
+        {d.gaps.map((gap) => (
+          <div class:list={[onGreige && 'bg-white p-cell']}>
+            <GapCell label={gap.label} state={gap.state} word={gap.word} reason={gap.reason} size="name" />
+          </div>
+        ))}
+      </div>
+    )
+  }
+</section>
