@@ -134,6 +134,49 @@ const INBOX = VENUE_INBOX;   // was TESTING_INBOX
 in place, so this cannot quietly survive to launch. Do it, redeploy, then submit one real
 form and confirm it arrives at `info@lakevillelinks.com`.
 
+
+---
+
+## ⚠️ Launch task — add a DMARC record for `thelinks.golf`
+
+**Owner: us (we hold the DNS). Blocking launch.**
+
+The first real notification landed in **spam**, 2026-08-04. Diagnosed:
+
+| Record | State |
+| -- | -- |
+| DKIM `resend._domainkey.thelinks.golf` | ✓ present |
+| SPF `send.thelinks.golf` | ✓ `v=spf1 include:amazonses.com ~all` |
+| **DMARC `_dmarc.thelinks.golf`** | ✗ **missing** |
+
+Authentication itself is fine — Resend signs with DKIM as `d=thelinks.golf`, which aligns
+with the `From:` address, so DMARC would *pass* if a policy existed to evaluate. The problem
+is that there is no policy at all, and since February 2024 Gmail and Yahoo treat an absent
+DMARC record as a strong negative signal. `thelinks.golf` also has no sending history
+whatsoever, so there is no reputation to offset it.
+
+**Add this TXT record:**
+
+```
+name:   _dmarc.thelinks.golf
+value:  v=DMARC1; p=none; rua=mailto:dmarc@thelinks.golf; fo=1
+```
+
+`p=none` is monitor-only — it asks receivers to report, never to reject, so it cannot bounce
+legitimate mail while we are still setting up. Tighten to `p=quarantine` once the reports
+show only Resend sending as us.
+
+Then send one more test and confirm it reaches the inbox rather than spam.
+
+**Why this is blocking rather than cosmetic:** the whole design says the sheet is the system
+of record precisely so a lost email cannot lose a lead — but a notification that reliably
+lands in spam means the venue never learns an enquiry arrived, and a planner waiting on a
+quote does not know to chase. The row being safe is not the same as the venue being told.
+
+Note also that `thelinks.golf` currently has no website on it (it still 301s into
+`lakevillelinks.com` — the stalled rename). A sending domain with no site is itself a mild
+negative signal, and resolving the rename fixes that as a side effect.
+
 ---
 
 ## Deploy note — the Vercel git-author block
