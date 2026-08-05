@@ -150,7 +150,40 @@ const venues = defineCollection({
     bookingUrl: z.string().url(),
     mapUrl: z.string().url().optional(),
     openedYear: z.number().optional(),
+    /**
+     * The venue's own one-line positioning, restored from the client's live site
+     * 2026-08-04 (FW-4000): Stillwater's "Your New Local Clubhouse on the
+     * East-Side", Lakeville's "Your south metro clubhouse".
+     *
+     * "Clubhouse" is the CLIENT'S word for both venues, on two different pages of
+     * their own site — checked before adopting, per the commit-753fe00 rule about
+     * not inheriting a reference site's vocabulary as IA. Sentence case here
+     * because headings on this site are sentence case (FW-3967); caps is reserved
+     * for the 12px label role.
+     */
+    tagline: z.string().optional(),
     intro: z.string().optional(),
+    /**
+     * The venue's own feature blocks, in its own order. Stillwater's live page
+     * carries three and ours carried none, which is why Stillwater was the only
+     * page on this site SHORTER than the client's (324 words to our 294).
+     *
+     * ⚠️ Each `body` must survive the truth audit on its own. Two things on
+     * Stillwater's live page are deliberately NOT reproduced here: the claim that
+     * league play "is in full force" (Stillwater has never run a season — see
+     * `leagues/fall-winter-2026-stillwater.json`, and their own page's CTA says
+     * "Coming Soon"), and St Andrews named as a playable course (the course list
+     * is marked *Not yet set* on /simulators because we do not have one). Their
+     * league FORMATS are restored as the plan, which is what they are.
+     */
+    highlights: z
+      .array(
+        z.object({
+          title: z.string(),
+          body: z.string(),
+        }),
+      )
+      .default([]),
     hours: z.array(hoursRow).default([]),
     hoursNote: z.string().optional(),
     /**
@@ -458,8 +491,25 @@ const menu = defineCollection({
 /**
  * Testimonials. 81% of the audited sim-venue corpus shows no reviews at all, so
  * this is a real differentiator — but only with attributed, real quotes. The
- * reference competitor runs three unsourced ones; we do not copy that. An empty
- * collection is the honest state until the client supplies them.
+ * reference competitor runs three unsourced ones; we do not copy that.
+ *
+ * Populated 2026-08-04 (FW-4000) with four Google reviews the client already
+ * publishes, attributed, on their own live site — Lucas from
+ * `_ingest/raw/groups.html`, and Jeff, Anita and Rob from `_ingest/raw/home-2.html`.
+ * They were treated as blocked on the client while sitting in the ingest the
+ * whole time. Quotes are verbatim; nothing is tightened.
+ *
+ * `sourceUrl` is deliberately EMPTY on all four. We have the quote and the first
+ * name as published, which is exactly what `source: "Google review"` claims — we
+ * do not have the permalink to the individual review, and a link that does not
+ * resolve to the quote above it is worse than no link. The per-venue Google
+ * review links are already asked for (client-answers.md §14); fill them in when
+ * they land.
+ *
+ * All four are Lakeville. Stillwater opened in 2026, has no Google Business
+ * Profile on record, and therefore has no reviews to quote — the homepage band
+ * shows the three highest-ordered, so it is Lakeville proof on a two-venue page.
+ * That is honest, and the fix is a Stillwater GBP, not a borrowed quote.
  */
 const testimonials = defineCollection({
   type: 'data',
