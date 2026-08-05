@@ -1,33 +1,56 @@
 ---
 /**
- * A photo slot drawn as a SPEC, never as a fake photograph.
+ * A venue media slot: a REAL photograph when one exists, and otherwise the
+ * frame drawn as a SPEC — never a fake photograph, and never another venue's
+ * room standing in for this one.
  *
- * There is no venue photography in this project (`notes.pendingImplementation`),
- * and the playbook's ship gate forbids stock golf imagery, so the frame the
- * playbook demands is drawn instead — at the real 3:2, out of `semantic.media.*`
- * values that were themselves derived from measurements of the Lakeville shoot:
- * a near-black room (mean luminance 54–74/255, roughly a third of every frame
- * near-black), warm practical pendants over the bar, and the simulator
- * projection as the one bright cool thing in it (screenLight 11.07:1 on
- * midnight — the pairing the 1.x palette literally could not express, at 1.81:1).
+ * Where there is no photography (`notes.pendingImplementation`), the playbook's
+ * ship gate forbids stock golf imagery, so the frame the playbook demands is
+ * drawn instead — at the real 3:2, out of `semantic.media.*` values that were
+ * themselves derived from measurements of the Lakeville shoot: a near-black
+ * room (mean luminance 54–74/255, roughly a third of every frame near-black),
+ * warm practical pendants over the bar, and the simulator projection as the one
+ * bright cool thing in it (screenLight 11.07:1 on midnight — the pairing the
+ * 1.x palette literally could not express, at 1.81:1).
  *
- * **The two slots are deliberately asymmetric, because the truth is.** Lakeville
- * is drawn LIT. Stillwater is the same drawing with the light off — hatched,
- * with a hard amber cross and no projection — because that room has never been
- * photographed at all. Lakeville's frames will never stand in for it; that swap
- * is the trust defect this rebuild exists to fix (STYLE-GUIDE §6.10). The unlit
- * slot is an approved decision, not a placeholder waiting to be filled in.
+ * **The two slots are deliberately asymmetric, because the truth is** — and as
+ * of FW-4003 that asymmetry has INVERTED, which is exactly what should happen
+ * when the slot is drawn from fact rather than from taste:
+ *
+ * - **Stillwater now carries a real photograph.** The client supplied a
+ *   walkthrough video of that room (`src/assets/video/README.md`) and a still
+ *   pulled from it is the first honest image of Stillwater this site has ever
+ *   had. It is handheld phone footage of an empty room, not a commissioned
+ *   shoot — so the caption says precisely that, and the staging marker still
+ *   asks for the shoot. A modest true picture outranks a confident drawing.
+ * - **Lakeville is still drawn, LIT.** A professional shoot of that room exists
+ *   but the files have not been delivered, so there is nothing real to show yet.
+ *
+ * What has not changed is the rule underneath: Lakeville's frames will never
+ * stand in for Stillwater. That swap is the trust defect this rebuild exists to
+ * fix (STYLE-GUIDE §6.10). The drawn slot is an approved decision, not a
+ * placeholder to be filled with whatever is nearest to hand.
  *
  * The `needs-client-data` tag is a BUILD-STATE marker in the team's vocabulary,
  * so it follows `StubNote`'s rule and renders on staging only. The caption above
  * it is a plain statement of fact and ships.
  */
+import { Image } from 'astro:assets';
+
 interface Props {
   /** Unique per instance — the hatch pattern is referenced by id. */
   id: string;
-  /** false = the same drawing with the light off. */
+  /**
+   * A real photograph of THIS room. When set it replaces the drawing entirely
+   * and `lit` is not consulted. Never another venue's room.
+   */
+  photo?: ImageMetadata;
+  /** false = the same drawing with the light off. Ignored when `photo` is set. */
   lit: boolean;
-  /** Long description of the exact frame that belongs here. */
+  /**
+   * With `photo`: what the photograph actually shows.
+   * Without: a long description of the exact frame that belongs here.
+   */
   alt: string;
   label: string;
   caption: string;
@@ -35,7 +58,7 @@ interface Props {
   needs: string;
 }
 
-const { id, lit, alt, label, caption, needs } = Astro.props;
+const { id, photo, lit, alt, label, caption, needs } = Astro.props;
 const isStaging = import.meta.env.PUBLIC_SITE_NOINDEX === 'true';
 
 const ground = 'fill: var(--brand-media-slot-ground)';
@@ -46,90 +69,102 @@ const mass = 'fill: var(--brand-media-slot-mass); stroke: var(--brand-media-slot
 ---
 
 <figure class="m-0 border-rule border-paper bg-midnight">
-  <svg viewBox="0 0 300 200" role="img" aria-label={alt} class="block h-auto w-full">
-    {
-      lit ? (
-        <>
-          {/* the near-black room */}
-          <rect width="300" height="200" style={ground} />
+  {
+    photo ? (
+      /* Native 3:2 at 720×480 — the widest honest crop the portrait source
+         allows, so it is served at its own size and never upscaled. */
+      <Image
+        src={photo}
+        alt={alt}
+        widths={[360, 480, 720]}
+        sizes="(min-width: 1024px) 42vw, 100vw"
+        class="block h-auto w-full"
+      />
+    ) : (
+      <svg viewBox="0 0 300 200" role="img" aria-label={alt} class="block h-auto w-full">
+        {lit ? (
+          <>
+            {/* the near-black room */}
+            <rect width="300" height="200" style={ground} />
 
-          {/* THE ONE BRIGHT SCREEN: the simulator projection, 11.07:1 on the
+            {/* THE ONE BRIGHT SCREEN: the simulator projection, 11.07:1 on the
               slot ground. Round 1's palette could not draw this at all. */}
-          <rect x="160" y="34" width="124" height="86" style={screen} />
-          <rect x="160" y="34" width="124" height="10" style="fill: var(--brand-white)" />
-          {/* the projected course — forest's surviving visible job, 6.41:1 on the screen */}
-          <rect x="160" y="92" width="124" height="28" style={fairway} />
-          <rect
-            x="160"
-            y="34"
-            width="124"
-            height="86"
-            fill="none"
-            stroke-width="1.5"
-            style="stroke: var(--brand-media-slot-frame)"
-          />
-          {/* the light the screen throws back into the room */}
-          <rect x="160" y="120" width="124" height="3" style={screen} />
+            <rect x="160" y="34" width="124" height="86" style={screen} />
+            <rect x="160" y="34" width="124" height="10" style="fill: var(--brand-white)" />
+            {/* the projected course — forest's surviving visible job, 6.41:1 on the screen */}
+            <rect x="160" y="92" width="124" height="28" style={fairway} />
+            <rect
+              x="160"
+              y="34"
+              width="124"
+              height="86"
+              fill="none"
+              stroke-width="1.5"
+              style="stroke: var(--brand-media-slot-frame)"
+            />
+            {/* the light the screen throws back into the room */}
+            <rect x="160" y="120" width="124" height="3" style={screen} />
 
-          {/* warm pendants over the bar: the only heat in the frame */}
-          <g style={pendant}>
-            <rect x="34" y="18" width="2" height="26" />
-            <rect x="27" y="44" width="16" height="7" />
-            <rect x="70" y="18" width="2" height="34" />
-            <rect x="63" y="52" width="16" height="7" />
-            <rect x="106" y="18" width="2" height="22" />
-            <rect x="99" y="40" width="16" height="7" />
-          </g>
+            {/* warm pendants over the bar: the only heat in the frame */}
+            <g style={pendant}>
+              <rect x="34" y="18" width="2" height="26" />
+              <rect x="27" y="44" width="16" height="7" />
+              <rect x="70" y="18" width="2" height="34" />
+              <rect x="63" y="52" width="16" height="7" />
+              <rect x="106" y="18" width="2" height="22" />
+              <rect x="99" y="40" width="16" height="7" />
+            </g>
 
-          {/* the bar mass. 1.31:1 against the ground ON PURPOSE — a dark room
+            {/* the bar mass. 1.31:1 against the ground ON PURPOSE — a dark room
               has no legible furniture. Read by its amber top edge (7.21:1) and
               a slate hairline. */}
-          <rect x="18" y="130" width="124" height="52" stroke-width="0.75" style={mass} />
-          <rect x="18" y="130" width="124" height="4" style={pendant} />
+            <rect x="18" y="130" width="124" height="52" stroke-width="0.75" style={mass} />
+            <rect x="18" y="130" width="124" height="4" style={pendant} />
 
-          {/* the measured near-black band: about a third of every real frame */}
-          <line
-            x1="0"
-            y1="124"
-            x2="300"
-            y2="124"
-            stroke-width="0.75"
-            stroke-dasharray="4 4"
-            style="stroke: var(--brand-media-slot-label)"
-          />
-        </>
-      ) : (
-        <>
-          <defs>
-            <pattern
-              id={`hatch-${id}`}
-              width="10"
-              height="10"
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(45)"
-            >
-              <rect width="10" height="10" style={ground} />
-              <rect width="1" height="10" opacity="0.75" style="fill: var(--brand-media-slot-label)" />
-            </pattern>
-          </defs>
-          <rect width="300" height="200" fill={`url(#hatch-${id})`} />
-          {/* the same slot geometry as the lit room, with the screen NOT lit */}
-          <rect
-            x="96"
-            y="74"
-            width="108"
-            height="52"
-            stroke-width="2"
-            style="fill: var(--brand-media-slot-ground); stroke: var(--brand-media-slot-pendant)"
-          />
-          <g stroke-width="2" style="stroke: var(--brand-media-slot-pendant)">
-            <line x1="96" y1="74" x2="204" y2="126" />
-            <line x1="204" y1="74" x2="96" y2="126" />
-          </g>
-        </>
-      )
-    }
-  </svg>
+            {/* the measured near-black band: about a third of every real frame */}
+            <line
+              x1="0"
+              y1="124"
+              x2="300"
+              y2="124"
+              stroke-width="0.75"
+              stroke-dasharray="4 4"
+              style="stroke: var(--brand-media-slot-label)"
+            />
+          </>
+        ) : (
+          <>
+            <defs>
+              <pattern
+                id={`hatch-${id}`}
+                width="10"
+                height="10"
+                patternUnits="userSpaceOnUse"
+                patternTransform="rotate(45)"
+              >
+                <rect width="10" height="10" style={ground} />
+                <rect width="1" height="10" opacity="0.75" style="fill: var(--brand-media-slot-label)" />
+              </pattern>
+            </defs>
+            <rect width="300" height="200" fill={`url(#hatch-${id})`} />
+            {/* the same slot geometry as the lit room, with the screen NOT lit */}
+            <rect
+              x="96"
+              y="74"
+              width="108"
+              height="52"
+              stroke-width="2"
+              style="fill: var(--brand-media-slot-ground); stroke: var(--brand-media-slot-pendant)"
+            />
+            <g stroke-width="2" style="stroke: var(--brand-media-slot-pendant)">
+              <line x1="96" y1="74" x2="204" y2="126" />
+              <line x1="204" y1="74" x2="96" y2="126" />
+            </g>
+          </>
+        )}
+      </svg>
+    )
+  }
 
   <figcaption class="border-t-hairline border-slate p-s5">
     <p class="caps-label text-label-sm text-amber">{label}</p>
