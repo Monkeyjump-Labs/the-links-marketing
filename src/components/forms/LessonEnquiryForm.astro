@@ -1,0 +1,187 @@
+---
+/**
+ * The lessons enquiry — a SECOND path, deliberately not the only one.
+ *
+ * Every coach on `/lessons/` publishes their own email and phone, and that stays
+ * true: plenty of people would rather write to a named human than fill in a
+ * form, and the arrangement here really is a direct handoff to four independent
+ * instructors. This form exists for the other visitor — the one who has read
+ * four sets of credentials, cannot tell which of them teaches beginners, and
+ * would close the tab rather than pick a stranger at random.
+ *
+ * **Why not `EnquiryForm`.** That component is the events form and it asks an
+ * events question: headcount and date, at scoreboard scale, because a planner
+ * arrives already knowing both and the venue cannot quote without them. A
+ * would-be student knows neither. They know who it is for and what is wrong with
+ * their swing, and that is a different first field — asking "how many people"
+ * and "date you have in mind" of someone who has never held a club is the form
+ * telling them they are in the wrong place. The plumbing is shared (`/api/lead`,
+ * the honeypot, the signed stamp, `LeadFormScript`); the field set is not.
+ *
+ * **`lessonFor` is the load-bearing field.** It is what decides which coach the
+ * notification gets forwarded to — a junior, a nervous adult and a group of four
+ * are three different recommendations from the same four names — so it goes
+ * first, above the contact details, and it is the one thing that is required
+ * beyond a name and an email.
+ *
+ * **No price field, and no price gap.** Lessons are quoted per coach and that is
+ * the client's settled answer (`client-answers.md` §4), not a number we are
+ * waiting on. Nothing here should imply otherwise.
+ *
+ * A greige slab on the page's white ground: navy heading 10.3:1, navyMid body
+ * 7.7:1, inkMuted labels 5.3:1, and an ember submit with paper text at 6.85:1.
+ * Fields keep a white ground so the slab reads as a form and not as a callout.
+ *
+ * Posts to `/api/lead` — fixed and same-origin, like every other form here.
+ * Works with JavaScript disabled: a native POST gets a 303 to `/thanks/`, and
+ * `LeadFormScript` upgrades that to an inline confirmation.
+ */
+import { getVenues } from '../../lib/venues';
+import { buttonClasses } from '../../lib/buttons';
+
+interface Props {
+  heading?: string;
+  blurb?: string;
+  listName: string;
+  id?: string;
+  class?: string;
+}
+
+const {
+  heading = 'Not sure which coach to ask?',
+  blurb = 'Tell us who it is for and roughly what you want out of it. We will point you at the coach who fits and come back with a price. No commitment, and nobody will ask about your handicap.',
+  listName,
+  id,
+  class: className = '',
+} = Astro.props;
+
+const venues = await getVenues();
+const formId = id ?? `lesson-enquiry-${listName.replace(/\W+/g, '-').toLowerCase()}`;
+
+/**
+ * Label and stored value are the same string on purpose. The venue reads these
+ * in a spreadsheet column months from now, and a value that differs from what
+ * the visitor was shown is a translation nobody remembers writing.
+ */
+const LESSON_FOR = ['Me', 'A junior', 'A group of us'] as const;
+
+const field =
+  'min-h-tap w-full min-w-0 rounded-control border-rule border-navy bg-white px-s4 py-s3 text-body text-navy placeholder:text-inkMuted';
+const labelClass = 'caps-label block text-label-sm text-inkMuted';
+---
+
+<div class:list={['bg-greige border-t-score border-primary p-cell lg:p-cell-lg', className]}>
+  <h2 class="text-section leading-display font-extrabold tracking-display-tight text-ink">{heading}</h2>
+  <p class="mt-s3 max-w-prose-page text-body leading-body text-inkBody">{blurb}</p>
+
+  <form
+    class="mt-s6"
+    action="/api/lead"
+    method="POST"
+    data-analytics={`enquiry:${listName}`}
+    data-success="Thanks — we have got it. Someone will come back to you with a coach and a price."
+    id={formId}
+  >
+    <input type="hidden" name="list" value={listName} />
+    <input type="hidden" name="_page" value={Astro.url.pathname} />
+    {/* Filled at runtime by LeadFormScript; absent on the no-JS path, which is accepted. */}
+    <input type="hidden" name="_ts" value="" />
+    <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+    {
+      /* The question that decides who answers, first and alone above the 4px
+        rule — the same move the events form makes with headcount and date. A
+        fieldset rather than a select: three options is not a menu, and a chip
+        set shows all three without asking anyone to open anything. */
+    }
+    <div class="border-b-score border-navy pb-s6">
+      <fieldset class="min-w-0">
+        <legend class={labelClass}>Who is the lesson for</legend>
+        <div class="mt-s2 flex flex-wrap gap-s3">
+          {
+            /* Chips, not dots. A bare radio renders a 16px target however tall
+              the label around it is, and `audit:visual` measures the INPUT's own
+              box — three sub-44px controls on the one page that had none. So the
+              real radio is stretched to fill its chip (`absolute inset-0`,
+              `appearance-none`) and the chip carries the visual state: the whole
+              thing is the target, the element measured IS the target, and the
+              global `:focus-visible` ring traces the chip rather than a dot.
+              Still a native radio — arrow keys, `required`, and the screen
+              reader's group semantics all come free.
+
+              Navy fill when selected, not ember: ember is the ACTION colour and
+              it is already spent on the submit button eight inches below. A
+              chosen option is a state, not an action.
+
+              Nothing is pre-selected. A defaulted "Me" would file every junior
+              and every group under the wrong heading for the price of one
+              un-noticed radio, and this is the field the whole row turns on —
+              `required` makes the browser ask rather than us guess. */
+            LESSON_FOR.map((option) => (
+              <label class="relative flex min-h-tap cursor-pointer items-center justify-center rounded-control border-rule border-navy bg-white px-s5 py-s3 text-body leading-body text-inkBody transition-colors duration-fast ease-standard hover:bg-paper has-[:checked]:border-ink has-[:checked]:bg-ink has-[:checked]:text-surface">
+                <input
+                  type="radio"
+                  name="lessonFor"
+                  value={option}
+                  required
+                  class="absolute inset-0 cursor-pointer appearance-none rounded-control"
+                />
+                <span class="relative">{option}</span>
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+    </div>
+
+    {
+      /* Four cells, two by two, every slot filled — venue leads because it is
+        the one question a two-location venue must not lose (the events form
+        makes the same point), and it pairs with the name rather than leaving a
+        hole beside the phone. */
+    }
+    <div class="mt-s6 grid gap-s5 sm:grid-cols-2">
+      <div class="min-w-0">
+        <label class={labelClass} for={`${formId}-venue`}>Which venue</label>
+        <select id={`${formId}-venue`} name="venue" required class={`mt-s2 ${field}`}>
+          {venues.map((venue) => <option value={venue.data.slug}>{venue.data.name}</option>)}
+          <option value="either">Either — help me choose</option>
+        </select>
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-name`}>Your name</label>
+        <input id={`${formId}-name`} name="name" type="text" required class={`mt-s2 ${field}`} />
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-email`}>Email</label>
+        <input id={`${formId}-email`} name="email" type="email" required class={`mt-s2 ${field}`} />
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-phone`}>Phone</label>
+        <input id={`${formId}-phone`} name="phone" type="tel" class={`mt-s2 ${field}`} />
+      </div>
+      <div class="sm:col-span-2">
+        <label class={labelClass} for={`${formId}-message`}>What you want out of it</label>
+        <textarea
+          id={`${formId}-message`}
+          name="message"
+          rows="4"
+          placeholder='"I have never held a club" and "I have had the same slice for ten years" are both fine answers.'
+          class={`mt-s2 ${field}`}></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class:list={[buttonClasses('md', 'primary'), 'mt-s6 w-full cursor-pointer']}>
+      Ask about lessons
+    </button>
+
+    {/* Only ever shown on failure — success replaces the whole form. */}
+    <p
+      data-lead-status
+      role="alert"
+      hidden
+      class="mt-s4 border-l-slab border-accent pl-s4 text-small leading-body text-inkBody"
+    >
+    </p>
+  </form>
+</div>

@@ -11,10 +11,35 @@
  * becoming a carousel of headshots.
  *
  * The commercial model as published is a direct handoff to four independent
- * coaches with no prices and no booking. That is stubbed, not papered over.
+ * coaches with no prices and no booking.
+ *
+ * ── PRICE IS NOT A GAP ON THIS PAGE (FW-3999) ───────────────────────────────
+ *
+ * This page used to carry a "what it costs" stub asking the client for a number.
+ * There is no number. `client-answers.md` §4 closed it: lesson pricing is not
+ * published and will not be, because each coach sets and quotes their own rate.
+ * That is a settled commercial arrangement, not an unfinished page.
+ *
+ * So the section says so in plain words and carries **no gap mark of any kind**
+ * — not a visible `STUB`, not a `GapCell`, not even a *Quoted · Ask us*. Every
+ * one of those tells a reader that a figure exists and is being kept from them,
+ * which about this venue is simply untrue. The page's other stubs stay, because
+ * those really are things we are waiting on.
+ *
+ * ── AND THE PAGE ENDS IN A QUESTION, NOT A PRICE LIST ───────────────────────
+ *
+ * With no prices to compare, the most useful thing this page can do is start a
+ * conversation, so it carries an enquiry form routed through `/api/lead` on the
+ * `lessons` list. It is the SECOND path, not the only one: the coaches publish
+ * their own emails and phone numbers (restored in FW-4000) and those stay
+ * exactly where they are. Plenty of people will write to a named human rather
+ * than fill in a form, and that is the better outcome when it happens — the form
+ * is for the visitor who cannot tell which of four strangers teaches beginners.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import LessonEnquiryForm from '../components/forms/LessonEnquiryForm.astro';
+import StubNote from '../components/venue/StubNote.astro';
 
 const metadata = {
   metaTitle: 'Golf Lessons — Lakeville, MN | The Links',
@@ -144,13 +169,24 @@ const formats = [
         one or two changes worth making. You leave with something specific to work on. You are not signed up to
         anything.
       </p>
-      <p class="mt-4 max-w-2xl text-inkMuted">Contact a coach directly to arrange a time, then book the bay here.</p>
+      <p class="mt-4 max-w-2xl text-inkMuted">
+        Contact a coach directly to arrange a time, then book the bay here. If you would rather not pick one cold, <a
+          href="#ask"
+          class="font-semibold underline">tell us what you are after</a
+        > and we will point you at the one who fits.
+      </p>
       <div class="mt-6 flex flex-wrap gap-4">
         <a
           href="#coaches"
-          class="inline-block rounded bg-primary px-6 py-3 font-semibold text-surface hover:opacity-90"
+          class="inline-block rounded border-2 border-primary bg-primary px-6 py-3 font-semibold text-surface hover:opacity-90"
         >
           Choose a coach
+        </a>
+        <a
+          href="#ask"
+          class="inline-block rounded border-2 border-ink px-6 py-3 font-semibold text-ink hover:bg-ink hover:text-surface"
+        >
+          Ask us instead
         </a>
         <BookButton size="md" variant="outline" label="Book a practice bay" />
       </div>
@@ -186,24 +222,23 @@ const formats = [
       </dl>
     </section>
 
-    {/* 4. Price. Unpublished, so said so — not implied by omission. */}
+    {
+      /* 4. Price. NOT a gap — see the note at the top of this file. Each coach
+        quotes their own rate; there is no house price list and there is not
+        going to be one (client-answers.md §4). Plain prose, no mark, nothing
+        that suggests a figure is being held back. Do not add a GapCell here. */
+    }
     <section class="mt-section">
       <h2 class="text-3xl font-bold">What it costs</h2>
-      <div class="mt-6 rounded border-2 border-dashed border-ink/25 p-6">
-        <p class="text-inkMuted">
-          <strong>STUB —</strong> no lesson pricing is published anywhere today. Each coach sets and quotes their own rate,
-          so the honest current answer is "ask the coach" — which loses the visitor who wanted to know whether this is a $60
-          decision or a $600 one before they email a stranger.
-        </p>
-        <p class="mt-4 font-semibold">Needed from the client and the coaching staff:</p>
-        <ul class="mt-3 list-disc space-y-1 pl-5 text-inkMuted">
-          <li>A price, or a price range, for a single session</li>
-          <li>Whether bay time is included in the lesson fee or billed separately</li>
-          <li>Group rates, and any multi-lesson package</li>
-          <li>Junior rates</li>
-          <li>Whether instruction is available at Stillwater, and with whom</li>
-        </ul>
-      </div>
+      <p class="mt-3 max-w-2xl text-inkMuted">
+        Each coach sets their own rate and quotes it themselves — there is no house price list, which is why you will
+        not find one here. Ask whichever coach you like the look of, or send the form below and we will get you a number
+        back. Asking two of them is fine, and nobody will mind.
+      </p>
+      <p class="mt-4 max-w-2xl text-inkMuted">
+        Worth asking at the same time: whether the bay time is part of what they quote you or booked separately. It is a
+        one-line question and it saves a surprise.
+      </p>
     </section>
 
     {/* 5. The coaches. Credentials in crawlable text — a real trust asset. */}
@@ -253,7 +288,22 @@ const formats = [
       </p>
     </section>
 
-    {/* 6. Practice without a coach — the other half of "lessons and practice". */}
+    {
+      /* 6. The enquiry. Sits directly under the coaches ON PURPOSE — this is the
+        page's answer to "I have now read four sets of credentials and still
+        cannot tell which of them teaches beginners", and it only makes sense
+        once you have met them. The direct emails above stay the first path; the
+        hero links down here for anyone who wants this one instead. */
+    }
+    <section class="mt-section" id="ask">
+      <LessonEnquiryForm listName="lessons" id="lesson-enquiry" />
+      <StubNote
+        class="mt-6"
+        needs="Whether instruction runs at Stillwater at all, and with which coach — the form offers both venues because a visitor may well ask, but nobody here can answer a Stillwater enquiry yet. Also unconfirmed: whether a coach's quote includes the bay time or is billed on top of it. Lesson PRICING is not on this list and should never go back on it: client-answers.md §4 closed it — coaches quote their own rates and nothing is being withheld."
+      />
+    </section>
+
+    {/* 7. Practice without a coach — the other half of "lessons and practice". */}
     <section class="mt-section">
       <h2 class="text-3xl font-bold">Just want to hit balls</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
@@ -272,7 +322,8 @@ const formats = [
       <h2 class="text-2xl font-bold">Book the bay</h2>
       <p class="mt-3 max-w-2xl text-inkMuted">
         Arrange the time with your coach, then reserve the hour here. Or book a practice hour on your own and start
-        there.
+        there. Still deciding? <a href="#ask" class="font-semibold underline">Ask us about lessons</a> and we will come back
+        to you.
       </p>
       <div class="mt-6"><BookButton size="lg" /></div>
     </section>

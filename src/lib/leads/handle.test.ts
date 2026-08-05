@@ -133,6 +133,18 @@ describe('handleLead — validation', () => {
     await handleLead({ fields: { ...base(), list: 'league-general' }, now: NOW }, { sheet, formSecret: SECRET });
     expect(sheet.rows[0].consent).toContain('One email when registration opens');
   });
+
+  it('stores who a lesson is for — the field that enquiry actually turns on', async () => {
+    // `lessonFor` decides which coach the notification gets forwarded to. Drop
+    // it from the allowlist and the form still looks like it works, while every
+    // junior enquiry arrives indistinguishable from an adult one.
+    const sheet = okSheet();
+    await handleLead(
+      { fields: { ...base(), list: 'lessons', lessonFor: 'A junior' }, now: NOW },
+      { sheet, formSecret: SECRET },
+    );
+    expect(sheet.rows[0].lessonFor).toBe('A junior');
+  });
 });
 
 describe('handleLead — tab routing', () => {
@@ -141,6 +153,15 @@ describe('handleLead — tab routing', () => {
   it('routes an event enquiry to Enquiries', async () => {
     const sheet = okSheet();
     await handleLead({ fields: base(), now: NOW }, { sheet, formSecret: SECRET });
+    expect(sheet.tabs).toEqual(['Enquiries']);
+  });
+
+  it('routes a lesson enquiry to Enquiries, not Waitlist', async () => {
+    // It reads like a waitlist because it has no date attached, but there is a
+    // person waiting on a reply today. Enquiries is worked daily; Waitlist sits
+    // untouched until registration opens, which would be the wrong shelf.
+    const sheet = okSheet();
+    await handleLead({ fields: { ...base(), list: 'lessons' }, now: NOW }, { sheet, formSecret: SECRET });
     expect(sheet.tabs).toEqual(['Enquiries']);
   });
 
