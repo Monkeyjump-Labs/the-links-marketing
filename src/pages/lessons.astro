@@ -27,6 +27,22 @@ const metadata = {
  * coach publishes about themselves; nothing is embellished. Each one is booked
  * directly — that is the arrangement, and hiding it would waste the visitor's
  * first email.
+ *
+ * ⚠️ `philosophy` RESTORED 2026-08-04 (FW-4000), from
+ * `_ingest/raw/instruction.html`. We had kept the credentials and dropped the
+ * one paragraph on each coach that says how they actually teach — which is the
+ * thing a nervous beginner is reading for. A list of trophies tells you a coach
+ * is good; "build on the good things you are already doing" tells you what an
+ * hour with them is like, and only one of those gets a first-timer to send an
+ * email.
+ *
+ * These are the coaches' own published words and are reproduced VERBATIM,
+ * including American spellings ("centered", "personalized"). Two are written in
+ * the first person and two in the third, exactly as published, which is why they
+ * render as attributed prose rather than as quotation-marked quotes — putting
+ * first-person quote marks around a third-person sentence would be inventing a
+ * statement nobody made. Do not normalise the person or the spelling: these are
+ * named third parties describing themselves.
  */
 const coaches = [
   {
@@ -39,6 +55,8 @@ const coaches = [
       'Two-time Minnesota State AAA Girls Golf Coach of the Year (2009, 2014)',
       'Inducted into the Minnesota State Golf Coaches Association Hall of Fame, 2018',
     ],
+    philosophy:
+      'I believe in helping each person build on the good things that they are already doing in their swing, in order to help them deepen their enjoyment of the game of golf.',
     email: 'barry.wallin@futuresclub.org',
     phone: '651-245-5899',
   },
@@ -50,7 +68,10 @@ const coaches = [
       'Played collegiate golf at the University of St. Thomas',
       'Head Boys Varsity Golf Coach, Eden Prairie High School, 2020–2022',
       'Former director of the Get a Grip Youth Golf League',
+      'Spent summers caddying at private clubs around the Twin Cities',
     ],
+    philosophy:
+      'Golf has a different meaning for everyone. I believe it is one of the best activities one can do for their mental and physical health. My teaching is centered around being an active listener, goal setting, and crafting a personalized plan for each and every student. This is a game of a lifetime, so why not learn the tools to get the most enjoyment out of your game.',
     email: 'David.Anderson@mysticlakegolf.com',
     phone: '952-233-2890',
   },
@@ -58,10 +79,14 @@ const coaches = [
     name: 'Tamara Colucci',
     title: 'Varsity head coach, Eastview High School',
     credentials: [
-      'Has been coaching golf for 25 years',
-      'Teams placed 5th and 3rd at the State Tournament',
+      'Has been coaching golf for 25 years, having started playing at the age of six',
+      'Played high school and college golf, and still coaches high school golfers',
+      'Has coached at Watertown High School, Apple Valley High School and now Eastview',
+      'Has taken several players to the MSHSL State Tournament; her teams placed 5th and 3rd there most recently',
       'Also instructs at the Emerald Greens Golf Course camps alongside Barry Wallin',
     ],
+    philosophy:
+      'Tamara is willing to help anyone wanting to learn how to play golf or make improvements to their game.',
     email: 'tcgolfer44@gmail.com',
     phone: '612-306-4409',
   },
@@ -74,6 +99,8 @@ const coaches = [
       'Made the Academic Directors List; earned Players Credentials',
       'Tournament operations experience',
     ],
+    philosophy:
+      'Nick’s passion is to spread the knowledge he has learned to others and hopefully give them the tools to truly understand this great game we all love and hate!',
     email: 'nstoulil@yahoo.com',
     phone: '952-465-9109',
   },
@@ -198,6 +225,14 @@ const formats = [
                   <li>{c}</li>
                 ))}
               </ul>
+              {/* How they teach, in their own published words. This is the part
+                  a first-timer actually reads — see the note on `philosophy`. */}
+              {coach.philosophy && (
+                <div class="mt-4 border-l-slab border-primary pl-4">
+                  <p class="caps-label text-inkMuted">How they teach</p>
+                  <p class="mt-1 text-sm text-inkBody italic">{coach.philosophy}</p>
+                </div>
+              )}
               <p class="mt-4 text-sm">
                 <a href={`mailto:${coach.email}`} class="font-semibold underline">
                   {coach.email}
