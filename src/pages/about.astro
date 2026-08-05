@@ -35,10 +35,27 @@
  *
  * Press is cited as links only. No quote is attributed to any outlet that was
  * not captured verbatim, and none was.
+ *
+ * ── STUB PASS 2026-08-05 (FW-4013) ─────────────────────────────────────────
+ *
+ * Three raw `STUB —` blocks rendered here in production, under real section
+ * headings. Two of them were tasks of ours and are now `StubNote`s: chase the
+ * outlets for pull quotes, chase Google for review permalinks. Neither is a
+ * visitor's business.
+ *
+ * The sponsors one is different, and it is the reason this page is worth reading
+ * carefully. Buried in it was a FACT: Bay 3 has no sponsor. Five bays are listed
+ * and they run 1, 2, 4, 5, 6 — anybody who counts notices, and hiding the note
+ * would have left the site looking as though it could not count rather than as
+ * though a bay is unsold. So the missing bay is marked with the gap system and
+ * stays visible; the logo files, the websites and the trading names are ours to
+ * chase and go in the `StubNote`.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import GapCell from '../components/venue/GapCell.astro';
+import StubNote from '../components/venue/StubNote.astro';
 import { getVenues, venuePath } from '../lib/venues';
 
 const venues = await getVenues();
@@ -230,11 +247,10 @@ const sponsors = [
           ))
         }
       </ul>
-      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> links only, deliberately. No quotation is reproduced from any of these pieces because none
-        was captured verbatim during handover, and inventing one is not an option. If the client wants pull quotes, send the
-        sentences and the outlet will be credited properly.
-      </p>
+      <StubNote
+        class="mt-6"
+        needs="Links only, deliberately. No quotation is reproduced from any of these pieces because none was captured verbatim during handover, and inventing one is not an option. If the client wants pull quotes, send the sentences and the outlet will be credited properly."
+      />
     </section>
 
     {/* 4. Sponsors. Redirect target for /advertisinglogos — keep the anchor. */}
@@ -253,13 +269,28 @@ const sponsors = [
           ))
         }
       </ul>
-      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> sponsor logo files and each sponsor's website, so these become links rather than names. Bay
-        3 has no sponsor listed — confirm whether it is unsold or simply missing from the handover. No Stillwater sponsors
-        exist yet. Also confirm each sponsor's full trading name: these five are read off image filenames, so "Von Hanson"
-        is almost certainly an abbreviation, and a paying sponsor's name printed short is a small error with a large apology
-        attached.
-      </p>
+      {
+        /* Bay 3 is missing from the list above and the numbering makes that
+          obvious. A gap mark says so on purpose — it is a real content gap, and
+          the alternative is a page that looks as though it cannot count.
+
+          Standalone on the page's white ground rather than as a sixth card: a
+          `notSet` cell brings its own greige tint and its own padding, so
+          dropping it into a bordered, padded `<li>` double-pads it. Same
+          treatment as the winter-membership gap on /memberships. */
+      }
+      <div class="mt-6 max-w-prose-page">
+        <GapCell
+          label="Bay 3"
+          state="notSet"
+          size="name"
+          reason="Bay 3 carries no sponsor name. We do not know whether it is unsold or simply not on the list we were given, and we would rather show you the hole in the numbering than quietly renumber the bays and hope nobody counts."
+        />
+      </div>
+      <StubNote
+        class="mt-6"
+        needs="Sponsor logo files and each sponsor's website, so these become links rather than names. Bay 3 is marked as a gap beside this note — confirm whether it is unsold or simply missing from the handover, and replace the GapCell either way. No Stillwater sponsors exist yet. Also confirm each sponsor's full trading name: these five are read off image filenames, so “Von Hanson” is almost certainly an abbreviation, and a paying sponsor's name printed short is a small error with a large apology attached."
+      />
     </section>
 
     {
@@ -288,12 +319,10 @@ const sponsors = [
               </li>
             ))}
           </ul>
-          <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-            <strong>STUB —</strong> the permalink for each review, so every quote can link to the review it came from,
-            and the Google Business Profile link for each venue. All four of these are Lakeville: Stillwater has no
-            Business Profile on record and therefore no reviews to quote, which is a reason to create one rather than to
-            borrow a quote from the other venue.
-          </p>
+          <StubNote
+            class="mt-6"
+            needs="The permalink for each review, so every quote can link to the review it came from, and the Google Business Profile link for each venue. All four of these are Lakeville: Stillwater has no Business Profile on record and therefore no reviews to quote, which is a reason to create one rather than to borrow a quote from the other venue."
+          />
         </section>
       )
     }

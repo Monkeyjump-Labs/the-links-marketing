@@ -9,10 +9,31 @@
  *   2. Uses the `between` registration state — the waitlist is the primary
  *      action, never a dead end (playbook-core.md §5). Zero of 126 audited sites
  *      offer one.
+ *
+ * ── STUB PASS 2026-08-05 (FW-4013) ─────────────────────────────────────────
+ *
+ * Two raw `STUB —` blocks rendered here in production, one of them under the
+ * heading "Camps" — so a parent looking for a summer camp read our shopping
+ * list instead of an answer.
+ *
+ *   camps          a parent came here to find out whether camps run. They do
+ *                  not, and nothing has ever been published. That is an absence
+ *                  a customer is looking for, so it takes a `GapCell` and stays
+ *                  visible. The four things we need from the client to fill it
+ *                  are ours, and go in the `StubNote` beneath.
+ *   next season    the 2027 dates and price are already answered in plain
+ *                  words at the top of the page ("the next season has not been
+ *                  announced", with a waitlist under it), so a second mark for
+ *                  them would just say it twice. The 12–18 vs 13–18 conflict is
+ *                  a real defect but not ours to resolve by picking one —
+ *                  `StubNote`, and a parent of a 12-year-old still deserves an
+ *                  answer before launch.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WaitlistForm from '../components/venue/WaitlistForm.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import GapCell from '../components/venue/GapCell.astro';
+import StubNote from '../components/venue/StubNote.astro';
 
 const metadata = {
   metaTitle: 'Junior Golf Leagues & Camps — Lakeville, MN',
@@ -98,30 +119,32 @@ const lastSeason = [
       </p>
     </section>
 
-    {/* 4. Camps. Referenced in the sitemap, nothing published. */}
+    {
+      /* 4. Camps. Referenced in the sitemap, nothing published — and a parent
+        who came here for a summer camp deserves that answer rather than our
+        shopping list. So the absence is the content. */
+    }
     <section class="mt-section">
       <h2 class="text-3xl font-bold">Camps</h2>
-      <div class="mt-6 rounded border-2 border-dashed border-ink/25 p-6">
-        <p class="text-inkMuted">
-          <strong>STUB —</strong> no junior camp has ever been published. Camps are a May–August revenue line in the playbook's
-          seasonal calendar and this venue currently sells nothing into a Minnesota school holiday.
-        </p>
-        <p class="mt-4 font-semibold">Needed from the client:</p>
-        <ul class="mt-3 list-disc space-y-1 pl-5 text-inkMuted">
-          <li>Whether camps run at all, and in which school holidays</li>
-          <li>Dates, age bands, day length and price</li>
-          <li>Who runs them — one of the four coaches, or venue staff</li>
-          <li>Whether Stillwater runs junior programmes of any kind</li>
-        </ul>
+      <div class="mt-6 max-w-prose-page">
+        <GapCell
+          label="Junior camps"
+          state="notSet"
+          size="name"
+          reason="No junior camp has ever been published here, so there is nothing to sign up for over the summer yet. If a week of camp is what you are after, join the list above and say so — it is the sort of thing that happens when enough people ask."
+        />
       </div>
+      <StubNote
+        class="mt-6"
+        needs="Camps are a May–August revenue line in the playbook's seasonal calendar and this venue currently sells nothing into a Minnesota school holiday. Needed from the client: whether camps run at all and in which school holidays; dates, age bands, day length and price; who runs them — one of the four coaches, or venue staff; and whether Stillwater runs junior programmes of any kind."
+      />
     </section>
 
     {/* 5. Everything else outstanding on this page. */}
-    <p class="mt-section rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-      <strong>STUB —</strong> three things block the next season going live here: the 2027 dates, the 2027 price, and the
-      age range. The current site says 12–18 on the junior league page and 13–18 on the junior LinksFlex package — one of
-      them is wrong and a parent of a 12-year-old will notice.
-    </p>
+    <StubNote
+      class="mt-section"
+      needs="Three things block the next season going live here: the 2027 dates, the 2027 price, and the age range. The current site says 12–18 on the junior league page and 13–18 on the junior LinksFlex package — one of them is wrong and a parent of a 12-year-old will notice. Do not resolve it by picking one; this page states 12–18 in its hero and 13–18 in the LinksFlex section and will keep doing so until the client says which is right."
+    />
 
     {/* 6. Prepaid junior hours — the thing they can buy today. */}
     <section class="mt-section">

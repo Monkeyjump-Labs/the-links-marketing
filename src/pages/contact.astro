@@ -1,9 +1,28 @@
 ---
-/** The local-SEO anchor: NAP for BOTH venues, hours, phone, directions. */
+/**
+ * The local-SEO anchor: NAP for BOTH venues, hours, phone, directions.
+ *
+ * ── STUB PASS 2026-08-05 (FW-4013) ─────────────────────────────────────────
+ *
+ * This page ended in one line of raw build notes: "STUB — a contact form, an
+ * embedded map per venue, and parking guidance are still to be added. Job
+ * enquiries currently go to hr@lakevillelinks.com." Three different things in
+ * one sentence, and only one of them was ever addressed to a visitor.
+ *
+ *   the form and the maps    work we owe. `StubNote`, staging only.
+ *   parking                  a fact somebody about to drive here wants, and we
+ *                            do not have it. That is a gap, so it takes a
+ *                            `GapCell` and stays visible.
+ *   hr@lakevillelinks.com    a REAL, USABLE ADDRESS that was buried inside a
+ *                            stub. It is published as ordinary copy now, which
+ *                            is what it should have been all along.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HoursTable from '../components/venue/HoursTable.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import PendingTag from '../components/venue/PendingTag.astro';
+import GapCell from '../components/venue/GapCell.astro';
+import StubNote from '../components/venue/StubNote.astro';
 import { getVenues, formatAddress, telHref, venuePath } from '../lib/venues';
 
 const venues = await getVenues();
@@ -60,9 +79,33 @@ const metadata = {
       }
     </div>
 
-    <p class="mt-section text-sm text-inkMuted">
-      STUB — a contact form, an embedded map per venue, and parking guidance are still to be added. Job enquiries
-      currently go to hr@lakevillelinks.com.
-    </p>
+    <section class="mt-section">
+      <h2 class="text-2xl font-bold">Two more things</h2>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        <div>
+          <p class="caps-label text-label-sm text-inkMuted">Working here</p>
+          <p class="mt-s2 text-inkMuted">
+            Job enquiries go to <a href="mailto:hr@lakevillelinks.com" class="font-semibold underline">
+              hr@lakevillelinks.com
+            </a>. Golf knowledge optional; enthusiasm for a warm building in February less so.
+          </p>
+        </div>
+        {
+          /* Parking is a real question for somebody about to drive to either
+            venue and we have nothing published on it. A gap mark says that;
+            silence would just leave them guessing in a car park. */
+        }
+        <GapCell
+          label="Parking"
+          state="notSet"
+          size="text"
+          reason="Neither venue publishes parking guidance and we are not going to describe a car park we have not stood in. Ring ahead and someone will tell you exactly where to leave the car."
+        />
+      </div>
+      <StubNote
+        class="mt-6"
+        needs="Still to build on this page: a contact form routed through /api/lead, and an embedded map per venue. Parking guidance is marked as a gap beside this note rather than hidden — replace the GapCell with real copy once the venues describe their car parks."
+      />
+    </section>
   </section>
 </BaseLayout>

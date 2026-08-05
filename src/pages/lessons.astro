@@ -23,8 +23,22 @@
  * So the section says so in plain words and carries **no gap mark of any kind**
  * — not a visible `STUB`, not a `GapCell`, not even a *Quoted · Ask us*. Every
  * one of those tells a reader that a figure exists and is being kept from them,
- * which about this venue is simply untrue. The page's other stubs stay, because
- * those really are things we are waiting on.
+ * which about this venue is simply untrue.
+ *
+ * ── AND THE SAME LOGIC RETIRED THIS PAGE'S TWO VISIBLE STUBS (FW-4013) ──────
+ *
+ * Both of them rendered in production. Neither became a `GapCell`, and the
+ * reason is the price rule above, applied consistently:
+ *
+ *   what a session is like   how long it runs, whether video is used, what to
+ *                            bring. Four independent coaches, four answers —
+ *                            the venue has not "failed to set" this any more
+ *                            than it failed to set a price. So the page says so
+ *                            in one plain line and points at the coach.
+ *   the coaches              headshots, and re-confirming four sets of
+ *                            credentials before launch. Ours, entirely.
+ *
+ * Both to-do lists survive in `StubNote`s, which render on staging only.
  *
  * ── AND THE PAGE ENDS IN A QUESTION, NOT A PRICE LIST ───────────────────────
  *
@@ -200,11 +214,21 @@ const formats = [
         your own clubs if you have them; rental sets are $15 at Lakeville and balls are included. You hit, the system
         records, the coach talks. That is the hour.
       </p>
-      <p class="mt-4 max-w-2xl rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> session length, whether video is used, whether you leave with your numbers, and what the coach
-        expects you to bring have not been confirmed with the coaching staff. The paragraph above is written from what the
-        venue publishes about its bays, not from a described lesson.
+      {
+        /* The customer-facing half of the old stub. Not a `GapCell`: with four
+          independent coaches there is no single house answer being withheld, so
+          a gap mark would tell a reader a fact exists and is being kept from
+          them. Same reasoning as the price section below. */
+      }
+      <p class="mt-4 max-w-2xl text-inkMuted">
+        How long a session runs, whether the coach films your swing, and whether you leave with your numbers is each
+        coach's own call rather than a house rule — ask whoever you write to. They will not mind; it is the first thing
+        everyone asks.
       </p>
+      <StubNote
+        class="mt-4"
+        needs="Session length, whether video is used, whether the golfer leaves with their numbers, and what the coach expects them to bring have not been confirmed with the coaching staff. The paragraph above the enquiry is written from what the venue publishes about its bays, not from a described lesson."
+      />
     </section>
 
     {/* 3. Formats. Broadened past the word "lessons", per the playbook. */}
@@ -282,10 +306,10 @@ const formats = [
         }
       </ul>
 
-      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> photographs of each coach, and confirmation that all four are still teaching here. Every credential
-        above is transcribed from the current site; re-confirm with each coach before launch.
-      </p>
+      <StubNote
+        class="mt-6"
+        needs="Photographs of each coach, and confirmation that all four are still teaching here. Every credential above is transcribed from the current site; re-confirm with each coach before launch."
+      />
     </section>
 
     {

@@ -4,9 +4,22 @@
  * current site's "ACKNOWLEDGE AND GO TO BOOKING" wall is deleted.
  * Booking is offsite on Whoosh, two separate club accounts, so this page's job
  * is to ask which venue and then get out of the way.
+ *
+ * ── WALK-INS IS A GAP, NOT A STUB (FW-4013) ────────────────────────────────
+ *
+ * "Walk-ins" used to answer itself with the string "STUB — walk-in policy needs
+ * confirming with the client", printed in the answer slot of a question a
+ * customer had just asked. It is not a task of ours that happens to be visible;
+ * it is a fact somebody standing in the car park wants, and we do not have it.
+ * So it takes the gap system's first mark — same label, same row, an em-dash
+ * where the answer goes, and a reason line — rather than being hidden. Hiding it
+ * would leave the question silently unasked, which helps nobody.
+ *
+ * The same gap is marked on /policy the same way. Keep the two in step.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import GapCell from '../components/venue/GapCell.astro';
 import { getVenues, summariseHours } from '../lib/venues';
 
 const venues = await getVenues();
@@ -17,21 +30,34 @@ const metadata = {
     'Book a GolfZon bay at The Links. $35 an hour per bay, up to six players, clubs available. Choose Lakeville or Stillwater.',
 };
 
-/** The questions people actually ask before booking. The cancellation window is
-    the top pre-booking objection in the segment and is almost never answered. */
-const beforeYouBook = [
-  ['What it costs', '$35 an hour, per bay — not per person. Through 30 September 2026.'],
-  ['How many fit', 'Up to six people in a bay comfortably.'],
-  [
-    'Clubs',
-    'Rental sets are $15 at Lakeville. Left-handed players are covered — five of the six Lakeville bays play both ways.',
-  ],
-  ['Never played', 'Fine. Put it on easy, nobody is waiting behind you, and the simulator does the scoring.'],
-  ['Walk-ins', 'STUB — walk-in policy needs confirming with the client.'],
-  [
-    'Cancelling',
-    'Free if you cancel at least 48 hours ahead. Inside 48 hours you may be charged for the full bay. Cancel in Whoosh, the same place you booked.',
-  ],
+/**
+ * The questions people actually ask before booking. The cancellation window is
+ * the top pre-booking objection in the segment and is almost never answered.
+ *
+ * A question we cannot answer carries a `gap` instead of an `a`, and the row
+ * draws a `GapCell` in the answer slot. Never put a sentinel string ("TBC",
+ * "STUB", "—") in `a`: that is the flat-page behaviour the gap system replaces.
+ */
+const beforeYouBook: { q: string; a?: string; gap?: { label: string; reason: string } }[] = [
+  { q: 'What it costs', a: '$35 an hour, per bay — not per person. Through 30 September 2026.' },
+  { q: 'How many fit', a: 'Up to six people in a bay comfortably.' },
+  {
+    q: 'Clubs',
+    a: 'Rental sets are $15 at Lakeville. Left-handed players are covered — five of the six Lakeville bays play both ways.',
+  },
+  { q: 'Never played', a: 'Fine. Put it on easy, nobody is waiting behind you, and the simulator does the scoring.' },
+  {
+    q: 'Walk-ins',
+    gap: {
+      label: 'Turning up without a booking',
+      reason:
+        'Whether you can turn up without a booking has not been published. Reserve a bay if you would rather not risk the drive, or ring ahead and ask what is free.',
+    },
+  },
+  {
+    q: 'Cancelling',
+    a: 'Free if you cancel at least 48 hours ahead. Inside 48 hours you may be charged for the full bay. Cancel in Whoosh, the same place you booked.',
+  },
 ];
 ---
 
@@ -66,10 +92,12 @@ const beforeYouBook = [
       <h2 class="text-2xl font-bold">Before you book</h2>
       <dl class="mt-6 grid gap-6 sm:grid-cols-2">
         {
-          beforeYouBook.map(([q, a]) => (
+          beforeYouBook.map(({ q, a, gap }) => (
             <div>
               <dt class="font-semibold">{q}</dt>
-              <dd class="mt-1 text-inkMuted">{a}</dd>
+              <dd class="mt-1 text-inkMuted">
+                {gap ? <GapCell label={gap.label} state="notSet" size="text" reason={gap.reason} /> : a}
+              </dd>
             </div>
           ))
         }
