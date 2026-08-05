@@ -68,13 +68,26 @@
  * venue-neutral on purpose — the venue question is asked at the Book click, not
  * the front door. An unlabelled Lakeville film under a neutral headline quietly
  * re-states the brand as Lakeville-with-an-annexe, which is the asymmetry
- * STYLE-GUIDE §6.10 exists to prevent. So the caption names the room, in the
+ * ⚠️ NO CAPTION AND NO PAUSE CONTROL, deliberately (2026-08-05). Both were
+ * removed at the client's request: a caption describing the film, and a toggle
+ * sitting on top of it, are furniture the hero does not need.
+ *
+ * Two consequences worth knowing rather than rediscovering:
+ *   - WCAG 2.2.2 asks for a pause mechanism on motion that auto-starts and runs
+ *     over five seconds. `prefers-reduced-motion` is honoured — that path fetches
+ *     ZERO video bytes and shows the poster — which covers the people most
+ *     affected but is not formally the same thing. axe does not test 2.2.2, so no
+ *     gate will catch its absence. This is a known, accepted trade.
+ *   - The room is still described: `alt` stays on the <video>, so assistive tech
+ *     gets the content even though no sighted reader sees a caption.
+ *
+ * STYLE-GUIDE §6.10 exists to prevent. So the alt text names the room, in the
  * same vocabulary `MediaSlot` uses for the same reason. The words above it stay
  * neutral; the picture says which room it is.
  *
  * ## Playback
  *
- * The contract — lazy, in-view only, reduced-motion poster-only, pausable
+ * The contract — lazy, in-view only, reduced-motion poster-only
  * (WCAG 2.2.2) — is `lib/videoLoop.ts`, shared with `TechPillar`. Read it there.
  *
  * One consequence of the move is worth stating plainly: in the hero the clip is
@@ -84,7 +97,6 @@
  * first — and reduced motion still fetches nothing at all.
  */
 import { getImage } from 'astro:assets';
-import { buttonClasses } from '../../lib/buttons';
 
 interface Props {
   /** Basename in `public/video/`, without extension. */
@@ -93,17 +105,16 @@ interface Props {
   /** What the footage actually shows. */
   alt: string;
   /** Which room this is, and what it does not stand in for. */
-  caption: string;
 }
 
-const { name, poster, alt, caption } = Astro.props;
+const { name, poster, alt } = Astro.props;
 
 // The poster IS an image, so it goes through the asset pipeline; only the
 // multi-megabyte video bypasses it and is served statically from `public/`.
 const posterImage = await getImage({ src: poster, format: 'webp', width: 1280, quality: 70 });
 ---
 
-<figure class="m-0" data-video-band>
+<div data-video-band>
   {/* Midnight under the video so a slow poster never flashes a lighter ground. */}
   <div class="relative border-rule border-paper bg-midnight">
     <video
@@ -121,15 +132,8 @@ const posterImage = await getImage({ src: poster, format: 'webp', width: 1280, q
       <source src={`/video/${name}.webm`} type="video/webm" />
       <source src={`/video/${name}.mp4`} type="video/mp4" />
     </video>
-
-    {/* Opaque amber fill — its contrast is its own, not the frame's. */}
-    <button type="button" data-video-toggle class:list={[buttonClasses('sm', 'onDark'), 'absolute bottom-s4 left-s4']}>
-      Play
-    </button>
   </div>
-
-  <figcaption class="mt-s4 max-w-prose-page text-small leading-body text-slate">{caption}</figcaption>
-</figure>
+</div>
 
 <script>
   import { initVideoLoops } from '../../lib/videoLoop';
