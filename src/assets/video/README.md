@@ -95,3 +95,90 @@ venue-neutral on purpose, and its committed idea is "a scoreboard, not a brochur
 Only `stillwater-walkthrough.mp4` ever had an audio track. **Both Lakeville promos shipped with no
 audio stream at all**, so "strip the audio" was a no-op for them — the encode still passes `-an`
 so the property is guaranteed rather than inherited.
+
+---
+
+# GolfZon pillar loops (FW-3992)
+
+The four capability loops on `/simulators`. **These masters are not in this repo, deliberately.**
+
+## Provenance
+
+GolfZon product footage, published as GIFs on the landing page of a comparable GolfZon venue
+(`teeoffgolf.com`, South Barrington IL). Confirmed by the client on 2026-08-05 to be **GolfZon's
+own assets, cleared for our use**.
+
+They are **not** footage of Lakeville or Stillwater, and the page says so out loud in the section
+intro. A vendor's studio lighting standing in for our rooms is the same defect as Lakeville's
+photography standing in for Stillwater (`STYLE-GUIDE` §6.10).
+
+## ⚠️ Do not commit the GIFs
+
+| Master GIF (not committed) | Size | Pillar |
+| -------------------------- | ---: | ------ |
+| `HYPER-REALISTIC-1.gif` (1152×648, 312f) | 32.0 MB | course rendering / visual fidelity |
+| `ADVANCED-PRACTICE-1.gif` (1152×648, 288f) | 24.6 MB | practice tools / shot data |
+| `INNOVATIVE-MOTION.gif` (1920×1080, 76f) | 14.0 MB | the motion plate |
+| `WEIGHT-SHIFT.gif` (1920×1080, 117f) | 36.2 MB | standing on the slope |
+
+**106.8 MB together.** Git keeps a blob forever, so committing them would bloat every clone of this
+repo permanently, including after a later `git rm`. Only the derived files below are committed. The
+masters live outside the repo; re-request them from GolfZon if they are ever needed again — and see
+"the generational-loss problem" below for why you should ask for the true sources rather than these.
+
+## Derived files, and the exact invocations
+
+Common filter chain — downscale to 960×540 (16:9 on all four sources), then a mild `hqdn3d` pass
+that removes the GIF's palette dither. The dither is what makes a GIF-sourced encode expensive:
+denoising it before the encoder sees it is worth roughly a third of the bitrate on these clips.
+
+```sh
+VF="scale=960:540:flags=lanczos,hqdn3d=1.5:1.5:6:6,format=yuv420p"
+
+# WebM (VP9) — the file ~95% of visitors actually get
+ffmpeg -i <MASTER>.gif -vf "$VF" \
+  -c:v libvpx-vp9 -crf 42 -b:v 0 -row-mt 1 -tile-columns 2 \
+  -auto-alt-ref 1 -lag-in-frames 25 -deadline good -cpu-used 1 -g 240 \
+  -an public/video/<name>.webm
+
+# MP4 (H.264) — the fallback
+ffmpeg -i <MASTER>.gif -vf "$VF" \
+  -c:v libx264 -crf 28 -preset slow -profile:v main \
+  -movflags +faststart -an public/video/<name>.mp4
+
+# Poster frame
+ffmpeg -ss <TS> -i <MASTER>.gif -frames:v 1 \
+  -vf "scale=960:540:flags=lanczos" -q:v 4 src/assets/images/<name>-poster.jpg
+```
+
+| Derived file | Master | Poster `TS` | WebM | MP4 |
+| ------------ | ------ | ----------: | ---: | --: |
+| `golfzon-course-render.*` | `HYPER-REALISTIC-1.gif` | 6.9s | 665 KB | 749 KB |
+| `golfzon-practice-tools.*` | `ADVANCED-PRACTICE-1.gif` | 6.0s | 524 KB | 617 KB |
+| `golfzon-motion-plate.*` | `INNOVATIVE-MOTION.gif` | 1.6s | 94 KB | 105 KB |
+| `golfzon-weight-shift.*` | `WEIGHT-SHIFT.gif` | 2.4s | 394 KB | 428 KB |
+
+**1.60 MiB of WebM for all four**, against 106.8 MB of GIF — a 64× reduction for the same footage,
+and `preload="none"` means a visitor who never scrolls to the section pays none of it. Posters are
+JPEG masters that Astro re-encodes to WebP at 960/q70 (~30 KB each).
+
+`-an` is a guarantee, not a fix: none of these GIFs had audio to begin with.
+
+## The generational-loss problem, stated plainly
+
+These are re-encodes of already-compressed GIFs — a second generation. Checked frame-for-frame
+against the masters at 960×540, VP9 CRF 42 holds up: the HUD's smallest type (`107.3Mph`,
+`3,974Rpm`) stays legible and the rendered turf keeps its banding rather than gaining any. **The
+visible defects that remain are in the GIFs themselves** — palette banding across the sky and the
+fairway, and dither on the plate footage — and no encoder setting recovers those.
+
+So they ship. But if GolfZon supplies the true sources, re-encoding from those is a free upgrade,
+and the first place it would show is the two 1920×1080 plate loops, which were downscaled the
+furthest.
+
+## ⚠️ GolfZon's HUD shows a "Face Angle" column
+
+The shot-data bar in the first two loops includes **Face Angle**. That is GolfZon's own software,
+and it is **not** licence to put face angle back into our copy — `Club face impact area` is what
+GolfZon publishes about its sensors, and face angle was removed from this site once already
+(`truth-audit` §U19). Nothing in the pillar copy claims it.
