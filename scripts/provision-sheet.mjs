@@ -13,7 +13,7 @@
  *
  * Why a cover page at all: the client opens this spreadsheet cold, months after
  * anyone explained it, usually because they are looking for one person's email
- * address. A grid of eleven columns with no context is where they give up. The
+ * address. A grid of a dozen columns with no context is where they give up. The
  * README says what the workbook is, what each tab holds, and — most importantly
  * — the two things that break it if edited.
  *
@@ -40,7 +40,10 @@ if (!GOOGLE_SERVICE_ACCOUNT_JSON_B64 || !LEAD_SHEET_ID) {
   process.exit(1);
 }
 
-// Kept in step with src/lib/leads/config.ts by the check at the bottom of this file.
+// Mirrors src/lib/leads/config.ts. This file is plain ESM run by node with no
+// build step, so it cannot import the TypeScript module — the copy is kept
+// honest by `src/lib/leads/config.test.ts`, which reads this file and fails the
+// suite the moment the two lists diverge.
 const TABS = { readme: 'README', enquiries: 'Enquiries', waitlist: 'Waitlist', test: 'Test' };
 const DATA_TABS = [TABS.enquiries, TABS.waitlist, TABS.test];
 const COLUMNS = [
@@ -55,11 +58,15 @@ const COLUMNS = [
   'message',
   'page',
   'consent',
+  'lessonFor',
 ];
 
 /** What each data tab is for, in the client's terms rather than ours. */
 const TAB_NOTES = [
-  [TABS.enquiries, 'Someone asking about an event, a party or a group booking. Reply to these — they are waiting.'],
+  [
+    TABS.enquiries,
+    'Someone asking about an event, a party, a group booking or a lesson. Reply to these — they are waiting.',
+  ],
   [
     TABS.waitlist,
     'People who asked to hear when leagues or junior programmes open. Nothing to do until registration opens; then export this tab and email them.',
@@ -117,7 +124,13 @@ const call = async (url, init) => {
 const batch = (requests) =>
   call(`${API}:batchUpdate`, { method: 'POST', headers: H, body: JSON.stringify({ requests }) });
 
-const meta = await call(`${API}?fields=properties.title,sheets.properties(title,sheetId,index)`, { headers: H });
+// `gridProperties.columnCount` is fetched, not assumed: step 2b compares against
+// it to decide whether a tab needs widening, and a missing value would read as
+// zero and let an update SHRINK a tab the client had extended themselves.
+const meta = await call(
+  `${API}?fields=properties.title,sheets.properties(title,sheetId,index,gridProperties.columnCount)`,
+  { headers: H },
+);
 const existing = new Map(meta.sheets.map((s) => [s.properties.title, s.properties]));
 console.log(`workbook: ${meta.properties.title}`);
 
@@ -151,6 +164,30 @@ for (const tab of DATA_TABS) {
   ]);
   existing.set(tab, r.replies[0].addSheet.properties);
   console.log(`✓ created ${tab}`);
+}
+
+// ── 2b. widen a tab that predates a new column ───────────────────────────────
+// A tab is created with exactly `COLUMNS.length` columns, so appending a column
+// to the schema leaves every EXISTING tab one short — and the Sheets API does
+// not silently grow the grid for you. Writing outside it fails with "exceeds
+// grid limits", which arrives as a 400 on a real customer's submission, hours
+// after the deploy that caused it. So the widening happens here, where the
+// schema change is already being applied. Only ever grows; a tab the client has
+// added their own columns to is left alone.
+const widen = [...existing.entries()]
+  .filter(([title, p]) => DATA_TABS.includes(title) && (p.gridProperties?.columnCount ?? 0) < COLUMNS.length)
+  .map(([title, p]) => ({
+    title,
+    request: {
+      updateSheetProperties: {
+        properties: { sheetId: p.sheetId, gridProperties: { columnCount: COLUMNS.length } },
+        fields: 'gridProperties.columnCount',
+      },
+    },
+  }));
+if (widen.length) {
+  await batch(widen.map((w) => w.request));
+  console.log(`✓ widened to ${COLUMNS.length} columns: ${widen.map((w) => w.title).join(', ')}`);
 }
 
 // ── 3. headers ───────────────────────────────────────────────────────────────

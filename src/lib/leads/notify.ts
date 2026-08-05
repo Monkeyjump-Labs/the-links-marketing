@@ -49,6 +49,11 @@ const BODY_FIELDS: [key: string, label: string][] = [
   ['venue', 'Venue'],
   ['date', 'Date'],
   ['groupSize', 'How many people'],
+  // Above `message` on purpose: on a lesson enquiry this is the line that
+  // decides which coach the mail gets forwarded to, so it should be read before
+  // the paragraph, not after it. Absent on every other form, and a field that
+  // is not present is not printed.
+  ['lessonFor', 'Who the lesson is for'],
   ['message', 'Message'],
 ];
 

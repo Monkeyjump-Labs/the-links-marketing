@@ -92,6 +92,23 @@ export const LEAD_LISTS: Record<string, LeadList> = {
     tab: TABS.enquiries,
     notify: INBOX,
   },
+  /**
+   * Lessons. An ENQUIRY, not a waitlist — nothing is being waited for and there
+   * is someone who can answer today, so it takes the Enquiries tab and its daily
+   * rhythm rather than sitting untouched until an export. No `consent` line
+   * either: this is a reply to a question the visitor asked, not permission to
+   * mail them later.
+   *
+   * The page also publishes each coach's own email and phone, and keeps doing
+   * so. This list is the second path, for the visitor who does not want to pick
+   * a coach cold — which is why `lessonFor` is the load-bearing field on the
+   * row. Who the lesson is for is what decides which coach gets forwarded it.
+   */
+  lessons: {
+    label: 'Lesson enquiry',
+    tab: TABS.enquiries,
+    notify: INBOX,
+  },
   'league-general': {
     label: 'League waitlist (homepage)',
     tab: TABS.waitlist,
@@ -152,6 +169,13 @@ export const LEAD_FROM = 'The Links website <no-reply@thelinks.golf>';
  * Order is APPEND-ONLY. Adding a column on the end is safe; reordering or
  * removing one silently corrupts every row written afterwards, because the
  * Sheets API appends positionally and has no idea what a header means.
+ *
+ * ⚠️ Adding one here is HALF the change. The live workbook's tabs are created
+ * with a fixed `columnCount`, so a new column also needs
+ * `npm run sheet:provision` run against the sheet — it widens each data tab and
+ * rewrites the header row. Without that the append lands outside the grid and
+ * every submission 400s. `scripts/provision-sheet.mjs` mirrors this list, and
+ * `config.test.ts` fails if the two drift.
  */
 export const SHEET_COLUMNS = [
   'timestamp',
@@ -165,6 +189,11 @@ export const SHEET_COLUMNS = [
   'message',
   'page',
   'consent',
+  // Added for the lessons enquiry (FW-3999): themselves / a junior / a group.
+  // Blank on every other form, exactly as `date` and `groupSize` are blank on a
+  // waitlist row — one schema, per-form fields left empty, so the writer never
+  // has to know which columns exist where.
+  'lessonFor',
 ] as const;
 
 export type SheetColumn = (typeof SHEET_COLUMNS)[number];
