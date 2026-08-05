@@ -45,6 +45,11 @@ So a video background needs a **guaranteed scrim** — an opaque-enough overlay 
 frame still clears the contrast floor — not an opacity that happens to look fine on the frame
 you were looking at.
 
+**The cheaper answer is not to have a background.** All of the above is a property of ONE
+structure: text composited over moving footage. Give the words their own ground and put the film
+where the words are not, and there is no per-frame composite to measure. That is what `HeroFilm`
+does, and it is why the promo is the hero now (FW-4010) with no scrim on it at all.
+
 ## What was cut from these, and what was decided (FW-4003)
 
 **Do not re-cut these from scratch without reading this first.** The derived files are committed;
@@ -74,7 +79,7 @@ Other usable moments, if more Stillwater imagery is ever needed: **t≈5.4s** (f
 entrance banner — note that banner reads "PREMIER INDOOR GOLF", and _premier_ is a banned word in
 our copy, so it is a photograph of their sign and never a source for wording.
 
-### The promo did not go behind the hero, and the reason is measured
+### The promo did not go BEHIND the hero, and the reason is measured
 
 Sampling **all 354 frames** of `lakeville-promo.mp4`: the brightest block-averaged region reaches
 Y=242/255, and even the _darkest_ frame's brightest region is Y=138. The footage is mostly lit
@@ -85,10 +90,32 @@ amber eyebrow is the binding constraint (white alone needs 71%). At 89–90% the
 spread between brightest and darkest frames collapses to ~0.01: you would ship a megabyte to
 render a texture nobody can see.
 
-So it ships as a **band** near the foot of the homepage with **no text composited over it**, which
-costs no contrast at all. The full reasoning, including the two structural arguments (the hero is
-venue-neutral on purpose, and its committed idea is "a scoreboard, not a brochure"), is in
-`src/components/venue/VideoBand.astro`.
+So FW-4003 shipped it as a **band** near the foot of the homepage with **no text composited over
+it**, which costs no contrast at all.
+
+### It IS the hero now — a different structure, not a reversal (FW-4010)
+
+The client asked for a hero and proposed the structure that dissolves the objection: don't
+composite. The words got their own ground and the film sits beside them as a ruled screen, so the
+89% never applies. **Nothing above is retracted; it describes a structure we did not build.**
+
+Two things were re-measured on this pass, and they change what the numbers above mean:
+
+- **The figures above describe the master, not the file on the page.** What ships is
+  `public/video/lakeville-night.mp4` — seconds 3.60–9.30 of the promo, 171 frames, fading from and
+  to black. Its brightest 32×32 block is **Y=207/255 (relLum 0.6273)**, not Y=242, so the binding
+  amber scrim for THAT clip is **71%**, not 89%. A scrimmed hero was therefore _possible_ here; it
+  was not on the master. It was still declined, because at the client's suggested 80% the visible
+  luminance spread falls from 0.6273 to 0.0401 — about **6% of the film's range** — and at the
+  binding 71%, about 11%.
+- **An offset scrim does not find a dark side, because there isn't one.** Brightest block per
+  horizontal fifth across all 171 frames: 0.4775 / 0.5737 / 0.6273 / 0.6272 / 0.5180, needing 67 /
+  70 / 71 / 71 / 68%. There are lit screens along the whole wall, so confining the words to the
+  left column buys **four percentage points**. That is the finding worth carrying forward: on this
+  footage, "put the words over the dark part" is not a strategy.
+
+Unscrimmed, a visitor sees 100% of it. The full reasoning is in
+`src/components/venue/HeroFilm.astro`.
 
 ### Note on audio
 
