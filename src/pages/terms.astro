@@ -6,9 +6,19 @@
  *
  * Every substantive clause is a marked stub. Nothing here has been drafted or
  * reviewed by a lawyer.
+ *
+ * ── THE PROVISIONAL NOTICE IS CUSTOMER-FACING ON PURPOSE (FW-4013) ──────────
+ *
+ * Same treatment as /privacy, for the same reason, and the reasoning is written
+ * out in full at the head of that file. Short version: the disclosure that
+ * nothing here has been through a lawyer is doing real work for the reader, so
+ * it stays in production — rewritten in their language, with no "STUB", no
+ * "needed:", and no instruction addressed to us. The per-clause to-do list moves
+ * into `StubNote`, which renders on staging only.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import StubNote from '../components/venue/StubNote.astro';
 
 const metadata = {
   metaTitle: 'Terms of Use — The Links, Lakeville & Stillwater MN',
@@ -50,10 +60,14 @@ const sections = [
     <h1 class="text-4xl font-bold lg:text-5xl">Terms of use</h1>
     <p class="mt-4 text-lg text-inkMuted">The terms that apply to this website.</p>
 
-    <p class="mt-8 rounded border-2 border-dashed border-ink/40 p-6 text-inkMuted">
-      <strong>STUB — this page is a structure, not a set of terms.</strong> Nothing below has been drafted or reviewed by
-      a lawyer. It exists so the footer link is not broken and so the client can see exactly which clauses are needed. Do
-      not publish this site to production with this page in this state.
+    {
+      /* The provisional notice. Production-visible, deliberately — see the head
+        of /privacy for the full reasoning. */
+    }
+    <p class="mt-8 border-l-slab border-ink/25 bg-surface p-6 text-inkBody">
+      <strong>These terms are provisional.</strong> They set out the arrangement as it actually stands today, but none of
+      it has been drafted or reviewed by a lawyer, and it is not the finished document. If a point below matters to you, email
+      us and we will answer it directly.
     </p>
     <p class="mt-4 text-inkMuted">
       Looking for the rules about your reservation — what you pay for, and how to cancel? Those are on the
@@ -65,9 +79,7 @@ const sections = [
         <section class="mt-12">
           <h2 class="text-2xl font-bold">{title}</h2>
           <p class="mt-3 text-inkMuted">{plain}</p>
-          <p class="mt-3 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-            <strong>STUB —</strong> needed: {needed}
-          </p>
+          <StubNote class="mt-3" needs={`Needed: ${needed}`} />
         </section>
       ))
     }

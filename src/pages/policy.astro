@@ -27,10 +27,35 @@
  * the register lifts in the framing — why the page exists, what a rule is
  * actually for, the quiet-days line — and stops dead at the waiver, which is
  * reproduced straight. Not one rule, window, charge or clause moved.
+ *
+ * ── STUB PASS 2026-08-05 (FW-4013) ─────────────────────────────────────────
+ *
+ * Three raw `STUB —` blocks rendered here in production. They are not all the
+ * same kind of thing, and the point of this ticket is that they were treated as
+ * though they were:
+ *
+ *   Paying          a note that our description is transcribed and unverified.
+ *                   That is a message to the READER standing next to a fact, so
+ *                   it becomes a `PendingTag` — which renders in production by
+ *                   design. The surcharge question behind it is ours: `StubNote`.
+ *
+ *   The waiver      the note says a Stillwater customer is agreeing to a waiver
+ *                   that names only Lakeville. That is material to the person
+ *                   reading it, so it stays visible, rewritten as an address to
+ *                   them. The entity-name reconciliation is ours: `StubNote`.
+ *
+ *   Still to be     four rules a customer would look for and not find. Those are
+ *   written         gaps, not tasks, so they take the gap system's first mark —
+ *                   `GapCell` *Not yet set*, customer-facing on purpose.
+ *
+ * Nothing here is invented to fill a gap. An unknown rule stays unknown and
+ * marked, which is the whole point of having a mark for it.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import PendingTag from '../components/venue/PendingTag.astro';
+import GapCell from '../components/venue/GapCell.astro';
+import StubNote from '../components/venue/StubNote.astro';
 import { getVenues, telHref } from '../lib/venues';
 
 const venues = await getVenues();
@@ -206,11 +231,23 @@ const safetyRules = [
           <strong>Stillwater</strong> — your card is charged in full at the time of booking.
         </li>
       </ul>
-      <p class="mt-4 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> confirm both of the above are still current. They are transcribed from booking pages that
-        this rebuild deletes. Also confirm the 3% credit-card surcharge that appears on the Lakeville menu, and whether it
-        applies to bay time as well as food.
-      </p>
+      {
+        /* The two payment rules above are transcribed from the venue's own
+          booking pages, which this rebuild deletes — so they are believed, not
+          verified. `PendingTag` is the mark for exactly that, and unlike
+          `StubNote` it renders in production, because it is addressed to the
+          reader standing next to the fact rather than to us. Removing the old
+          stub without leaving this would have quietly promoted an unverified
+          statement to a verified one. */
+      }
+      <PendingTag
+        class="mt-4"
+        reason="Both of these are transcribed from the venue's own booking pages and we are re-confirming them. If how you are charged matters to you, ring the venue before you book."
+      />
+      <StubNote
+        class="mt-4"
+        needs="Confirm both payment rules above are still current — they are transcribed from booking pages this rebuild deletes. Also confirm the 3% credit-card surcharge that appears on the Lakeville menu, and whether it applies to bay time as well as food."
+      />
     </section>
 
     <section class="mt-section">
@@ -353,25 +390,73 @@ const safetyRules = [
         </p>
       </div>
 
-      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB — and this one is for a lawyer, not a copywriter.</strong> The waiver above is exactly what the venue
-        publishes today, and as published it names <strong>Head Honchos, LLC dba Lakeville Links</strong> as the Company and
-        defines the Facility as the Lakeville address only. <strong>Stillwater does not appear in it.</strong> The membership
-        terms on the same site name a third entity again (&ldquo;UDBA 10 dba The Links of Lakeville&rdquo;) and define the
-        Company as both venues together. Needed: confirmation of the correct legal entity for each venue, and a waiver whose
-        scope actually covers Stillwater. We have restored what is published rather than extending it ourselves, because changing
-        who a waiver binds is not a copy edit.
+      {
+        /* Production-visible, and it has to be. A Stillwater customer is being
+          shown a waiver that names only Lakeville; that is material to the
+          person reading it, not a note to ourselves. So it is rewritten as an
+          address to them — plain, no build language — and the entity
+          reconciliation, which really is ours, moves to the `StubNote` below. */
+      }
+      <p class="mt-6 border-l-slab border-ink/25 bg-surface p-6 text-inkBody">
+        <strong>Which venue this waiver names.</strong> As published, it names Head Honchos, LLC dba Lakeville Links as the
+        Company and defines the facility as the Lakeville address. Stillwater is not mentioned in it. We have reproduced it
+        exactly as the venue publishes it rather than widening it ourselves, because changing who a waiver binds is a lawyer's
+        job and not a copy edit. It is being reviewed. If you are booking Stillwater and want to know where that leaves you,
+        ask us before you play.
       </p>
+      <StubNote
+        class="mt-4"
+        needs="For a lawyer, not a copywriter. The waiver names Head Honchos, LLC dba Lakeville Links and defines the Facility as the Lakeville address only; Stillwater does not appear in it. The membership terms on the same site name a third entity again (“UDBA 10 dba The Links of Lakeville”) and define the Company as both venues together. Needed: confirmation of the correct legal entity for each venue, and a waiver whose scope actually covers Stillwater. See FW-4008."
+      />
     </section>
 
+    {
+      /* This section used to be called "Still to be written" and its body was a
+        note to ourselves. But every item on it is a rule a CUSTOMER would look
+        for and not find, which makes each one a gap rather than a task — so it
+        takes the gap system's first mark and stays visible. Same information,
+        turned round to face the reader.
+
+        `notSet` cells tint greige and this section sits on the page's white
+        ground, so the tint reads as a tint. Do not move them onto a `bg-surface`
+        band without giving them a white slab first (see `GapCell`). */
+    }
     <section class="mt-section">
-      <h2 class="text-2xl font-bold">Still to be written</h2>
-      <p class="mt-3 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> the waiver above answers minimum age, supervision of minors, alcohol, damage liability and
-        the photography permission, so those have come off this list. Still missing: the walk-in policy, the outside-food
-        rule, the dress and footwear rule if there is one, and the group or event deposit terms. Membership and LinksFlex
-        terms live with the <a href="/memberships/" class="underline">memberships</a> page and need the same treatment.
+      <h2 class="text-2xl font-bold">Rules we have not set yet</h2>
+      <p class="mt-3 max-w-prose-page text-inkMuted">
+        Four things people ask about that this page cannot answer yet. We would rather mark them than guess at them —
+        phone the venue and someone will tell you how it works in practice.
       </p>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        <GapCell
+          label="Walk-ins"
+          state="notSet"
+          size="name"
+          reason="Whether you can turn up without a booking has not been published. Reserve a bay if you would rather not risk the drive, or ring ahead and ask what is free."
+        />
+        <GapCell
+          label="Bringing your own food or drink"
+          state="notSet"
+          size="name"
+          reason="There is no published rule either way. Lakeville has its own kitchen and bar; ask when you book."
+        />
+        <GapCell
+          label="Dress and footwear"
+          state="notSet"
+          size="name"
+          reason="No dress or footwear rule has been published. If you are wondering whether trainers are fine, ask — we would rather answer than invent a rule nobody set."
+        />
+        <GapCell
+          label="Group and event deposits"
+          state="notSet"
+          size="name"
+          reason="Deposit and cancellation terms for a private event have not been published. Raise it when you enquire on the events page and it will come back with the quote."
+        />
+      </div>
+      <StubNote
+        class="mt-6"
+        needs="The waiver above answers minimum age, supervision of minors, alcohol, damage liability and the photography permission, so those have come off this list. The four gaps beside this note are what is left: walk-ins, outside food and drink, dress and footwear, and group or event deposit terms. Membership and LinksFlex terms live with the /memberships page and need the same treatment."
+      />
     </section>
 
     <section class="mt-section">
