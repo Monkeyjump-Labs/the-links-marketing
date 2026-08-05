@@ -33,6 +33,12 @@ const metadata = {
 <BaseLayout metadata={metadata}>
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">{d.name}</h1>
+    {
+      /* The venue's own positioning line, restored from the client's live site
+        (FW-4000). Stillwater's page was the only one on this site shorter than
+        theirs, and this is most of the reason why. */
+    }
+    {d.tagline && <p class="mt-3 text-2xl font-semibold text-ink">{d.tagline}</p>}
     {d.intro && <p class="mt-4 max-w-2xl text-lg text-inkMuted">{d.intro}</p>}
 
     {
@@ -89,6 +95,27 @@ const metadata = {
         <div class="mt-8"><BookButton venue={venue} size="lg" /></div>
       </div>
     </div>
+
+    {
+      /* The venue's own feature blocks, in the venue's own order. See the note on
+        `highlights` in content/config.ts for the two claims on Stillwater's live
+        page that are deliberately not reproduced. */
+    }
+    {
+      d.highlights.length > 0 && (
+        <section class="mt-section">
+          <h2 class="text-2xl font-bold">What is here</h2>
+          <dl class="mt-6 grid gap-6 md:grid-cols-3">
+            {d.highlights.map((h) => (
+              <div class="rounded border-2 border-ink/15 p-6">
+                <dt class="text-lg font-semibold">{h.title}</dt>
+                <dd class="mt-2 text-inkMuted">{h.body}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )
+    }
 
     {/* TODO(content): venue photography. Stillwater has none — a shoot is a launch blocker. */}
   </section>
