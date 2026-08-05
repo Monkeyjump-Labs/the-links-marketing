@@ -158,6 +158,19 @@ export default defineConfig({
           },
           {
             type: 'string',
+            name: 'status',
+            label: 'Season status',
+            options: [
+              { value: 'live', label: 'Live — the season ahead, the state above decides the action' },
+              { value: 'archive', label: 'Archive — a season that has run, shown disabled for reference' },
+            ],
+            description:
+              'Archive draws the block greyed and not registerable: no register link, no waitlist of its own, and the ' +
+              'message below shown as a check-back. Switch a row to Live when its new schedule is published and it ' +
+              'starts taking signups again — nobody needs to touch the code to do it.',
+          },
+          {
+            type: 'string',
             name: 'oneLiner',
             label: 'One line — format and commitment',
             required: true,
@@ -183,10 +196,35 @@ export default defineConfig({
           { type: 'string', name: 'night', label: 'Night of the week' },
           { type: 'string', name: 'startDate', label: 'Start date (YYYY-MM-DD)' },
           { type: 'number', name: 'weeks', label: 'Number of weeks' },
-          { type: 'string', name: 'price', label: 'Price' },
+          {
+            type: 'string',
+            name: 'price',
+            label: 'Entry fee — what it costs to JOIN',
+            description:
+              'The fee to join the league, and nothing else. It is NOT the skins buy-in — that has its own field ' +
+              'below. Every league sheet we have states a skins figure and none of them states an entry fee, so this ' +
+              'is deliberately blank on the archived seasons and draws "Not yet set". Putting the skins number here ' +
+              'would tell someone the league costs $64 to join and they would find out otherwise at the till.',
+          },
+          {
+            type: 'string',
+            name: 'skins',
+            label: 'Skins buy-in — the side pot, on top of the entry fee',
+            description:
+              'e.g. "$64 per team, gross". Paid once at the start of the season. Say gross, net, or both, the way the ' +
+              'league sheet says it.',
+          },
           { type: 'string', name: 'prizes', label: 'What you win' },
           { type: 'string', name: 'registerUrl', label: 'Registration URL' },
-          { type: 'string', name: 'nextSeasonNote', label: 'Between-seasons message', ui: { component: 'textarea' } },
+          {
+            type: 'string',
+            name: 'nextSeasonNote',
+            label: 'What happens next',
+            description:
+              'On a live between-seasons row: when registration is expected to open. On an archived row: the ' +
+              'check-back, e.g. "Check back for the updated 2026 fall schedule."',
+            ui: { component: 'textarea' },
+          },
           { type: 'string', name: 'standingsUrl', label: 'Standings / results URL' },
           { type: 'string', name: 'season', label: 'Season and year', required: true },
           { type: 'boolean', name: 'published', label: 'Published' },
