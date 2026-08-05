@@ -20,6 +20,13 @@
  * ⚠️ Note: seo-map.md §4 redirects the old /policy to /policies. This build ships
  * /policy as the canonical booking-policy URL; reconcile the redirect map before
  * launch so the two do not both resolve.
+ *
+ * VOICE PASS 2026-08-04 (FW-4001). One of the four flattest pages, and the one
+ * where the brief needs the most care: warmth on a page of binding terms has to
+ * come from PLAIN SPEECH, never from making light of the terms themselves. So
+ * the register lifts in the framing — why the page exists, what a rule is
+ * actually for, the quiet-days line — and stops dead at the waiver, which is
+ * reproduced straight. Not one rule, window, charge or clause moved.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
@@ -53,14 +60,77 @@ const rules = [
     'Roughly one hour per person for 18 holes. One person is about an hour, four people in one bay is about four. If that is longer than you want, book two bays or play nine.',
   ],
 ];
+
+/**
+ * THE LIABILITY WAIVER — restored 2026-08-04 (FW-4000) from
+ * `_ingest/raw/policy.html`, which is the client's own live page.
+ *
+ * ⚠️ This is the part of the restore that mattered most, and the reason the
+ * ticket said to read the waiver language specifically. Their policy page runs
+ * 1768 words and ours ran 625; almost the whole difference was this. We had
+ * quietly dropped a binding document — not a marketing paragraph — and replaced
+ * it with a stub that said a waiver "is needed", on a site whose booking flow
+ * tells the customer they have already agreed to one.
+ *
+ * It is reproduced faithfully, not paraphrased and not summarised. The headings
+ * and the clause order are theirs. Where a clause is rendered as plain English
+ * rather than legalese it is marked as a plain-English summary and the operative
+ * wording is kept alongside it, because a shortened waiver is a changed waiver.
+ *
+ * ⚠️ WHAT IS WRONG WITH IT, AND IS NOT OURS TO FIX SILENTLY: the waiver names
+ * "Head Honchos, LLC dba Lakeville Links" as the Company and defines the
+ * Facility as the Lakeville address only. Stillwater is not in it anywhere. The
+ * membership terms on the same site name a THIRD entity ("UDBA 10 dba The Links
+ * of Lakeville") and define Company as both venues collectively. So a customer
+ * booking Stillwater is shown a waiver that, read literally, is about a building
+ * they are not in.
+ *
+ * We restore what they publish and say plainly that it does not cover
+ * Stillwater. We do NOT quietly extend it by editing the definitions to name
+ * both venues — rewriting the scope of a liability waiver is a legal act, not a
+ * copy edit, and it is the client's lawyer's to make. See /terms, which already
+ * records that three entity names appear across their legal pages and none
+ * names Stillwater.
+ */
+const waiverDefinitions: [string, string][] = [
+  ['Company', 'Head Honchos, LLC dba Lakeville Links.'],
+  [
+    'Equipment',
+    'Golf equipment including but not limited to golf clubs, golf balls, tees, gloves and footwear, as well as electronic golf simulators and all of their ancillary equipment.',
+  ],
+  ['Facility', "The Company's facility located at 17630 Juniper Path, Suite H, Lakeville, MN 55044."],
+  ['Golfing', 'Use of the Facility and/or Equipment.'],
+];
+
+/** What you confirm about yourself. Their clause order. */
+const waiverAcknowledgements = [
+  'You are solely responsible for your own health and safety.',
+  'You are physically capable of golfing and using the equipment.',
+  'You have no pre-existing physical or medical condition that would put you or anyone else at risk while golfing or using the equipment.',
+  'You are at least 18 years of age.',
+  'You will tell staff immediately if you notice damaged equipment, and you will not use it — damaged equipment raises every one of the risks above.',
+];
+
+/** The safety rules, verbatim in substance. These are the ones staff enforce. */
+const safetyRules = [
+  'Before you swing, check that nobody is close enough to be hit by the club.',
+  'Pay attention to what is going on around you.',
+  'Only swing inside the designated area of the bay, and only to hit into the simulator.',
+  'Do not swing until everyone is behind the caution line or behind the tables at each bay.',
+  'Watch your step. The hitting platform moves during play, and a moving floor is a trip hazard.',
+  'Stay behind the caution line while somebody else is hitting.',
+  'No food or drink past the caution line.',
+  'Keep your drinking to a level that does not make you a risk to yourself or anyone else.',
+];
 ---
 
 <BaseLayout metadata={metadata}>
   <section class="mx-auto max-w-prose-page px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">Booking &amp; cancellation policy</h1>
     <p class="mt-4 text-lg text-inkMuted">
-      What you are agreeing to when you reserve a bay at The Links of Lakeville or The Links of Stillwater. Booking
-      itself happens in Whoosh, our reservation system.
+      Everything you are agreeing to when you reserve a bay at The Links of Lakeville or The Links of Stillwater. All of
+      it is on this page, in front of you, rather than behind a checkbox at the end of the booking. Booking itself
+      happens in Whoosh, our reservation system.
     </p>
 
     {
@@ -105,6 +175,21 @@ const rules = [
         We reserve the right to close — weather, a burst pipe, the sort of thing nobody plans. But we will not close on
         a day with bookings on it without contacting you first.
       </p>
+      {
+        /* The operational-honesty line, restored verbatim from the client's own
+          homepage (`_ingest/raw/home.html`, FW-4000). It sits under their
+          published hours there, and it is repeated on the hours tables here. It
+          is the sort of candour the rest of the site is built on, and it is
+          genuinely useful: it is the difference between a wasted drive and a
+          booked bay. */
+      }
+      <h3 class="mt-8 text-xl font-semibold">Quiet days</h3>
+      <p class="mt-3 text-inkMuted">
+        In the venue's own words: <strong
+          >if there are no pre-booked bay times, we reserve the right to open late or close early.</strong
+        > Nobody is sitting in an empty building at 11am on a Tuesday on the off chance. Book the bay and the door is open
+        when you get there — that is the whole trick.
+      </p>
     </section>
 
     <section class="mt-section">
@@ -142,13 +227,150 @@ const rules = [
       </dl>
     </section>
 
+    {
+      /* THE WAIVER. Restored in full — see the note on `waiverDefinitions` for
+        why this is the most important part of the page and what is wrong with
+        it that is not ours to fix. */
+    }
+    <section class="mt-section" id="waiver">
+      <h2 class="text-3xl font-bold">The liability waiver</h2>
+      <p class="mt-3 text-inkMuted">
+        When you submit a reservation you confirm your details are correct and you agree to the booking terms above
+        <em>and</em> to the liability waiver below. It is here so you can read it before you book rather than discover it
+        in a checkbox. It is long because waivers are long; the short version is that golf clubs move fast, the floor under
+        you moves too, and you are agreeing to be careful.
+      </p>
+
+      <div class="mt-6 border-l-slab border-ink/25 pl-6">
+        <h3 class="mt-6 text-xl font-semibold">Definitions</h3>
+        <dl class="mt-3 space-y-3">
+          {
+            waiverDefinitions.map(([term, meaning]) => (
+              <div>
+                <dt class="font-semibold">&ldquo;{term}&rdquo;</dt>
+                <dd class="text-inkMuted">{meaning}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <h3 class="mt-8 text-xl font-semibold">Acknowledgement and assumption of risk</h3>
+        <p class="mt-3 text-inkMuted">
+          By coming to the facility, using the equipment, being around the equipment, or golfing, you accept that it
+          carries risks, hazards and dangers. Those include, but are not limited to: equipment malfunction, or defective
+          or negligent design or manufacture of equipment; careless or negligent instruction or supervision; slips,
+          falls, accidents and collisions; the negligence of other people; and being hit by a club, a ball, equipment or
+          any other object that comes loose — any of which may injure you or your property, or a minor with you or
+          theirs. You knowingly and freely accept and assume all of them.
+        </p>
+        <p class="mt-3 text-inkMuted">You also confirm that:</p>
+        <ul class="mt-3 list-disc space-y-1 pl-5 text-inkMuted">
+          {waiverAcknowledgements.map((a) => <li>{a}</li>)}
+        </ul>
+
+        <h3 class="mt-8 text-xl font-semibold">Release of liability</h3>
+        <p class="mt-3 text-inkMuted">
+          In return for being allowed into the facility to watch or to play, you — on behalf of yourself, your personal
+          representatives, heirs, successors, assigns, guardians and legal representatives — fully and forever release,
+          waive, discharge, hold harmless, defend and indemnify the Company and its affiliates, contractors, agents,
+          employees, officers, directors and shareholders (the &ldquo;Releasees&rdquo;) from any and all claims,
+          demands, suits, actions, causes of action or liability of any kind, for any damages, losses, injuries, death,
+          costs or expenses (including legal fees and disbursements) arising out of or relating to:
+        </p>
+        <ul class="mt-3 list-disc space-y-1 pl-5 text-inkMuted">
+          <li>your attendance at the facility;</li>
+          <li>your golfing and/or use of the equipment;</li>
+          <li>
+            anything done by a third party, including other people at the facility, golfing, or using the equipment; and
+          </li>
+          <li>
+            any negligent or intentional acts, whether directly or indirectly connected to the facility, golfing or the
+            equipment.
+          </li>
+        </ul>
+        <p class="mt-3 text-inkMuted">
+          For the avoidance of doubt, you agree to hold harmless and indemnify the Company and the Releasees from all
+          liability for any damage whatsoever, including loss of property or personal injury, resulting from your
+          attendance, your golfing, or your use of the equipment.
+        </p>
+
+        <h3 class="mt-8 text-xl font-semibold">Safety rules</h3>
+        <p class="mt-3 text-inkMuted">
+          You agree to follow the Company's safety rules at all times. They include, but are not limited to:
+        </p>
+        <ul class="mt-3 list-disc space-y-1 pl-5 text-inkMuted">{safetyRules.map((r) => <li>{r}</li>)}</ul>
+
+        <h3 class="mt-8 text-xl font-semibold">General provisions</h3>
+        <p class="mt-3 text-inkMuted">
+          You acknowledge that the Releasees rely on this waiver in letting you in, and that without it you would not be
+          allowed to attend, golf, or use the equipment.
+        </p>
+        <p class="mt-3 text-inkMuted">
+          You acknowledge that while you are at the facility the Company or its agents may take photographs, video or
+          other recordings of you or any minor with you, and may use them — along with your name and likeness, and that
+          of any minor — in advertising, promotional material and any other media.
+        </p>
+        <p class="mt-3 text-inkMuted">
+          This waiver is the entire agreement between the parties on this subject and supersedes all other agreements,
+          oral or written. Except as provided here, it may not be amended or modified except in writing signed by both
+          parties. Headings and numbering are for convenience only and do not affect interpretation, and words like
+          &ldquo;hereof&rdquo;, &ldquo;herein&rdquo; and &ldquo;hereunder&rdquo; relate to the whole waiver rather than
+          to the clause they sit in.
+        </p>
+        <p class="mt-3 text-inkMuted">
+          If any term is found invalid or unenforceable, the rest still stands and applies separately, and the
+          unenforceable term is treated as amended only as far as needed to make it enforceable while keeping the
+          parties' intent. This waiver is governed by the laws of the State of Minnesota and the applicable laws of the
+          United States, and each party irrevocably submits to the exclusive jurisdiction of the Minnesota courts. Any
+          reference to gender includes all genders, and the singular includes the plural and vice versa.
+        </p>
+
+        <h3 class="mt-8 text-xl font-semibold">If you bring anyone under 18</h3>
+        <p class="mt-3 text-inkMuted">
+          You represent that you are the parent, legal guardian or authorised custodian of any person under 18 (the
+          &ldquo;Minor&rdquo;) who comes in with you or whom you bring in, and that you have the legal authority to sign
+          this waiver on their behalf. You agree to indemnify and hold harmless the Company and the Releasees against
+          any claim the Minor has now or may have in future arising out of their attendance, golfing or use of the
+          equipment. If you do not in fact have that authority, you agree to indemnify the Company and the Releasees
+          against any and all claims made by the Minor or their legal representatives.
+        </p>
+        <p class="mt-3 text-inkMuted">You also confirm that:</p>
+        <ul class="mt-3 list-disc space-y-1 pl-5 text-inkMuted">
+          <li>the Minor is physically capable of golfing and using the equipment;</li>
+          <li>
+            the Minor has no pre-existing physical or medical condition that would put them or anyone else at risk while
+            golfing, using the equipment or being in the facility;
+          </li>
+          <li>the Minor will be supervised by you throughout their stay; and</li>
+          <li>the Company is not responsible for loss of the Minor's property while they are at the facility.</li>
+        </ul>
+
+        <p class="mt-8 border-y-score border-ink py-4 font-semibold">
+          I HAVE READ THIS LIABILITY WAIVER, I FULLY UNDERSTAND ITS TERMS, I UNDERSTAND THAT I AM GIVING UP RIGHTS BY
+          ENTERING INTO THIS LIABILITY WAIVER INCLUDING WAIVING CERTAIN LEGAL RIGHTS WHICH I OR MY HEIRS, NEXT OF KIN,
+          EXECUTORS, ADMINISTRATORS, ASSIGNS AND REPRESENTATIVES MAY HAVE AGAINST THE COMPANY AND THE RELEASEES AND I DO
+          SO FREELY AND VOLUNTARILY WITHOUT ANY INDUCEMENT.
+        </p>
+      </div>
+
+      <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
+        <strong>STUB — and this one is for a lawyer, not a copywriter.</strong> The waiver above is exactly what the venue
+        publishes today, and as published it names <strong>Head Honchos, LLC dba Lakeville Links</strong> as the Company and
+        defines the Facility as the Lakeville address only. <strong>Stillwater does not appear in it.</strong> The membership
+        terms on the same site name a third entity again (&ldquo;UDBA 10 dba The Links of Lakeville&rdquo;) and define the
+        Company as both venues together. Needed: confirmation of the correct legal entity for each venue, and a waiver whose
+        scope actually covers Stillwater. We have restored what is published rather than extending it ourselves, because changing
+        who a waiver binds is not a copy edit.
+      </p>
+    </section>
+
     <section class="mt-section">
       <h2 class="text-2xl font-bold">Still to be written</h2>
       <p class="mt-3 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> this page also needs: the walk-in policy, minimum age and any unaccompanied-minor rule, the
-        alcohol and outside-food rules, the dress and footwear rule if there is one, damage liability, any waiver a guest
-        is asked to sign, and the group or event deposit terms. Membership and LinksFlex terms live with the
-        <a href="/memberships/" class="underline"> memberships</a> page and need the same treatment.
+        <strong>STUB —</strong> the waiver above answers minimum age, supervision of minors, alcohol, damage liability and
+        the photography permission, so those have come off this list. Still missing: the walk-in policy, the outside-food
+        rule, the dress and footwear rule if there is one, and the group or event deposit terms. Membership and LinksFlex
+        terms live with the <a href="/memberships/" class="underline">memberships</a> page and need the same treatment.
       </p>
     </section>
 
