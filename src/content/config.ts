@@ -367,6 +367,28 @@ const rates = defineCollection({
  * "TBD" string in a value slot: the item ships without the contested field, and
  * a `GapCell` beside the section says what is unresolved and why — the same
  * grammar as every other absence on the site (`lib/readout.ts`).
+ *
+ * ⚠️ **`items` order is the VENUE'S PRINT ORDER. Do not sort it.**
+ *
+ * It was briefly sorted high-to-low by price, which sits tidier against the
+ * scoreboard price column and is a merchandising decision wearing a formatting
+ * costume: descending leads with the most expensive dish, ascending anchors
+ * everyone to the cheapest. Neither is ours to make silently, and a re-sort is
+ * nearly invisible in review because no item and no price changes.
+ *
+ * The order looks arbitrary in places — pickle fries at $8 sit between $12 and
+ * $11 — because the source is two graphics laid out around photographs. That
+ * artefact is still the venue's own running order, and it is restored rather
+ * than corrected.
+ *
+ * What the evidence does support is spending the FIRST and LAST slot of each
+ * section deliberately: items at the extremes of a category list are up to twice
+ * as popular as the same items mid-list (Dayan & Bar-Hillel 2011, 951 real
+ * orders). The venue already does this — brisket burnt ends open, a dessert
+ * closes — which is another reason not to overwrite it.
+ *
+ * Measured vs folklore, in full:
+ * `fareway-brain/marketing/websites/_playbook/playbook-menu.md`
  */
 const menu = defineCollection({
   type: 'data',
