@@ -46,16 +46,13 @@
  * - **Silent by construction.** The audio track is not muted, it is absent —
  *   the encode is `-an`. (The client's promos shipped with no audio stream at
  *   all; only the Stillwater walkthrough had one.)
- * - **Lazy.** `preload="none"` and no `autoplay` attribute, so nothing is
- *   fetched until playback is actually started.
- * - **`prefers-reduced-motion` is respected as poster-only**: it never
- *   auto-starts and never auto-fetches. The visitor can still press play, and a
- *   runtime change to the preference pauses it.
- * - **Pausable** (WCAG 2.2.2): the loop auto-starts and runs past five seconds,
- *   so a control to stop it is required, not a nicety.
  * - The clip fades in from and out to black, which is what makes it tile
  *   cleanly — the source is one continuous take that pans from a table to a
  *   tee, so its ends do not otherwise match.
+ * - Everything else — lazy, in-view only, reduced-motion poster-only, pausable
+ *   — is `lib/videoLoop.ts`, shared with `TechPillar`. It moved there when the
+ *   second looping component arrived (FW-3992): a copy of an accessibility
+ *   branch is a copy that eventually stops matching.
  */
 import { getImage } from 'astro:assets';
 import SectionHead from './SectionHead.astro';
@@ -116,46 +113,6 @@ const poster = await getImage({ src: posterSource, format: 'webp', width: 1280, 
 </section>
 
 <script>
-  for (const band of document.querySelectorAll<HTMLElement>('[data-video-band]')) {
-    const video = band.querySelector<HTMLVideoElement>('[data-video]');
-    const toggle = band.querySelector<HTMLButtonElement>('[data-video-toggle]');
-    if (!video) continue;
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    const sync = () => {
-      if (!toggle) return;
-      const playing = !video.paused;
-      toggle.textContent = playing ? 'Pause' : 'Play';
-      toggle.setAttribute('aria-pressed', String(playing));
-    };
-
-    // `preload="none"` means this call is also what first fetches the file.
-    const play = () => void video.play().catch(() => {});
-    const pause = () => video.pause();
-
-    video.addEventListener('play', sync);
-    video.addEventListener('pause', sync);
-    toggle?.addEventListener('click', () => (video.paused ? play() : pause()));
-
-    // Auto-play only while in view, and only where motion is welcome. Reduced
-    // motion therefore costs zero bytes as well as zero movement.
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (reduced.matches) continue;
-          if (entry.isIntersecting) play();
-          else pause();
-        }
-      },
-      { threshold: 0.25 },
-    );
-    io.observe(video);
-
-    reduced.addEventListener('change', (event) => {
-      if (event.matches) pause();
-    });
-
-    sync();
-  }
+  import { initVideoLoops } from '../../lib/videoLoop';
+  initVideoLoops();
 </script>

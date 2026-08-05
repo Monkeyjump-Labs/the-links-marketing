@@ -53,8 +53,13 @@ import PendingTag from '../components/venue/PendingTag.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import BaySchematic from '../components/venue/BaySchematic.astro';
 import HandednessRow from '../components/venue/HandednessRow.astro';
+import TechPillar from '../components/venue/TechPillar.astro';
 import { buttonClasses } from '../lib/buttons';
 import { getVenues, venuePath } from '../lib/venues';
+import courseRenderPoster from '../assets/images/golfzon-course-render-poster.jpg';
+import practiceToolsPoster from '../assets/images/golfzon-practice-tools-poster.jpg';
+import motionPlatePoster from '../assets/images/golfzon-motion-plate-poster.jpg';
+import weightShiftPoster from '../assets/images/golfzon-weight-shift-poster.jpg';
 
 const venues = await getVenues();
 const lakeville = venues.find((v) => v.data.slug === 'lakeville');
@@ -79,22 +84,80 @@ const CLUB_READINGS = ['Club path', 'Angle of attack', 'Club face impact area'];
 const BALL_READINGS = ['Ball speed', 'Direction and trajectory', 'Spin rate', 'Launch angle', 'Spin axis'];
 
 /**
+ * The four capabilities that are worth SHOWING rather than describing, each a
+ * short silent loop (FW-3992). Taken as a concept from the nearest comparable
+ * GolfZon venue, which ships the same four ideas as **107 MB of GIFs on one
+ * landing page**; these are ~1.6 MB of WebM for all four, lazy, and do not
+ * autoplay under `prefers-reduced-motion`.
+ *
+ * ⚠️ **The footage is GolfZon's, not ours.** It is their product film of their
+ * hardware, and none of it was shot in Lakeville or Stillwater. The page says so
+ * in the section intro, because letting a vendor's studio lighting stand in for
+ * our rooms is the same defect as letting Lakeville's photography stand in for
+ * Stillwater (STYLE-GUIDE §6.10) — and Stillwater has already cost us that
+ * argument once.
+ *
+ * ⚠️ **No numerals.** The source labels its pillars `01/02/03/04`; we cannot,
+ * because those numerals mean STEPS IN ORDER OVER TIME on this site and four
+ * capabilities are not a sequence (FW-3967, `SectionHead`).
+ *
+ * ⚠️ **`body` copy may not out-claim the schematic.** Ball readings come off the
+ * FLOOR sensor and club readings off the OVERHEAD cameras; nothing here invents
+ * a third thing the machine measures, and nothing counts the readings
+ * (truth-audit §C6). Note that GolfZon's own on-screen HUD in the first two
+ * loops includes a "Face Angle" column — that is their software, and it is NOT
+ * licence to put face angle back in our copy (truth-audit §U19).
+ */
+const pillars = [
+  {
+    name: 'golfzon-course-render',
+    poster: courseRenderPoster,
+    heading: 'The course is built, not photographed',
+    body: 'A links hole with real contour on it — rendered, so the ground is a surface with a slope rather than a picture of one. Land short on a downslope and the ball runs out; land in the rough and it does not. That is the difference between a screen you hit at and a course you play.',
+    shows:
+      'Silent loop: an aerial map of a golf course, then play down a coastal links fairway, the ball landing and running out with the shot data along the foot of the screen.',
+  },
+  {
+    name: 'golfzon-practice-tools',
+    poster: practiceToolsPoster,
+    heading: 'Numbers come back on every shot',
+    body: 'Ball speed, launch angle, spin — on the screen, per shot, whether you asked for them or not. On the green it draws the slope over the surface so you can see the break. This is the part people underestimate: you find out what your 7-iron actually carries, which is rarely what you have been telling people it carries.',
+    shows:
+      'Silent loop: a shot traced away down a driving range, then a putt on a green with the slope drawn across it as a coloured break map.',
+  },
+  {
+    name: 'golfzon-motion-plate',
+    poster: motionPlatePoster,
+    heading: 'The floor tilts to match the lie',
+    body: 'Not a figure of speech — the plate under you physically lifts and drops. GolfZon builds it in five segments, one under the ball and four under your stance, with fairway, rough and bunker mats. That is the part people do not expect, and it is why the ball behaves like it does outdoors rather than like a video game.',
+    shows:
+      'Silent loop: the swing plate under a player rising at one edge and settling, with its travel measured against a drawn scale.',
+  },
+  {
+    name: 'golfzon-weight-shift',
+    poster: weightShiftPoster,
+    heading: 'You stand on the slope, not next to it',
+    body: 'Because the surface moves, your weight has somewhere to go. You set up to an uphill lie the way you would outdoors — leaning into it, feet doing the work — instead of standing square on a flat mat and imagining the hill. Your body works it out faster than any tip does.',
+    shows: 'Silent loop: a player’s feet on the lit swing plate as its surface rises into a slope beneath them.',
+  },
+];
+
+/**
  * What the hardware does, for someone who has never used one. Titles are the
  * client's own homepage feature bullets; the bodies are constrained to what
  * GolfZon publishes about its own sensors, because this is the one section whose
- * job is to sound like it knows the machine. The plate detail ("five-segment",
- * fairway/rough/bunker mats) is likewise GolfZon's own and replaced an invented
- * "in a bunker shot it drops".
+ * job is to sound like it knows the machine.
+ *
+ * ⚠️ The swing plate used to be the first row here. It moved into the video
+ * pillars above with its copy intact (FW-3992) — a tilting floor is the single
+ * hardest thing on this page to picture from a sentence, and describing it in
+ * two places on one page is how a fact starts drifting between them.
  *
  * NOTE the ordering claim in the sensor bullet: the cameras are "positioned
  * above and in FRONT of the player" and "meet at 90 degrees" — not "above and
  * beside you", which is what this said before.
  */
 const hardware = [
-  [
-    'A moving swing plate',
-    'The floor you stand on tilts to match the lie. GolfZon builds it in five segments — one under the ball, four under your stance — with fairway, rough and bunker mats. That is the part people do not expect, and it is why the ball behaves like it does outdoors rather than like a video game.',
-  ],
   [
     'Auto tee-up and ball return',
     'The machine tees the next ball for you. You do not bend down between shots, and you do not run out of balls — they are included, and you never bring your own.',
@@ -211,10 +274,51 @@ const stillwaterPending = [
     </div>
   </section>
 
-  {/* 3. WHAT IS WHERE, per venue — including who can play in which bay. */}
+  {
+    /* 3. WHAT THAT LOOKS LIKE. The schematic above says which part of the
+      machine takes which reading; this says what those parts DO, in motion,
+      because a tilting floor cannot be argued into someone's head.
+
+      Greige, deliberately: it breaks the midnight run the hero and the schematic
+      make, and it lets four bright video frames carry the colour rather than
+      competing with a dark ground. The loops are lazy (`preload="none"`), play
+      only while in view, and stay on their poster frame under
+      `prefers-reduced-motion` — see `lib/videoLoop.ts`.
+
+      One CTA at the foot, not one per pillar as the source venue does. Four
+      identical Book buttons in one band is not four times the invitation; it is
+      one invitation that looks like a checkout page. */
+  }
+  <section class="bg-greige">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={2}>What that looks like</SectionHead>
+      <p class="max-w-prose-page text-lead leading-body text-inkBody">
+        Four things the machine does that are hard to picture from a sentence. Each one is a few silent seconds — they
+        start when you scroll to them, and you can stop any of them.
+      </p>
+      <p class="mt-s5 max-w-prose-page text-body leading-body text-inkBody">
+        These are <strong class="font-semibold text-ink">GolfZon's own films of GolfZon hardware</strong> — the system that
+        is in our bays, but not our rooms and not our footage. The lighting is theirs. The carpet in Lakeville is considerably
+        more ordinary.
+      </p>
+
+      <div class="mt-s8 grid gap-s8 border-t-score border-navy pt-s7 lg:grid-cols-2 lg:gap-s9">
+        {pillars.map((pillar) => <TechPillar {...pillar} />)}
+      </div>
+
+      <div class="mt-s8 max-w-prose-page">
+        <p class="text-body leading-body text-inkBody">
+          The floor moving under you is the one nobody believes until they stand on it.
+        </p>
+        <div class="mt-s5"><BookButton size="lg" /></div>
+      </div>
+    </div>
+  </section>
+
+  {/* 4. WHAT IS WHERE, per venue — including who can play in which bay. */}
   <section class="bg-white">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={2}>What is where</SectionHead>
+      <SectionHead index={3}>What is where</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-inkBody">
         Ten bays across two rooms. Lakeville has been open since 2022 and is written up here down to which bay a lefty
         gets. Stillwater opened in 2026, and the marks below are the details still being confirmed for this page rather
@@ -295,10 +399,10 @@ const stillwaterPending = [
     </div>
   </section>
 
-  {/* 4. THE HARDWARE, explained. Rows at one scale — a set of things, so no numerals. */}
+  {/* 5. THE HARDWARE, explained. Rows at one scale — a set of things, so no numerals. */}
   <section class="bg-greige">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={3}>What separates it from hitting into a net</SectionHead>
+      <SectionHead index={4}>What separates it from hitting into a net</SectionHead>
       <dl class="border-t-score border-navy">
         {
           hardware.map(([title, body]) => (
@@ -312,10 +416,10 @@ const stillwaterPending = [
     </div>
   </section>
 
-  {/* 5. WHAT YOU CAN DO WITH IT. */}
+  {/* 6. WHAT YOU CAN DO WITH IT. */}
   <section class="bg-white">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={4}>Practice, play, or just mess about</SectionHead>
+      <SectionHead index={5}>Practice, play, or just mess about</SectionHead>
       <dl class="border-t-score border-navy">
         {
           modes.map(([title, body]) => (
@@ -338,10 +442,10 @@ const stillwaterPending = [
     </div>
   </section>
 
-  {/* 6. NEVER USED ONE. The largest addressable market (playbook-core.md §8). */}
+  {/* 7. NEVER USED ONE. The largest addressable market (playbook-core.md §8). */}
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead tone="dark" index={5}>Never used one?</SectionHead>
+      <SectionHead tone="dark" index={6}>Never used one?</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-paper">
         Staff start the bay for you and show you the screen. Turn the difficulty down, turn the wind off, and take as
         many shots as you like — there is no group behind you and the bay is yours for the hour. If you top one, the
