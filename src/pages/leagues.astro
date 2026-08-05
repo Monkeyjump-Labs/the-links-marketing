@@ -28,11 +28,24 @@
  * — once, like the homepage's.
  *
  * **"On the blanks" is the page's closing note and it is a promise, not an
- * apology.** Four facts are unpublished for both venues; the note commits to
- * publishing night, format, length and price TOGETHER, before registration
- * opens rather than after you have paid. Nobody asked for that. It turns the
- * page's largest gap into the reason to trust it, and it is the single idea from
- * this page's exploration most worth keeping.
+ * apology.** The note commits to publishing night, format, length and price
+ * TOGETHER, before registration opens rather than after you have paid. Nobody
+ * asked for that. It turns the page's largest gap into the reason to trust it,
+ * and it is the single idea from this page's exploration most worth keeping —
+ * MORE credible now that last season is on the page, because the promise is
+ * made by someone visibly showing their working rather than by an empty page.
+ *
+ * **Lakeville's four blocks are archived seasons (FW-3998).** They carry real
+ * nights, formats, lengths and skins pots from the venue's own league sheets and
+ * are drawn disabled: reference, not registration. The treatment is a data state
+ * on the collection (`status: 'archive'`), never a branch here — the client
+ * flips a row to `live` in Tina when the 2026 lineup lands and this file does
+ * not change. Note that every source document is Lakeville; Stillwater's first
+ * season is genuinely still being designed and keeps its gaps.
+ *
+ * The entry fee is a gap ON PURPOSE and must stay one. The dollar figures in
+ * those sheets are SKINS BUY-INS — "to be paid at beginning of the season" — and
+ * no document states what joining costs. See `LeagueBlock`'s facts table.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -41,12 +54,19 @@ import LeagueSchema from '../components/venue/LeagueSchema.astro';
 import SeasonTrack from '../components/venue/SeasonTrack.astro';
 import SectionHead from '../components/venue/SectionHead.astro';
 import WaitlistForm from '../components/venue/WaitlistForm.astro';
+import { LEAGUE_WAITLIST_ID, upcomingSeason } from '../lib/leagues';
 
 const leagues = (await getCollection('leagues'))
   .filter((l) => l.data.published)
   .sort((a, b) => a.data.order - b.data.order);
 
-const season = leagues[0]?.data.season ?? 'the coming season';
+/**
+ * Named from the first row that is NOT archived — see `upcomingSeason`.
+ * Lakeville's archived seasons sort first because they are the rows with facts
+ * in them, and reading `leagues[0]` here would have the capture band offering
+ * first word on a season that finished last December.
+ */
+const season = upcomingSeason(leagues);
 
 const metadata = {
   metaTitle: 'Indoor Golf Leagues — Lakeville & Stillwater, MN',
@@ -111,7 +131,7 @@ const steps = [
       the other way round. The form therefore sits in a paper slab punched out of
       the band, and inside that slab everything reverts to light-field styling. */
   }
-  <section class="on-accent-band bg-primary">
+  <section class="on-accent-band bg-primary" id={LEAGUE_WAITLIST_ID}>
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
         <div>
@@ -158,9 +178,10 @@ const steps = [
       <SectionHead index={2}>On the blanks</SectionHead>
       <div class="max-w-prose-page">
         <p class="text-lead leading-body text-inkBody">
-          You will have noticed how much of the season above is not filled in. Night, format, length and price are not
-          set for either venue yet, and we would rather show you the shape of the question than a number we would have
-          to take back.
+          You will have noticed how much of the season above is not filled in. Lakeville's blocks are last season's,
+          kept up so you can see the shape of the thing rather than an empty page — the nights and formats held up well,
+          and the only number in them is the skins pot. What it costs to join has never been written down, and
+          Stillwater has not run a league at all yet.
         </p>
         <p
           class="mt-s5 border-l-slab border-ember pl-s4 font-display text-card leading-display font-bold tracking-display text-ink"

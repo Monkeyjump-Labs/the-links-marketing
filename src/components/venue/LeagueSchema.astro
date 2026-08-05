@@ -4,6 +4,14 @@
  * largest untapped structured-data opportunity in the segment.
  * Emitted only for leagues with a real start date; a stub league emits nothing
  * rather than invalid markup.
+ *
+ * **Archived seasons are excluded explicitly, not left to the date filter.**
+ * They happen to carry no start date today, so the date test alone looks like it
+ * is doing the job — right up until an editor records when last season began and
+ * the page starts advertising a finished league to search engines as
+ * `EventScheduled`. Structured data claiming a December league is upcoming is
+ * worse than none at all: it is the site telling a crawler the opposite of what
+ * the block above it is at pains to say.
  */
 import type { CollectionEntry } from 'astro:content';
 import { getVenues, formatAddress } from '../../lib/venues';
@@ -16,7 +24,9 @@ const { leagues } = Astro.props;
 const venues = await getVenues();
 const site = globalData.siteUrl;
 
-const dated = leagues.filter((l) => l.data.startDate && /^\d{4}-\d{2}-\d{2}$/.test(l.data.startDate));
+const dated = leagues.filter(
+  (l) => l.data.status !== 'archive' && l.data.startDate && /^\d{4}-\d{2}-\d{2}$/.test(l.data.startDate),
+);
 
 const schema = dated.map((l) => {
   const venue = venues.find((v) => v.data.slug === l.data.venue);

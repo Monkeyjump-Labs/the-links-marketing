@@ -10,22 +10,41 @@
  * column at one scale, with the season facts in the same labelled cells the rest
  * of the site uses.
  *
- * **The six season facts are the gap system's main event on this page.** None of
- * them are published yet for either venue. They render as `GapCell`s marked
- * *Not yet set* — same label, same size, an em-dash in the value slot — so the
- * row reads as "the venue has not decided" rather than as a page we abandoned.
- * When the client supplies a night, the gap becomes a `ReadoutCell` and nothing
- * else on the page moves.
+ * **The six season facts are the gap system's main event on this page.** They
+ * render as `GapCell`s marked *Not yet set* — same label, same size, an em-dash
+ * in the value slot — so the row reads as "the venue has not decided" rather
+ * than as a page we abandoned. When the client supplies a night, the gap becomes
+ * a `ReadoutCell` and nothing else on the page moves.
+ *
+ * **`status: 'archive'` is last season, drawn disabled.** Lakeville's four
+ * documented leagues have already run, so they are shown as reference rather
+ * than as something to join: no register link, no waitlist form of their own,
+ * and a "Last season — closed" tag in the slot that normally carries the
+ * registration state. It is a DATA state and not a page branch, so the client
+ * flips a row back to `live` in Tina when the 2026 lineup lands and the block
+ * starts taking signups again without anyone touching this file.
+ *
+ * **The disabled treatment cannot be "put it on greige".** A `notSet` cell tints
+ * itself greige on a light ground, and a tint the same colour as its ground is
+ * not a tint — the mark would keep its words and lose the form that separates it
+ * from a `quoted` one (`GapCell` §"Which band a notSet cell can sit on"). Nor
+ * can it be an opacity fade, which takes the facts the block exists to show down
+ * with it and puts the whole grid under the audit's contrast floor. So an
+ * archived block stays on white and is muted with TYPE: an ink-muted heading, a
+ * navy rule where a live block carries the ember one, and the action slot
+ * replaced by the check-back note. Every measured pairing stays as it was.
  *
  * Leagues are the worst-executed page type in the corpus: 46% offer no way to
- * register, 50% state no price, 67% give no beginner reassurance. All three
- * registration states get an action here — never a dead end.
+ * register, 50% state no price, 67% give no beginner reassurance. Every block
+ * still ends in an action — an archived one points at the page's waitlist band
+ * rather than dead-ending on a season nobody can join.
  */
 import type { CollectionEntry } from 'astro:content';
 import WaitlistForm from './WaitlistForm.astro';
 import ReadoutCell from './ReadoutCell.astro';
 import GapCell from './GapCell.astro';
 import { buttonClasses } from '../../lib/buttons';
+import { LEAGUE_WAITLIST_ID } from '../../lib/leagues';
 
 interface Props {
   league: CollectionEntry<'leagues'>;
@@ -36,31 +55,71 @@ interface Props {
 const { league, first = false, last = false } = Astro.props;
 const d = league.data;
 
-const stateLabel = {
-  open: 'Registration open',
-  full: 'Full — waitlist open',
-  between: 'Between seasons',
-}[d.state];
+const isArchive = d.status === 'archive';
+
+const stateLabel = isArchive
+  ? 'Last season — closed'
+  : {
+      open: 'Registration open',
+      full: 'Full — waitlist open',
+      between: 'Between seasons',
+    }[d.state];
 
 /**
  * The six facts, in the order a player asks for them. `value: undefined` is not
  * a missing row — it is a row whose value is a gap, and it still renders.
  * Dropping the row instead would hide that the question exists, which is the
  * thing the season track promises we will not do.
+ *
+ * **An archived row swaps two cells, and both swaps are about not lying.**
+ *
+ * *Starts* comes out: a date on a season that finished in December is a fact
+ * about the past sitting in the slot a reader uses to answer "when can I play".
+ *
+ * *Cost* splits into **Entry fee** and **Skins**, and the entry fee is left
+ * empty on purpose so it draws the *Not yet set* mark. Every archived spec
+ * states a skins buy-in and NONE of them states an entry fee, so a single "Cost"
+ * cell would have to take one figure and call it the price of joining. Two cells
+ * can say exactly what is known and exactly what is not.
  */
-const facts: { label: string; value?: string }[] = [
-  { label: 'Night', value: d.night },
-  { label: 'Format', value: d.format },
-  { label: 'Length', value: d.weeks ? `${d.weeks} weeks` : undefined },
-  { label: 'Starts', value: d.startDate },
-  { label: 'Cost', value: d.price },
-  { label: 'Prizes', value: d.prizes },
-];
+const facts: { label: string; value?: string; reason?: string }[] = isArchive
+  ? [
+      { label: 'Nights', value: d.night },
+      { label: 'Format', value: d.format },
+      { label: 'Length', value: d.weeks ? `${d.weeks} weeks` : undefined },
+      { label: 'Skins', value: d.skins },
+      {
+        label: 'Entry fee',
+        value: d.price,
+        reason: 'Last season’s sheets set the skins pot and nothing else. The fee to join comes with the new schedule.',
+      },
+      { label: 'Prizes', value: d.prizes },
+    ]
+  : [
+      { label: 'Night', value: d.night },
+      { label: 'Format', value: d.format },
+      { label: 'Length', value: d.weeks ? `${d.weeks} weeks` : undefined },
+      { label: 'Starts', value: d.startDate },
+      { label: 'Cost', value: d.price },
+      { label: 'Prizes', value: d.prizes },
+    ];
 ---
 
-<article class:list={['border-navy py-s7', first ? 'border-t-score' : 'border-t-hairline', last && 'border-b-score']}>
+<article
+  class:list={['border-navy py-s7', first ? 'border-t-score' : 'border-t-hairline', last && 'border-b-score']}
+  data-league-status={d.status}
+>
   <div class="flex flex-wrap items-baseline justify-between gap-s4">
-    <h3 class="text-row leading-display font-extrabold tracking-display text-ink">{d.name}</h3>
+    <h3
+      class:list={[
+        'text-row leading-display font-extrabold tracking-display',
+        /* Archived: ink-muted, 6.87:1 on white. A heading at full ink weight
+           reads as the thing to act on, which this one is not. */
+        isArchive ? 'text-inkMuted' : 'text-ink',
+      ]}
+    >
+      {d.name}
+    </h3>
     <p class="caps-label text-label-sm text-inkMuted">{stateLabel} · {d.season}</p>
   </div>
 
@@ -70,9 +129,15 @@ const facts: { label: string; value?: string }[] = [
     /* Beginner reassurance is REQUIRED, not optional: it is the top reason
       people do not join, and two thirds of the corpus omits it entirely. It
       carries the 8px slab so it reads as the page's own voice rather than as
-      another fact in the grid. */
+      another fact in the grid — in NAVY on an archived block, because ember is
+      the action colour and an archived block has no action in it. */
   }
-  <p class="mt-s5 max-w-prose-page border-l-slab border-ember pl-s4 text-body leading-body text-inkBody">
+  <p
+    class:list={[
+      'mt-s5 max-w-prose-page border-l-slab pl-s4 text-body leading-body text-inkBody',
+      isArchive ? 'border-navy' : 'border-ember',
+    ]}
+  >
     {d.beginnerNote}
   </p>
 
@@ -84,7 +149,7 @@ const facts: { label: string; value?: string }[] = [
             {fact.value}
           </ReadoutCell>
         ) : (
-          <GapCell label={fact.label} state="notSet" size="name" />
+          <GapCell label={fact.label} state="notSet" size="name" reason={fact.reason} />
         ),
       )
     }
@@ -92,7 +157,27 @@ const facts: { label: string; value?: string }[] = [
 
   <div class="mt-s6">
     {
-      d.state === 'open' && d.registerUrl && (
+      /* An archived season has no action of its own — the register link and the
+        per-league waitlist would both be offers on something that has already
+        finished. It gets the check-back note and a route to the one live action
+        on the page instead, so the block still ends in somewhere to go. */
+      isArchive && (
+        <>
+          {d.nextSeasonNote && <p class="max-w-prose-page text-small leading-body text-inkMuted">{d.nextSeasonNote}</p>}
+          <p class="mt-s4">
+            <a
+              href={`#${LEAGUE_WAITLIST_ID}`}
+              class="inline-flex min-h-tap items-center font-bold text-inkBody underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+              data-analytics={`league-archive-waitlist:${league.id}`}
+            >
+              Get first word when the new schedule lands <span aria-hidden="true">→</span>
+            </a>
+          </p>
+        </>
+      )
+    }
+    {
+      !isArchive && d.state === 'open' && d.registerUrl && (
         <a
           href={d.registerUrl}
           target="_blank"
@@ -105,7 +190,7 @@ const facts: { label: string; value?: string }[] = [
       )
     }
     {
-      d.state !== 'open' && (
+      !isArchive && d.state !== 'open' && (
         <>
           {d.nextSeasonNote && (
             <p class="mb-s5 max-w-prose-page text-small leading-body text-inkMuted">{d.nextSeasonNote}</p>

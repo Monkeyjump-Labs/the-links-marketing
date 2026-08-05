@@ -188,6 +188,20 @@ const leagues = defineCollection({
     order: z.number().default(0),
     /** open = register now · full = waitlist · between = notify me */
     state: z.enum(['open', 'full', 'between']),
+    /**
+     * Whether this row is a season you can still act on, or one that has already
+     * run and is shown for reference.
+     *
+     *   live     the season ahead — `state` decides the action
+     *   archive  last season's published spec, drawn DISABLED and not registerable
+     *
+     * The disabled treatment is a DATA STATE, deliberately, not a branch in
+     * `leagues.astro`. Lakeville has four archived leagues today and the client
+     * flips them to `live` in Tina when the 2026 lineup lands; a page that
+     * hardcoded "the first four blocks are historical" would have to be edited by
+     * us to do that, which is the thing the collection exists to avoid.
+     */
+    status: z.enum(['live', 'archive']).default('live'),
     oneLiner: z.string(), // "Eight weeks. Two-person teams. Wednesday nights."
     beginnerNote: z.string(), // required — 67% of the corpus omits this
     /**
@@ -207,10 +221,34 @@ const leagues = defineCollection({
     night: z.string().optional(),
     startDate: z.string().optional(),
     weeks: z.number().optional(),
+    /**
+     * The LEAGUE ENTRY FEE — what it costs to join. Not the skins pot.
+     *
+     * It is unknown for every league we have a document for, and it stays empty
+     * so the page draws the *Not yet set* mark. Do not be tempted to fill it from
+     * the dollar figure in the archived specs: see `skins`.
+     */
     price: z.string().optional(),
+    /**
+     * The SKINS BUY-IN — a side pot, paid once at the start of the season, on top
+     * of whatever joining costs.
+     *
+     * This field exists because the four archived Lakeville specs each state a
+     * per-team dollar figure and NONE of them states an entry fee. Every document
+     * says "Skins - to be paid at beginning of the season, $X per team". Putting
+     * that figure in `price` would tell a customer the league costs $64 to join,
+     * which they find out is wrong at the till — the worst place to find out.
+     * Two fields, so the page can only ever say which one it means.
+     */
+    skins: z.string().optional(),
     prizes: z.string().optional(),
     registerUrl: z.string().url().optional(),
-    /** Shown when state is `between` — when registration is expected to open. */
+    /**
+     * The line under the facts. On a `live` between-seasons row it says when
+     * registration is expected to open; on an `archive` row it is the check-back
+     * ("Check back for the updated 2026 fall schedule."). Same slot, because it
+     * answers the same question: what happens next.
+     */
     nextSeasonNote: z.string().optional(),
     standingsUrl: z.string().url().optional(),
     season: z.string(), // every dated page carries its season + year
