@@ -11,11 +11,6 @@
       "price": "$16"
     },
     {
-      "name": "Buffalo chicken cheesy tots",
-      "description": "Boneless wings, tots and cheese.",
-      "price": "$16"
-    },
-    {
       "name": "Pork wings (6)",
       "description": "Mini pork shanks with your choice of sauce.",
       "price": "$15"
@@ -30,25 +25,66 @@
       "description": "Boneless chicken wings with your choice of sauce.",
       "price": "$12"
     },
-    { "name": "Breakfast bowl", "price": "$12" },
     {
-      "name": "Breakfast burrito",
-      "description": "The same as the bowl, wrapped.",
-      "price": "$12"
+      "name": "Pickle fries",
+      "price": "$8"
     },
     {
       "name": "Chicken strips (3)",
       "price": "$11"
     },
     {
+      "name": "Mac and Jack bites",
+      "price": "$9"
+    },
+    {
+      "name": "Basket of fries",
+      "price": "$7"
+    },
+    {
+      "name": "Breaded mushrooms",
+      "price": "$9"
+    },
+    {
+      "name": "Cheese curds",
+      "price": "$8"
+    },
+    {
+      "name": "Buffalo chicken cheesy tots",
+      "description": "Boneless wings, tots and cheese.",
+      "price": "$16"
+    },
+    {
+      "name": "Breakfast bowl",
+      "price": "$12"
+    },
+    {
+      "name": "Potato rounds",
+      "price": "$7"
+    },
+    {
+      "name": "Breakfast burrito",
+      "description": "The same as the bowl, wrapped.",
+      "price": "$12"
+    },
+    {
+      "name": "Tortilla chips",
+      "description": "With salsa and nacho cheese.",
+      "price": "$6"
+    },
+    {
       "name": "Pretzels (4)",
       "description": "With your choice of cheese.",
       "price": "$11"
     },
-    { "name": "Egg roll — buffalo chicken", "price": "$10" },
-    { "name": "Egg roll — pepperoni", "price": "$10" },
-    { "name": "Mac and Jack bites", "price": "$9" },
-    { "name": "Breaded mushrooms", "price": "$9" },
+    {
+      "name": "Egg roll — buffalo chicken",
+      "price": "$10"
+    },
+    {
+      "name": "Egg roll — pepperoni",
+      "price": "$10"
+    },
     {
       "name": "Waffle nachos",
       "description": "With your choice of chocolate, caramel, or cinnamon and sugar.",
@@ -58,15 +94,6 @@
       "name": "Chewy gooey cookie",
       "description": "With your choice of chocolate, caramel, or cinnamon and sugar.",
       "price": "$9"
-    },
-    { "name": "Pickle fries", "price": "$8" },
-    { "name": "Cheese curds", "price": "$8" },
-    { "name": "Basket of fries", "price": "$7" },
-    { "name": "Potato rounds", "price": "$7" },
-    {
-      "name": "Tortilla chips",
-      "description": "With salsa and nacho cheese.",
-      "price": "$6"
     }
   ],
   "gaps": [
