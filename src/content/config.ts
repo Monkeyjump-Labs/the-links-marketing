@@ -362,12 +362,43 @@ const rates = defineCollection({
     effectiveFrom: z.string().optional(),
     effectiveTo: z.string().optional(),
     current: z.boolean().default(false),
+    /**
+     * The note a CUSTOMER reads under the table. Customer language only — what
+     * the price means, which venue it covers, what is not settled yet.
+     *
+     * Anything addressed to us goes in `buildNote` instead. This field renders
+     * in production; that one does not.
+     */
     note: z.string().optional(),
+    /**
+     * The note WE read. Rendered through `StubNote`, so it appears on staging
+     * (`PUBLIC_SITE_NOINDEX=true`) and emits nothing in production.
+     *
+     * It exists because both rate cards used to carry their internal to-do
+     * inside `note`: the winter card opened "STUB - winter pricing has not been
+     * supplied by the client … This page cannot go live without it", and the
+     * summer card ended "Confirm which is right." Both shipped to customers
+     * (FW-4013). Two audiences, two fields.
+     */
+    buildNote: z.string().optional(),
     rows: z
       .array(
         z.object({
           label: z.string(),
-          price: z.string(), // HTML text, never an image
+          /**
+           * HTML text, never an image — and OPTIONAL, because an unset price is
+           * not a defect.
+           *
+           * It used to be required, which forced the winter card to carry the
+           * string "TBC" in a price cell with "Needs client input" beside it,
+           * printed to customers. That is the flat-page behaviour the gap system
+           * replaced on `leagues` (see the note on `format` above), and the same
+           * fix applies here: leave the field out and `RatesTable` draws a
+           * *Not yet set* mark in the price slot.
+           *
+           * Do not reintroduce sentinel strings ("TBC", "STUB", "-") here.
+           */
+          price: z.string().optional(),
           eligibility: z.string().optional(), // price cards carry their own windows
           venue: z.enum(['lakeville', 'stillwater', 'both']).default('both'),
         }),
