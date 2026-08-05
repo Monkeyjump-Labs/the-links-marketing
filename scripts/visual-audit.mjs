@@ -59,6 +59,10 @@ const ROUTES = [
   // Every route the site publishes should be here; a page absent from the audit
   // is a page whose regressions nobody sees.
   '/simulators/',
+  // Added with the lessons enquiry form (FW-3999) — same reasoning as the line
+  // above. The page now carries a real lead form, and an unaudited form is
+  // precisely the regression this list exists to catch.
+  '/lessons/',
   '/thanks/',
   '/menu/',
   '/contact/',
