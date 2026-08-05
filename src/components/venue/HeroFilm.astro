@@ -1,0 +1,137 @@
+---
+/**
+ * The client's film, IN the hero — as the screen in the room, not as the ground
+ * behind the words.
+ *
+ * ## The measurement that FW-4003 made, and what it actually constrains
+ *
+ * FW-4003 refused a video hero on a measurement, and the measurement was right.
+ * What it measured, though, was **one structure**: display type composited over
+ * moving footage. Every number in it — the ~89% scrim, the collapsed luminance
+ * spread — is a property of *text on top of video*, not of *video in a hero*.
+ * Change the structure so nothing is composited and the constraint has nothing
+ * to bind to. That is what this component is.
+ *
+ * ## Re-measured on the file that actually ships (FW-4010)
+ *
+ * FW-4003 sampled all 354 frames of `lakeville-promo.mp4`. **What ships is
+ * seconds 3.60–9.30 of it** — 171 frames — so the published figures describe a
+ * different sample than the file on the page. Re-measured on
+ * `public/video/lakeville-night.mp4` itself (32×32px block averages, sRGB
+ * composite, WCAG 2.1 relative luminance):
+ *
+ * | | brightest block | scrim to hold it |
+ * |---|---|---|
+ * | full frame | Y=207/255, relLum 0.6273 | white 49% · paper 52% · **amber 71%** · slate 91% |
+ * | left 45% only | Y=203/255, relLum 0.5986 | **amber 71%** |
+ *
+ * Two things follow, and both are load-bearing:
+ *
+ * 1. **The amber eyebrow is still the binding constraint**, exactly as FW-4003
+ *    found — 71% here rather than 89%, because this cut excludes the promo's
+ *    brightest moments and fades from and to black. So a scrimmed hero is
+ *    *possible* on this clip, which it was not on the full promo. It is still
+ *    not what we want: at the client's suggested 80% the clip's visible
+ *    luminance spread falls from 0.6273 to 0.0401 — **you see about 6% of the
+ *    film's range**, and at the binding 71% about 11%. Scrimming the film to
+ *    make room for words is a way of paying for a film and then not showing it.
+ * 2. **Offsetting the scrim to one side buys almost nothing.** Brightest block
+ *    per horizontal fifth, across all 171 frames: 0.4775 / 0.5737 / 0.6273 /
+ *    0.6272 / 0.5180 — needing a 67 / 70 / 71 / 71 / 68% scrim. The bright
+ *    content is *lit projection screens*, and there are screens along the whole
+ *    wall, so the darkest fifth of the frame is four points cheaper than the
+ *    brightest. Confining the words to the left column does not find a dark
+ *    place to put them; there isn't one.
+ *
+ * Nothing is composited here, so the applicable number is none of the above:
+ * the film runs unscrimmed and a visitor sees **100%** of it.
+ *
+ * ## Why this shape and not a full-bleed panel
+ *
+ * The design system's committed idea is *"one blue ramp of six stops — from the
+ * room at night to the screen on the wall"*, and `screenLight` had to be
+ * invented because the 1.x palette could not draw a lit projection on a dark
+ * room at all (STYLE-GUIDE §9.3). `MediaSlot` draws that screen. This component
+ * is the same object with the real footage in it: a midnight field, and one
+ * bright rectangle with a 2px rule around it.
+ *
+ * That is why it keeps its frame instead of bleeding off the viewport edge. A
+ * full-bleed video is a *ground*; grounds in this system are flat bands of one
+ * colour. An object sits on the grid with a declared rule around it — and it is
+ * the rule that makes a lit rectangle read as a screen rather than as a hole.
+ * Bleeding it would also mean `object-fit: cover`, which crops a 16:9 pan to
+ * whatever height the column happens to be and throws away the shot.
+ *
+ * ## The provenance line is not a disclaimer, it is the venue rule
+ *
+ * The only promo footage in existence is Lakeville's, and the hero is
+ * venue-neutral on purpose — the venue question is asked at the Book click, not
+ * the front door. An unlabelled Lakeville film under a neutral headline quietly
+ * re-states the brand as Lakeville-with-an-annexe, which is the asymmetry
+ * STYLE-GUIDE §6.10 exists to prevent. So the caption names the room, in the
+ * same vocabulary `MediaSlot` uses for the same reason. The words above it stay
+ * neutral; the picture says which room it is.
+ *
+ * ## Playback
+ *
+ * The contract — lazy, in-view only, reduced-motion poster-only, pausable
+ * (WCAG 2.2.2) — is `lib/videoLoop.ts`, shared with `TechPillar`. Read it there.
+ *
+ * One consequence of the move is worth stating plainly: in the hero the clip is
+ * in view on load, so `play()` fires immediately and the bytes are fetched on
+ * arrival rather than on a scroll to the foot of the page. `preload="none"`
+ * still means the *document* does not wait on it — the poster is what renders
+ * first — and reduced motion still fetches nothing at all.
+ */
+import { getImage } from 'astro:assets';
+import { buttonClasses } from '../../lib/buttons';
+
+interface Props {
+  /** Basename in `public/video/`, without extension. */
+  name: string;
+  poster: ImageMetadata;
+  /** What the footage actually shows. */
+  alt: string;
+  /** Which room this is, and what it does not stand in for. */
+  caption: string;
+}
+
+const { name, poster, alt, caption } = Astro.props;
+
+// The poster IS an image, so it goes through the asset pipeline; only the
+// multi-megabyte video bypasses it and is served statically from `public/`.
+const posterImage = await getImage({ src: poster, format: 'webp', width: 1280, quality: 70 });
+---
+
+<figure class="m-0" data-video-band>
+  {/* Midnight under the video so a slow poster never flashes a lighter ground. */}
+  <div class="relative border-rule border-paper bg-midnight">
+    <video
+      class="block h-auto w-full"
+      poster={posterImage.src}
+      width="1280"
+      height="720"
+      preload="none"
+      muted
+      loop
+      playsinline
+      aria-label={alt}
+      data-video
+    >
+      <source src={`/video/${name}.webm`} type="video/webm" />
+      <source src={`/video/${name}.mp4`} type="video/mp4" />
+    </video>
+
+    {/* Opaque amber fill — its contrast is its own, not the frame's. */}
+    <button type="button" data-video-toggle class:list={[buttonClasses('sm', 'onDark'), 'absolute bottom-s4 left-s4']}>
+      Play
+    </button>
+  </div>
+
+  <figcaption class="mt-s4 max-w-prose-page text-small leading-body text-slate">{caption}</figcaption>
+</figure>
+
+<script>
+  import { initVideoLoops } from '../../lib/videoLoop';
+  initVideoLoops();
+</script>

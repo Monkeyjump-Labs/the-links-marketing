@@ -3,7 +3,9 @@
  * place — because two components each keeping their own copy of it is how the
  * one on the newer page quietly loses the reduced-motion branch.
  *
- * The contract, unchanged from `VideoBand` where it was first written:
+ * The contract, unchanged from `VideoBand` where it was first written — that
+ * component became `HeroFilm` in FW-4010 when the clip moved into the hero, and
+ * the contract did not have to change, which is the argument for it living here:
  *
  * - **Lazy.** `preload="none"` and no `autoplay` attribute, so a clip costs
  *   nothing until it is actually played. `play()` is what first fetches it.
