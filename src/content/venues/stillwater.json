@@ -12,7 +12,22 @@
   "simulator": "GolfZon TwoVision NX",
   "bookingUrl": "https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today",
   "openedYear": 2026,
-  "intro": "Four GolfZon TwoVision NX bays in the east metro, inside Stillwater Bowl & Lounge. Opened February 2026.",
+  "tagline": "Your new local clubhouse on the east side.",
+  "intro": "Four GolfZon TwoVision NX bays in the east metro, opened February 2026. A joint entertainment venue connected to a bowling alley: the golf is ours, the burgers are Stillwater Bowl next door, and you can have both without moving the car.",
+  "highlights": [
+    {
+      "title": "Top-of-the-line simulator technology",
+      "body": "The same GolfZon TwoVision NX bays as Lakeville, on the same tour spec. Four of them, on this side of the river."
+    },
+    {
+      "title": "Leagues and contests you'll love",
+      "body": "Floating and fixed day leagues, paired with weekly contests. Stillwater has never run a league season before, so this first one is being drawn up from scratch rather than copied over — join the list and you will see it the day it is finished."
+    },
+    {
+      "title": "Full bar and menu",
+      "body": "In partnership with Stillwater Bowl: burgers, bites and a full selection of drinks, without leaving the building."
+    }
+  ],
   "hours": [
     {
       "day": "Mon",
@@ -57,7 +72,7 @@
       "closed": false
     }
   ],
-  "hoursNote": "Summer hours. Winter hours have not been supplied.",
+  "hoursNote": "Summer hours. Winter hours have not been supplied. And the honest bit the venue publishes itself: if there are no pre-booked bay times, we reserve the right to open late or close early — so if you are making a special trip, book the bay rather than chancing it.",
   "amenities": [
     "Food & drink via Stillwater Bowl & Lounge"
   ],
