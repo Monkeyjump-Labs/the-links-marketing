@@ -1,0 +1,99 @@
+---
+/**
+ * One capability of the machine, SHOWN — a short silent loop with the sentence
+ * that says the same thing in words.
+ *
+ * ## Why a video and not another prose row
+ *
+ * The page's argument is "the machine measures things and the floor moves". A
+ * tilting floor is the single hardest thing on this site to picture from a
+ * description, and it is the thing that makes people book. So the four
+ * capabilities that are visual get shown; the ones that are facts stay as ruled
+ * rows (FW-3992).
+ *
+ * ## Why not GIFs, which is how the idea arrived
+ *
+ * The venue we took this from ships the same four loops as GIFs totalling
+ * **107 MB on one landing page** — on a phone on venue wifi that page is
+ * effectively unusable, which is a strange way to sell a room people drive to.
+ * The same footage as VP9/H.264 is ~1.6 MB for all four, and `preload="none"`
+ * means an unscrolled visitor pays none of it.
+ *
+ * ## Playback
+ *
+ * The contract — lazy, in-view only, reduced-motion poster-only, pausable — is
+ * `lib/videoLoop.ts`, shared with `VideoBand`. Read it there.
+ *
+ * ## The text is not decoration
+ *
+ * `shows` is rendered AND is the video's accessible name (via
+ * `aria-labelledby`, so it is announced once, not twice). If the video is
+ * blocked, or motion is off, or the visitor is listening rather than looking,
+ * the pillar still communicates — which is the requirement, not a courtesy.
+ *
+ * ## No numerals
+ *
+ * The source labels its four pillars `01/02/03/04`. We cannot: convergence gave
+ * those numerals exactly one meaning on this site — STEPS IN ORDER OVER TIME
+ * (`SeasonTrack`) — and four capabilities are not a sequence. See `SectionHead`.
+ */
+import { getImage } from 'astro:assets';
+import { buttonClasses } from '../../lib/buttons';
+
+interface Props {
+  /** The capability, as a short claim. Rendered as the pillar's heading. */
+  heading: string;
+  /** What the loop literally shows. Rendered, and used as the video's name. */
+  shows: string;
+  /** The same capability in words, for a reader who never sees the motion. */
+  body: string;
+  /** Basename in `public/video/`, without extension. Also keys the poster id. */
+  name: string;
+  poster: ImageMetadata;
+  class?: string;
+}
+
+const { heading, shows, body, name, poster, class: className = '' } = Astro.props;
+
+// The poster IS an image, so it goes through the asset pipeline; only the
+// video bypasses it and is served statically from `public/`.
+const posterImage = await getImage({ src: poster, format: 'webp', width: 960, quality: 70 });
+const showsId = `${name}-shows`;
+---
+
+<figure class:list={['m-0', className]} data-video-band data-video-title={heading}>
+  {/* Midnight under the video so a slow poster never flashes white. */}
+  <div class="relative border-rule border-navy bg-midnight">
+    <video
+      class="block h-auto w-full"
+      poster={posterImage.src}
+      width="960"
+      height="540"
+      preload="none"
+      muted
+      loop
+      playsinline
+      aria-labelledby={showsId}
+      data-video
+    >
+      <source src={`/video/${name}.webm`} type="video/webm" />
+      <source src={`/video/${name}.mp4`} type="video/mp4" />
+    </video>
+
+    {/* Opaque amber fill — its contrast is its own, not the frame's. */}
+    <button type="button" data-video-toggle class:list={[buttonClasses('sm', 'onDark'), 'absolute bottom-s4 left-s4']}>
+      Play
+    </button>
+  </div>
+
+  <figcaption class="mt-s5">
+    <h3 class="font-display text-card leading-display font-bold tracking-display text-ink">{heading}</h3>
+    <p class="mt-s3 max-w-prose-page text-body leading-body text-inkBody">{body}</p>
+    <p id={showsId} class="mt-s3 max-w-prose-page text-small leading-body text-inkMuted">{shows}</p>
+  </figcaption>
+</figure>
+
+<script>
+  import { initVideoLoops } from '../../lib/videoLoop';
+  initVideoLoops();
+</script>
