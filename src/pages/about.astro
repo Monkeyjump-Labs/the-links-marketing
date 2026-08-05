@@ -7,6 +7,24 @@
  * slightly irreverent beats premium and serious (playbook-sim-venue.md §2). It
  * is kept close to verbatim rather than rewritten into brochure prose.
  *
+ * ⚠️ RESTORED TO FIRST PERSON 2026-08-04 (FW-4000), from
+ * `_ingest/raw/our-story.html`, approved for reuse.
+ *
+ * We had it in the third person — "CJ had run outdoor golf leagues" — which is
+ * the one edit that costs the whole thing. It is CJ's account of the pair of
+ * them, and reported speech turns a founder telling you a story into a brochure
+ * describing two founders. Four of the best jokes had also quietly gone: the
+ * toil-paper aside, "borderline obsessed", the Windows 98 modem noise, and
+ * "with enough vision, determination, and updated operating systems". They are
+ * back, in their words.
+ *
+ * Facts are unchanged and still carry their sources: December 2021, the LLC in
+ * January 2022, Lakeville open autumn 2022, Stillwater open February 2026
+ * (which agrees with `venues/stillwater.json`, and is more precise than the
+ * "early 2026" we had). Spelling follows the site's existing British house
+ * style, as every other page does; the jokes, the rhythm and the asides are
+ * theirs verbatim.
+ *
  * This page also has an SEO job: "Lakeville Links" still outranks "The Links"
  * in branded demand and will for a year. The old name has to appear in body
  * copy here so the brand-transition query resolves on this site rather than on a
@@ -18,11 +36,13 @@
  * Press is cited as links only. No quote is attributed to any outlet that was
  * not captured verbatim, and none was.
  */
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import { getVenues, venuePath } from '../lib/venues';
 
 const venues = await getVenues();
+const testimonials = (await getCollection('testimonials')).sort((a, b) => a.data.order - b.data.order);
 
 const metadata = {
   metaTitle: 'About The Links — Indoor Golf in Lakeville & Stillwater',
@@ -82,66 +102,92 @@ const sponsors = [
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">About The Links</h1>
     <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      Two golfers, one Wednesday-night habit, and a Minnesota winter that keeps getting in the way of it. That is
-      genuinely the whole origin story.
+      Two guys who wanted a better golf simulator to play on during the long Minnesota winters. That is genuinely the
+      whole origin story, and the rest of this page is CJ telling it.
     </p>
 
-    {/* 1. The story, in the founders' own voice. */}
+    {
+      /* 1. The story, in the founders' own words and their own voice. First
+        person, because it is CJ's account and reported speech flattens it. */
+    }
     <div class="mt-section max-w-prose-page">
-      <h2 class="text-3xl font-bold">Two guys who wanted somewhere better to play</h2>
+      <p class="caps-label text-inkMuted">CJ &amp; Cody</p>
+      <h2 class="mt-2 text-3xl font-bold">Our story</h2>
+
       <p class="mt-4 text-inkMuted">
-        It started in December 2021. CJ had run outdoor golf leagues for years, and he and Cody played every Wednesday
-        night through the summer. As neighbours and friends, when winter rolled round and golf season disappeared into
-        six feet of Minnesota sadness, they kept the Wednesday tradition alive with what they called bourbon nights —
-        because apparently that is what golfers do when there is snow on the ground.
+        It all started in December 2021. I (CJ) had run outdoor golf leagues for years, and both Cody and I played every
+        Wednesday night through the summer. As neighbours and friends, when winter rolled round and golf season
+        disappeared into six feet of Minnesota sadness, we kept the Wednesday tradition alive with what we called
+        bourbon nights. Because apparently that is what golfers do when there is snow on the ground.
       </p>
       <p class="mt-4 text-inkMuted">
-        One night, after visiting an indoor simulator somewhere else, they looked at each other and said there had to be
-        a better option for the Lakeville area. So they toured golf simulator businesses around the Twin Cities. Every
-        place they visited made them think, "this doesn't look THAT hard." Spoiler alert: it was.
+        One night, after visiting an indoor golf simulator, we looked at each other and said, "there has to be a better
+        option for the Lakeville area." Cody had actually considered opening a simulator place before COVID, but like
+        most people during COVID, he had bigger things to worry about — like whether toilet paper had become currency.
       </p>
       <p class="mt-4 text-inkMuted">
-        They formed the LLC in January 2022 and started looking for space. Then came choosing the technology. After
-        visiting several venues they landed on GolfZon, because it felt the most immersive and realistic — basically the
-        closest thing to real golf without losing balls in the woods or blaming your driver for everything.
+        The next week I brought it up again. Cody was still casually thinking about it, but as an avid golfer with
+        absolutely no ability to let an idea go, I became borderline obsessed. Then we found out a mutual acquaintance
+        of Cody's had opened a golf simulator, and suddenly the idea came back to life.
       </p>
       <p class="mt-4 text-inkMuted">
-        The goal was simple: the best golf experience they could build, paired with good food, cold drinks, and a place
-        people actually wanted to hang around in. <strong>Lakeville Links opened in the autumn of 2022.</strong> For an IT
-        professional and a commodity broker pretending to know how to open an entertainment business, they think it went pretty
-        okay.
+        So we started touring golf simulator businesses around the Twin Cities. Every place we visited made us think,
+        "this doesn't look THAT hard." Spoiler alert: it was.
+      </p>
+      <p class="mt-4 text-inkMuted">
+        After doing our due diligence — and probably not enough sleep — we decided to take the leap. We formed the LLC
+        in January 2022 and immediately began looking for space. Then came the challenge of choosing the technology.
+        After visiting several venues we landed on GolfZon, because it felt the most immersive and realistic: basically
+        the closest thing to real golf without losing balls in the woods or blaming your driver for everything.
+      </p>
+      <p class="mt-4 text-inkMuted">
+        Our goal was simple. Create the best golf experience possible, paired with great food, cold drinks, and a place
+        people actually wanted to hang out in. <strong>We finally opened in the autumn of 2022.</strong> And honestly, for
+        an IT professional and a commodity broker pretending to know how to open an entertainment business, we think we did
+        pretty okay.
       </p>
 
       <h2 class="mt-12 text-3xl font-bold">Then came Stillwater</h2>
       <p class="mt-4 text-inkMuted">
-        Through a mutual connection, the owner of Stillwater Bowl turned out to have some old golf simulators and no
-        idea what to do with them. And when they say old, they mean old — the software was literally running on Windows
-        98.
+        Through a mutual connection, an opportunity presented itself. The owner of the Stillwater Bowl had some old golf
+        simulators and did not know what to do with them. And when we say old, we mean OLD. The software was literally
+        running on Windows 98. We half expected the startup sound to begin with the old modem noises. You know if you
+        know.
       </p>
       <p class="mt-4 text-inkMuted">
-        After more planning, more due diligence and several conversations that started with "are we really doing this
-        again?", it turned out to be a genuinely good opportunity: a chance to give the Stillwater golf community
-        somewhere to play, hang out, and get through a long Minnesota winter without losing their swing or their sanity.
-        <strong>The Links of Stillwater opened in early 2026.</strong>
+        After more planning, more due diligence, and several conversations that started with "are we really doing this
+        again?", we realised it was actually a great opportunity. We saw a chance to bring the Stillwater golf community
+        a fun place to play, hang out, and survive the long Minnesota winters without completely losing their golf swing
+        — or their sanity. <strong>So in February 2026, The Links of Stillwater officially opened its doors.</strong>
+      </p>
+      <p class="mt-4 text-inkMuted">
+        Turns out, with enough vision, determination, and updated operating systems, anything is possible.
       </p>
 
       <h2 class="mt-12 text-3xl font-bold">The rebrand</h2>
       <p class="mt-4 text-inkMuted">
-        With a second location, it was time for a rebrand. Apparently having multiple locations means you are supposed
-        to look professional or something. So <strong>Lakeville Links</strong> became <strong
+        With the addition of Stillwater, we decided it was time for a rebrand. Apparently having multiple locations
+        means you are supposed to look professional or something. So <strong>Lakeville Links</strong> became <strong
           >The Links of Lakeville</strong
-        >, alongside <strong>The Links of Stillwater</strong>, under one name: <strong>The Links</strong>. They also
-        bought thelinks.golf, because somehow ".golf" is a real thing and it felt meant to be.
+        >, alongside <strong>The Links of Stillwater</strong>, under one name: <strong>The Links</strong>. We also
+        bought the URL thelinks.golf, because somehow ".golf" is a real thing and honestly, it felt meant to be.
       </p>
       <p class="mt-4 text-inkMuted">
-        If you knew the place as Lakeville Links, nothing has changed except the sign. Same bays, same bar, same people
-        behind it — CJ and Cody.
+        Over the next few months we will keep rolling out the rebrand, updating things, and pretending we fully know
+        what we are doing. If you knew the place as Lakeville Links, nothing has changed except the sign. Same bays,
+        same bar, same two of us behind it.
       </p>
+      <p class="mt-4 text-inkMuted">More to come.</p>
+      <p class="mt-4 font-semibold">CJ &amp; Cody</p>
     </div>
 
     {/* 2. The two venues, with the facility facts. */}
     <section class="mt-section">
       <h2 class="text-3xl font-bold">The two venues</h2>
+      <p class="mt-3 max-w-2xl text-inkMuted">
+        One in the south metro, one in the east. Same bays, same idea, and whichever one is closer to you is the right
+        one.
+      </p>
       <ul class="mt-8 grid gap-6 md:grid-cols-2">
         {
           venues.map((venue) => (
@@ -216,15 +262,41 @@ const sponsors = [
       </p>
     </section>
 
-    {/* 5. Proof. 81% of the segment shows no reviews; we still will not invent any. */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">What people say</h2>
-      <p class="mt-3 max-w-2xl rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
-        <strong>STUB —</strong> awaiting real, attributed reviews and the Google Business Profile link for each venue. Reviews
-        exist on third-party listings but the counts and ratings there conflict with each other, so nothing is quoted or counted
-        here until the client confirms the source. Unsourced quotes are not shipped.
-      </p>
-    </section>
+    {
+      /* 5. Proof. 81% of the segment shows no reviews at all, so this is a real
+        differentiator — and as of FW-4000 we have four, every one of them a
+        Google review the venue already publishes under a name. Still no invented
+        quotes, and still no counts or star ratings: the third-party listings
+        disagree with each other on both, so we quote what is attributable and
+        count nothing. */
+    }
+    {
+      testimonials.length > 0 && (
+        <section class="mt-section">
+          <h2 class="text-3xl font-bold">What people say</h2>
+          <p class="mt-3 max-w-2xl text-inkMuted">
+            Left on Google by people who came in. We have not touched a word of them, typos and all.
+          </p>
+          <ul class="mt-8 grid gap-6 md:grid-cols-2">
+            {testimonials.map((t) => (
+              <li class="rounded border-2 border-ink/15 p-6">
+                <blockquote class="text-inkMuted">&ldquo;{t.data.quote}&rdquo;</blockquote>
+                <p class="mt-4 text-sm font-semibold">
+                  {t.data.name}
+                  {t.data.source && <span class="font-normal text-inkMuted"> · {t.data.source}</span>}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-6 rounded border-2 border-dashed border-ink/25 p-4 text-sm text-inkMuted">
+            <strong>STUB —</strong> the permalink for each review, so every quote can link to the review it came from,
+            and the Google Business Profile link for each venue. All four of these are Lakeville: Stillwater has no
+            Business Profile on record and therefore no reviews to quote, which is a reason to create one rather than to
+            borrow a quote from the other venue.
+          </p>
+        </section>
+      )
+    }
 
     {/* Every page ends in a transactional CTA (playbook-core.md §6). */}
     <section class="mt-section rounded bg-surface p-8">

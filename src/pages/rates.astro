@@ -4,6 +4,15 @@
  * recurring audit failure (playbook-core.md §3).
  * Prices are HTML text, never an image. Seasonality is a field on this page,
  * never a second page (the /rates vs /rates-summer trap on the reference site).
+ *
+ * VOICE PASS 2026-08-04 (FW-4001). This was one of the four flattest pages on
+ * the site: a heading, one line, and two tables. Nothing here changes a number,
+ * a date or an eligibility rule — every figure still comes from `content/rates`
+ * and `content/venues` and is rendered by the same two components. What changed
+ * is that the page now says what the price MEANS ("six of you for the price of
+ * one of you") before it shows the table, which is the thing a first-timer is
+ * actually trying to work out and the one place this page can be warm without
+ * touching a fact.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -26,7 +35,12 @@ const metadata = {
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">Rates &amp; hours</h1>
     <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      A bay is priced by the hour, not by the person. Bring up to six people for the same price.
+      A bay is priced by the hour, not by the person. Six of you costs the same as one of you, which is either a bargain
+      or an obligation to invite people, depending on how you look at it.
+    </p>
+    <p class="mt-4 max-w-2xl text-inkMuted">
+      You do not need a membership to book one. Reserve an hour, turn up, play. If you have never done this before, an
+      hour is plenty, and nobody is going to rush you out of the bay.
     </p>
 
     {cards.map((card) => <RatesTable card={card} />)}

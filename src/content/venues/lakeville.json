@@ -13,6 +13,7 @@
   "simulator": "GolfZon TwoVision NX",
   "bookingUrl": "https://app.whoosh.io/patron/club/the-links-indoor-golf/agenda/simulators/today",
   "openedYear": 2022,
+  "tagline": "Your south metro clubhouse.",
   "intro": "Six GolfZon bays, a full bar and nine screens in the south metro. Five bays play both-handed; one is right-handed only.",
   "hours": [
     {
@@ -58,7 +59,7 @@
       "closed": false
     }
   ],
-  "hoursNote": "Summer hours. Winter hours have not been supplied.",
+  "hoursNote": "Summer hours. Winter hours have not been supplied. And the honest bit the venue publishes itself: if there are no pre-booked bay times, we reserve the right to open late or close early — so if you are making a special trip, book the bay rather than chancing it.",
   "amenities": [
     "Full bar",
     "Food menu",

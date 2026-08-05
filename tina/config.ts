@@ -102,7 +102,26 @@ export default defineConfig({
           { type: 'string', name: 'bookingUrl', label: 'Whoosh booking URL', required: true },
           { type: 'string', name: 'mapUrl', label: 'Map URL' },
           { type: 'number', name: 'openedYear', label: 'Year opened' },
+          {
+            type: 'string',
+            name: 'tagline',
+            label: 'Positioning line',
+            description: "The venue's own one-liner, e.g. 'Your new local clubhouse on the east side.' Sentence case.",
+          },
           { type: 'string', name: 'intro', label: 'Short intro', ui: { component: 'textarea' } },
+          {
+            type: 'object',
+            name: 'highlights',
+            label: 'What is here',
+            list: true,
+            ui: { itemProps: (item) => ({ label: item?.title ?? 'Highlight' }) },
+            description:
+              'The venue feature blocks. Every one has to survive the truth audit on its own - do not restate a plan as something that is already running.',
+            fields: [
+              { type: 'string', name: 'title', label: 'Title', isTitle: true, required: true },
+              { type: 'string', name: 'body', label: 'Body', required: true, ui: { component: 'textarea' } },
+            ],
+          },
           {
             type: 'object',
             name: 'hours',

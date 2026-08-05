@@ -36,7 +36,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 |---|---|---|
 | ✅ | Hours and address on the homepage | `TrustStrip`, directly under the hero |
 | 🟡 | Real prices, as text, on a Rates & Hours page | Summer 2026 is real. **Winter is a stub and the summer card expires 2026-10-03** |
-| ⬜ | At least three attributed testimonials or a live review widget | None supplied. We will not ship unsourced quotes |
+| ✅ | At least three attributed testimonials or a live review widget | **Unblocked 2026-08-04 (FW-4000). Four, not three** — Lucas, Jeff, Anita and Rob, each an attributed Google review the client already publishes on their own site. They were never missing: they sat in `_ingest/raw/` (`groups.html`, `home-2.html`) the whole time this row read "None supplied", which is the lesson worth keeping. The homepage proof band now renders in production and `/about` carries all four. Still worth chasing but no longer gating: the permalink per review, so each quote can link to its source. **All four are Lakeville** — Stillwater has no Google Business Profile and so has no reviews, which is an argument for creating one, not for borrowing a quote from the other venue |
 | ✅ | No PDFs in place of menus, rates or rules | |
 | 🟡 | Venue photography, not stock | Lakeville's shoot is strong. **Stillwater has one usable frame** — a pre-opening phone night shot |
 | ✅ | Simulator technology named | **GolfZon TwoVision NX, tour spec** — confirmed 2026-08-04. This was the single most consequential unconfirmed fact on the site; both halves of the tour-spec claim (model and plate) are now confirmed, so the line is written |
