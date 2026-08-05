@@ -1,0 +1,17 @@
+{
+  "name": "Lakeville Winter Match Play",
+  "venue": "lakeville",
+  "order": 4,
+  "state": "between",
+  "status": "archive",
+  "oneLiner": "The long one: fourteen weeks of handicapped match play from January to mid-April, each night its own league with its own table to climb.",
+  "beginnerNote": "You play your own ball and the team takes the better score, so there is always a partner covering the hole you would rather forget. No handicap yet? You start at zero until the system works you out.",
+  "night": "Tuesdays and Wednesdays, 6–10pm",
+  "format": "2-person team-vs-team match play, best ball, handicapped",
+  "weeks": 14,
+  "skins": "$96 per team, net and gross",
+  "prizes": "Top 4 teams from each night played off for 1st, 2nd and 3rd",
+  "nextSeasonNote": "This is how it ran last winter. Check back for the updated 2026 fall schedule.",
+  "season": "2026 Winter",
+  "published": true
+}
