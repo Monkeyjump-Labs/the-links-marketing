@@ -1,11 +1,12 @@
 {
-  "name": "Fall / Winter League - Stillwater",
+  "name": "Stillwater's First League Season",
   "venue": "stillwater",
-  "order": 2,
+  "order": 5,
   "state": "between",
-  "oneLiner": "Stillwater's first league season, on four bays in the east metro.",
-  "beginnerNote": "Never played a simulator league? Handicaps even it out, and nobody keeps score of your warm-up.",
-  "nextSeasonNote": "Stillwater league play is being planned for its first winter. Join the list to hear first.",
+  "status": "live",
+  "oneLiner": "Stillwater has never run a league, so there is no last season to show you — this one is being drawn up from scratch on four bays in the east metro.",
+  "beginnerNote": "Everyone in this league will be new to a Stillwater league, because so is Stillwater. Handicaps even the golf out, and nobody keeps score of your warm-up.",
+  "nextSeasonNote": "Nights, format, length and price are all still being worked out — we are not sitting on a schedule, we are writing one. Join the list and you will see it the day it is finished.",
   "season": "Fall/Winter 2026-27",
   "published": true
 }
