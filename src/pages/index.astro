@@ -41,8 +41,10 @@ import StubNote from '../components/venue/StubNote.astro';
 import SectionHead from '../components/venue/SectionHead.astro';
 import ReadoutCell from '../components/venue/ReadoutCell.astro';
 import MediaSlot from '../components/venue/MediaSlot.astro';
+import VideoBand from '../components/venue/VideoBand.astro';
 import { buttonClasses } from '../lib/buttons';
 import { getVenues, venuePath } from '../lib/venues';
+import stillwaterRoom from '../assets/images/stillwater-room.jpg';
 
 const venues = await getVenues();
 const leagues = (await getCollection('leagues')).filter((l) => l.data.published);
@@ -88,14 +90,26 @@ const things: Job[] = [
 ];
 
 /**
- * The media slots, per venue. **Deliberately asymmetric, because the truth is.**
- * Lakeville's room has been photographed professionally and the files are not
- * here yet; Stillwater's has never been photographed at all, so its slot is the
- * same drawing with the light off. That asymmetry is an approved decision, not
- * a placeholder to fill — using Lakeville's frames for Stillwater is the exact
- * trust defect this rebuild exists to fix.
+ * The media slots, per venue. **Deliberately asymmetric, because the truth is**
+ * — and since FW-4003 the asymmetry points the other way, which is what should
+ * happen when a slot is filled from fact rather than from taste.
+ *
+ * **Stillwater is now a real photograph.** The client supplied a walkthrough
+ * video of that room, and this is a still from it: the first honest image of
+ * Stillwater the site has ever carried. It is handheld phone footage of an
+ * empty room rather than a commissioned shoot, so the caption says so and the
+ * staging marker still asks for the shoot.
+ *
+ * **Lakeville is still drawn, lit.** Its professional shoot exists but the files
+ * have not been delivered, so there is nothing real to put here yet.
+ *
+ * The rule underneath is unchanged: Lakeville's frames never stand in for
+ * Stillwater. That swap is the exact trust defect this rebuild exists to fix.
  */
-const slots: Record<string, { lit: boolean; alt: string; label: string; caption: string; needs: string }> = {
+const slots: Record<
+  string,
+  { photo?: ImageMetadata; lit: boolean; alt: string; label: string; caption: string; needs: string }
+> = {
   lakeville: {
     lit: true,
     alt: 'Photo slot at 3:2 — the frame that belongs here is a wide interior of the Lakeville room, evening, occupied: a near-black navy room, warm pendant light over the bar, and the lit simulator projection as the one bright cool thing in it.',
@@ -105,12 +119,13 @@ const slots: Record<string, { lit: boolean; alt: string; label: string; caption:
     needs: 'deliver the files',
   },
   stillwater: {
+    photo: stillwaterRoom,
     lit: false,
-    alt: 'Empty photo slot at 3:2 — no professional photograph of the Stillwater room exists. The slot is drawn unlit and hatched, with no simulator projection in it.',
-    label: 'Photo slot · 3:2 · empty',
+    alt: 'The Stillwater room seen down its length: two lit simulator screens on the far wall, high-top tables and stools on a pale wood floor, a leather couch to the right, and a black ceiling hung with track lights. The room is empty.',
+    label: 'Stillwater · from the venue’s own walkthrough',
     caption:
-      'No professional photograph of this room exists yet. We will not use Lakeville’s photography to stand in for it.',
-    needs: 'commission the shoot',
+      'A still from the walkthrough video the venue filmed — the first real picture of this room on the site. It is handheld footage of an empty room, not a professional shoot.',
+    needs: 'a professional shoot — this room has still never been photographed lit for camera or occupied',
   },
 };
 ---
@@ -373,4 +388,24 @@ const slots: Record<string, { lit: boolean; alt: string; label: string; caption:
       }
     </div>
   </section>
+
+  {
+    /* 7. WHAT A NIGHT LOOKS LIKE — the client's own film, as a band rather than
+      as a hero ground. It closes the page on midnight, so the ground alternation
+      still holds (midnight → white → midnight → white → EMBER → white →
+      midnight) and the dark band cuts against the light footer.
+
+      The reasoning for band-not-hero is measured and lives in `VideoBand`: the
+      footage is mostly lit projection screens, so holding the hero's contrast
+      over its worst frame needs a ~89% scrim, at which point the video is no
+      longer visible. Down here nothing is composited over it, so it costs no
+      contrast at all — and the one control on top of it is an opaque amber
+      fill, whose legibility is its own property rather than the frame's. */
+  }
+  <VideoBand
+    name="lakeville-night"
+    heading="What a night here looks like"
+    alt="Silent video: a group of friends around a table with drinks and food in the Lakeville room, then a player stepping up and hitting a shot into a lit simulator screen."
+    caption="Filmed at The Links of Lakeville by the venue, with no sound. This is Lakeville only — Stillwater is a different and newer room, and we will not let this stand in for it."
+  />
 </BaseLayout>
