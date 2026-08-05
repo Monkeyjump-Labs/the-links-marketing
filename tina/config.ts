@@ -327,16 +327,37 @@ export default defineConfig({
           { type: 'string', name: 'effectiveFrom', label: 'Effective from (YYYY-MM-DD)' },
           { type: 'string', name: 'effectiveTo', label: 'Effective to (YYYY-MM-DD)' },
           { type: 'boolean', name: 'current', label: 'This is the current rate card' },
-          { type: 'string', name: 'note', label: 'Note', ui: { component: 'textarea' } },
+          {
+            type: 'string',
+            name: 'note',
+            label: 'Note (customers read this)',
+            description:
+              'Shown on the live site under the table. Customer language only — what the price means, what is not settled yet. Anything addressed to us goes in the build note below.',
+            ui: { component: 'textarea' },
+          },
+          {
+            type: 'string',
+            name: 'buildNote',
+            label: 'Build note (staging only)',
+            description:
+              'What WE still need. Shows on staging and renders nothing in production, so it is safe to write plainly.',
+            ui: { component: 'textarea' },
+          },
           {
             type: 'object',
             name: 'rows',
             label: 'Prices',
             list: true,
-            ui: { itemProps: (item) => ({ label: `${item?.label ?? ''} — ${item?.price ?? ''}` }) },
+            ui: { itemProps: (item) => ({ label: `${item?.label ?? ''} — ${item?.price ?? 'Not yet set'}` }) },
             fields: [
               { type: 'string', name: 'label', label: 'What', required: true },
-              { type: 'string', name: 'price', label: 'Price', required: true },
+              {
+                type: 'string',
+                name: 'price',
+                label: 'Price',
+                description:
+                  'Leave EMPTY if it has not been set — the page draws a “Not yet set” mark. Never type TBC, STUB or a dash.',
+              },
               { type: 'string', name: 'eligibility', label: 'When it applies' },
               { type: 'string', name: 'venue', label: 'Which venue', options: VENUE_SCOPE },
             ],

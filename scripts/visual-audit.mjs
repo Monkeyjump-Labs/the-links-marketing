@@ -68,6 +68,38 @@ const ROUTES = [
   '/contact/',
   '/faq/',
   '/about/',
+  // Added 2026-08-05 (FW-4013), and the reason is worth keeping. Ten live pages
+  // were rendering raw internal "STUB —" notes to customers; the five below were
+  // the worst of them AND the five missing from this list. A page absent from
+  // the audit is a page whose regressions nobody sees — for a year, in this case.
+  // Every route the site publishes belongs here. Do not prune this list.
+  '/privacy/',
+  '/terms/',
+  '/policy/',
+  '/juniors/',
+  '/gift-cards/',
+];
+
+/**
+ * Text that is written for US and must never reach a customer.
+ *
+ * The build-state marks (`StubNote`) render on staging only, so this gate is a
+ * PRODUCTION-BUILD assertion: if one of these strings is visible in the rendered
+ * page, an internal note has leaked into customer-facing copy again.
+ *
+ * It fails the run rather than printing a warning, because the defect it catches
+ * shipped and sat on the live site — a line in a report nobody read is how it
+ * got there. Note the audit builds without PUBLIC_SITE_NOINDEX, so `StubNote`
+ * output is legitimately absent and this can be strict.
+ *
+ * `/styleguide/` is not audited, and if it ever is, it will need an exemption —
+ * it demonstrates the marks rather than using them.
+ */
+const FORBIDDEN_TEXT = [
+  { pattern: /\bSTUB\b/, why: 'an internal stub marker' },
+  { pattern: /\bTBC\b/, why: 'a placeholder standing in for a real value' },
+  { pattern: /Needs client input/i, why: 'an instruction addressed to us' },
+  { pattern: /needs? confirming with the client/i, why: 'an instruction addressed to us' },
 ];
 
 const MIME = {
@@ -127,7 +159,7 @@ const VIEWPORTS = [
   { name: 'mobile', opts: { ...devices['iPhone 13'] } },
 ];
 
-const report = { contrast: [], otherA11y: [], overflow: [], tapTargets: [], padding: [] };
+const report = { contrast: [], otherA11y: [], overflow: [], tapTargets: [], padding: [], internalText: [] };
 
 for (const vp of VIEWPORTS) {
   const ctx = await browser.newContext(vp.opts);
@@ -140,6 +172,28 @@ for (const vp of VIEWPORTS) {
     if (!resp || !resp.ok()) throw new Error(`audit harness could not load ${route} (${resp?.status()})`);
     const title = await page.title();
     if (!title) throw new Error(`audit harness got an empty document for ${route}`);
+
+    // ── internal build-state text (FW-4013) ────────────────────────────────
+    // Read what a VISITOR reads — `innerText`, not the HTML source — so a string
+    // inside a comment or an attribute does not trip it and a string rendered
+    // into visible copy cannot hide from it.
+    if (vp.name === 'desktop') {
+      const visible = await page.evaluate(() => document.body.innerText);
+      for (const { pattern, why } of FORBIDDEN_TEXT) {
+        const hit = visible.match(pattern);
+        if (!hit) continue;
+        const at = Math.max(0, hit.index - 60);
+        report.internalText.push({
+          route,
+          why,
+          match: hit[0],
+          context: visible
+            .slice(at, hit.index + 120)
+            .replace(/\s+/g, ' ')
+            .trim(),
+        });
+      }
+    }
 
     // ── axe ────────────────────────────────────────────────────────────────
     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
@@ -275,4 +329,22 @@ for (const t of report.tapTargets.filter((t) => t.viewport === 'mobile')) {
   for (const i of t.items) console.log(`      ${i.w}x${i.h}  <${i.tag}> "${i.text}"`);
 }
 
+console.log('\n══ INTERNAL TEXT VISIBLE TO CUSTOMERS ══');
+if (!report.internalText.length) console.log('  none');
+for (const t of report.internalText) {
+  console.log(`  ${t.route} — "${t.match}" is ${t.why}`);
+  console.log(`      …${t.context}…`);
+}
+
 console.log(`\nScreenshots + report.json in ${OUT}\n`);
+
+// This one is a GATE, not a report line. See FORBIDDEN_TEXT.
+if (report.internalText.length) {
+  console.error(
+    `\n✖ ${report.internalText.length} internal note(s) are visible to customers on ` +
+      `${[...new Set(report.internalText.map((t) => t.route))].join(', ')}.\n` +
+      `  A note addressed to us belongs in <StubNote>, which renders on staging only.\n` +
+      `  A fact a customer would look for and we do not have belongs in <GapCell>.\n`,
+  );
+  process.exit(1);
+}

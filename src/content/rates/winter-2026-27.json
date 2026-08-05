@@ -3,9 +3,10 @@
   "order": 2,
   "effectiveFrom": "2026-10-04",
   "current": false,
-  "note": "STUB - winter pricing has not been supplied by the client. The current published rate expires 30 Sept 2026 and there is no winter rate anywhere on the existing site. This page cannot go live without it.",
+  "note": "Winter pricing is not set yet. The rate above holds until 30 September 2026 and the winter one will be published here the moment it is decided — we are not going to put a number up that we would have to take back down. Winter is the busy half of the year here, so it is worth checking back.",
+  "buildNote": "Winter pricing has not been supplied by the client. The current published rate expires 30 Sept 2026 and there is no winter rate anywhere on the existing site. This card cannot go live with real numbers until it lands, and the two rows below carry no price on purpose — leaving the field out draws the Not yet set mark. Do not put TBC back in it.",
   "rows": [
-    { "label": "Bay rental - peak", "price": "TBC", "eligibility": "Needs client input", "venue": "both" },
-    { "label": "Bay rental - off peak", "price": "TBC", "eligibility": "Needs client input", "venue": "both" }
+    { "label": "Bay rental - peak", "venue": "both" },
+    { "label": "Bay rental - off peak", "venue": "both" }
   ]
 }

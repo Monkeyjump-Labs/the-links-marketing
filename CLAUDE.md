@@ -28,11 +28,40 @@ anchors and to carry per-venue `LocalBusiness` schema. Venue is chosen at the
 booking click, not the front door. Rationale: `marketing/websites/the-links/sitemap.md` §1.
 
 **2. Never publish an unverified fact.** The client has not supplied winter rates,
-winter hours, Stillwater's real hours, the league lineup, group pricing, lesson
-pricing, or the cancellation window. Everywhere those are missing the site renders
-a visible `STUB —` note saying what is needed. **Do not replace a stub with a
-plausible guess.** A visible gap is recoverable; a wrong price on the internet is
-not. `verified: false` on a venue record surfaces a pre-launch banner on its page.
+winter hours, Stillwater's real hours, the league lineup, group pricing or lesson
+pricing. **Do not replace a gap with a plausible guess.** A marked gap is
+recoverable; a wrong price on the internet is not. `verified: false` on a venue
+record surfaces a pre-launch banner on its page.
+
+**2a. A missing fact gets a MARK, and which mark depends on who it is for.**
+This site used to write `STUB — …` inline wherever something was missing, which
+put our build notes on ten live customer-facing pages for a year (FW-4013).
+**Never write a raw `STUB —` block again.** There are four marks and they are not
+interchangeable:
+
+| The thing                                          | Mark               | Renders in production?                            |
+| -------------------------------------------------- | ------------------ | ------------------------------------------------- |
+| Work WE owe — chase the client, get the logo files | `StubNote`         | **No.** Staging only (`PUBLIC_SITE_NOINDEX=true`) |
+| A fact a customer would look for and nobody has    | `GapCell` `notSet` | **Yes.** That is the point                        |
+| A fact we state but have not verified              | `PendingTag`       | **Yes**, beside the value                         |
+| A price we hold back on purpose, quoted on request | `GapCell` `quoted` | **Yes**                                           |
+
+The test is _who is the sentence addressed to_. "Confirm this with the client" is
+ours. "We have not published a walk-in policy" is theirs. One line can contain
+both, and then it splits into two marks — see `/contact`, where a real HR email
+address had been sitting inside a stub nobody was meant to read.
+
+**On the legal pages the disclosure is customer-facing on purpose.** `/privacy`,
+`/terms` and `/policy` state plainly that the documents are provisional and have
+not been through a lawyer. Do **not** move that into a `StubNote`: hiding it would
+present an unreviewed policy as a reviewed one, and silence is a stronger claim
+than the notice is. Rewrite it if you like; do not delete it. Reasoning in full at
+the head of `src/pages/privacy.astro`.
+
+`npm run audit:visual` fails the build if `STUB`, `TBC` or an instruction
+addressed to us is visible on any audited route. Add every new route to its
+`ROUTES` list — the five pages worst affected by FW-4013 were also the five
+missing from it.
 
 ## The playbook governs page structure
 
@@ -58,13 +87,13 @@ rules most load-bearing here:
 Venue data lives in content collections so the client can edit it in Tina, NOT in
 `src/data/global.ts`:
 
-| Collection | Path | Holds |
-|---|---|---|
-| `venues` | `src/content/venues/` | address, phone, per-day hours, bays, booking URL, schema types |
-| `leagues` | `src/content/leagues/` | one per league; `state` drives the three registration behaviours |
-| `rates` | `src/content/rates/` | one card per season; `current: true` on the live one |
-| `menu` | `src/content/menu/` | menu sections and items |
-| `faq` | `src/content/faq/` | the AEO surface; renders `FAQPage` schema |
+| Collection | Path                   | Holds                                                            |
+| ---------- | ---------------------- | ---------------------------------------------------------------- |
+| `venues`   | `src/content/venues/`  | address, phone, per-day hours, bays, booking URL, schema types   |
+| `leagues`  | `src/content/leagues/` | one per league; `state` drives the three registration behaviours |
+| `rates`    | `src/content/rates/`   | one card per season; `current: true` on the live one             |
+| `menu`     | `src/content/menu/`    | menu sections and items                                          |
+| `faq`      | `src/content/faq/`     | the AEO surface; renders `FAQPage` schema                        |
 
 `src/lib/venues.ts` has the helpers — `getVenues`, `summariseHours`,
 `schemaOpeningHours`, `formatAddress`, `telHref`. Use them rather than
@@ -140,8 +169,8 @@ Do not reintroduce SCSS — styling is Tailwind utilities only.
 Tina Cloud derives its **remote** GraphQL schema from the **committed
 `tina/tina-lock.json`** — NOT from `tina/config.ts` directly. If you add or change a
 collection/field in `config.ts` but don't refresh the committed lock, a Tina-Cloud-
-connected site keeps serving the old schema and deploys fail with *"local GraphQL
-schema doesn't match the remote schema."* Cloud-mode `tinacms build` will not fix it
+connected site keeps serving the old schema and deploys fail with _"local GraphQL
+schema doesn't match the remote schema."_ Cloud-mode `tinacms build` will not fix it
 (it snapshots the stale remote into the lock — a self-perpetuating mismatch).
 
 **Whenever you touch `tina/config.ts`, in the same commit run:**
@@ -201,12 +230,12 @@ Set `site` in `astro.config.mjs` and `PUBLIC_LEAD_ENDPOINT` in the host env.
 
 ## Where the reasoning lives
 
-| File | What it answers |
-|---|---|
-| `marketing/websites/the-links/brief.md` | what we're building and the decisions log |
-| `marketing/websites/the-links/current-site-audit.md` | what was wrong with the old site |
-| `marketing/websites/the-links/strategy.md` | positioning, funnel, seasonality |
-| `marketing/websites/the-links/sitemap.md` | the IA and per-page acceptance criteria |
-| `marketing/websites/the-links/seo-map.md` | keywords, metadata, schema, the redirect table |
-| `marketing/websites/the-links/brand-inventory.md` | what the old brand actually was, verified |
+| File                                                   | What it answers                                                       |
+| ------------------------------------------------------ | --------------------------------------------------------------------- |
+| `marketing/websites/the-links/brief.md`                | what we're building and the decisions log                             |
+| `marketing/websites/the-links/current-site-audit.md`   | what was wrong with the old site                                      |
+| `marketing/websites/the-links/strategy.md`             | positioning, funnel, seasonality                                      |
+| `marketing/websites/the-links/sitemap.md`              | the IA and per-page acceptance criteria                               |
+| `marketing/websites/the-links/seo-map.md`              | keywords, metadata, schema, the redirect table                        |
+| `marketing/websites/the-links/brand-inventory.md`      | what the old brand actually was, verified                             |
 | `marketing/websites/the-links/_ingest/_corrections.md` | **subagent findings that were wrong — read before citing the ingest** |

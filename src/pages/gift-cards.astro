@@ -7,14 +7,35 @@
  *
  * Two things this page must do that the current site does not: put "check a
  * balance" on the same page as "buy", and say whether one card works at both
- * venues. The second is unknown, so it is stubbed.
+ * venues. The second is unknown, so it is marked.
  *
  * ⚠️ Two gift-card vendors are in circulation on the current site — Square on the
  * live pages, Toast on an orphaned old homepage. Square is the one wired up in
  * globalData.external and the one used here. Confirm Toast is dead before launch.
+ *
+ * ── "THE DETAILS" IS A GAP TABLE NOW, NOT A STUB (FW-4013) ─────────────────
+ *
+ * This section used to open "STUB — what a buyer needs before they will click,
+ * and none of it is published today", followed by a bulleted brief addressed to
+ * us. It rendered in production, under the heading "The details", to the exact
+ * person it was describing.
+ *
+ * Every bullet in it was a QUESTION THE BUYER IS ASKING — what amounts, does it
+ * cover food, how fast does it arrive, does it work at the other venue. Those
+ * are the gap system's first mark, not a stub: they are customer-facing on
+ * purpose, they are typeset like a published answer would be, and they say
+ * plainly that we do not have the answer rather than pretending the question was
+ * never asked. Somebody about to spend money in December is better served by
+ * four marked absences and a phone number than by a confident silence.
+ *
+ * What is genuinely OURS — expiry, whether a card pays for a membership or a
+ * LinksFlex block, physical cards, killing the Toast vendor — went to a
+ * `StubNote` and shows on staging only.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
+import GapCell from '../components/venue/GapCell.astro';
+import StubNote from '../components/venue/StubNote.astro';
 import { globalData } from '../data/global';
 
 const metadata = {
@@ -102,33 +123,41 @@ const whyItWorks = [
     {/* 3. The questions a gift-card buyer asks that nobody answers. */}
     <section class="mt-section">
       <h2 class="text-3xl font-bold">The details</h2>
-      <div class="mt-6 rounded border-2 border-dashed border-ink/25 p-6">
-        <p class="text-inkMuted">
-          <strong>STUB —</strong> what a buyer needs before they will click, and none of it is published today.
-        </p>
-        <ul class="mt-4 list-disc space-y-2 pl-5 text-inkMuted">
-          <li>
-            <strong>Denominations.</strong> Whether the amount is free-choice or a fixed set, and whether there is a minimum.
-          </li>
-          <li>
-            <strong>Does it cover food and drink, or only bay time?</strong> This page used to say it covered both. Nothing
-            the venue publishes says either way, and it is the first thing the person receiving it will try to do with it.
-          </li>
-          <li>
-            <strong>Delivery.</strong> Whether the card arrives by email, how quickly, and whether it can be used the same
-            day — the December buyer's whole question.
-          </li>
-          <li>
-            <strong>Does one card work at both venues?</strong> The two locations run separate booking accounts, so this is
-            a real question and not a pedantic one. Somebody in Stillwater given a card by somebody in Lakeville needs to
-            know before they drive.
-          </li>
-        </ul>
-        <p class="mt-4 text-inkMuted">
-          Also to confirm: expiry (if any), whether a card can be used against a membership or a LinksFlex block, and
-          whether physical cards exist for someone who wants something to hand over.
-        </p>
+      <p class="mt-3 max-w-prose-page text-inkMuted">
+        Four questions a buyer reasonably asks that the venue does not publish answers to. We are not going to guess at
+        any of them with your money on the line, so here they are, marked. Either venue will answer them on the phone —
+        the numbers are on the <a href="/contact/" class="font-semibold underline">contact page</a>.
+      </p>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        <GapCell
+          label="Denominations"
+          state="notSet"
+          size="name"
+          reason="Whether you choose the amount or pick from a fixed set, and whether there is a minimum, is not published anywhere the venue controls."
+        />
+        <GapCell
+          label="Food and drink, or bay time only"
+          state="notSet"
+          size="name"
+          reason="Nothing the venue publishes says either way, and it is the first thing the person opening it will try to do with it. Worth a phone call before you buy if a meal is part of the present."
+        />
+        <GapCell
+          label="How it arrives"
+          state="notSet"
+          size="name"
+          reason="Whether the card comes by email, how quickly, and whether it can be used the same day is not published — which is the whole question if you are buying on 23 December."
+        />
+        <GapCell
+          label="Works at both venues"
+          state="notSet"
+          size="name"
+          reason="Lakeville and Stillwater run separate booking accounts, and whether one card is good at both has never been stated. If the golfer is a Stillwater one, ask us first."
+        />
       </div>
+      <StubNote
+        class="mt-6"
+        needs="Also to confirm, and none of it is a buyer's question: expiry (if any), whether a card can be used against a membership or a LinksFlex block, whether physical cards exist for someone who wants something to hand over, and confirmation that the Toast vendor on the orphaned old homepage is dead. Note that this page used to claim a card covered food and drink as well as bay time; nothing the venue publishes supports that, so it is now marked as a gap. Do not put the claim back without a source."
+      />
     </section>
 
     {
