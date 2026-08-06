@@ -9,11 +9,48 @@
  *   - screenshots full page into .audit/
  *   - measures real layout facts: horizontal overflow, tap-target sizes,
  *     and the actual computed padding on every section
+ *   - tallies the bytes the browser actually fetched, against a budget
  *
  * Why Playwright and not headless Chrome flags: Chrome on macOS clamps windows
  * to a 500px minimum, so `--window-size=390` yields a 390px CROP of a 500px
  * layout and reports overflow that isn't there. Playwright's device emulation
  * sets a true viewport, so the mobile numbers here are real.
+ *
+ * ──────────────────────────────────────────────────────────────────────────────
+ * WHY THE PAGE-WEIGHT GATE MEASURES FETCHED BYTES, NOT BYTES ON DISK (FW-4009)
+ * ──────────────────────────────────────────────────────────────────────────────
+ * This is the decision here most likely to be "simplified" later, so it is
+ * written down rather than implied. A budget computed by walking the built
+ * directory would be much easier to write, and would be WRONG in both
+ * directions on pages this site actually has:
+ *
+ *   - `/simulators/` commits ~3.4 MB of pillar video and fetches ~318 KB on
+ *     load. The four loops are `preload="none"` and in-view-gated, so a visitor
+ *     who does not scroll never pays for them. A disk-based budget would fail
+ *     that page for video it never loads — and the obvious fix for a failing
+ *     gate is to raise the number, at which point it stops catching anything.
+ *   - The reverse case is worse. Weight arriving from outside the built tree —
+ *     an embed, a third-party tag, a CDN font — is invisible on disk, and is
+ *     exactly the sort of regression a page-weight budget exists to catch.
+ *
+ * So the tally is per-request, via `requestfinished` +
+ * `request.sizes().responseBodySize`: the encoded body of everything the
+ * browser genuinely pulled down. That is what a visitor pays for.
+ *
+ * Two properties to know before trusting a figure here:
+ *
+ *   1. It is measured AT LOAD, and counting stops before the full-page
+ *      screenshot. That screenshot expands the viewport to capture the whole
+ *      document, which triggers every in-view-gated video on the page and
+ *      roughly quadruples `/simulators/`. So these are above-the-fold figures
+ *      by design. Gating the scrolled-to-bottom cost is a SEPARATE and looser
+ *      measurement — do not fold it into this number.
+ *   2. The harness serves uncompressed, so text (HTML/CSS/JS) measures larger
+ *      here than over the wire, where Vercel gzips it. Media, images and fonts
+ *      are already compressed and measure true. The figure is therefore a
+ *      conservative over-estimate for text — the right direction for a gate to
+ *      err — and it is DETERMINISTIC: repeat runs agree byte-for-byte, so a
+ *      change in the number means a change in the site, not in the weather.
  */
 import { chromium, devices } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
@@ -102,6 +139,80 @@ const FORBIDDEN_TEXT = [
   { pattern: /needs? confirming with the client/i, why: 'an instruction addressed to us' },
 ];
 
+/**
+ * PAGE-WEIGHT BUDGETS, in KB of fetched response bodies (FW-4009).
+ *
+ * They live here, next to their reasoning, rather than in a config file — the
+ * same call as the contrast pairings in `tokens.json`. A bare number in a config
+ * file has no argument attached to it, and gets raised the first time it fails.
+ *
+ * ── How these numbers were chosen ────────────────────────────────────────────
+ * Measured against the site as built on 2026-08-06, every route, both viewports:
+ *
+ *   floor          ~205 KB   fonts 130 + stylesheet 62 + a ~13 KB document
+ *   typical page   205–264 KB
+ *   /simulators/    317.5 KB  four video POSTERS (~82 KB); the loops stay unfetched
+ *   / desktop      1206.1 KB  the hero film, which autoplays above the fold
+ *   / mobile        255.5 KB  same page, film below the fold, so never fetched
+ *
+ * The floor is the striking part: two thirds of a typical page here is font and
+ * stylesheet, identical on every route. So a per-route budget is really a budget
+ * on what that route adds on top of ~205 KB, and DEFAULT below leaves room for
+ * roughly one more hero image before it complains.
+ *
+ * ── Why desktop and mobile are separate ──────────────────────────────────────
+ * Only `/` actually differs, and it differs by 950 KB. Every other route fetches
+ * the same bytes at both viewports. A single shared budget would have to be the
+ * looser of the two, which would let the homepage ship a megabyte to phones —
+ * the visitors least able to afford it — without anything noticing. Splitting
+ * them is what makes the homepage's mobile figure a fact the gate holds us to.
+ */
+const BUDGET_KB = {
+  /**
+   * Everything that is not the homepage. `/simulators/` is the heaviest at
+   * 317.5 KB, so this leaves it ~26% headroom — enough for ordinary copy and
+   * image work, not enough for a video. If one of the pillar loops is ever made
+   * eager it adds ~600 KB and fails here, loudly, which is the entire point.
+   */
+  default: { desktop: 400, mobile: 400 },
+
+  /**
+   * Per-route ceilings. Add sparingly: every entry here is a page exempted from
+   * the rule, so it should carry the reason it deserves to be.
+   */
+  routes: {
+    /**
+     * The homepage carries the promo film as its hero (FW-4010), autoplaying
+     * above the fold on desktop. That took it from 256 KB to 1207 KB and no
+     * gate noticed — which is the defect that produced this budget.
+     *
+     * 1300 is a RATCHET, NOT AN ENDORSEMENT. 1.2 MB for a landing page is heavy
+     * and we should be bringing it down, not growing into the allowance; the
+     * ~8% of headroom is there for copy changes and nothing else. If you are
+     * reading this because the gate failed: the answer is a smaller film — a
+     * lower bitrate, a shorter loop, or a poster with the film behind a click —
+     * not a bigger number on this line.
+     *
+     * Mobile stays on a near-default 350 because the film sits below the fold
+     * there and is never fetched (255.5 KB measured). That is a real property of
+     * the layout, and this is what keeps it true.
+     */
+    '/': { desktop: 1300, mobile: 350 },
+  },
+};
+
+const budgetFor = (route, viewport) => (BUDGET_KB.routes[route] ?? BUDGET_KB.default)[viewport];
+
+/**
+ * How long to keep counting after `load` fires.
+ *
+ * `load` can resolve before an autoplaying video's first bytes land, which made
+ * the homepage measure light and erratic. 1200ms is empirically enough for the
+ * figures to repeat byte-for-byte across runs, and short enough that it does not
+ * let anything in-view-gated sneak into the tally.
+ */
+const WEIGHT_SETTLE_MS = 1200;
+
 const MIME = {
   '.html': 'text/html',
   '.css': 'text/css',
@@ -159,19 +270,77 @@ const VIEWPORTS = [
   { name: 'mobile', opts: { ...devices['iPhone 13'] } },
 ];
 
-const report = { contrast: [], otherA11y: [], overflow: [], tapTargets: [], padding: [], internalText: [] };
+const report = {
+  contrast: [],
+  otherA11y: [],
+  overflow: [],
+  tapTargets: [],
+  padding: [],
+  internalText: [],
+  pageWeight: [],
+};
 
 for (const vp of VIEWPORTS) {
   const ctx = await browser.newContext(vp.opts);
   const page = await ctx.newPage();
 
   for (const route of ROUTES) {
+    // ── page weight: start counting BEFORE the navigation ──────────────────
+    // See the header note. `responseBodySize` is the encoded body, so this is
+    // bytes off the wire rather than bytes on disk. Sizes resolve asynchronously,
+    // so the promises are collected and awaited before the total is read.
+    let fetchedBytes = 0;
+    let counting = true;
+    const byType = {};
+    const sizeProbes = [];
+    const onRequestFinished = (request) => {
+      if (!counting) return;
+      sizeProbes.push(
+        request
+          .sizes()
+          .then(({ responseBodySize }) => {
+            fetchedBytes += responseBodySize;
+            const type = request.resourceType();
+            byType[type] = (byType[type] ?? 0) + responseBodySize;
+          })
+          // A request that never reported sizes contributes nothing rather than
+          // taking the whole audit down; the gate errs light, and a genuinely
+          // heavy page cannot hide behind one unmeasured request.
+          .catch(() => {}),
+      );
+    };
+    page.on('requestfinished', onRequestFinished);
+
     const resp = await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'load' });
     // Guard: a harness 404 renders as a <pre> and axe then reports "no title" /
     // "no lang" as if the SITE were broken. Fail loudly instead of lying.
     if (!resp || !resp.ok()) throw new Error(`audit harness could not load ${route} (${resp?.status()})`);
     const title = await page.title();
     if (!title) throw new Error(`audit harness got an empty document for ${route}`);
+
+    // Settle, then STOP COUNTING — everything below this line (axe, and above
+    // all the full-page screenshot) expands or scrolls the page and would pull
+    // in the lazy, in-view-gated video this budget deliberately excludes.
+    await page.waitForTimeout(WEIGHT_SETTLE_MS);
+    counting = false;
+    page.off('requestfinished', onRequestFinished);
+    await Promise.all(sizeProbes);
+
+    const kb = Math.round(fetchedBytes / 1024);
+    const budget = budgetFor(route, vp.name);
+    report.pageWeight.push({
+      route,
+      viewport: vp.name,
+      kb,
+      budget,
+      over: kb > budget,
+      // The three heaviest resource types, so a failure says WHAT got heavier
+      // rather than only that something did.
+      top: Object.entries(byType)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([type, bytes]) => `${type} ${Math.round(bytes / 1024)}KB`),
+    });
 
     // ── internal build-state text (FW-4013) ────────────────────────────────
     // Read what a VISITOR reads — `innerText`, not the HTML source — so a string
@@ -336,15 +505,61 @@ for (const t of report.internalText) {
   console.log(`      …${t.context}…`);
 }
 
+// ── page weight ──────────────────────────────────────────────────────────────
+// EVERY route prints its measured figure, passing or not. A gate that only
+// speaks up when it fails tells you a page is too heavy; this one tells you what
+// every page weighs, so a regression is legible as a number that moved rather
+// than as a single red line with no baseline to compare it to.
+console.log('\n══ PAGE WEIGHT (bytes actually fetched at load) ══');
+for (const vpName of ['desktop', 'mobile']) {
+  console.log(`  ${vpName}`);
+  for (const w of report.pageWeight.filter((w) => w.viewport === vpName)) {
+    const pct = Math.round((w.kb / w.budget) * 100);
+    const mark = w.over ? '✖' : ' ';
+    console.log(
+      `    ${mark} ${w.route.padEnd(24)} ${String(w.kb).padStart(5)} KB / ${String(w.budget).padStart(4)} KB ` +
+        `(${String(pct).padStart(3)}%)   ${w.top.join('  ')}`,
+    );
+  }
+}
+
 console.log(`\nScreenshots + report.json in ${OUT}\n`);
 
-// This one is a GATE, not a report line. See FORBIDDEN_TEXT.
+// ── GATES ────────────────────────────────────────────────────────────────────
+// Both are gates, not report lines. They are collected rather than exited on in
+// place, so one run tells you about BOTH failures — being sent back twice for
+// two defects that were both visible the first time is its own small papercut.
+const failures = [];
+
+// See FORBIDDEN_TEXT.
 if (report.internalText.length) {
-  console.error(
-    `\n✖ ${report.internalText.length} internal note(s) are visible to customers on ` +
+  failures.push(
+    `✖ ${report.internalText.length} internal note(s) are visible to customers on ` +
       `${[...new Set(report.internalText.map((t) => t.route))].join(', ')}.\n` +
       `  A note addressed to us belongs in <StubNote>, which renders on staging only.\n` +
-      `  A fact a customer would look for and we do not have belongs in <GapCell>.\n`,
+      `  A fact a customer would look for and we do not have belongs in <GapCell>.`,
   );
+}
+
+// See BUDGET_KB.
+const overweight = report.pageWeight.filter((w) => w.over);
+if (overweight.length) {
+  failures.push(
+    `✖ ${overweight.length} route/viewport(s) are over the page-weight budget:\n` +
+      overweight
+        .map(
+          (w) =>
+            `      ${w.route} [${w.viewport}] — ${w.kb} KB against a ${w.budget} KB budget ` +
+            `(+${w.kb - w.budget} KB). Heaviest: ${w.top.join(', ')}.`,
+        )
+        .join('\n') +
+      `\n  These are bytes a visitor actually downloads before scrolling.\n` +
+      `  Raising the budget in scripts/visual-audit.mjs is the LAST resort, not the first —\n` +
+      `  read the reasoning beside the number before you change it.`,
+  );
+}
+
+if (failures.length) {
+  console.error(`\n${failures.join('\n\n')}\n`);
   process.exit(1);
 }
