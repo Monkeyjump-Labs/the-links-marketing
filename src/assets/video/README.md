@@ -141,12 +141,12 @@ photography standing in for Stillwater (`STYLE-GUIDE` §6.10).
 
 ## ⚠️ Do not commit the GIFs
 
-| Master GIF (not committed) | Size | Pillar |
-| -------------------------- | ---: | ------ |
-| `HYPER-REALISTIC-1.gif` (1152×648, 312f) | 32.0 MB | course rendering / visual fidelity |
-| `ADVANCED-PRACTICE-1.gif` (1152×648, 288f) | 24.6 MB | practice tools / shot data |
-| `INNOVATIVE-MOTION.gif` (1920×1080, 76f) | 14.0 MB | the motion plate |
-| `WEIGHT-SHIFT.gif` (1920×1080, 117f) | 36.2 MB | standing on the slope |
+| Master GIF (not committed)                 |    Size | Pillar                             |
+| ------------------------------------------ | ------: | ---------------------------------- |
+| `HYPER-REALISTIC-1.gif` (1152×648, 312f)   | 32.0 MB | course rendering / visual fidelity |
+| `ADVANCED-PRACTICE-1.gif` (1152×648, 288f) | 24.6 MB | practice tools / shot data         |
+| `INNOVATIVE-MOTION.gif` (1920×1080, 76f)   | 14.0 MB | the motion plate                   |
+| `WEIGHT-SHIFT.gif` (1920×1080, 117f)       | 36.2 MB | standing on the slope              |
 
 **106.8 MB together.** Git keeps a blob forever, so committing them would bloat every clone of this
 repo permanently, including after a later `git rm`. Only the derived files below are committed. The
@@ -178,12 +178,12 @@ ffmpeg -ss <TS> -i <MASTER>.gif -frames:v 1 \
   -vf "scale=960:540:flags=lanczos" -q:v 4 src/assets/images/<name>-poster.jpg
 ```
 
-| Derived file | Master | Poster `TS` | WebM | MP4 |
-| ------------ | ------ | ----------: | ---: | --: |
-| `golfzon-course-render.*` | `HYPER-REALISTIC-1.gif` | 6.9s | 665 KB | 749 KB |
-| `golfzon-practice-tools.*` | `ADVANCED-PRACTICE-1.gif` | 6.0s | 524 KB | 617 KB |
-| `golfzon-motion-plate.*` | `INNOVATIVE-MOTION.gif` | 1.6s | 94 KB | 105 KB |
-| `golfzon-weight-shift.*` | `WEIGHT-SHIFT.gif` | 2.4s | 394 KB | 428 KB |
+| Derived file               | Master                    | Poster `TS` |   WebM |    MP4 |
+| -------------------------- | ------------------------- | ----------: | -----: | -----: |
+| `golfzon-course-render.*`  | `HYPER-REALISTIC-1.gif`   |        6.9s | 665 KB | 749 KB |
+| `golfzon-practice-tools.*` | `ADVANCED-PRACTICE-1.gif` |        6.0s | 524 KB | 617 KB |
+| `golfzon-motion-plate.*`   | `INNOVATIVE-MOTION.gif`   |        1.6s |  94 KB | 105 KB |
+| `golfzon-weight-shift.*`   | `WEIGHT-SHIFT.gif`        |        2.4s | 394 KB | 428 KB |
 
 **1.60 MiB of WebM for all four**, against 106.8 MB of GIF — a 64× reduction for the same footage,
 and `preload="none"` means a visitor who never scrolls to the section pays none of it. Posters are
