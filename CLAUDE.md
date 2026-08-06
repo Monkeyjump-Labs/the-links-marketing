@@ -200,6 +200,39 @@ The starter ships local-mode only. To turn on live editing for a client site:
 3. First deploy will fail with a schema mismatch until the remote schema is seeded —
    run `npm run tina:lock`, commit the lock, and push so Tina Cloud indexes it.
 
+## Testing a form locally: the URL needs its trailing slash
+
+⚠️ **`POST /api/lead` 404s under `astro dev`. `POST /api/lead/` works.**
+
+`trailingSlash: 'always'` in `astro.config.mjs` applies to API routes exactly as
+it does to pages. Production is more forgiving — Vercel 308s the slashless form
+and a 308 preserves the method and body — so this bites **only** in local
+development, which is what makes it expensive: you get a bare 404 with nothing
+pointing at the missing character, and conclude the endpoint is broken.
+
+Every form on the site posts to `/api/lead/` and the site is consistent about it.
+If you are testing by hand, include the slash:
+
+```bash
+curl -X POST http://localhost:4321/api/lead/ -d 'list=events&name=…'   # works
+curl -X POST http://localhost:4321/api/lead  -d 'list=events&name=…'   # 404
+```
+
+A local POST answering **400 "This form is not configured correctly"** is the
+route working: it means the handler ran and found no lead destination configured
+(`LEAD_SHEET_ID`, `RESEND_API_KEY` — see `.env.example`). A **404** means the
+slash. Do not chase the 400 as a routing bug.
+
+Two related traps in the same area:
+
+- `LeadFormScript.astro`'s `ENDPOINT` is used both to `fetch` and to select forms
+  by `form[action="…"]`. It must stay character-identical to the `action` on
+  `EnquiryForm`, `LessonEnquiryForm` and `WaitlistForm`, or the enhancement
+  silently matches nothing and every form falls back to a page navigation.
+- `astro dev` **auto-increments the port** when the one you asked for is taken,
+  and says so only in its startup output. Read the port it actually bound before
+  trusting a 404 — testing against a port another process owns proves nothing.
+
 ## Before you finish
 
 Keep all of these green:
@@ -214,6 +247,21 @@ npm run lint      # eslint + prettier
 CI (`.github/workflows/quality.yml`) runs tina-lock-freshness → lint → check →
 test → build on PRs. If you changed the Tina schema, also run `npm run tina:lock`
 and commit `tina/tina-lock.json`.
+
+Two things about those two scripts that used to waste a run each time (FW-4023):
+
+- **`npm run lint` works from a git worktree.** It did not: `.eslintrc.json` had
+  no `root: true`, so ESLint cascaded up out of a worktree under `.claude/`,
+  picked up the parent checkout's config, and then ignored every file as living
+  under a dot-directory — reported as the very misleading `No files matching the
+  pattern "src"`. **Do not "fix" that with `--no-ignore`**: that also un-ignores
+  `dist/` and `.astro/`, so it lints a different set. `root: true` is the fix and
+  it is already there. Leave it.
+- **`npm run format` no longer rewrites Tina content.** `src/content/**/*.{json,md}`
+  is in `.prettierignore`, because Tina and Prettier format those files
+  differently and each reverts the other. `npm run format` on a clean checkout
+  must leave `git status` clean — if it ever does not, that is the bug, not
+  something to commit.
 
 ## Branching & PRs
 

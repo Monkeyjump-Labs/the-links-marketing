@@ -14,10 +14,17 @@
  * comments and in our own documents, not in copy a customer reads. Nothing
  * customer-facing carries it today — do not be the one who adds it.
  *
- * Posts to `/api/lead` — a fixed, same-origin path. It used to post to
+ * Posts to `/api/lead/` — a fixed, same-origin path. It used to post to
  * `PUBLIC_LEAD_ENDPOINT` and degrade to a `mailto:` when that was unset, which
  * is how this site went live with every form inert. A URL you can configure is
  * a URL you can leave unset, so there is no longer a URL to configure.
+ *
+ * ⚠️ **Keep the trailing slash on that action.** `trailingSlash: 'always'`
+ * applies to API routes as well as pages: under `astro dev`, `POST /api/lead`
+ * is a 404 and `POST /api/lead/` works. Production 308s the slashless form, so
+ * dropping the slash breaks local testing ONLY — and silently. It must also
+ * stay identical to `ENDPOINT` in `LeadFormScript.astro`, which selects forms
+ * by `action`. See FW-4023.
  *
  * Works with JavaScript disabled — a native POST gets a 303 to `/thanks/`.
  * `LeadFormScript` upgrades that to an inline confirmation. See FW-3975.
@@ -59,7 +66,7 @@ const field =
 
   <form
     class="mt-s5"
-    action="/api/lead"
+    action="/api/lead/"
     method="POST"
     data-analytics={`waitlist:${listName}`}
     data-success="You are on the list. We will email you the day registration opens."
