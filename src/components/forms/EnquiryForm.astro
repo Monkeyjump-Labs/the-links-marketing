@@ -21,10 +21,17 @@
  * "Which venue" stays required. It is the only two-location accommodation
  * anywhere in the current site's forms and it is the one we must not lose.
  *
- * Posts to `/api/lead` — a fixed, same-origin path. It used to post to
+ * Posts to `/api/lead/` — a fixed, same-origin path. It used to post to
  * `PUBLIC_LEAD_ENDPOINT` and degrade to a `mailto:` when that was unset, which
  * is how this site went live with every form inert. A URL you can configure is
  * a URL you can leave unset, so there is no longer a URL to configure (FW-3975).
+ *
+ * ⚠️ **Keep the trailing slash on that action.** `trailingSlash: 'always'`
+ * applies to API routes as well as pages: under `astro dev`, `POST /api/lead`
+ * is a 404 and `POST /api/lead/` works. Production 308s the slashless form, so
+ * dropping the slash breaks local testing ONLY — and silently. It must also
+ * stay identical to `ENDPOINT` in `LeadFormScript.astro`, which selects forms
+ * by `action`. See FW-4023.
  *
  * Works with JavaScript disabled — a native POST gets a 303 to `/thanks/`.
  * `LeadFormScript` upgrades that to an inline confirmation.
@@ -67,7 +74,7 @@ const labelClass = 'caps-label block text-label-sm text-inkMuted';
 
   <form
     class="mt-s6"
-    action="/api/lead"
+    action="/api/lead/"
     method="POST"
     data-analytics={`enquiry:${listName}`}
     data-success="Thanks — we have got your enquiry and will come back to you with a price."

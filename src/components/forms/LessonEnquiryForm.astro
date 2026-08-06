@@ -32,9 +32,16 @@
  * 7.7:1, inkMuted labels 5.3:1, and an ember submit with paper text at 6.85:1.
  * Fields keep a white ground so the slab reads as a form and not as a callout.
  *
- * Posts to `/api/lead` — fixed and same-origin, like every other form here.
+ * Posts to `/api/lead/` — fixed and same-origin, like every other form here.
  * Works with JavaScript disabled: a native POST gets a 303 to `/thanks/`, and
  * `LeadFormScript` upgrades that to an inline confirmation.
+ *
+ * ⚠️ **Keep the trailing slash on that action.** `trailingSlash: 'always'`
+ * applies to API routes as well as pages: under `astro dev`, `POST /api/lead`
+ * is a 404 and `POST /api/lead/` works. Production 308s the slashless form, so
+ * dropping the slash breaks local testing ONLY — and silently. It must also
+ * stay identical to `ENDPOINT` in `LeadFormScript.astro`, which selects forms
+ * by `action`. See FW-4023.
  */
 import { getVenues } from '../../lib/venues';
 import { buttonClasses } from '../../lib/buttons';
@@ -76,7 +83,7 @@ const labelClass = 'caps-label block text-label-sm text-inkMuted';
 
   <form
     class="mt-s6"
-    action="/api/lead"
+    action="/api/lead/"
     method="POST"
     data-analytics={`enquiry:${listName}`}
     data-success="Thanks — we have got it. Someone will come back to you with a coach and a price."

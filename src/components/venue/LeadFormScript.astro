@@ -3,10 +3,25 @@
  * The progressive-enhancement layer for every form on the site.
  *
  * **Without this script the forms still work.** They are ordinary
- * `method="POST" action="/api/lead"` forms; the endpoint answers a native POST
+ * `method="POST" action="/api/lead/"` forms; the endpoint answers a native POST
  * with a 303 to `/thanks/`. This script only upgrades that: it intercepts the
  * submit, posts the same FormData with `Accept: application/json`, and swaps in
  * an inline confirmation so the visitor never leaves the page.
+ *
+ * ⚠️ **THE TRAILING SLASH ON `/api/lead/` IS LOAD-BEARING. Do not tidy it away.**
+ * `astro.config.mjs` sets `trailingSlash: 'always'`, and Astro applies that to
+ * API routes exactly as it does to pages. Under `astro dev`, `POST /api/lead`
+ * (no slash) is a flat **404**; `POST /api/lead/` works. Production is more
+ * forgiving — Vercel 308s the slashless form and a 308 preserves method and
+ * body — and that asymmetry is the whole trap: dropping the slash breaks only
+ * local testing, silently, so it reads as "the endpoint is broken" rather than
+ * "the URL is one character short" (FW-4023).
+ *
+ * `ENDPOINT` below is used for BOTH the `fetch` and the `form[action="…"]`
+ * selector that finds the forms to enhance, so it must stay character-identical
+ * to the `action` attribute in `EnquiryForm.astro`, `LessonEnquiryForm.astro`
+ * and `WaitlistForm.astro`. If they drift, this script matches nothing and
+ * every form silently degrades to a full page navigation.
  *
  * That ordering matters on this site more than most. The homepage's ember band
  * is a waitlist and the events form is the brightest object on its page — a
@@ -21,7 +36,7 @@
 ---
 
 <script>
-  const ENDPOINT = '/api/lead';
+  const ENDPOINT = '/api/lead/';
 
   /**
    * Fetch a signed stamp the first time a visitor touches any lead form.
