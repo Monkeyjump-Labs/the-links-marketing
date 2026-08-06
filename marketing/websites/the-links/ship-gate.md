@@ -28,7 +28,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ✅ | Booking reachable in ≤2 clicks from every page | Header → venue chooser → Whoosh. The old "ACKNOWLEDGE AND GO TO BOOKING" interstitial is deleted |
 | ✅ | Leagues page has a registration path **and** a waitlist in all three states | The one component no audited competitor has |
 | ✅ | Email capture present with a stated reason to subscribe | |
-| 🟡 | Every form tested end-to-end; submissions arrive somewhere a human reads | **Built and verified live (FW-3975).** All five forms post to `/api/lead`, which writes to the *The Links Website Log* workbook (Enquiries / Waitlist / Test tabs) and then emails a notification. A submission is never reported successful unless it reached the sheet. **⚠️ Notifications currently go to `hello@fareway.golf` for testing — see the launch task below** |
+| 🟡 | Every form tested end-to-end; submissions arrive somewhere a human reads | **Built and verified live (FW-3975, FW-3999).** Six forms post to `/api/lead`, which writes to the *The Links Website Log* workbook then notifies. A submission is never reported successful unless it reached the sheet. Verified end-to-end in a real browser against the deployed site. **⚠️ Notifications still go to `hello@fareway.golf` — this is a cutover step, see below** |
 
 ## Content
 
@@ -38,7 +38,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | 🟡 | Real prices, as text, on a Rates & Hours page | Summer 2026 is real. **Winter is a stub and the summer card expires 2026-10-03** |
 | ✅ | At least three attributed testimonials or a live review widget | **Unblocked 2026-08-04 (FW-4000). Four, not three** — Lucas, Jeff, Anita and Rob, each an attributed Google review the client already publishes on their own site. They were never missing: they sat in `_ingest/raw/` (`groups.html`, `home-2.html`) the whole time this row read "None supplied", which is the lesson worth keeping. The homepage proof band now renders in production and `/about` carries all four. Still worth chasing but no longer gating: the permalink per review, so each quote can link to its source. **All four are Lakeville** — Stillwater has no Google Business Profile and so has no reviews, which is an argument for creating one, not for borrowing a quote from the other venue |
 | ✅ | No PDFs in place of menus, rates or rules | |
-| 🟡 | Venue photography, not stock | Lakeville's shoot is strong. **Stillwater has one usable frame** — a pre-opening phone night shot |
+| 🟡 | Venue photography, not stock | Lakeville's shoot is strong. **Stillwater now has its first real photograph** — a still pulled from the venue's own walkthrough video (FW-4003), which closes the worst of this. It is handheld footage of an empty room and will not enlarge, so **the shoot is still needed**; it is no longer a blocker |
 | ✅ | Simulator technology named | **GolfZon TwoVision NX, tour spec** — confirmed 2026-08-04. This was the single most consequential unconfirmed fact on the site; both halves of the tour-spec claim (model and plate) are now confirmed, so the line is written |
 | ✅ | Every seasonal page dated, with a named refresh owner | Season carried in content; **owner still to be named at handoff** |
 
@@ -52,7 +52,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ✅ | Cancellation policy findable from the booking page | Confirmed current 2026-08-04, and the three previously-unpublished cases are now answered: a booking can be moved (deliberately no stated deadline), a no-show is charged for the full bay, and the venue will not close on a day with bookings without reaching out |
 | ✅ | Simulator brand named on the homepage and the Bays page | |
 | ✅ | Beginner reassurance on Leagues **and** Book | Required field on every league record |
-| 🟡 | Menu is HTML | Structure ships; **the six menu PNGs still need transcribing** |
+| ✅ | Menu is HTML | **Custom-coded 2026-08-04 (FW-4002).** Zero `<img>` tags, 39 priced items as text, `Menu` JSON-LD, editable in TinaCMS. The six PNGs are retired. Three genuine ambiguities in the source ship as gap marks rather than guesses |
 | ✅ | Leagues in the top nav | |
 | ✅ | Waitlist live and tested | Tested end-to-end against live Google and Resend 2026-08-04 (FW-3975). Submissions land on the workbook's Waitlist tab with the consent text recorded, and a notification sends. ⚠️ Notifications currently go to `hello@fareway.golf` — see the launch task |
 
@@ -76,24 +76,26 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 4. **The adult league lineup.** The site's most valuable page is a structural shell until this
    arrives, and we are launching into league-registration season.
 5. **A Stillwater photo shoot.**
-6. **NX vs TwoVision.** Live pages contradict each other and **AI answers are already repeating
-   the wrong one**. Retiring the three stale source pages is necessary but not sufficient — the
-   correct fact has to be published and crawled.
-7. **The lead endpoint.** Every form on the site is inert without it.
-8. **Which phone number is which** — three are in circulation, one with a `tel:` mismatch.
+6. ~~NX vs TwoVision~~ — **RESOLVED 2026-08-04.** GolfZon **TwoVision NX, tour spec**. Published,
+   and the three stale source pages still need retiring so AI answers stop repeating the old one.
+7. ~~The lead endpoint~~ — **RESOLVED.** `/api/lead` writes to the workbook then notifies
+   (FW-3975). Verified end-to-end against the deployed site.
+8. ~~Which phone number is which~~ — **RESOLVED.** It all goes to one phone: `612-699-0526`.
+   The question was a false premise, not an unknown.
 9. **Legal entity per venue** — three names across the old legal pages; no Stillwater entity named.
 10. **The domain cutover**, in the order set out in `seo-map.md` §4.1. The existing
     `thelinks.golf` → `lakevillelinks.com` rule must be deleted *first* or the two form a loop.
 
 ## Access to the staging site
 
-**Vercel SSO protection is ON** (`all_except_custom_domains`), so the staging URL returns a 302
-to anyone who is not signed in to the Vercel account. **The client cannot review it in this
-state** — disable Vercel Authentication on the project, or add password protection, before
-sharing. Attempting to disable it programmatically was blocked.
+**Vercel SSO protection is OFF** as of 2026-08-04 — the staging URL is publicly reachable and
+the client can review it. Worth knowing that this means the `.vercel.app` URL carries real
+prices and real customer reviews to anyone with the link.
 
-The project also currently lives under the personal Vercel team `daran-7928's projects` while the
-repo is in the `Monkeyjump-Labs` GitHub org. Worth moving before handoff.
+The project lives under the personal Vercel team `daran-7928's projects` while the repo is in
+the `Monkeyjump-Labs` GitHub org. Reviewed 2026-08-04 and **accepted deliberately** — moving a
+project between Vercel teams means redoing domains and environment variables, so it is much
+cheaper to leave than to move now.
 
 `PUBLIC_SITE_NOINDEX=true` is set on **both** preview and production environments — deliberate,
 because even the `.vercel.app` production deploy is staging until the real domain cuts over.
@@ -105,79 +107,19 @@ because even the `.vercel.app` production deploy is staging until the real domai
   production deps (2 high, 2 low) needing breaking upgrades. Not launch-blocking for a static
   marketing site, but it should be cleared and the fix pushed back up into
   `appletron-site-starter` so the next client build doesn't inherit it.
-- **Branch protection** is not enabled on the repo. Turn it on at handoff.
+- **Branch protection.** ⚠️ This matters more than it did. Deploys now run from a GitHub Action
+  holding a `VERCEL_TOKEN` rather than from Vercel's Git integration, which means Vercel no
+  longer independently checks who authored a commit — **production access is now whatever
+  GitHub allows**. That is anyone who can merge to `main`, *and* anyone who can land a change to
+  `.github/workflows/` (editing the workflow runs arbitrary code with the token in scope). Check
+  the protections are real before relying on them; see `docs/vercel-ci-token-deploys.md`.
 - **On-site league registration.** The playbook says own it; we link to ply.golf for v1 because
   there is no on-site registration surface yet. Logged in `brief.md` §11.
 
 
 ---
 
-## ⚠️ Launch task — switch form notifications to the venue
 
-**Owner: us. Blocking launch.**
-
-Form notifications are deliberately routed to `hello@fareway.golf` while we test, set
-2026-08-04. Every enquiry a customer sends currently reaches **nobody who can answer it**.
-
-Nothing is lost while this is true — the row is still written to the sheet, which is the
-system of record — but the venue is not told an enquiry arrived, so in practice it is
-invisible to them.
-
-**The switch is one line:**
-
-```ts
-// src/lib/leads/config.ts
-const INBOX = VENUE_INBOX;   // was TESTING_INBOX
-```
-
-`npm run leads:check` prints a loud banner on every run while the testing address is still
-in place, so this cannot quietly survive to launch. Do it, redeploy, then submit one real
-form and confirm it arrives at `info@lakevillelinks.com`.
-
-
----
-
-## ⚠️ Launch task — add a DMARC record for `thelinks.golf`
-
-**Owner: us (we hold the DNS). Blocking launch.**
-
-The first real notification landed in **spam**, 2026-08-04. Diagnosed:
-
-| Record | State |
-| -- | -- |
-| DKIM `resend._domainkey.thelinks.golf` | ✓ present |
-| SPF `send.thelinks.golf` | ✓ `v=spf1 include:amazonses.com ~all` |
-| **DMARC `_dmarc.thelinks.golf`** | ✗ **missing** |
-
-Authentication itself is fine — Resend signs with DKIM as `d=thelinks.golf`, which aligns
-with the `From:` address, so DMARC would *pass* if a policy existed to evaluate. The problem
-is that there is no policy at all, and since February 2024 Gmail and Yahoo treat an absent
-DMARC record as a strong negative signal. `thelinks.golf` also has no sending history
-whatsoever, so there is no reputation to offset it.
-
-**Add this TXT record:**
-
-```
-name:   _dmarc.thelinks.golf
-value:  v=DMARC1; p=none; rua=mailto:dmarc@thelinks.golf; fo=1
-```
-
-`p=none` is monitor-only — it asks receivers to report, never to reject, so it cannot bounce
-legitimate mail while we are still setting up. Tighten to `p=quarantine` once the reports
-show only Resend sending as us.
-
-Then send one more test and confirm it reaches the inbox rather than spam.
-
-**Why this is blocking rather than cosmetic:** the whole design says the sheet is the system
-of record precisely so a lost email cannot lose a lead — but a notification that reliably
-lands in spam means the venue never learns an enquiry arrived, and a planner waiting on a
-quote does not know to chase. The row being safe is not the same as the venue being told.
-
-Note also that `thelinks.golf` currently has no website on it (it still 301s into
-`lakevillelinks.com` — the stalled rename). A sending domain with no site is itself a mild
-negative signal, and resolving the rename fixes that as a side effect.
-
----
 
 ## Deploy note — the Vercel git-author block
 
@@ -201,3 +143,67 @@ Two fixes, and the second is the one that actually ends it:
 1. **Per-deploy:** put a commit authored by the linked identity at HEAD before deploying.
 2. **Permanent:** add `26395706+daranhan@users.noreply.github.com` to the Vercel account's
    emails (Account Settings → Emails), so GitHub-authored merge commits stop tripping it.
+
+---
+
+# Go-live cutover
+
+**Everything below is deliberately deferred until the day of launch.** None of it is
+outstanding work — each item is correct as it stands for a site that is not yet public, and
+each becomes wrong the moment it is.
+
+Do these **in order**. Steps 1 and 2 are independent; step 3 must come last, because pointing
+the domain at a site whose forms email the wrong inbox is the one combination that loses a
+real customer's enquiry silently.
+
+## 1. Point form notifications at the venue
+
+```ts
+// src/lib/leads/config.ts
+const INBOX = VENUE_INBOX;   // was TESTING_INBOX
+```
+
+Notifications currently go to `hello@fareway.golf` so the team could test without putting
+practice enquiries in front of venue staff. `npm run leads:check` prints a banner on every run
+while that is true, so this cannot quietly survive.
+
+**Why it is last-mile rather than a bug:** nothing is lost while it is wrong — the row is still
+written to the sheet, which is the system of record. But **the venue is not told**, and that
+failure is invisible from the outside: the form submits, the page thanks you, the site looks
+perfect. A planner waiting on a quote simply never hears back.
+
+Afterwards: submit one real enquiry and confirm it arrives at `info@lakevillelinks.com`.
+
+## 2. Delete the old redirect, then point the domain
+
+`thelinks.golf` currently **301s into `lakevillelinks.com`** — the redirect points the wrong
+way round, away from the parent brand. Until it is removed the domain cannot serve this site,
+and adding a Vercel domain on top of it forms a loop.
+
+Ordered steps are in `seo-map.md` §4.1. In short: delete the outbound 301, add the domain in
+Vercel, confirm the 28 mapped redirects still resolve, then submit the sitemap.
+
+Note the site is currently reachable only at `the-links-marketing.vercel.app`, which is why
+`astro.config.mjs` already sets `site: 'https://thelinks.golf'` — canonicals and the sitemap
+are written for the destination, not the staging host.
+
+## 3. Turn off `PUBLIC_SITE_NOINDEX`
+
+Staging is noindex site-wide, and `StubNote` renders **only** while it is set. Clearing it
+does two things at once: the site becomes indexable, and every internal build note disappears
+from view. Confirm both after deploying.
+
+---
+
+## Accepted at launch, on the client's punch list
+
+Recorded here so nobody treats them as blockers on the day.
+
+| | Why it is safe to launch |
+| -- | -- |
+| **Waiver names Lakeville only** (FW-4008) | The same document with the same scope is already live on their current site. We surfaced a pre-existing exposure; we did not create one. The page says plainly which entity and address it names |
+| **Privacy and terms are provisional** (FW-4015) | Both pages **tell the reader so, in plain language**. We are not presenting an unreviewed policy as finished. ⚠️ That notice is load-bearing — do not remove it to tidy up |
+| **Winter rates and hours** | The summer card is real and current. Rates are updated through the normal editing process; there is no cliff |
+| **League entry fee** | Renders as an honest gap with a reason line. The skins figures are labelled as skins, so nothing misleads |
+| **Stillwater photography** | Has its first real image. The shoot improves it; nothing depends on it |
+| **Google Business Profile** | Client is checking. Explicitly not blocking, at their request |
