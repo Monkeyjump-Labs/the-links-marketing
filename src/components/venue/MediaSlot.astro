@@ -21,8 +21,8 @@
  *   walkthrough video of that room (`src/assets/video/README.md`) and a still
  *   pulled from it is the first honest image of Stillwater this site has ever
  *   had. It is handheld phone footage of an empty room, not a commissioned
- *   shoot — so the caption says precisely that, and the staging marker still
- *   asks for the shoot. A modest true picture outranks a confident drawing.
+ *   shoot — so the staging marker still asks for the shoot. A modest true
+ *   picture outranks a confident drawing.
  * - **Lakeville is still drawn, LIT.** A professional shoot of that room exists
  *   but the files have not been delivered, so there is nothing real to show yet.
  *
@@ -31,9 +31,25 @@
  * fix (STYLE-GUIDE §6.10). The drawn slot is an approved decision, not a
  * placeholder to be filled with whatever is nearest to hand.
  *
+ * ## Only the DRAWN slot gets words under it
+ *
+ * A caption under a real photograph tells a visitor what they can already see,
+ * so the photographed slot renders none: `alt` carries the description, for
+ * search and for anyone who cannot see the image, and nothing is painted.
+ *
+ * The drawn slot is the opposite case and the reason this is a rule rather than
+ * a deletion. It is not a picture of the room — it is a mark saying a picture
+ * is missing, and stripped of its sentence it degrades into an unexplained
+ * abstract rectangle, which is worse than the caption ever was. So the sentence
+ * stays: it is the slot's content, not a description of an image.
+ *
+ * What went with the captions is the spec `label` ("Photo slot · 3:2 · wide
+ * interior, evening, occupied"). That was addressed to us — the brief for the
+ * shoot — and build-state-markers.md is explicit that a note to us does not
+ * belong where a customer reads it.
+ *
  * The `needs-client-data` tag is a BUILD-STATE marker in the team's vocabulary,
- * so it follows `StubNote`'s rule and renders on staging only. The caption above
- * it is a plain statement of fact and ships.
+ * so it follows `StubNote`'s rule and renders on staging only.
  */
 import { Image } from 'astro:assets';
 
@@ -50,15 +66,23 @@ interface Props {
   /**
    * With `photo`: what the photograph actually shows.
    * Without: a long description of the exact frame that belongs here.
+   *
+   * This is the ONLY description of a real photograph the site carries — there
+   * is no visible caption to fall back on — so write it as the full sentence a
+   * search engine or a screen reader should get.
    */
   alt: string;
-  label: string;
-  caption: string;
+  /**
+   * What the drawn slot says in place of the missing photograph. Rendered ONLY
+   * when there is no `photo` — a photographed slot is captionless by design, so
+   * leave it off there rather than writing a line that never paints.
+   */
+  caption?: string;
   /** What the client owes, in the team's words. Staging only. */
   needs: string;
 }
 
-const { id, photo, lit, alt, label, caption, needs } = Astro.props;
+const { id, photo, lit, alt, caption, needs } = Astro.props;
 const isStaging = import.meta.env.PUBLIC_SITE_NOINDEX === 'true';
 
 const ground = 'fill: var(--brand-media-slot-ground)';
@@ -166,15 +190,24 @@ const mass = 'fill: var(--brand-media-slot-mass); stroke: var(--brand-media-slot
     )
   }
 
-  <figcaption class="border-t-hairline border-slate p-s5">
-    <p class="caps-label text-label-sm text-amber">{label}</p>
-    <p class="mt-s2 text-small leading-body text-slate">{caption}</p>
-    {
-      isStaging && (
-        <span class="caps-label mt-s3 inline-block rounded-surface border-hairline border-slate px-s2 py-s1 text-label-sm text-slate">
-          needs-client-data — {needs}
-        </span>
-      )
-    }
-  </figcaption>
+  {
+    /* Nothing under a real photograph. A drawn slot keeps its sentence, because
+       there the sentence IS the slot. Staging additionally carries the marker,
+       so a captionless photographed slot still shows what is outstanding. */
+    ((!photo && caption) || isStaging) && (
+      <figcaption class="border-t-hairline border-slate p-s5">
+        {!photo && caption && <p class="text-small leading-body text-slate">{caption}</p>}
+        {isStaging && (
+          <span
+            class:list={[
+              'caps-label inline-block rounded-surface border-hairline border-slate px-s2 py-s1 text-label-sm text-slate',
+              !photo && caption && 'mt-s3',
+            ]}
+          >
+            needs-client-data — {needs}
+          </span>
+        )}
+      </figcaption>
+    )
+  }
 </figure>
