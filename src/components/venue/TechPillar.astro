@@ -24,12 +24,20 @@
  * The contract — lazy, in-view only, reduced-motion poster-only, pausable — is
  * `lib/videoLoop.ts`, shared with `HeroFilm`. Read it there.
  *
- * ## The text is not decoration
+ * ## The text is not decoration — but `shows` is not shown
  *
- * `shows` is rendered AND is the video's accessible name (via
- * `aria-labelledby`, so it is announced once, not twice). If the video is
- * blocked, or motion is off, or the visitor is listening rather than looking,
- * the pillar still communicates — which is the requirement, not a courtesy.
+ * `shows` is the video's accessible name (via `aria-labelledby`, so it is
+ * announced once, not twice) and it is **visually hidden**. Describing a clip
+ * in words directly underneath the clip is a caption a sighted visitor does not
+ * need — they can see it — so it reads as filler and pushes the argument down
+ * the page. `aria-labelledby` resolves against the DOM, not against what is
+ * painted, so `sr-only` costs the accessible name nothing.
+ *
+ * `body` is what carries the pillar for someone who never sees the motion: it
+ * states the same capability as prose, so a blocked video, reduced motion, or a
+ * visitor who is listening rather than looking all still get the point. Do not
+ * fold `shows` into `body` and do not un-hide it — one is a description of
+ * footage, the other is the argument.
  *
  * ## No numerals
  *
@@ -43,7 +51,7 @@ import { buttonClasses } from '../../lib/buttons';
 interface Props {
   /** The capability, as a short claim. Rendered as the pillar's heading. */
   heading: string;
-  /** What the loop literally shows. Rendered, and used as the video's name. */
+  /** What the loop literally shows. The video's accessible name; not painted. */
   shows: string;
   /** The same capability in words, for a reader who never sees the motion. */
   body: string;
@@ -89,7 +97,8 @@ const showsId = `${name}-shows`;
   <figcaption class="mt-s5">
     <h3 class="font-display text-card leading-display font-bold tracking-display text-ink">{heading}</h3>
     <p class="mt-s3 max-w-prose-page text-body leading-body text-inkBody">{body}</p>
-    <p id={showsId} class="mt-s3 max-w-prose-page text-small leading-body text-inkMuted">{shows}</p>
+    {/* The video's accessible name. In the DOM for `aria-labelledby`, off the page. */}
+    <p id={showsId} class="sr-only">{shows}</p>
   </figcaption>
 </figure>
 

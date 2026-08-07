@@ -98,8 +98,10 @@ const things: Job[] = [
  * **Stillwater is now a real photograph.** The client supplied a walkthrough
  * video of that room, and this is a still from it: the first honest image of
  * Stillwater the site has ever carried. It is handheld phone footage of an
- * empty room rather than a commissioned shoot, so the caption says so and the
- * staging marker still asks for the shoot.
+ * empty room rather than a commissioned shoot, so the staging marker still asks
+ * for the shoot. It carries no visible caption and needs none — a caption under
+ * a photograph describes what the reader is already looking at. Its `alt` does
+ * the describing, for search and for anyone who cannot see it.
  *
  * **Lakeville is still drawn, lit.** Its professional shoot exists but the files
  * have not been delivered, so there is nothing real to put here yet.
@@ -107,14 +109,16 @@ const things: Job[] = [
  * The rule underneath is unchanged: Lakeville's frames never stand in for
  * Stillwater. That swap is the exact trust defect this rebuild exists to fix.
  */
-const slots: Record<
-  string,
-  { photo?: ImageMetadata; lit: boolean; alt: string; label: string; caption: string; needs: string }
-> = {
+const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; caption?: string; needs: string }> = {
   lakeville: {
     lit: true,
-    alt: 'Photo slot at 3:2 — the frame that belongs here is a wide interior of the Lakeville room, evening, occupied: a near-black navy room, warm pendant light over the bar, and the lit simulator projection as the one bright cool thing in it.',
-    label: 'Photo slot · 3:2 · wide interior, evening, occupied',
+    /* In a customer's words, not the shoot brief's — "photo slot at 3:2" was
+       spec-speak, and dropping it from the page while leaving it in the alt
+       would just move it from the eye to the ear. It must still say it is a
+       DRAWING: describe the room as though photographed and a listener is told
+       this room has been pictured when it has not, which is the substitution
+       the drawn slot exists to refuse. */
+    alt: 'A drawing standing in for the photograph of the Lakeville room that has not been delivered yet: a near-black room, warm pendant light over the bar, and the lit simulator projection as the one bright cool thing in it.',
     caption:
       'A professional shoot of this room exists — warm, dark, pendant-lit, with the simulator projection as the only cool note. The files are not on the site yet.',
     needs: 'deliver the files',
@@ -123,9 +127,7 @@ const slots: Record<
     photo: stillwaterRoom,
     lit: false,
     alt: 'The Stillwater room seen down its length: two lit simulator screens on the far wall, high-top tables and stools on a pale wood floor, a leather couch to the right, and a black ceiling hung with track lights. The room is empty.',
-    label: 'Stillwater · from the venue’s own walkthrough',
-    caption:
-      'A still from the walkthrough video the venue filmed — the first real picture of this room on the site. It is handheld footage of an empty room, not a professional shoot.',
+    /* No `caption` — it is photographed, so nothing is painted under it. */
     needs: 'a professional shoot — this room has still never been photographed lit for camera or occupied',
   },
 };
