@@ -112,7 +112,13 @@ const things: Job[] = [
 const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; caption?: string; needs: string }> = {
   lakeville: {
     lit: true,
-    alt: 'Photo slot at 3:2 — the frame that belongs here is a wide interior of the Lakeville room, evening, occupied: a near-black navy room, warm pendant light over the bar, and the lit simulator projection as the one bright cool thing in it.',
+    /* In a customer's words, not the shoot brief's — "photo slot at 3:2" was
+       spec-speak, and dropping it from the page while leaving it in the alt
+       would just move it from the eye to the ear. It must still say it is a
+       DRAWING: describe the room as though photographed and a listener is told
+       this room has been pictured when it has not, which is the substitution
+       the drawn slot exists to refuse. */
+    alt: 'A drawing standing in for the photograph of the Lakeville room that has not been delivered yet: a near-black room, warm pendant light over the bar, and the lit simulator projection as the one bright cool thing in it.',
     caption:
       'A professional shoot of this room exists — warm, dark, pendant-lit, with the simulator projection as the only cool note. The files are not on the site yet.',
     needs: 'deliver the files',
