@@ -453,9 +453,25 @@ for (const vp of VIEWPORTS) {
       report.padding.push({ route, sections: pads });
     }
 
+    // Freeze the videos first. A fullPage capture scrolls the whole document,
+    // which is exactly what makes `videoLoop` start every clip it passes — so
+    // the tallest page ends up composited from four playing videos. That is how
+    // /simulators/ at mobile width (a 4 MB capture) came to sit on the 30s
+    // screenshot timeout and fail the whole run at the LAST route it reaches,
+    // with a stack trace and no findings. Pausing is not cosmetic: an audit that
+    // dies on its own screenshot reports nothing about the twenty-one routes it
+    // already checked.
+    await page.evaluate(() => {
+      document.querySelectorAll('video').forEach((v) => {
+        v.pause();
+        v.removeAttribute('autoplay');
+      });
+    });
+
     await page.screenshot({
       path: join(OUT, `${route.replace(/\//g, '_') || '_root'}${vp.name}.png`),
       fullPage: true,
+      timeout: 60_000,
     });
   }
   await ctx.close();
