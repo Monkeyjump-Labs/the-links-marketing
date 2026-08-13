@@ -22,7 +22,14 @@
  * 3. **Hierarchy from weight and scale, never from decoration.** No shadows, no
  *    gradients, one 3px radius on interactive controls and nothing else.
  *
- * COPY: unchanged from what was already here, which was written for The Links
+ * COPY, H1: the client kept the old site's line — *"The most realistic indoor
+ * golf you can play, period."* — over the rebuild's *"Indoor golf that's
+ * actually a night out."* (CJ Johnson, on a call, 2026-08-13, reviewing wisplet
+ * rv_e8FjEHdXN3WnvQ). That reverses strategy.md §Lead, which argued for leading
+ * with the evening rather than the equipment. It is the client's call and it
+ * stands; strategy.md records the argument, not a veto.
+ *
+ * COPY, otherwise: unchanged from what was already here, which was written for The Links
  * and audited clean of the reference site's vocabulary. Nothing was imported
  * from the candidate HTML that was not already on the site — notably the
  * candidate's "Celebrate" card stays **Events** and its `/food-and-drink/`
@@ -82,8 +89,12 @@ interface Job {
 const things: Job[] = [
   { title: 'Play', body: 'Book a bay by the hour.', reassure: 'Up to six of you, same price.', href: '/book/' },
   { title: 'Compete', body: 'Fall and winter league play, planned at both venues.', href: '/leagues/' },
-  { title: 'Events', body: 'Work parties, birthdays, bachelor parties.', href: '/events/' },
-  { title: 'Improve', body: 'Lessons and practice on a real launch monitor.', href: '/lessons/' },
+  { title: 'Events', body: 'Work parties, birthdays, bachelor parties, fundraisers.', href: '/events/' },
+  {
+    title: 'Improve',
+    body: 'Lessons and practice on a real launch monitor. Bring your own instructor, or let us know if you want to use one of our partner instructors!',
+    href: '/lessons/',
+  },
   { title: 'Eat & drink', body: 'Full bar, real food, nine screens.', href: '/menu/' },
 ];
 
@@ -128,7 +139,7 @@ const slots: Record<string, { lit: boolean; alt: string; label: string; caption:
     <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
       <p class="caps-label text-amber">Lakeville &amp; Stillwater, Minnesota</p>
       <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">
-        Indoor golf that's actually a night out.
+        The most realistic indoor golf you can play, period.
       </h1>
       <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
         Ten GolfZon bays across two Twin Cities venues. Book by the hour, bring up to six people for the same price, and
