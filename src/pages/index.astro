@@ -150,50 +150,103 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
       and the way it is declined matters, because the refusal was measured and
       the measurement was right. What it measured was ONE structure: display type
       composited over moving footage. So the film is here on a structure that
-      composites nothing: the promise SPANS the grid, then the band opens into
-      two columns — the words on solid midnight, the film beside them as a ruled
-      screen. Contrast stops being a per-frame property and goes back to being a
-      token pairing, and the film runs unscrimmed, which is the only version of
-      it anyone actually wanted to look at. The re-measurement on the file that
-      ships, and the two rejected structures, are in `HeroFilm`.
+      composites nothing: the promise spans the band, and the words sit on an
+      OPAQUE panel rather than on the footage. Contrast stops being a per-frame
+      property and goes back to being a token pairing, and the film runs
+      unscrimmed, which is the only version of it anyone actually wanted to look
+      at. The re-measurement on the file that ships, and the two rejected
+      structures, are in `HeroFilm`.
 
-      The h1 spans both columns rather than sitting in one: `text-hero` peaks at
-      5.25rem, which needs most of `max-w-content` to stay at two lines. A split
-      that boxes it into half the width forces either five lines or a smaller
-      step, and the page's single largest gesture is not the thing to trade away
-      for a layout. Spanning it also makes the row beneath rhyme with the "Two
-      venues" rows — media cell beside text cell on a ruled grid — rather than
-      importing a video-hero composition from somewhere else.
+      **The two columns became a film with a panel floating on it** (2026-08-26),
+      taking the hero treatment — and only the hero treatment — from the
+      `home-fhm-full` divergence candidate: a rounded film, the words on a panel
+      that sits over it. Nothing else from that candidate came with it. The page
+      keeps its own palette, its sentence case, its square panels everywhere else
+      and its 3px controls; `radius.media` is the one new token and it is scoped
+      to this hero in its own description.
 
-      The left cell is `self-start` so the subhead's 8px amber slab starts on the
-      same line as the film's top rule — measured in the browser at 1440, both at
-      y=294 within the band. Bottom-aligning instead (tried, screenshotted,
-      rejected) buys an alignment with the caption's last line, which is a weaker
-      edge, and drops the primary CTA ~150px down the page to get it. The
-      midnight left under the buttons is the field, not a gap.
+      Why the structure still composites nothing, what the panel costs in
+      occlusion, why its edge needs BOTH a navy fill and a paper rule to survive
+      the clip, and why mobile deliberately does not overlap, are all on the block
+      below rather than up here, next to the classes they explain.
 
-      DOM order is eyebrow → h1 → words → film, on every viewport. On mobile that
-      puts the film below the CTAs: an autoplaying clip above the promise buries
-      both the h1 and the primary action on the device where the action matters
-      most, and reordering it visually would split tab order from reading order
-      around a focusable pause control. The film is still inside the hero band. */
+      DOM order is eyebrow → h1 → words → film, on every viewport, unchanged. On
+      mobile that still puts the film below the CTAs: an autoplaying clip above the
+      promise buries both the h1 and the primary action on the device where the
+      action matters most. The overlap is a desktop layer over that same order, so
+      tab order never diverges from reading order. */
   }
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
-      <div class="grid gap-y-s5 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-x-s8">
-        <p class="caps-label text-amber lg:col-span-2">Lakeville &amp; Stillwater, Minnesota</p>
-        {
-          /* THE CLIENT'S OWN HEADLINE, restored verbatim from their live homepage
-            (`_ingest/raw/home.html`) and approved for reuse 2026-08-04 (FW-4000).
-            Ours was "Indoor golf that's actually a night out." — which is fine, and
-            theirs is better, because it is the sentence they already say about
-            themselves. The subhead keeps the night-out job, so nothing is lost. */
-        }
-        <h1 class="text-hero leading-hero font-extrabold tracking-display-tight text-white lg:col-span-2">
-          The most realistic indoor golf you can play, period.
-        </h1>
+      <p class="caps-label text-amber">Lakeville &amp; Stillwater, Minnesota</p>
+      {
+        /* THE CLIENT'S OWN HEADLINE, restored verbatim from their live homepage
+          (`_ingest/raw/home.html`) and approved for reuse 2026-08-04 (FW-4000).
+          Ours was "Indoor golf that's actually a night out." — which is fine, and
+          theirs is better, because it is the sentence they already say about
+          themselves. The subhead keeps the night-out job, so nothing is lost.
 
-        <div class="lg:self-start">
+          It stays ABOVE the film rather than moving inside the floating panel,
+          and that is the one judgement call in this treatment. `text-hero` peaks
+          at 5.25rem, which needs most of `max-w-content` to stay at two lines;
+          boxed into the panel's 7 columns it either wraps to five lines or drops
+          ~40% in size, and the page's single largest gesture is not the thing to
+          trade for a layout. The reference puts its heading in the card because
+          its heading is a much smaller step than this one. */
+      }
+      <h1 class="mt-s4 text-hero leading-hero font-extrabold tracking-display-tight text-white">
+        The most realistic indoor golf you can play, period.
+      </h1>
+
+      {
+        /* Film and panel occupy THE SAME GRID CELL at lg, so the panel floats on
+          the film's lower-left. Two things make that safe rather than clever:
+
+          1. **Nothing is composited.** The panel is an opaque `navy` fill, so its
+             words are a token pairing again (paper 12.24:1, amber 7.21:1, both
+             computed) rather than a per-frame property of the video underneath.
+             That is the same argument `HeroFilm` makes for the split hero, and it
+             is why FW-4003's measured refusal of a video hero — which was a
+             refusal of TYPE ON FOOTAGE, needing a 71% scrim that throws away ~89%
+             of the film's luminance range — does not bind here either. The film
+             still runs unscrimmed. What the panel costs is OCCLUSION: it covers
+             roughly the lower-left 58% × 47% of the frame. That is a real cost and
+             a much smaller one than scrimming, because the part you can see keeps
+             its full range instead of every part keeping 11% of it.
+          2. **The edge survives the whole clip.** `navy` on `midnight` is 1.31:1,
+             so the fill alone would have no edge on this band, and a paper rule
+             alone is 1.43:1 against the film's brightest block. The two are
+             complementary and the panel carries both: the fill holds the edge
+             where the footage is bright (8.58:1 against the brightest block,
+             6.69:1 against the left fifth's peak) and the 2px paper rule holds it
+             where the footage is near-black (19.31:1) and against the midnight
+             band itself (16.09:1). Computed against the block luminances measured
+             on the shipping file in `HeroFilm`.
+
+          DOM order is words → buttons → film, unchanged, so reading and tab order
+          are unchanged and only the desktop layer overlaps them. On mobile the
+          panel is not a panel at all: it drops its fill, rule and radius and the
+          film sits below the CTAs exactly as before. That is load-bearing, not
+          tidiness — the mobile page-weight budget for `/` is 350 KB and it holds
+          only because the film is BELOW THE FOLD there and the IntersectionObserver
+          never fetches it. A background video in the mobile hero would fetch ~950 KB
+          on arrival and fail `audit:visual` on the visitors least able to afford it.
+
+          `items-start` rather than `items-end`: the reference floats its card on the
+          BOTTOM of its media, and copying that here put the primary CTA below the
+          fold on a 1440x900 desktop — measured, panel bottom at y=989. Top-aligned
+          it lands at y=760 with the buttons around y=700. The film's own content
+          argues the same way: the people and the shot are mid- and lower-frame, so
+          the top-left is the cheapest part of it to cover.
+
+          Grid overlap rather than absolute positioning: if the panel ever grows
+          taller than the film — longer copy, a third button, a big text zoom — the
+          row grows with it instead of overflowing the band. */
+      }
+      <div class="mt-s6 lg:mt-s7 lg:grid lg:grid-cols-12 lg:items-start">
+        <div
+          class="lg:col-span-7 lg:col-start-1 lg:row-start-1 lg:z-raised lg:mt-s6 lg:ml-s6 lg:rounded-media lg:border-rule lg:border-paper lg:bg-navy lg:p-s7"
+        >
           <p class="max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
             Ten GolfZon bays across two Twin Cities venues. Book by the hour, bring up to six people for the same price,
             and let the simulator keep score while you order another round.
@@ -204,15 +257,17 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
           </div>
         </div>
 
-        <HeroFilm
-          name="lakeville-night"
-          poster={lakevilleNightPoster}
-          alt="Silent video: a group of friends around a table with drinks and food in the Lakeville room, then a player stepping up and hitting a shot into a lit simulator screen."
-        />
+        <div class="mt-s6 lg:col-span-12 lg:col-start-1 lg:row-start-1 lg:mt-0">
+          <HeroFilm
+            rounded
+            name="lakeville-night"
+            poster={lakevilleNightPoster}
+            alt="Silent video: a group of friends around a table with drinks and food in the Lakeville room, then a player stepping up and hitting a shot into a lit simulator screen."
+          />
+        </div>
       </div>
     </div>
   </section>
-
   {
     /* 2. TRUST STRIP — hours, address, phone on a hard white cut out of the
       hero. The cheapest, highest-impact block in the segment, so it is a

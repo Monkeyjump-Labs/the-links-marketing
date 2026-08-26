@@ -104,10 +104,16 @@ interface Props {
   poster: ImageMetadata;
   /** What the footage actually shows. */
   alt: string;
-  /** Which room this is, and what it does not stand in for. */
+  /**
+   * `radius.media` on the frame instead of the site's square default, for the
+   * one place it is sanctioned: the hero, where a panel floats on the film and
+   * the two have to read as the same object. Opt-in, so every other use of this
+   * component stays square without having to say so.
+   */
+  rounded?: boolean;
 }
 
-const { name, poster, alt } = Astro.props;
+const { name, poster, alt, rounded = false } = Astro.props;
 
 // The poster IS an image, so it goes through the asset pipeline; only the
 // multi-megabyte video bypasses it and is served statically from `public/`.
@@ -116,7 +122,14 @@ const posterImage = await getImage({ src: poster, format: 'webp', width: 1280, q
 
 <div data-video-band>
   {/* Midnight under the video so a slow poster never flashes a lighter ground. */}
-  <div class="relative border-rule border-paper bg-midnight">
+  <div
+    class:list={[
+      'relative border-rule border-paper bg-midnight',
+      // Clip the video to the frame; without it the element's own corners stay
+      // square and poke out past the rounded rule.
+      rounded && 'overflow-hidden rounded-media',
+    ]}
+  >
     <video
       class="block h-auto w-full"
       poster={posterImage.src}
