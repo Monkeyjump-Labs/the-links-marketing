@@ -180,7 +180,7 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
       fetches ~950 KB on arrival and fails `audit:visual` on the visitors least
       able to afford it. */
   }
-  <section class="on-dark bg-midnight pt-s8 pb-s7 lg:pt-0 lg:pb-s10">
+  <section class="on-dark bg-midnight pt-s8 pb-s7 lg:pt-0 lg:pb-0">
     {
       /* Panel and film share ONE grid cell at lg. Three things about this shape
         are deliberate:
@@ -213,9 +213,9 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
     }
     <div class="lg:grid lg:grid-cols-1">
       <div
-        class="mx-auto max-w-content px-gutter lg:z-raised lg:col-start-1 lg:row-start-1 lg:flex lg:translate-y-s8 lg:justify-end lg:self-start lg:px-gutter-lg"
+        class="mx-auto max-w-content px-gutter lg:z-raised lg:col-start-1 lg:row-start-1 lg:flex lg:translate-y-s9 lg:justify-end lg:self-start lg:px-gutter-lg"
       >
-        <div class="lg:w-8/12 lg:rounded-media lg:border-rule lg:border-paper lg:bg-navy lg:p-s7 xl:w-7/12">
+        <div class="lg:w-9/12 lg:rounded-media lg:border-rule lg:border-paper lg:bg-navy lg:p-s7 xl:w-8/12">
           <p class="caps-label text-amber">Lakeville &amp; Stillwater, Minnesota</p>
           {
             /* THE CLIENT'S OWN HEADLINE, restored verbatim from their live homepage
@@ -253,6 +253,29 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
         />
       </div>
     </div>
+
+    {
+      /* The band the panel hangs past, as a 1rem AMBER stripe rather than 7rem of
+        midnight (2026-08-26). Three notes on it:
+
+        - **Amber, not ember.** Ember is the obvious "third colour" and it is the
+          wrong one: the page spends its ember band ONCE, on the featured offer, and
+          `blue-navy`'s whole argument is that a second one spends the only heat on
+          the page. Amber is already the hero's accent — the eyebrow and the
+          subhead's slab — so the stripe closes that gesture instead of opening a
+          new one. It carries no text, so `rules.noAmberOnLight` (which governs
+          amber as INK on a light ground) does not reach it.
+        - **1rem, and the height is the whole point.** At 7rem it was a section; at
+          1rem it is a rule under the film. `space.s4` is the one value to change.
+        - **The panel is meant to cross it.** It hangs `s9` (5rem) below the film,
+          so it clears the stripe and lands in the trust strip's own top padding.
+          That is the constraint on going lower: the strip's `py-s7` plus the venue
+          cell's `py-cell` is the headroom, and past it the panel would cover the
+          hours — which are the highest-leverage block on the page. The panel's edge
+          survives the crossing without help: navy on white is 13.31:1, so the fill
+          does the work the paper rule cannot on that side. */
+    }
+    <div class="hidden lg:block lg:h-s4 lg:bg-amber"></div>
   </section>
   {
     /* 2. TRUST STRIP — hours, address, phone on a hard white cut out of the
