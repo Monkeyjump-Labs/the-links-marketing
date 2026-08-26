@@ -10,32 +10,34 @@ has to be true first, or the prompt walks them into a wall.
 
 ---
 
-## 1. Prerequisites — none of this exists yet (checked 2026-08-25)
+## 1. Prerequisites — where each one stands
 
-| # | Thing | State today | Where |
+| # | Thing | State | Where |
 |---|---|---|---|
-| 1 | `staging` branch | **Missing.** Repo has `main` only | `handoff.md` §2 step 1 |
-| 2 | Stable staging domain on Vercel | **Not assigned** | `handoff.md` §2 step 2 |
-| 3 | `PUBLIC_SITE_NOINDEX` scoped Preview-only | **Set on both** Preview and Production, deliberately — the `.vercel.app` production deploy is itself still a review site until the domain cuts over | `ship-gate.md` "Access to the staging site" |
-| 4 | Operator invited to the repo with **write** | Not a collaborator | `handoff.md` §3 |
-| 5 | Tina Cloud on, `TINA_BRANCH=staging` | Not enabled | `CLAUDE.md` "Enabling Tina Cloud on a forked site" |
-| 6 | Snapshot tag `handoff-YYYY-MM-DD` | Not taken | `handoff.md` §4 |
+| 1 | `staging` branch | **Create after PR #24 merges** — `git branch staging main && git push -u origin staging`. Leave it unprotected | `handoff.md` §2 |
+| 2 | Stable staging address | **Built in PR #24.** `staging-the-links.vercel.app`, re-pointed by `deploy.yml`'s staging job on every push. Not a Vercel branch domain — see §2 of the handoff for why that would silently fail | `.github/workflows/deploy.yml` |
+| 3 | Vercel Git integration off | **Still on.** Now actively harmful: it gives the client's own pushes an author-attributed deploy at a random URL, the `BLOCKED` failure the CI-token path exists to prevent. Manual dashboard step | `docs/vercel-ci-token-deploys.md` |
+| 4 | `PUBLIC_SITE_NOINDEX` | **Set on both** Preview and Production, deliberately — the `.vercel.app` production deploy is itself still a review site until the domain cuts over. Nothing to do now; at cutover it comes off Production only | `ship-gate.md` |
+| 5 | Operator invited with **write** | Not yet a collaborator | `handoff.md` §3 |
+| 6 | Tina Cloud on, `TINA_BRANCH=staging` | Not enabled. The staging job already pins `TINA_BRANCH: staging`, so enabling it later needs no workflow change | `CLAUDE.md` |
+| 7 | Snapshot tag | Not taken | `handoff.md` §4 |
 
-**Item 3 is the one that bites.** Until the real domain cuts over there is no production site
-in the ordinary sense — `main` deploys to a noindexed `.vercel.app` URL that the client already
-uses for review. So on day one, `staging` and "production" look identical to the operator. Say
-that out loud in the walkthrough or the two-branch model reads as pointless ceremony.
+**Item 4 is the one that confuses people.** Until the real domain cuts over there is no
+production site in the ordinary sense — `main` deploys to a noindexed `.vercel.app` URL the
+client already uses for review. So on day one, staging and "production" look identical to the
+operator. Say that out loud in the walkthrough or the two-branch model reads as pointless
+ceremony.
 
 ## 2. Fill these in before sending — the prompt has six blanks
 
 | Blank | Value |
-|---|---|
+|-------|-------|
 | `{{OPERATOR_NAME}}` | |
-| `{{STAGING_URL}}` | from prerequisite 2 |
+| `{{STAGING_URL}}` | `https://staging-the-links.vercel.app` (must match `STAGING_ALIAS` in `deploy.yml`) |
 | `{{PRODUCTION_URL}}` | the `.vercel.app` today; `https://thelinks.golf` after cutover |
 | `{{DEVELOPER_NAME}}` | who they escalate to |
 | `{{DEVELOPER_CONTACT}}` | email or phone |
-| `{{ADMIN_URL}}` | `{{PRODUCTION_URL}}/admin` — **delete the whole CMS paragraph if Tina Cloud is not live yet** |
+| `{{ADMIN_URL}}` | `{{PRODUCTION_URL}}/admin` — **delete the whole CMS paragraph until Tina Cloud is live** (prerequisite 6) |
 
 ## 3. The prompt
 
