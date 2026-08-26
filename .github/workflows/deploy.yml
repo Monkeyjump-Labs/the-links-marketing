@@ -328,6 +328,16 @@ jobs:
           # the client's CMS edits must read and write the same branch their
           # Claude edits do, or the two lanes silently diverge.
           TINA_BRANCH: staging
+          # Set HERE, not on the Vercel project. `vercel pull` only supplies vars
+          # that are set on the project, and the preview environment does not
+          # actually carry this one — ship-gate.md said it did, and the first
+          # staging deploy proved otherwise by serving `Allow: /` with no
+          # noindex. Hardcoding it means the client's sandbox cannot become
+          # crawlable because of a dashboard setting drifting. CLAUDE.md is
+          # unambiguous that staging must carry it.
+          # NOTE: this is also the flag that makes `StubNote` render, so internal
+          # "work we owe" notes are visible on staging by design.
+          PUBLIC_SITE_NOINDEX: 'true'
           LEAD_SHEET_ID: ${{ secrets.LEAD_SHEET_ID }}
           LEAD_FORM_SECRET: ${{ secrets.LEAD_FORM_SECRET }}
           GOOGLE_SERVICE_ACCOUNT_JSON_B64: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_B64 }}
