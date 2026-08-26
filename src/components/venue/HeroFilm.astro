@@ -46,21 +46,33 @@
  * Nothing is composited here, so the applicable number is none of the above:
  * the film runs unscrimmed and a visitor sees **100%** of it.
  *
- * ## Why this shape and not a full-bleed panel
+ * ## Framed, or full bleed — and what the second one costs
  *
  * The design system's committed idea is *"one blue ramp of six stops — from the
  * room at night to the screen on the wall"*, and `screenLight` had to be
  * invented because the 1.x palette could not draw a lit projection on a dark
- * room at all (STYLE-GUIDE §9.3). `MediaSlot` draws that screen. This component
- * is the same object with the real footage in it: a midnight field, and one
- * bright rectangle with a 2px rule around it.
+ * room at all (STYLE-GUIDE §9.3). `MediaSlot` draws that screen. The DEFAULT
+ * shape here is the same object with the real footage in it: a midnight field,
+ * and one bright rectangle with a 2px rule around it.
  *
- * That is why it keeps its frame instead of bleeding off the viewport edge. A
- * full-bleed video is a *ground*; grounds in this system are flat bands of one
- * colour. An object sits on the grid with a declared rule around it — and it is
- * the rule that makes a lit rectangle read as a screen rather than as a hole.
- * Bleeding it would also mean `object-fit: cover`, which crops a 16:9 pan to
- * whatever height the column happens to be and throws away the shot.
+ * `bleed` gives up that reading deliberately, and the homepage hero asks for it
+ * (2026-08-26, the human's call, overriding what this comment used to argue).
+ * Two things genuinely change and neither is free:
+ *
+ * 1. **It stops being an object and becomes a ground.** Grounds in this system
+ *    are flat bands of one colour; this one is moving footage. The 2px rule goes
+ *    with it, because a rule at the viewport edge has nothing to separate — and
+ *    the rule was what made a lit rectangle read as a screen rather than a hole.
+ *    Bottom corners keep `radius.media` so the band still ENDS somewhere; the
+ *    top and sides meet the viewport.
+ * 2. **`object-fit: cover` crops the frame.** The clip is 16:9 and a full-bleed
+ *    band is wider than that, so the crop is vertical: ceiling and floor go, the
+ *    screens along the wall stay. In bleed mode the height is set by whatever the
+ *    grid row needs rather than by the aspect ratio, which is what keeps a
+ *    1920-wide viewport from handing us a 1080px-tall hero. Say ~60-75% of the
+ *    frame's height survives at desktop widths. That is a real loss on footage
+ *    the client paid for, and it is the price of the treatment — the alternative
+ *    is the framed variant, which shows all of it.
  *
  * ## The provenance line is not a disclaimer, it is the venue rule
  *
@@ -105,33 +117,46 @@ interface Props {
   /** What the footage actually shows. */
   alt: string;
   /**
-   * `radius.media` on the frame instead of the site's square default, for the
-   * one place it is sanctioned: the hero, where a panel floats on the film and
-   * the two have to read as the same object. Opt-in, so every other use of this
-   * component stays square without having to say so.
+   * Full-bleed ground rather than a framed object: no rule, `radius.media` on
+   * the bottom corners only, and `object-fit: cover` filling whatever height its
+   * container gives it. Opt-in, so every other use of this component stays a
+   * framed screen without having to say so. The costs are in the header comment.
    */
-  rounded?: boolean;
+  bleed?: boolean;
 }
 
-const { name, poster, alt, rounded = false } = Astro.props;
+const { name, poster, alt, bleed = false } = Astro.props;
 
 // The poster IS an image, so it goes through the asset pipeline; only the
 // multi-megabyte video bypasses it and is served statically from `public/`.
 const posterImage = await getImage({ src: poster, format: 'webp', width: 1280, quality: 70 });
 ---
 
-<div data-video-band>
+{
+  /* In bleed mode the film goes OUT OF FLOW at lg. If it stays in flow its
+  intrinsic 16:9 height sizes the grid row, the row then sizes `h-full`, and the
+  circle resolves to aspect-ratio height — a 1080px hero at 1920. Absolute means
+  only the panel sizes the row and the film covers into whatever that is. */
+}
+<div class:list={['relative', bleed && 'lg:absolute lg:inset-0']} data-video-band>
   {/* Midnight under the video so a slow poster never flashes a lighter ground. */}
   <div
     class:list={[
-      'relative border-rule border-paper bg-midnight',
-      // Clip the video to the frame; without it the element's own corners stay
-      // square and poke out past the rounded rule.
-      rounded && 'overflow-hidden rounded-media',
+      'relative bg-midnight',
+      // `overflow-hidden` in both modes: without it the video's own square
+      // corners poke out past whichever radius is in play.
+      'overflow-hidden',
+      bleed ? 'rounded-b-media lg:h-full' : 'border-rule border-paper',
     ]}
   >
     <video
-      class="block h-auto w-full"
+      class:list={[
+        'block w-full',
+        // Framed: the clip's own 16:9, uncropped. Bleed: 16:9 on mobile, where
+        // the band is narrow enough that cover would crop for nothing, then
+        // fill the grid row at lg and let cover do the vertical crop.
+        bleed ? 'aspect-video object-cover lg:aspect-auto lg:h-full' : 'h-auto',
+      ]}
       poster={posterImage.src}
       width="1280"
       height="720"
