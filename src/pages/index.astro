@@ -213,9 +213,11 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
     }
     <div class="lg:grid lg:grid-cols-1">
       <div
-        class="mx-auto max-w-content px-gutter lg:z-raised lg:col-start-1 lg:row-start-1 lg:flex lg:translate-y-s9 lg:justify-end lg:self-start lg:px-gutter-lg"
+        class="mx-auto max-w-content px-gutter lg:z-raised lg:col-start-1 lg:row-start-1 lg:mx-0 lg:flex lg:max-w-none lg:translate-y-s8 lg:justify-end lg:self-end lg:px-gutter-lg"
       >
-        <div class="lg:w-9/12 lg:rounded-media lg:border-rule lg:border-paper lg:bg-navy lg:p-s7 xl:w-8/12">
+        <div
+          class="lg:w-full lg:max-w-[44rem] lg:rounded-media lg:border-rule lg:border-paper lg:bg-navy lg:p-s7 xl:max-w-[52rem]"
+        >
           <p class="caps-label text-amber">Lakeville &amp; Stillwater, Minnesota</p>
           {
             /* THE CLIENT'S OWN HEADLINE, restored verbatim from their live homepage
@@ -230,10 +232,10 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
               columns precisely so the h1 has the measure to survive at that step
               rather than shrinking to fit a narrower box. */
           }
-          <h1 class="mt-s4 text-hero leading-hero font-extrabold tracking-display-tight text-white">
+          <h1 class="mt-s4 text-hero-compact leading-display font-extrabold tracking-display-tight text-white">
             The most realistic indoor golf you can play, period.
           </h1>
-          <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
+          <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-body leading-body text-paper">
             Ten GolfZon bays across two Twin Cities venues. Book by the hour, bring up to six people for the same price,
             and let the simulator keep score while you order another round.
           </p>

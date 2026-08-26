@@ -162,6 +162,9 @@
    * scoreboard steps are fluid clamp(); everything from `card` down is fixed.
    * ---------------------------------------------------------------------- */
   --text-hero: var(--brand-type-scale-display-hero);
+  /* A display heading inside a panel rather than across the page — the hero
+     overlay's h1. See typeScale.displayHeroCompact in tokens.json. */
+  --text-hero-compact: var(--brand-type-scale-display-hero-compact);
   --text-section: var(--brand-type-scale-display-section);
   --text-row: var(--brand-type-scale-display-row);
   --text-card: var(--brand-type-scale-display-card);
