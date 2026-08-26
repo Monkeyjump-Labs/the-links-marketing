@@ -17,12 +17,16 @@ has to be true first, or the prompt walks them into a wall.
 | 1 | `staging` branch | **Create after PR #24 merges** — `git branch staging main && git push -u origin staging`. Leave it unprotected | `handoff.md` §2 |
 | 2 | Stable staging address | **Built in PR #24.** `staging-the-links.vercel.app`, re-pointed by `deploy.yml`'s staging job on every push. Not a Vercel branch domain — see §2 of the handoff for why that would silently fail | `.github/workflows/deploy.yml` |
 | 3 | Vercel Git integration off | **Still on.** Now actively harmful: it gives the client's own pushes an author-attributed deploy at a random URL, the `BLOCKED` failure the CI-token path exists to prevent. Manual dashboard step | `docs/vercel-ci-token-deploys.md` |
-| 4 | `PUBLIC_SITE_NOINDEX` | **Set on both** Preview and Production, deliberately — the `.vercel.app` production deploy is itself still a review site until the domain cuts over. Nothing to do now; at cutover it comes off Production only | `ship-gate.md` |
+| 4 | `PUBLIC_SITE_NOINDEX` | **Done for staging** — set inline by the staging job (PR #25) after the first deploy came up crawlable. ⚠️ Production is still indexable; open decision | `.github/workflows/deploy.yml` |
 | 5 | Operator invited with **write** | Not yet a collaborator | `handoff.md` §3 |
 | 6 | Tina Cloud on, `TINA_BRANCH=staging` | Not enabled. The staging job already pins `TINA_BRANCH: staging`, so enabling it later needs no workflow change | `CLAUDE.md` |
 | 7 | Snapshot tag | Not taken | `handoff.md` §4 |
 
-**Item 4 is the one that confuses people.** Until the real domain cuts over there is no
+**Item 4 has a consequence for the walkthrough.** The same flag drives `StubNote`, so the
+client's sandbox displays our internal "work we owe" notes. That was fine when staging was our
+review environment; decide whether it is fine now that it is theirs.
+
+**And the thing that confuses people:** Until the real domain cuts over there is no
 production site in the ordinary sense — `main` deploys to a noindexed `.vercel.app` URL the
 client already uses for review. So on day one, staging and "production" look identical to the
 operator. Say that out loud in the walkthrough or the two-branch model reads as pointless

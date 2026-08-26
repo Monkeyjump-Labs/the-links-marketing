@@ -97,9 +97,26 @@ the `Monkeyjump-Labs` GitHub org. Reviewed 2026-08-04 and **accepted deliberatel
 project between Vercel teams means redoing domains and environment variables, so it is much
 cheaper to leave than to move now.
 
-`PUBLIC_SITE_NOINDEX=true` is set on **both** preview and production environments — deliberate,
-because even the `.vercel.app` production deploy is staging until the real domain cuts over.
-**Removing it is a launch step.**
+### ⚠️ Corrected 2026-08-26 — this was never true
+
+This section previously read: *"`PUBLIC_SITE_NOINDEX=true` is set on **both** preview and
+production environments."* **It is set on neither.** Verified against the live deploys:
+
+| Deploy | `robots.txt` served |
+|---|---|
+| `the-links-marketing.vercel.app` (production) | `Allow: /` — **indexable** |
+| `staging-the-links.vercel.app` | `Disallow: /` — fixed in PR #25 |
+
+The variable was recorded as set on the Vercel project but is not on either environment, and
+`vercel pull` only supplies what the project actually carries, so every build has shipped
+without it. Staging is now fixed in the workflow itself (`deploy.yml` sets it inline for the
+staging job, so no dashboard setting can drift out from under the client's sandbox).
+
+**Production is still indexable and that is an open decision, not an oversight to fix
+silently.** The intent recorded here — that the `.vercel.app` deploy stays noindex until the
+real domain cuts over — has not been in force. Anyone reading this before launch should decide
+whether to apply it now, knowing that setting it also makes every `StubNote` appear on the
+production deploy (see §3 below).
 
 ## Deferred, logged deliberately
 
