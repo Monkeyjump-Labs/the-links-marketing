@@ -16,14 +16,16 @@ name: 🚀 Deploy (Vercel, CI token)
 # contributor — marketer, contractor, autofix bot, client staff — can push and
 # the site still ships, against a single paid seat.
 #
-# ⚠️ STAGED CUTOVER — THIS IS NOT THE LIVE DEPLOY PATH YET ⚠️
-# The Vercel Git integration is deliberately still ENABLED. While both are on,
-# a merge to `master` deploys TWICE: once by the Git integration and once by the
-# `production` job below. That is intentional and temporary — it lets us prove
-# the CI path works with the old path still in place as a fallback. Disabling
-# the Git integration is a MANUAL Vercel-dashboard step and must happen ONLY
-# after a green `production` run here. See the cutover checklist in
-# docs/vercel-ci-token-deploys.md. Do not disable it from this workflow.
+# ⚠️ CUTOVER IS NOW OVERDUE — FINISH IT ⚠️
+# This path is PROVEN: `production` has shipped green since 2026-08-07. The only
+# reason the Vercel Git integration is still ENABLED is that disabling it is a
+# manual dashboard step nobody has done. While both are on, a merge to `main`
+# deploys TWICE (wasted minutes, not a correctness problem) — but now that the
+# `staging` job below exists, leaving it on ALSO gives the client's own pushes an
+# author-attributed deploy at a random URL, which is exactly the `BLOCKED`
+# roulette described above. Turn it off:
+#   Vercel → this site's project → Settings → Git → disconnect.
+# Checklist: docs/vercel-ci-token-deploys.md. Do not do it from this workflow.
 
 # NOTE: this fork's production branch is `main`, not the starter's `master`.
 # Left as `master` the workflow is valid YAML that simply never fires — a deploy
@@ -33,7 +35,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main]
+    branches: [main, staging]
 
 # Least privilege by default; the preview job widens this for itself so it can
 # post the deployment URL back onto the PR.
@@ -59,6 +61,13 @@ env:
   # Pin the CLI to a major so a Vercel release can't silently change deploy
   # behaviour mid-week, while still picking up patches.
   VERCEL_CLI_VERSION: '58'
+  # The client's sandbox address. A Vercel deployment always gets a fresh random
+  # URL, which is useless as a bookmark, so the staging job re-points this fixed
+  # hostname at whichever build it just made. ⚠️ FORK STEP — must be globally
+  # unique across vercel.app. Move it to `staging.<real-domain>` once the domain
+  # has cut over. This is the value that goes in the onboarding prompt's
+  # {{STAGING_URL}} blank (marketing/websites/the-links/operator-onboarding.md).
+  STAGING_ALIAS: staging-the-links.vercel.app
 
 jobs:
   # ───────────────────────────────────────────────────────────────────────────
@@ -244,6 +253,134 @@ jobs:
           fi
 
   # ───────────────────────────────────────────────────────────────────────────
+  # STAGING — every push to `staging`, the client's sandbox.
+  #
+  # Builds a PREVIEW-type deployment (no --prod, so it never touches the
+  # production domain) and then re-points a fixed alias at it. The client gets
+  # one address that never changes while the site behind it updates on every
+  # push.
+  #
+  # WHY AN ALIAS RATHER THAN A VERCEL BRANCH DOMAIN
+  # "Assign a domain to the staging branch" is a Git-integration feature, and
+  # this repo deliberately does not deploy that way — see the header. Under the
+  # Git integration the client's own pushes are attributed to the client, and an
+  # unlinked account is refused with BLOCKED: green CI, no error, no deploy. The
+  # alias is applied here under the CI token, so authorship stops mattering for
+  # the sandbox exactly as it already does for production.
+  # Full reasoning: marketing/websites/the-links/handoff.md §2.
+  #
+  # FAILURE BEHAVIOUR IS DELIBERATE: if the build fails the deploy step never
+  # runs and the alias keeps pointing at the last good staging deployment. A
+  # broken push from the client costs a red check, not a broken staging site.
+  #
+  # Not gated on Quality. The sandbox exists to be broken in; blocking the
+  # deploy on CI would turn a two-minute feedback loop into a ten-minute one for
+  # someone who cannot read the failure anyway.
+  # ───────────────────────────────────────────────────────────────────────────
+  staging:
+    name: Staging deploy
+    needs: configured
+    if: >-
+      needs.configured.outputs.ready == 'true' &&
+      github.event_name == 'push' &&
+      github.ref_name == 'staging'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - name: Require VERCEL_TOKEN
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error title=Missing VERCEL_TOKEN::The VERCEL_TOKEN repo secret is not set, so the staging site cannot be deployed. See docs/vercel-ci-token-deploys.md."
+            exit 1
+          fi
+          echo "VERCEL_TOKEN is present."
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Vercel CLI
+        run: npm install --global "vercel@${VERCEL_CLI_VERSION}"
+
+      - name: Pull Vercel preview environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
+
+      - name: Build
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
+          TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+          # Pinned to the branch, not github.ref_name. If Tina Cloud is enabled
+          # the client's CMS edits must read and write the same branch their
+          # Claude edits do, or the two lanes silently diverge.
+          TINA_BRANCH: staging
+          LEAD_SHEET_ID: ${{ secrets.LEAD_SHEET_ID }}
+          LEAD_FORM_SECRET: ${{ secrets.LEAD_FORM_SECRET }}
+          GOOGLE_SERVICE_ACCOUNT_JSON_B64: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_B64 }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        # No --prod: VERCEL_ENV=preview, which is also what keeps
+        # PUBLIC_SITE_NOINDEX applied to the sandbox after production drops it
+        # at domain cutover.
+        run: vercel build --token="$VERCEL_TOKEN"
+
+      - name: Deploy and re-point the staging alias
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_REF: ${{ github.ref_name }}
+          COMMIT_AUTHOR_LOGIN: ${{ github.event.head_commit.author.username }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          COMMIT_AUTHOR_NAME="$(git log -1 --pretty=%an)"
+          COMMIT_MESSAGE="$(git log -1 --pretty=%s)"
+
+          url="$(vercel deploy --prebuilt --yes --token="$VERCEL_TOKEN" \
+            --meta githubCommitSha="$COMMIT_SHA" \
+            --meta githubCommitRef="$COMMIT_REF" \
+            --meta githubCommitMessage="$COMMIT_MESSAGE" \
+            --meta githubCommitAuthorName="$COMMIT_AUTHOR_NAME" \
+            --meta githubCommitAuthorLogin="$COMMIT_AUTHOR_LOGIN" \
+            --meta githubCommitOrg="$REPO_OWNER" \
+            --meta githubCommitRepo="$REPO_NAME" \
+            --meta githubOrg="$REPO_OWNER" \
+            --meta githubRepo="$REPO_NAME")"
+
+          echo "Deployment: $url"
+
+          # The client bookmarks the alias, never this deployment URL.
+          if ! vercel alias set "$url" "$STAGING_ALIAS" --token="$VERCEL_TOKEN"; then
+            echo "::error title=Could not set the staging alias::Deployed $url but could not point $STAGING_ALIAS at it. The usual cause is that the hostname is already claimed by another Vercel account — .vercel.app subdomains are globally unique. Pick another STAGING_ALIAS in .github/workflows/deploy.yml and re-run."
+            exit 1
+          fi
+
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Staging deployment"
+            echo ""
+            echo "**Client-facing address:** https://$STAGING_ALIAS"
+            echo ""
+            echo "This build: $url"
+            echo ""
+            echo "> Nothing here is public. Production only moves when \`staging\` is merged into \`main\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ───────────────────────────────────────────────────────────────────────────
   # PRODUCTION — every push to master.
   #
   # ⚠️ RUNS ALONGSIDE THE VERCEL GIT INTEGRATION, ON PURPOSE. ⚠️
@@ -253,10 +390,12 @@ jobs:
   # tree and the later one wins, so the site is correct either way — this is
   # wasted build minutes, not a correctness problem.
   #
-  # Keeping both live is deliberate: the token path is UNPROVEN (VERCEL_TOKEN
-  # does not exist yet), and until it has produced a green production deploy the
-  # Git integration is the only thing shipping the site. Removing the fallback
-  # before the replacement works would be the riskier order.
+  # The token path is now PROVEN — VERCEL_TOKEN exists and this job has shipped
+  # production green since 2026-08-07. The remaining reason both are live is
+  # simply that nobody has done the manual dashboard step below. Doing it is now
+  # overdue rather than premature: with the staging branch live, leaving the Git
+  # integration on also gives the CLIENT's pushes an author-attributed deploy at
+  # a random URL, which is the BLOCKED roulette this workflow exists to end.
   #
   # To finish the cutover — MANUAL, in the Vercel dashboard, and only after this
   # job has gone green at least once:
@@ -268,7 +407,14 @@ jobs:
   production:
     name: Production deploy
     needs: configured
-    if: needs.configured.outputs.ready == 'true' && github.event_name == 'push'
+    # ⚠️ The `github.ref_name == 'main'` guard is load-bearing. This workflow now
+    # fires on pushes to `staging` too, and without it every client sandbox edit
+    # would deploy straight to production — the exact opposite of what the
+    # staging branch is for. Do not simplify this back to `event_name == 'push'`.
+    if: >-
+      needs.configured.outputs.ready == 'true' &&
+      github.event_name == 'push' &&
+      github.ref_name == 'main'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
