@@ -83,10 +83,12 @@ by the workflow, not from a branch domain.
    It does not gate the deploy, and should not: the sandbox exists to be broken in. But a red
    check tells the client something is wrong before they ask why the page looks odd.
 
-5. **`PUBLIC_SITE_NOINDEX`** is currently `true` on both Preview and Production, deliberately —
-   the `.vercel.app` production deploy is itself still a review site until cutover
-   (`ship-gate.md`). Nothing to change now. At cutover it is removed from **Production only**,
-   and staging keeps it.
+5. **`PUBLIC_SITE_NOINDEX` is set by the staging job itself**, not on the Vercel project.
+   `ship-gate.md` recorded it as set on both environments; it was set on neither, and the first
+   staging deploy came up publicly crawlable as a result (PR #25). The workflow now hardcodes
+   it for staging, so the sandbox cannot become indexable through a dashboard change.
+   ⚠️ The **production** `.vercel.app` deploy is still indexable — open decision, see
+   `ship-gate.md`.
 
 6. **Turn the Vercel Git integration off** if it is still on (Vercel → project → Settings →
    Git). While both paths are live every merge to `main` deploys twice, and pushes to `staging`
