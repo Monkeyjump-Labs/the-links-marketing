@@ -27,9 +27,18 @@ Two lanes, both writing git (they can never disagree):
 | Play / experiments / copy tweaks | **Claude Desktop** + GitHub connector | `staging` | client |
 | Structural work | Claude Code on the repo | feature branches → PR | developer |
 
-The client never touches `main`. `main` is protected (verified 2026-08-13: required
-`Quality` status check, strict mode, force pushes and deletions blocked, 0 required
-approvals — so *we* can self-merge, but nothing lands without green CI).
+**The client may promote to production themselves** — decided 2026-08-26. They are a
+collaborator with write, and `main`'s protection does not restrict who may merge, so the
+capability is real and deliberate rather than an oversight.
+
+What still holds the line is CI, not permissions: `main` requires a pull request, requires the
+`Quality` check to pass, is strict (the branch must be current), and blocks force pushes and
+deletions (verified 2026-08-13). A broken promotion is refused; an unwise one is not.
+
+The guardrail against an *accidental* promotion is therefore behavioural, and lives in the
+onboarding prompt: publishing is a separate, spoken request, never the tail end of another
+task. If that ever proves too thin, the mechanical fix is a push restriction on `main` with a
+bypass list — it also restricts who can merge, and needs no change to their write access.
 
 ## 2. Staging pipeline — play, preview, promote, or throw away
 
@@ -101,7 +110,7 @@ If the client pushes something that does not build, `vercel build` fails, the de
 runs, and the alias keeps pointing at the last good staging deployment. They get a red check
 rather than a broken staging site.
 
-### Promote (client asks, operator merges)
+### Promote (either the client or us)
 
 ```bash
 gh pr create --base main --head staging --title "chore: promote staging to production"
