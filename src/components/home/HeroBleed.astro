@@ -1,0 +1,172 @@
+---
+/**
+ * The homepage hero AS SHIPPED (#27): the film full bleed, and every word the
+ * visitor has to read on one navy panel offset into its bottom-right, hanging
+ * past the film onto the amber rule.
+ *
+ * It is a component rather than markup inside `index.astro` for one reason: the
+ * client asked to see this and the PREVIOUS hero side by side in two tabs
+ * (2026-08-27), so the two are now `HeroBleed` and `HeroFramed`, the page body
+ * they share is `HomeSections`, and `/` and `/hero-original/` are two thin pages
+ * that pick a hero. Nothing about this hero changed in that move.
+ *
+ * The reasoning, the measured ratios and the arithmetic that ties the overhang to
+ * the trust strip's padding are on the blocks below, next to the classes they
+ * explain.
+ */
+import BookButton from '../venue/BookButton.astro';
+import HeroFilm from '../venue/HeroFilm.astro';
+import { buttonClasses } from '../../lib/buttons';
+import lakevilleNightPoster from '../../assets/images/lakeville-night-poster.jpg';
+---
+
+{
+  /* 1. HERO — the room at night, FULL BLEED, with everything the visitor has to
+      read on one panel offset into its bottom-right. Promise + what it is + where,
+      one primary CTA. Venue-neutral by design: the venue question is asked at the
+      Book click, not the front door. The subhead carries an 8px amber slab rather
+      than an opacity — the block this replaced set its eyebrow at opacity-70 and
+      its subhead at opacity-80, both of which re-derive their own contrast against
+      whatever ground they land on.
+
+      **The film is the hero** (FW-4010), which FW-4003 declined — and the way it
+      is declined matters, because the refusal was measured and the measurement was
+      right. What it measured was ONE structure: display type composited over
+      moving footage, which needs a 71% scrim on the shipping clip and leaves about
+      11% of its luminance range. Nothing is composited here: every word sits on an
+      OPAQUE navy panel, so contrast is a token pairing again (paper 12.24:1, amber
+      7.21:1, both computed) and the film runs unscrimmed. The re-measurement on
+      the file that ships is in `HeroFilm`.
+
+      **Full bleed, and the panel now carries the whole hero** (2026-08-26, the
+      human's call). This takes the hero treatment — and only the hero treatment —
+      from the `home-fhm-full` divergence candidate. Nothing else came with it: the
+      page keeps its own palette, its sentence case, its square panels everywhere
+      else and its 3px controls, and `radius.media` is the one new token, scoped to
+      this hero in its own description.
+
+      What full bleed costs is in `HeroFilm`: the film stops being a framed screen
+      and becomes a ground, it loses the 2px rule that made it read as a screen
+      rather than a hole, and `object-fit: cover` crops it vertically. The panel
+      then occludes part of what is left. Both are real losses on footage the
+      client paid for, and both were chosen over the alternative — a scrim — which
+      costs an order of magnitude more of the same thing.
+
+      DOM order is eyebrow → h1 → words → buttons → film, on every viewport. The
+      overlap is a desktop-only layer over that order, so reading order and tab
+      order never diverge, and on mobile the panel stops being a panel at all: no
+      fill, no rule, no radius, the film below the CTAs. That last part is
+      load-bearing rather than tidiness — the mobile page-weight budget for `/` is
+      350 KB and it holds only because the film is BELOW THE FOLD there and the
+      IntersectionObserver never fetches it. A background video in the mobile hero
+      fetches ~950 KB on arrival and fails `audit:visual` on the visitors least
+      able to afford it. */
+}
+<section class="on-dark bg-midnight pt-s8 pb-s7 lg:pt-0 lg:pb-0">
+  {
+    /* Panel and film share ONE grid cell at lg. Three things about this shape
+        are deliberate:
+
+        1. **The panel sizes the row; the film fills it.** The panel is
+           `self-start`, so it keeps its natural height and the row takes that
+           height; the film is a stretched grid item at `h-full` and covers into
+           it. That inversion is what makes full bleed safe at every width — sized
+           by aspect ratio instead, a 1920-wide viewport gives a 1080px-tall hero,
+           and at 1024 the panel's own content is taller than 16:9 leaves room for,
+           so the panel would overflow upward out of the band. Letting the words
+           set the height removes both failures at once. `min-h` is the floor for
+           the case where the copy is ever short.
+        2. **It hangs below the film.** `translate-y` moves the panel down out of
+           the row without changing the row's height, so the film ends where the
+           row ends and the panel carries on past it onto the midnight band. The
+           section's `pb-s10` (7rem) is what that 3.5rem of overhang is falling
+           into — they are a pair, and shrinking the padding clips the panel.
+        3. **The edge survives the whole clip, in both directions.** `navy` on
+           `midnight` is 1.31:1, so the fill alone has no edge on the band below,
+           and a paper rule alone is 1.43:1 against the film's brightest block. The
+           two are complementary and the panel carries both: the fill holds the
+           edge where the footage is bright (8.58:1 against the brightest block)
+           and the 2px paper rule holds it where the footage is near-black
+           (19.31:1) and against the midnight band itself (16.09:1). Computed
+           against the block luminances measured on the shipping file.
+
+        `z-raised` rather than DOM order: the panel comes FIRST in the markup so
+        mobile reads correctly, which would otherwise let the film paint over it. */
+  }
+  <div class="lg:grid lg:grid-cols-1">
+    <div
+      class="mx-auto max-w-content px-gutter lg:z-raised lg:col-start-1 lg:row-start-1 lg:mx-0 lg:flex lg:max-w-none lg:translate-y-s10 lg:justify-end lg:self-end lg:px-gutter-lg"
+    >
+      <div
+        class="lg:w-full lg:max-w-[44rem] lg:rounded-media lg:border-rule lg:border-paper lg:bg-navy lg:p-s7 xl:max-w-[52rem]"
+      >
+        <p class="caps-label text-amber">Lakeville &amp; Stillwater, Minnesota</p>
+        {
+          /* THE CLIENT'S OWN HEADLINE, restored verbatim from their live homepage
+              (`_ingest/raw/home.html`) and approved for reuse 2026-08-04 (FW-4000).
+              Ours was "Indoor golf that's actually a night out." — which is fine,
+              and theirs is better, because it is the sentence they already say
+              about themselves. The subhead keeps the night-out job, so nothing is
+              lost.
+
+              Inside the panel it is `text-hero` still, so the page's largest
+              gesture stays the page's largest gesture — the panel is 8 of 12
+              columns precisely so the h1 has the measure to survive at that step
+              rather than shrinking to fit a narrower box. */
+        }
+        <h1 class="mt-s4 text-hero-compact leading-display font-extrabold tracking-display-tight text-white">
+          The most realistic indoor golf you can play, period.
+        </h1>
+        <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-body leading-body text-paper">
+          Ten GolfZon bays across two Twin Cities venues. Book by the hour, bring up to six people for the same price,
+          and let the simulator keep score while you order another round.
+        </p>
+        <div class="mt-s6 flex flex-wrap gap-s4">
+          <BookButton size="lg" variant="onDark" />
+          <a href="/rates/" class={buttonClasses('lg', 'ghostDark')}>See rates &amp; hours</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-s6 lg:relative lg:col-start-1 lg:row-start-1 lg:mt-0 lg:min-h-[34rem]">
+      <HeroFilm
+        bleed
+        name="lakeville-night"
+        poster={lakevilleNightPoster}
+        alt="Silent video: a group of friends around a table with drinks and food in the Lakeville room, then a player stepping up and hitting a shot into a lit simulator screen."
+      />
+    </div>
+  </div>
+
+  {
+    /* The band the panel hangs past, as a 1rem AMBER stripe rather than 7rem of
+        midnight (2026-08-26). Three notes on it:
+
+        - **Amber, not ember.** Ember is the obvious "third colour" and it is the
+          wrong one: the page spends its ember band ONCE, on the featured offer, and
+          `blue-navy`'s whole argument is that a second one spends the only heat on
+          the page. Amber is already the hero's accent — the eyebrow and the
+          subhead's slab — so the stripe closes that gesture instead of opening a
+          new one. It carries no text, so `rules.noAmberOnLight` (which governs
+          amber as INK on a light ground) does not reach it.
+        - **1rem, and the height is the whole point.** At 7rem it was a section; at
+          1rem it is a rule under the film. `space.s4` is the one value to change.
+        - **The panel is meant to cross it, and the section below moves down to
+          keep its distance.** It hangs `s10` (7rem) past the film — 112px, which is
+          80px more than it used to and about 15% of the 544px film box (requested
+          2026-08-27, 'another 15%'). What it has to clear is the locations
+          section's 4px ember score rule, and THAT is why three values move together
+          rather than one: the rule sits at its own section's top padding, so the
+          clearance is `stripePadding + trustStripPaddingTop - translate`. Hold that
+          expression at 24px and the ramp does the rest — `s5` + `s10` - `s10` = 24.
+          The stripe going 1rem -> 1.5rem is what keeps all three on the space ramp
+          instead of one of them landing on an off-scale 5.5rem.
+
+          The gap is 24px at 1024, 1440 and 1920, and it is the thing the next nudge
+          downward spends first; the hours are what it spends second, and they are
+          the highest-leverage block on the page. The panel's edge survives the
+          crossing without help: navy on white is 13.31:1, so the fill does the work
+          the paper rule cannot on that side. */
+  }
+  <div class="hidden lg:block lg:h-s5 lg:bg-amber"></div>
+</section>

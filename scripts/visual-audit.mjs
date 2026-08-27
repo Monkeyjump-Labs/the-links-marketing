@@ -115,6 +115,11 @@ const ROUTES = [
   '/policy/',
   '/juniors/',
   '/gift-cards/',
+  // The hero comparison surface (2026-08-27). noIndex and unlinked, but it is a
+  // real published route carrying the real film, so it is audited like one — an
+  // unaudited page is a page whose regressions nobody sees, and that applies to
+  // temporary pages too. DELETE THIS LINE when the page goes.
+  '/hero-original/',
 ];
 
 /**
@@ -198,6 +203,18 @@ const BUDGET_KB = {
      * the layout, and this is what keeps it true.
      */
     '/': { desktop: 1300, mobile: 350 },
+
+    /**
+     * `/hero-original/` is the homepage with the previous hero, for the client to
+     * compare in a second tab. It carries the SAME film above the fold, so it has
+     * the same shape of cost as `/` and gets the same pair of numbers rather than
+     * the 400 KB default it would fail on immediately.
+     *
+     * It is deliberately not a looser budget than `/`: a comparison page that is
+     * allowed to be heavier than the thing it is compared against is not a
+     * comparison. Goes when the page goes.
+     */
+    '/hero-original/': { desktop: 1300, mobile: 350 },
   },
 };
 

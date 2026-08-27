@@ -1,0 +1,111 @@
+---
+/**
+ * The homepage hero AS IT WAS BEFORE #27: the promise spanning the band, then two
+ * columns — the words on solid midnight, the film beside them as a FRAMED screen,
+ * square, with its 2px paper rule.
+ *
+ * ## Why this file exists
+ *
+ * The client preferred this one after seeing the full-bleed version live
+ * (2026-08-27) and asked to compare them in two tabs. So it is restored verbatim
+ * from `main` at d7e30ec — the last commit before #27 — rather than rebuilt from
+ * memory, and it renders at `/hero-original/` beside the shipped hero at `/`.
+ *
+ * **This is a comparison surface, not a second homepage.** `/hero-original/` is
+ * `noIndex` and out of the sitemap. When the client picks, one of these two
+ * components and its page should be DELETED rather than left to rot — two heroes
+ * sharing one body is fine for a week and a liability after that.
+ *
+ * ## What it does differently, in one place
+ *
+ * Nothing is composited in either hero, so neither pays FW-4003's 71% scrim. The
+ * difference is what the film IS:
+ *   - here it is an OBJECT — framed, square, its own 16:9, uncropped, and a
+ *     visitor sees 100% of the frame
+ *   - in `HeroBleed` it is a GROUND — full width, cover-cropped to whatever the
+ *     panel's height needs (~66% of the frame survives at 1920), with the panel
+ *     occluding part of what is left
+ *
+ * That is the actual trade the client is looking at: all of a smaller picture, or
+ * some of a bigger one.
+ */
+import BookButton from '../venue/BookButton.astro';
+import HeroFilm from '../venue/HeroFilm.astro';
+import { buttonClasses } from '../../lib/buttons';
+import lakevilleNightPoster from '../../assets/images/lakeville-night-poster.jpg';
+---
+
+{
+  /* 1. HERO — the room at night, WITH THE SCREEN IN IT. Promise + what it is
+      + where, one primary CTA. Venue-neutral by design: the venue question is
+      asked at the Book click, not the front door. The subhead carries an 8px
+      amber slab rather than an opacity — the block this replaced set its eyebrow
+      at opacity-70 and its subhead at opacity-80, both of which re-derive their
+      own contrast against whatever ground they land on.
+
+      **The client's film is now the hero** (FW-4010), which FW-4003 declined —
+      and the way it is declined matters, because the refusal was measured and
+      the measurement was right. What it measured was ONE structure: display type
+      composited over moving footage. So the film is here on a structure that
+      composites nothing: the promise SPANS the grid, then the band opens into
+      two columns — the words on solid midnight, the film beside them as a ruled
+      screen. Contrast stops being a per-frame property and goes back to being a
+      token pairing, and the film runs unscrimmed, which is the only version of
+      it anyone actually wanted to look at. The re-measurement on the file that
+      ships, and the two rejected structures, are in `HeroFilm`.
+
+      The h1 spans both columns rather than sitting in one: `text-hero` peaks at
+      5.25rem, which needs most of `max-w-content` to stay at two lines. A split
+      that boxes it into half the width forces either five lines or a smaller
+      step, and the page's single largest gesture is not the thing to trade away
+      for a layout. Spanning it also makes the row beneath rhyme with the "Two
+      venues" rows — media cell beside text cell on a ruled grid — rather than
+      importing a video-hero composition from somewhere else.
+
+      The left cell is `self-start` so the subhead's 8px amber slab starts on the
+      same line as the film's top rule — measured in the browser at 1440, both at
+      y=294 within the band. Bottom-aligning instead (tried, screenshotted,
+      rejected) buys an alignment with the caption's last line, which is a weaker
+      edge, and drops the primary CTA ~150px down the page to get it. The
+      midnight left under the buttons is the field, not a gap.
+
+      DOM order is eyebrow → h1 → words → film, on every viewport. On mobile that
+      puts the film below the CTAs: an autoplaying clip above the promise buries
+      both the h1 and the primary action on the device where the action matters
+      most, and reordering it visually would split tab order from reading order
+      around a focusable pause control. The film is still inside the hero band. */
+}
+<section class="on-dark bg-midnight">
+  <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
+    <div class="grid gap-y-s5 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-x-s8">
+      <p class="caps-label text-amber lg:col-span-2">Lakeville &amp; Stillwater, Minnesota</p>
+      {
+        /* THE CLIENT'S OWN HEADLINE, restored verbatim from their live homepage
+            (`_ingest/raw/home.html`) and approved for reuse 2026-08-04 (FW-4000).
+            Ours was "Indoor golf that's actually a night out." — which is fine, and
+            theirs is better, because it is the sentence they already say about
+            themselves. The subhead keeps the night-out job, so nothing is lost. */
+      }
+      <h1 class="text-hero leading-hero font-extrabold tracking-display-tight text-white lg:col-span-2">
+        The most realistic indoor golf you can play, period.
+      </h1>
+
+      <div class="lg:self-start">
+        <p class="max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
+          Ten GolfZon bays across two Twin Cities venues. Book by the hour, bring up to six people for the same price,
+          and let the simulator keep score while you order another round.
+        </p>
+        <div class="mt-s6 flex flex-wrap gap-s4">
+          <BookButton size="lg" variant="onDark" />
+          <a href="/rates/" class={buttonClasses('lg', 'ghostDark')}>See rates &amp; hours</a>
+        </div>
+      </div>
+
+      <HeroFilm
+        name="lakeville-night"
+        poster={lakevilleNightPoster}
+        alt="Silent video: a group of friends around a table with drinks and food in the Lakeville room, then a player stepping up and hitting a shot into a lit simulator screen."
+      />
+    </div>
+  </div>
+</section>

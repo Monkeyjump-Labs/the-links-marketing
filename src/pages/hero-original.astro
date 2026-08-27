@@ -1,0 +1,62 @@
+---
+/**
+ * A COMPARISON SURFACE, not a second homepage.
+ *
+ * The client saw the full-bleed hero live, preferred the framed one it replaced,
+ * and asked to hold the two up against each other in two tabs (2026-08-27). So
+ * this route is the whole homepage — identical body, identical copy, identical
+ * data, via `HomeSections` — with the OLD hero restored verbatim from `main` at
+ * d7e30ec, the last commit before #27.
+ *
+ * Three things keep it from turning into a liability:
+ *
+ * 1. **`noIndex`, and out of the sitemap** (`astro.config.mjs` filters it the way
+ *    it filters `/styleguide`). Two URLs serving one page's copy is a duplicate-
+ *    content problem, and this one exists to be looked at by three people for a
+ *    week — not to be crawled.
+ * 2. **A visible marker.** The two tabs are otherwise near-identical below the
+ *    fold, and a client comparing them needs to know which is which without
+ *    reading the URL. It is styled as one of ours rather than as a browser
+ *    default, because an unstyled bar reads as a bug on a page you are judging.
+ * 3. **DELETE THIS FILE when they pick.** Along with the losing hero component.
+ *    Leaving both in place means every future homepage change has to be made
+ *    twice, and the second one will be forgotten.
+ *
+ * Not linked from anywhere: no nav, no footer, no sitemap. The URL is the
+ * delivery mechanism.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroFramed from '../components/home/HeroFramed.astro';
+import HomeSections from '../components/home/HomeSections.astro';
+
+const metadata = {
+  metaTitle: 'Hero comparison — framed film — The Links',
+  metaDescription:
+    'Internal comparison page. The homepage with the previous framed-film hero, for holding against the live version.',
+  noIndex: true,
+};
+---
+
+<BaseLayout metadata={metadata}>
+  {
+    /* Ember band, paper text — the one ground on this site where the action
+      colour is the field (9.48:1 amber on it, 6.85:1 paper). It reads as
+      deliberate rather than as a warning, which is right: nothing is wrong with
+      this page, it is simply not the live one. */
+  }
+  <aside class="bg-primary" aria-label="Comparison page notice">
+    <div class="mx-auto flex max-w-content flex-wrap items-baseline gap-x-s5 gap-y-s2 px-gutter py-s3 lg:px-gutter-lg">
+      <p class="caps-label text-[var(--brand-ink-on-accent-band)]">Option B &middot; framed film</p>
+      <p class="text-small leading-body text-[var(--brand-ink-on-accent-band)]">
+        The hero the live page replaced. Everything below it is identical on both.
+      </p>
+      <a
+        href="/"
+        class="text-small border-b-rule border-[var(--brand-rule-on-accent-band)] leading-body font-semibold text-[var(--brand-ink-on-accent-band)]"
+        >Option A, full bleed &rarr;</a
+      >
+    </div>
+  </aside>
+  <HeroFramed />
+  <HomeSections />
+</BaseLayout>
