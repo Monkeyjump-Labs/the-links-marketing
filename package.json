@@ -19,6 +19,8 @@
     "prepare": "husky install",
     "tokens:build": "node scripts/build-tokens.mjs",
     "tokens:check": "node scripts/build-tokens.mjs --check",
+    "style:check": "node scripts/check-style.mjs",
+    "style:baseline": "node scripts/check-style.mjs --update",
     "audit:visual": "node scripts/visual-audit.mjs",
     "leads:check": "node scripts/check-leads.mjs",
     "sheet:provision": "node scripts/provision-sheet.mjs"

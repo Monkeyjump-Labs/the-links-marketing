@@ -575,6 +575,58 @@ if (overweight.length) {
   );
 }
 
+// ── Contrast, other axe rules, and horizontal overflow ───────────────────────
+// These were MEASURED and reported for months without gating anything, which
+// meant a change could drop text below 4.5:1 or push a page sideways on mobile
+// and every check stayed green. All three measured exactly ZERO on 2026-08-27,
+// so they were promoted to gates with no baseline needed — the honest moment to
+// do it, because a gate introduced at zero can only ever be broken by a
+// regression someone just caused.
+//
+// This matters most for edits made by someone who cannot read the output. The
+// client edits on `staging`; these three are the difference between "the page
+// looks wrong and nobody notices" and "the promotion is refused".
+if (report.contrast.length) {
+  failures.push(
+    `\u2716 ${report.contrast.length} colour-contrast violation(s):\n` +
+      report.contrast
+        .map((c) => `      ${c.route} [${c.viewport}] — ${c.description ?? c.id ?? 'contrast'}`)
+        .join('\n') +
+      `\n  Text must clear 4.5:1 against its ground. Do not fix this by nudging a hex:\n` +
+      `  colours come from design/tokens.json, where every text role records a measured\n` +
+      `  ratio that build-tokens.mjs re-checks. See design/STYLE-GUIDE.md \u00a72.`,
+  );
+}
+
+if (report.otherA11y.length) {
+  failures.push(
+    `\u2716 ${report.otherA11y.length} accessibility violation(s):\n` +
+      report.otherA11y
+        .map((a) => `      ${a.route} [${a.viewport}] — ${a.description ?? a.id}`)
+        .join('\n') +
+      `\n  These are axe rules other than contrast — missing names, broken landmarks,\n` +
+      `  unlabelled controls. Each one is a visitor who cannot use the page.`,
+  );
+}
+
+if (report.overflow.length) {
+  failures.push(
+    `\u2716 ${report.overflow.length} route/viewport(s) scroll sideways:\n` +
+      report.overflow
+        .map((o) => `      ${o.route} [${o.viewport}] — ${o.detail ?? 'horizontal overflow'}`)
+        .join('\n') +
+      `\n  Almost always one element with a fixed width, a long unbroken word, or a\n` +
+      `  table that needs its own scroll container. On mobile this is the most\n` +
+      `  visible way a page reads as broken.`,
+  );
+}
+
+// NOT a gate: tapTargets. It records every tappable element's real size but
+// carries no threshold, and the footer's 20px-high text links would trip any
+// naive minimum. Deciding the rule is a design call, not a scripting one — until
+// then this stays a measurement in report.json rather than a number someone
+// raises to make a red check go away.
+
 if (failures.length) {
   console.error(`\n${failures.join('\n\n')}\n`);
   process.exit(1);
