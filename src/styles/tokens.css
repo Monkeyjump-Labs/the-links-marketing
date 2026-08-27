@@ -112,6 +112,7 @@
   --brand-font-width-display-normal: 100;
   --brand-font-width-display-expanded: 112;
   --brand-type-scale-display-hero: clamp(2.5rem, 7vw, 5.25rem);
+  --brand-type-scale-display-hero-compact: clamp(1.75rem, 4.9vw, 3.675rem);
   --brand-type-scale-display-section: clamp(1.875rem, 4vw, 2.75rem);
   --brand-type-scale-display-row: clamp(1.375rem, 2.2vw, 1.75rem);
   --brand-type-scale-display-card: 1.375rem;
@@ -164,6 +165,7 @@
   --brand-radius-none: 0;
   --brand-radius-control: 3px;
   --brand-radius-surface: 0;
+  --brand-radius-media: 24px;
   --brand-radius-badge: 0;
   --brand-border-hairline: 1px;
   --brand-border-rule-quiet: 1px;
