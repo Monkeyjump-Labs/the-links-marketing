@@ -213,7 +213,7 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
     }
     <div class="lg:grid lg:grid-cols-1">
       <div
-        class="mx-auto max-w-content px-gutter lg:z-raised lg:col-start-1 lg:row-start-1 lg:mx-0 lg:flex lg:max-w-none lg:translate-y-s6 lg:justify-end lg:self-end lg:px-gutter-lg"
+        class="mx-auto max-w-content px-gutter lg:z-raised lg:col-start-1 lg:row-start-1 lg:mx-0 lg:flex lg:max-w-none lg:translate-y-s10 lg:justify-end lg:self-end lg:px-gutter-lg"
       >
         <div
           class="lg:w-full lg:max-w-[44rem] lg:rounded-media lg:border-rule lg:border-paper lg:bg-navy lg:p-s7 xl:max-w-[52rem]"
@@ -269,19 +269,24 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
           amber as INK on a light ground) does not reach it.
         - **1rem, and the height is the whole point.** At 7rem it was a section; at
           1rem it is a rule under the film. `space.s4` is the one value to change.
-        - **The panel is meant to cross it, and to stop well short of the section
-          below.** It hangs `s6` (2rem) past the film: enough to cross the whole
-          1rem stripe and sit 1rem into the white, and no further. The thing it has
-          to clear is the locations section's 4px ember score rule, which sits at
-          that section's `py-s7` — so the arithmetic is `s7 + stripe - translate`,
-          and at `s6` that is 24px of white between this panel's bottom edge and
-          that rule. At `s8` it was ZERO and the rule ran straight into the panel.
-          Going lower again eats that gap first and the hours second, and the hours
-          are the highest-leverage block on the page. The panel's edge survives the
+        - **The panel is meant to cross it, and the section below moves down to
+          keep its distance.** It hangs `s10` (7rem) past the film — 112px, which is
+          80px more than it used to and about 15% of the 544px film box (requested
+          2026-08-27, 'another 15%'). What it has to clear is the locations
+          section's 4px ember score rule, and THAT is why three values move together
+          rather than one: the rule sits at its own section's top padding, so the
+          clearance is `stripePadding + trustStripPaddingTop - translate`. Hold that
+          expression at 24px and the ramp does the rest — `s5` + `s10` - `s10` = 24.
+          The stripe going 1rem -> 1.5rem is what keeps all three on the space ramp
+          instead of one of them landing on an off-scale 5.5rem.
+
+          The gap is 24px at 1024, 1440 and 1920, and it is the thing the next nudge
+          downward spends first; the hours are what it spends second, and they are
+          the highest-leverage block on the page. The panel's edge survives the
           crossing without help: navy on white is 13.31:1, so the fill does the work
           the paper rule cannot on that side. */
     }
-    <div class="hidden lg:block lg:h-s4 lg:bg-amber"></div>
+    <div class="hidden lg:block lg:h-s5 lg:bg-amber"></div>
   </section>
   {
     /* 2. TRUST STRIP — hours, address, phone on a hard white cut out of the

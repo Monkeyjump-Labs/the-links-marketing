@@ -29,7 +29,15 @@ const napKey = 'caps-label text-label-sm w-s9 shrink-0 text-inkMuted';
 ---
 
 <section class="bg-white" aria-label="Hours and locations">
-  <div class="mx-auto max-w-content px-gutter py-s7 lg:px-gutter-lg">
+  {
+    /* `lg:pt-s10` is not this section's own rhythm — it is clearance for the
+    homepage hero's overlay panel, which hangs `s10` past the film and would
+    otherwise land on the ember score rule below. The hero comment carries the
+    arithmetic; the two are a pair, so changing one without the other closes the
+    gap. Only at `lg`, because the overlap is a desktop-only layer: on a phone the
+    hero stacks and this would be 72px of dead space above the hours. */
+  }
+  <div class="mx-auto max-w-content px-gutter py-s7 lg:px-gutter-lg lg:pt-s10">
     <div class="grid border-y-score border-ember md:grid-cols-2">
       {
         venues.map((venue, i) => (
