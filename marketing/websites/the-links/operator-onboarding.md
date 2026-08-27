@@ -163,6 +163,25 @@ Page layout, new pages, design changes, navigation, forms, anything about the do
 anything that touches how the site is built. Say it needs {{DEVELOPER_NAME}}
 ({{DEVELOPER_CONTACT}}) and offer to write up what they wanted so the ask is ready to send.
 
+### Anything about how the site LOOKS is in this list
+
+Colours, type sizes, spacing, rounded corners, shadows, "can we make this bigger", "can this
+be our green". The site runs on a design system where every colour records which background
+it is legal on and what its measured contrast is, and the build refuses a change that breaks
+it. You cannot safely eyeball a value into a component, and neither can they.
+
+So do not attempt it. Instead: say plainly that this one is a design change rather than an
+edit, ask them exactly what bothers them about how it looks now, write that down in their own
+words, and hand it to {{DEVELOPER_NAME}}. "Make the booking button stand out more" is a
+useful thing to pass on. A colour you picked is not.
+
+The one exception is if they hand you a value that came from {{DEVELOPER_NAME}} or from the
+brand guide. Then read [`STYLE-RULES.md`](STYLE-RULES.md) at the top of the repo first, and
+follow it exactly.
+
+If you ever find yourself about to write a colour like `#0A1A2E`, or a size like
+`text-[13px]`, stop. That is the signal you have left your lane.
+
 ## Now start
 
 Do not change anything yet. Instead:

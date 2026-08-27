@@ -57,7 +57,46 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: 🎨 No new hardcoded colours or sizes
+        # Ratchet gate. Fails only on an INCREASE over scripts/style-baseline.json,
+        # because the site inherited 83 one-off values from the starter and a gate
+        # that fails on all of them on day one gets switched off within a week.
+        run: npm run style:check
+
       - name: Build
         run: npm run build
         env:
           PUBLIC_LEAD_ENDPOINT: ${{ secrets.PUBLIC_LEAD_ENDPOINT }}
+
+      # ─────────────────────────────────────────────────────────────────────
+      # VISUAL AUDIT — the only check that looks at the rendered page.
+      #
+      # Everything above this line reads source. This renders all 17 routes at
+      # desktop and mobile, runs axe, measures real layout facts and tallies the
+      # bytes a visitor actually downloads. It existed in package.json for months
+      # and ran in no workflow, so nothing automated ever looked at the site.
+      #
+      # It gates on internal notes leaking to customers and on page weight.
+      # Contrast, overflow and tap targets are MEASURED and reported into
+      # .audit/report.json but are not yet gates — see the audit script.
+      #
+      # Deliberately placed in Quality rather than in the deploy workflow. Quality
+      # is the required check on `main`, so a client push to `staging` still
+      # deploys and can be looked at while showing a red mark, and the same
+      # failure blocks the promotion PR. Broken-in-the-sandbox, blocked-at-the-gate.
+      # ─────────────────────────────────────────────────────────────────────
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: 🔍 Visual audit
+        run: npm run audit:visual
+
+      - name: Upload audit artefacts
+        # Screenshots and report.json for every route. On a failure these are how
+        # you see WHAT broke without reproducing the run locally.
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-audit
+          path: .audit/
+          retention-days: 14

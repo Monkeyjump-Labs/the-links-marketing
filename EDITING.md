@@ -91,6 +91,19 @@ guessing. A visible gap is recoverable; a wrong price on the internet is not.
 
 ---
 
+## Changing how the site looks
+
+You can't, from the CMS — and that is deliberate. Hours, prices, leagues, menu items and FAQ
+answers carry no styling, so editing them can never make a page look wrong. The design is
+decided once, in one place, and applied everywhere.
+
+If something looks wrong to you, that is worth reporting. Say what bothers you rather than
+what to change — "the booking button doesn't stand out" is more useful than a colour, because
+every colour on this site records which background it is allowed on and what its measured
+contrast is, and the build rejects one that fails. The rules are in
+[`STYLE-RULES.md`](STYLE-RULES.md); the reasoning is in
+[`marketing/websites/the-links/design/STYLE-GUIDE.md`](marketing/websites/the-links/design/STYLE-GUIDE.md).
+
 ## For the developer
 
 Setup, architecture, the block model, the Tina lock rule and the CI gate are in
