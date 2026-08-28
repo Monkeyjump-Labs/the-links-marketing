@@ -34,9 +34,13 @@ ceremony.
 
 ## 2. Fill these in before sending — the prompt has six blanks
 
+**Filled and sent for CJ Johnson on 2026-08-28 — the ready-to-paste version is
+[`onboarding-prompt-cj.md`](onboarding-prompt-cj.md).** The table below stays as the recipe
+for the next operator.
+
 | Blank | Value |
 |-------|-------|
-| `{{OPERATOR_NAME}}` | |
+| `{{OPERATOR_NAME}}` | CJ / CJ Johnson |
 | `{{STAGING_URL}}` | `https://staging-the-links.vercel.app` (must match `STAGING_ALIAS` in `deploy.yml`) |
 | `{{PRODUCTION_URL}}` | the `.vercel.app` today; `https://thelinks.golf` after cutover |
 | `{{DEVELOPER_NAME}}` | who they escalate to |
