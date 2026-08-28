@@ -130,9 +130,6 @@
   /* -- Structure --------------------------------------------------------- */
   --radius-control: var(--brand-radius-control);
   --radius-surface: var(--brand-radius-surface);
-  /* The hero film and the panel that floats on it, and nothing else — see
-     radius.media in tokens.json. rounded-surface stays 0 on purpose. */
-  --radius-media: var(--brand-radius-media);
 
   /* Minimum interactive target, straight from the token file. Use min-h-tap on
      anything tappable — size.tapMin is declared as "a hard floor on density". */
@@ -162,9 +159,6 @@
    * scoreboard steps are fluid clamp(); everything from `card` down is fixed.
    * ---------------------------------------------------------------------- */
   --text-hero: var(--brand-type-scale-display-hero);
-  /* A display heading inside a panel rather than across the page — the hero
-     overlay's h1. See typeScale.displayHeroCompact in tokens.json. */
-  --text-hero-compact: var(--brand-type-scale-display-hero-compact);
   --text-section: var(--brand-type-scale-display-section);
   --text-row: var(--brand-type-scale-display-row);
   --text-card: var(--brand-type-scale-display-card);
