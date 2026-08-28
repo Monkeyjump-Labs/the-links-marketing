@@ -99,10 +99,12 @@ by the workflow, not from a branch domain.
    ⚠️ The **production** `.vercel.app` deploy is still indexable — open decision, see
    `ship-gate.md`.
 
-6. **Turn the Vercel Git integration off** if it is still on (Vercel → project → Settings →
-   Git). While both paths are live every merge to `main` deploys twice, and pushes to `staging`
-   additionally produce author-attributed deploys at random URLs — the `BLOCKED` roulette
-   above, reintroduced through the side door.
+6. ~~Turn the Vercel Git integration off~~ — **already disconnected.** Verified 2026-08-28:
+   the repo has zero GitHub Deployments and every check-run belongs to `github-actions`. The
+   Vercel app leaves both traces, so their absence is the evidence. `deploy.yml` had claimed
+   for an unknown period that the integration was still enabled and that switching it off was
+   overdue; that comment was simply stale, and it sent people looking for a switch that was
+   already thrown. Nothing to do here.
 
 ### A useful property of this setup
 

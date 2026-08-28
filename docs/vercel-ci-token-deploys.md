@@ -42,6 +42,23 @@ A CLI deploy is attributed to the token owner instead, so any number of
 contributors — marketers, contractors, the autofix bot, client staff — can push
 against a single paid seat.
 
+## Status on this site (the-links-marketing)
+
+**Cutover is complete.** Deploys run only through `.github/workflows/deploy.yml`; the Vercel
+Git integration is disconnected. Verified 2026-08-28 from GitHub — zero GitHub Deployments and
+every check-run owned by `github-actions`, both of which the Vercel app would otherwise leave.
+
+Two things learned the hard way and worth carrying to the next fork:
+
+- **Steps 7 and 8 below are a state machine, and nothing records which state you are in.**
+  This repo sat in "integration disabled" while `deploy.yml` insisted in a comment that it was
+  still on. People acted on the comment. If you complete step 8, say so in the workflow header
+  the same day.
+- **Verify from GitHub, not from memory.** `gh api repos/<repo>/deployments` returning `[]`
+  plus `gh api repos/<repo>/commits/<sha>/check-runs` showing only `github-actions` is a
+  reliable, thirty-second check that no Vercel Git integration is live. It needs no Vercel
+  login, which is exactly why it gets done.
+
 ## Setup for a new client site
 
 1. **Link the project** — `vercel link` in the repo, then read

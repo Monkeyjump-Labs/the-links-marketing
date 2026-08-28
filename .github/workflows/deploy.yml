@@ -16,16 +16,18 @@ name: 🚀 Deploy (Vercel, CI token)
 # contributor — marketer, contractor, autofix bot, client staff — can push and
 # the site still ships, against a single paid seat.
 #
-# ⚠️ CUTOVER IS NOW OVERDUE — FINISH IT ⚠️
-# This path is PROVEN: `production` has shipped green since 2026-08-07. The only
-# reason the Vercel Git integration is still ENABLED is that disabling it is a
-# manual dashboard step nobody has done. While both are on, a merge to `main`
-# deploys TWICE (wasted minutes, not a correctness problem) — but now that the
-# `staging` job below exists, leaving it on ALSO gives the client's own pushes an
-# author-attributed deploy at a random URL, which is exactly the `BLOCKED`
-# roulette described above. Turn it off:
-#   Vercel → this site's project → Settings → Git → disconnect.
-# Checklist: docs/vercel-ci-token-deploys.md. Do not do it from this workflow.
+# ✅ CUTOVER IS COMPLETE — THIS IS THE ONLY DEPLOY PATH
+# The Vercel Git integration is DISCONNECTED and this workflow ships the site on
+# its own. Verified 2026-08-28 from the GitHub side: this repo has zero GitHub
+# Deployments and every check-run on every commit belongs to `github-actions`.
+# The Vercel app leaves both traces, so their absence is the evidence.
+#
+# This comment previously said the integration was "deliberately still ENABLED"
+# and that disabling it was overdue. That was wrong for an unknown length of
+# time and sent people hunting for a switch that was already off. It is the
+# SECOND claim in this repo about Vercel project state that drifted from reality
+# — see ship-gate.md on PUBLIC_SITE_NOINDEX. If you need to know what Vercel is
+# doing, look at Vercel or at the traces above, not at a comment here.
 
 # NOTE: this fork's production branch is `main`, not the starter's `master`.
 # Left as `master` the workflow is valid YAML that simply never fires — a deploy
@@ -194,9 +196,11 @@ jobs:
         # attach for free. Vercel's dashboard renders these specific `github*`
         # keys as the commit/branch/author of a deployment, so a token deploy
         # still shows WHERE it came from — only WHO deployed it changes (the
-        # token owner). `githubDeployment` is intentionally NOT set: it would ask
-        # Vercel to write GitHub deployment statuses, which would collide with
-        # the still-enabled Git integration during the staged cutover.
+        # token owner). `githubDeployment` is intentionally NOT set: it would
+        # ask Vercel to write GitHub deployment statuses. Originally off to
+        # avoid colliding with the Git integration; now that the integration is
+        # gone, its absence is also what makes "zero GitHub Deployments" a
+        # trustworthy signal that nothing else deploys this repo.
         run: |
           COMMIT_AUTHOR_NAME="$(git log -1 --pretty=%an)"
           COMMIT_MESSAGE="$(git log -1 --pretty=%s)"
@@ -393,26 +397,10 @@ jobs:
   # ───────────────────────────────────────────────────────────────────────────
   # PRODUCTION — every push to master.
   #
-  # ⚠️ RUNS ALONGSIDE THE VERCEL GIT INTEGRATION, ON PURPOSE. ⚠️
-  # This is the staged half of the cutover. The Git integration is still enabled,
-  # so until it is switched off each merge to main produces TWO production
-  # deployments of the same commit. They are byte-identical builds of the same
-  # tree and the later one wins, so the site is correct either way — this is
-  # wasted build minutes, not a correctness problem.
-  #
-  # The token path is now PROVEN — VERCEL_TOKEN exists and this job has shipped
-  # production green since 2026-08-07. The remaining reason both are live is
-  # simply that nobody has done the manual dashboard step below. Doing it is now
-  # overdue rather than premature: with the staging branch live, leaving the Git
-  # integration on also gives the CLIENT's pushes an author-attributed deploy at
-  # a random URL, which is the BLOCKED roulette this workflow exists to end.
-  #
-  # To finish the cutover — MANUAL, in the Vercel dashboard, and only after this
-  # job has gone green at least once:
-  #   Vercel → this site's project → Settings → Git → disable
-  #   "Automatically deploy on push" / disconnect the Git integration.
-  # Nothing in this repo can or should do that step; the Vercel project settings
-  # are not managed from here. Full checklist: docs/vercel-ci-token-deploys.md
+  # THE ONLY THING THAT SHIPS PRODUCTION. The Vercel Git integration is
+  # disconnected, so if this job does not run, the site does not update. There
+  # is no second path any more — which is the intent, but it means a red run
+  # here leaves production a commit behind rather than being cosmetic.
   # ───────────────────────────────────────────────────────────────────────────
   production:
     name: Production deploy
@@ -432,15 +420,15 @@ jobs:
 
     steps:
       - name: Require VERCEL_TOKEN
-        # Same reasoning as the preview job: never skip silently. On master this
+        # Same reasoning as the preview job: never skip silently. On main this
         # matters more — a skipped production deploy is precisely the bug being
-        # fixed. While the Git integration is still enabled a failure here does
-        # not take the site down; the integration still ships the commit.
+        # fixed, and with the Git integration disconnected nothing else ships
+        # the commit. A failure here means production stays where it was.
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           if [ -z "$VERCEL_TOKEN" ]; then
-            echo "::error title=Missing VERCEL_TOKEN::The VERCEL_TOKEN repo secret is not set, so this production deploy cannot run. The Vercel Git integration is still enabled and will have shipped this commit, so the site is not down — but the CI deploy path stays unproven until the secret exists. See docs/vercel-ci-token-deploys.md."
+            echo "::error title=Missing VERCEL_TOKEN::The VERCEL_TOKEN repo secret is not set, so this production deploy cannot run. The Vercel Git integration is disconnected, so nothing else will ship this commit and production stays a commit behind until this is fixed. See docs/vercel-ci-token-deploys.md."
             exit 1
           fi
           echo "VERCEL_TOKEN is present."
@@ -513,7 +501,4 @@ jobs:
             echo ""
             echo "$url"
             echo ""
-            echo "> ⚠️ The Vercel Git integration is still enabled, so this commit was"
-            echo "> **also** deployed by the integration. Disabling it is a manual"
-            echo "> dashboard step — see \`docs/vercel-ci-token-deploys.md\`."
           } >> "$GITHUB_STEP_SUMMARY"
