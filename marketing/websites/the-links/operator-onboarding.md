@@ -16,7 +16,7 @@ has to be true first, or the prompt walks them into a wall.
 |---|---|---|---|
 | 1 | `staging` branch | **Create after PR #24 merges** — `git branch staging main && git push -u origin staging`. Leave it unprotected | `handoff.md` §2 |
 | 2 | Stable staging address | **Built in PR #24.** `staging-the-links.vercel.app`, re-pointed by `deploy.yml`'s staging job on every push. Not a Vercel branch domain — see §2 of the handoff for why that would silently fail | `.github/workflows/deploy.yml` |
-| 3 | Vercel Git integration off | **Still on.** Now actively harmful: it gives the client's own pushes an author-attributed deploy at a random URL, the `BLOCKED` failure the CI-token path exists to prevent. Manual dashboard step | `docs/vercel-ci-token-deploys.md` |
+| 3 | Vercel Git integration off | **Done — it was already disconnected.** Verified 2026-08-28 from GitHub: zero Deployments, every check-run `github-actions`. The workflow comment claiming otherwise was stale | `docs/vercel-ci-token-deploys.md` |
 | 4 | `PUBLIC_SITE_NOINDEX` | **Done for staging** — set inline by the staging job (PR #25) after the first deploy came up crawlable. ⚠️ Production is still indexable; open decision | `.github/workflows/deploy.yml` |
 | 5 | Operator invited with **write** | Not yet a collaborator | `handoff.md` §3 |
 | 6 | Tina Cloud on, `TINA_BRANCH=staging` | Not enabled. The staging job already pins `TINA_BRANCH: staging`, so enabling it later needs no workflow change | `CLAUDE.md` |

@@ -273,8 +273,24 @@ branch → open a PR → let CI pass → merge (`strict` is on, so update the br
 
 ## Deploy
 
-Vercel via its Git integration (`vercel.json` present). No GitHub deploy workflow.
-Set `site` in `astro.config.mjs` and `PUBLIC_LEAD_ENDPOINT` in the host env.
+**Not** the Vercel Git integration — that is disconnected. Deploys run from
+`.github/workflows/deploy.yml` under a CI-owned `VERCEL_TOKEN`, because the Git
+integration attributes every deploy to the commit author and silently refuses one
+from an account that is not a linked Vercel member: green CI, no error, no deploy.
+That is what lets a client push and still have the site ship. Full reasoning and
+the verification commands: `docs/vercel-ci-token-deploys.md`.
+
+Three branches' worth of behaviour, all from that one workflow:
+
+| Push to | Builds | Lands on |
+| --------- | -------------- | ------------------------------------------- |
+| `main` | `--prod` | production |
+| `staging` | preview | `staging-the-links.vercel.app` via an alias |
+| a PR | preview | a one-off URL commented on the PR |
+
+`staging` is the client's sandbox — see `marketing/websites/the-links/handoff.md` §2.
+Set `site` in `astro.config.mjs`. `PUBLIC_LEAD_ENDPOINT` is retired; lead capture is
+configured with `LEAD_SHEET_ID` / `RESEND_API_KEY` (`docs/lead-capture.md`).
 
 ## Where the reasoning lives
 
