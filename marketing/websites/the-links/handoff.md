@@ -9,11 +9,24 @@
 
 | Field | Value |
 |---|---|
-| **Cutover date** | _not yet cut over_ |
-| **Snapshot tag** | _created at cutover — see §4_ |
-| **Client GitHub user(s)** | _tbd_ |
-| **Client Claude account** | _tbd_ |
-| **Lead notifications switched to client email** | ⬜ (currently `hello@fareway.golf` — ship-gate launch task) |
+| **Cutover date** | **2026-08-30** |
+| **Snapshot tag** | [`handoff-2026-08-30`](https://github.com/Monkeyjump-Labs/the-links-marketing/releases/tag/handoff-2026-08-30) → `ce1b35f` |
+| **Client GitHub user(s)** | `cjohnson-creator` (CJ Johnson), **write** — invited 2026-08-28 |
+| **Client Claude account** | CJ's own, Claude desktop app → Claude Code tab. Prompt: [`onboarding-prompt-cj.md`](onboarding-prompt-cj.md) |
+| **Client sandbox** | `https://staging-the-links.vercel.app` (noindex) |
+| **Live site at cutover** | `https://the-links-marketing.vercel.app` — ⚠️ `thelinks.golf` still 301s to the old Squarespace site |
+| **Lead notifications switched to client email** | ⬜ **Not done.** Still `hello@fareway.golf` — `ship-gate.md` launch task |
+
+### Open at cutover, deliberately
+
+- **CJ will see our `StubNote` notes** on the sandbox. `PUBLIC_SITE_NOINDEX` drives both
+  noindex and StubNote, so the two cannot be separated without a code change. Correct by
+  design, but that design predates staging belonging to the client. Undecided.
+- **The production `.vercel.app` is indexable** — `Allow: /`, real prices — against the
+  intent recorded in `ship-gate.md`. Open decision, see that file.
+- **Domain not cut over.** Publishing updates the new site; a customer typing
+  `thelinks.golf` still gets the old one. The prompt says so plainly; delete that passage
+  at cutover.
 
 ---
 
