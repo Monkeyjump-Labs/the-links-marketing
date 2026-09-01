@@ -3,8 +3,11 @@
 > Send this **before** [`onboarding-prompt-cj.md`](onboarding-prompt-cj.md). That one is the
 > first working session; this one gets the machine ready for it.
 >
-> Written for a Windows PC with nothing installed. CJ does not need Git, Node, a terminal, or
-> any developer tooling.
+> Written for a machine with nothing installed. **Covers both Windows and macOS** — CJ is on
+> Windows; follow that column. This is the reusable shape for any client operator, not a
+> one-off.
+>
+> The only developer tool needed is **Git**. No Node, no package manager, no terminal use.
 
 ## Why this is a separate document
 
@@ -12,7 +15,7 @@ The onboarding prompt cannot do any of this. It is pasted **into** a Claude Code
 it only runs once the session already exists. Everything below is what has to be true before
 there is a Claude to paste anything into.
 
-Steps 1–4 are CJ's, by hand. Step 5 hands over to the other file.
+Steps 1–5 are CJ's, by hand. Step 6 is one paste. Step 7 hands over to the other file.
 
 The **rules** CJ's Claude follows are not part of setup at all — they live in the project's
 own `CLAUDE.md`, which loads automatically in every session inside this repo. Nothing to
@@ -40,47 +43,66 @@ Claude Code needs a paid plan — Pro at minimum. A free account will not run it
 
 ## 3. Install the Claude desktop app
 
-<https://claude.ai/download> → the Windows version. Sign in with the account from step 2.
+<https://claude.ai/download> — Windows and macOS builds are both there. Sign in with the
+account from step 2.
 
-## 4. Open the Claude Code tab and connect the project
+## 4. Install Git
 
-In the desktop app, switch to the **Claude Code** tab and point it at
-`Monkeyjump-Labs/the-links-marketing`.
+Git is the one developer tool required — the Claude Code tab uses it to save CJ's changes and
+send them to the project. Install it **directly from the official site**, not through a
+package manager: Homebrew and winget are extra software to install first, and nothing else
+here needs them.
 
-> ⚠️ **Operator: dry-run this step on a Windows machine before sending.**
-> This is the one instruction here that has not been walked through end to end, and it is the
-> step where a non-technical person gets stuck. Two shapes are possible depending on how the
-> app is set up, and they need different things from CJ:
->
-> | | What CJ needs |
-> |---|---|
-> | Connects to the GitHub repo directly | Nothing else — step 1 covered it |
-> | Wants a folder on the PC | Git installed and the project downloaded — a real extra step |
->
-> Replace this box with the actual click-path once confirmed, and delete the branch that does
-> not apply. Do not make CJ discover this.
+| | Download | Notes |
+|---|---|---|
+| **Windows** (CJ) | <https://git-scm.com/download/win> | Run the installer and accept every default. It is a long wizard; none of the choices matter for this. |
+| **macOS** | <https://git-scm.com/download/mac> | Or run `xcode-select --install`, which also provides Git. |
 
-## 5. First session
+**Nothing else is needed.** CJ never builds the website on his own machine — pushing a change
+makes Vercel build it. That is why there is no Node, no npm, and no toolchain here.
 
-Paste [`onboarding-prompt-cj.md`](onboarding-prompt-cj.md) — the block inside the ```text
-fence — as the first message. It gives a tour, then does one small practice edit end to end.
+**How to know it worked:** the Git installer finishes without an error. There is nothing to
+check by hand; step 6 confirms it for real.
 
----
+## 5. Make an empty folder for the project
 
-## Verify it worked
+Somewhere CJ will find again — `Documents\The Links Website` is fine. **Leave it empty.**
 
-Before the tour, paste this and check the four answers:
+This exists so the Claude Code tab has somewhere to work. CJ does not download the project
+himself; Claude does that in step 6, so nobody has to type a command.
+
+## 6. Open that folder in the Claude Code tab, and let Claude fetch the project
+
+Open the Claude desktop app → **Claude Code** tab → open the empty folder from step 5.
+
+Then paste this as the very first message:
 
 ```text
-Before we do anything, confirm four things and tell me in four short lines, plain English:
+This folder is empty. Please download The Links website into it from
+https://github.com/Monkeyjump-Labs/the-links-marketing so we can start working.
 
-1. Can you see the project Monkeyjump-Labs/the-links-marketing?
-2. Which branch are you on? It must be `staging` — switch if it is not, and tell me if
-   `staging` does not exist rather than creating it.
+I am not a developer — do it for me rather than telling me what to type, and if it asks
+who I am, tell me exactly what to click in plain English.
+
+Once it is downloaded, tell me in four short lines:
+1. Did it work?
+2. Which branch am I on? It must be `staging` — switch if it is not. If `staging` does
+   not exist, stop and tell me rather than creating it.
 3. Have you read the project's CLAUDE.md, including the section addressed to me?
-4. Without changing anything, is the working copy clean?
+4. Is the working copy clean?
 
-If any answer is no, say exactly which one and stop. Do not try to fix it yourself.
+If anything failed, say exactly what and stop. Do not work around it.
 ```
 
-Four yeses and CJ is ready. Any no is a setup problem, not something to work around.
+The first time Git talks to GitHub it will ask CJ to sign in — a browser window, the normal
+GitHub login. That is expected and it happens once.
+
+**Four yeses and CJ is ready.** Any no is a setup problem; send it to Daran rather than
+working around it.
+
+## 7. First working session
+
+Now paste [`onboarding-prompt-cj.md`](onboarding-prompt-cj.md) — the block inside its ```text
+fence. It gives CJ a tour, then walks through one small real edit end to end.
+
+---
