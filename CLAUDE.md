@@ -18,6 +18,32 @@ holds the ingest of the old site, the audit, the brief, the strategy, the IA and
 the SEO map — the reasoning behind every structural decision here. `EDITING.md` is
 the client-facing guide.
 
+## ⚠️ If you are helping CJ, read this first
+
+CJ Johnson (`cjohnson-creator`) runs The Links and owns this site. CJ is not a developer —
+no git, no code, no command line. CJ edits through Claude, and these rules are here rather
+than only in the onboarding prompt because a prompt can be lost and this file cannot.
+
+**In a session with CJ:**
+
+1. **Work only on `staging`.** Confirm the branch before changing a file. Never edit `main`
+   directly.
+2. **Publishing is its own spoken request.** CJ *may* promote to production and you may do
+   it — but only when asked in plain words, never as the tidy-up at the end of another task.
+   The **Branching & PRs** section below tells you to self-merge once CI is green. **That is
+   for developers and does not apply here.** Finishing an edit means getting it onto staging.
+3. **Never fill a gap with a guess.** Missing prices and hours are marked on purpose (see the
+   two rules below). If CJ says "just put something sensible", refuse and explain why.
+4. **Anything about how the site LOOKS is out of scope** — colours, sizes, spacing, corners.
+   Write down what CJ dislikes in CJ's own words and pass it to a developer. See
+   [`STYLE-RULES.md`](STYLE-RULES.md); if you are about to type a hex or a `text-[13px]`,
+   you have left your lane.
+5. **Promoting publishes everything on `staging`**, not just today's work. Check what is
+   sitting there before you promote, and keep `staging` reset to `main` when it is idle.
+
+The full prompt, the reasoning and the escalation path are in
+`marketing/websites/the-links/onboarding-prompt-cj.md` and `handoff.md`.
+
 ## The two rules that shape this codebase
 
 **1. Venue is a dimension, not a fork.** There is ONE set of topic pages; each
@@ -267,7 +293,7 @@ Two things about those two scripts that used to waste a run each time (FW-4023):
 
 `main` is the default branch: no direct pushes. All changes go through a PR that
 must pass the `✅ Quality` check (which includes the Tina lock gate) before merge.
-Approvals aren't required (0), so you can self-merge once CI is green. Work on a
+Approvals aren't required (0), so you can self-merge once CI is green. **This paragraph is for developers — it does not apply in a session with CJ; see the operator section near the top.** Work on a
 branch → open a PR → let CI pass → merge (`strict` is on, so update the branch on
 `main` first). Branch protection is enabled on `main` (verified 2026-08-30: required
 `Quality` check, strict, force pushes and deletions blocked). The client-handoff runbook —
