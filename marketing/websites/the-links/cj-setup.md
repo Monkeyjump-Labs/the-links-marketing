@@ -36,11 +36,26 @@ first thing that fails rather than working around it.
      - Mac:     https://git-scm.com/download/mac
    Once I say it is installed, check again before continuing.
 
-2. A HOME FOR THE PROJECT
-   Make a folder somewhere I will find again — inside my Documents is ideal, named
-   something obvious like "The Links Website". Tell me exactly where you put it. If a
-   copy of the project is already on this machine, use that instead of making a second
-   one, and say so.
+2. WHERE THE PROJECT GOES — one exact place
+   Use this path, not a variation of it, so that anyone helping me later can tell me
+   which folder to open:
+     Windows:  Documents\The Links Website
+     Mac:      ~/Documents/The Links Website
+
+   Two things about it:
+
+   - The website's files must sit DIRECTLY inside that folder. When I open it I should
+     see things like a `src` folder and a `README.md` file — NOT another folder with a
+     different name that I have to go into first. Downloading a project often creates
+     that extra folder; if it would, put the contents straight into "The Links Website"
+     instead.
+   - On Windows, Documents is often synced to OneDrive, which does not get along with
+     this kind of project and can corrupt it quietly. If you can tell that Documents is
+     being synced, use a folder that is not — somewhere directly on the C: drive is
+     fine — and tell me where you put it and why.
+
+   If a copy of the project is already on this machine, use that rather than making a
+   second one, and tell me where it is. Two copies is how I end up editing the wrong one.
 
 3. DOWNLOAD THE PROJECT
    Download it into that folder from:
@@ -62,10 +77,12 @@ first thing that fails rather than working around it.
 Then tell me, in five short lines, plain English, no file paths or technical output:
 
   1. Is git installed?
-  2. Where did you put the project?
-  3. Did it download successfully?
-  4. Which branch am I on?
-  5. Have you read the project's instructions, including the part about me?
+  2. Did the project download successfully?
+  3. Which branch am I on?
+  4. Have you read the project's instructions, including the part about me?
+  5. THE FOLDER I OPEN EVERY TIME — give me the full path, and tell me plainly that
+     this is the folder to open in Claude Code whenever I work on the website, rather
+     than starting somewhere else. This is the one thing I need to remember.
 
 Do not change anything, do not edit any files, and do not start any work. Setup only.
 When all five are good, just say I am ready and stop there.

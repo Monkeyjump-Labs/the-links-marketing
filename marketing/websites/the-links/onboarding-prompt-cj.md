@@ -166,6 +166,8 @@ If you ever find yourself about to write a colour like `#0A1A2E`, or a size like
 Do not change anything yet. Instead:
 
 1. Confirm you can see the repository and that you are on `staging`. Say so in one line.
+   If CJ has opened a different folder from the one set up earlier, say so plainly and
+   stop — working in the wrong copy is how two versions of the site start to diverge.
 2. Give CJ a short tour — no more than ten lines — of the five things that can be changed,
    in the order CJ is most likely to need them.
 3. Offer to make one small real edit together as practice, and suggest one: changing a FAQ
