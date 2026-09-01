@@ -44,7 +44,7 @@ import MediaSlot from '../components/venue/MediaSlot.astro';
 import HeroFilm from '../components/venue/HeroFilm.astro';
 import { buttonClasses } from '../lib/buttons';
 import { getVenues, venuePath } from '../lib/venues';
-import stillwaterRoom from '../assets/images/stillwater-room.jpg';
+import stillwaterLounge from '../assets/images/stillwater-lounge.jpg';
 import lakevilleNightPoster from '../assets/images/lakeville-night-poster.jpg';
 import lakevilleBays from '../assets/images/lakeville-bays.jpg';
 import lakevilleBar from '../assets/images/lakeville-bar.jpg';
@@ -101,12 +101,10 @@ const things: Job[] = [
  * — and since FW-4003 the asymmetry points the other way, which is what should
  * happen when a slot is filled from fact rather than from taste.
  *
- * **Stillwater is now a real photograph.** The client supplied a walkthrough
- * video of that room, and this is a still from it: the first honest image of
- * Stillwater the site has ever carried. It is handheld phone footage of an
- * empty room rather than a commissioned shoot, so the staging marker still asks
- * for the shoot. It carries no visible caption and needs none — a caption under
- * a photograph describes what the reader is already looking at. Its `alt` does
+ * **Stillwater carries a real photograph.** CJ supplied a wider shot of the
+ * lounge and simulator bays 2026-09-01, replacing the earlier walkthrough-video
+ * still. It carries no visible caption and needs none — a caption under a
+ * photograph describes what the reader is already looking at. Its `alt` does
  * the describing, for search and for anyone who cannot see it.
  *
  * **Lakeville now carries two real photographs** (FW — CJ supplied them
@@ -146,12 +144,11 @@ const slots: Record<
     ],
   },
   stillwater: {
-    photo: stillwaterRoom,
+    photo: stillwaterLounge,
     lit: false,
-    alt: 'The Stillwater room seen down its length: two lit simulator screens on the far wall, high-top tables and stools on a pale wood floor, a leather couch to the right, and a black ceiling hung with track lights. The room is empty.',
-    /* No `caption` — it is photographed, so nothing is painted under it. No
-       `needs` — CJ asked to clear the staging note 2026-09-01; the underlying
-       photo is unchanged (still handheld footage of an empty, unlit room). */
+    alt: 'The Stillwater lounge seen from the couches: two tan leather sofas and a marble coffee table in the foreground, high-top tables behind, and three lit simulator screens along the far wall under a black ceiling hung with track lights. The room is empty.',
+    /* No `caption` — it is photographed, so nothing is painted under it.
+       No `needs` — CJ confirmed this is the photo to use, 2026-09-01. */
   },
 };
 ---
