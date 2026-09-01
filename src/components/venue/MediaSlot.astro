@@ -78,8 +78,8 @@ interface Props {
    * leave it off there rather than writing a line that never paints.
    */
   caption?: string;
-  /** What the client owes, in the team's words. Staging only. */
-  needs: string;
+  /** What the client owes, in the team's words. Staging only. Omit once nothing is outstanding. */
+  needs?: string;
 }
 
 const { id, photo, lit, alt, caption, needs } = Astro.props;
@@ -192,12 +192,13 @@ const mass = 'fill: var(--brand-media-slot-mass); stroke: var(--brand-media-slot
 
   {
     /* Nothing under a real photograph. A drawn slot keeps its sentence, because
-       there the sentence IS the slot. Staging additionally carries the marker,
-       so a captionless photographed slot still shows what is outstanding. */
-    ((!photo && caption) || isStaging) && (
+       there the sentence IS the slot. Staging additionally carries the marker
+       when something is still outstanding — once `needs` is unset, there is
+       nothing left to flag and a photographed slot renders nothing at all. */
+    ((!photo && caption) || (isStaging && needs)) && (
       <figcaption class="border-t-hairline border-slate p-s5">
         {!photo && caption && <p class="text-small leading-body text-slate">{caption}</p>}
-        {isStaging && (
+        {isStaging && needs && (
           <span
             class:list={[
               'caps-label inline-block rounded-surface border-hairline border-slate px-s2 py-s1 text-label-sm text-slate',
