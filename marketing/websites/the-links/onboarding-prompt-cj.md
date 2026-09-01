@@ -9,9 +9,13 @@
 > ⚠️ Prompt says publishing does **not** reach `thelinks.golf`, because that domain still
 > redirects to the old Squarespace site. Delete that passage at domain cutover.
 
-**Send [`cj-setup.md`](cj-setup.md) first.** It gets CJ from nothing to a working Claude
-Code session — accepting the GitHub invitation, installing the app, connecting the project.
-Nothing below works until that is done.
+**Send [`cj-setup.md`](cj-setup.md) first.** It is also a paste-into-Claude-Code prompt:
+CJ's agent installs nothing but Git, makes the folder, downloads the project, switches to
+`staging` and reports back in five plain-English lines. Nothing below works until it has
+been run and all five come back good.
+
+That prompt assumes CJ has **accepted** the GitHub invitation and has the Claude desktop app
+installed and signed in.
 
 The standing rules load on their own: they are a section of the project's `CLAUDE.md`, so
 they are in front of CJ's Claude in **every** session, not just this first one. This prompt
