@@ -269,7 +269,10 @@ Two things about those two scripts that used to waste a run each time (FW-4023):
 must pass the `✅ Quality` check (which includes the Tina lock gate) before merge.
 Approvals aren't required (0), so you can self-merge once CI is green. Work on a
 branch → open a PR → let CI pass → merge (`strict` is on, so update the branch on
-`master` first). Branch protection is not yet enabled on this repo — turn it on at handoff.
+`main` first). Branch protection is enabled on `main` (verified 2026-08-30: required
+`Quality` check, strict, force pushes and deletions blocked). The client-handoff runbook —
+staging sandbox pipeline, onboarding checklist, snapshot/rollback — is
+`marketing/websites/the-links/handoff.md`.
 
 ## Deploy
 
