@@ -9,7 +9,15 @@
 > ⚠️ Prompt says publishing does **not** reach `thelinks.golf`, because that domain still
 > redirects to the old Squarespace site. Delete that passage at domain cutover.
 
-Paste everything below as the first message of CJ's first Claude Code session.
+**Send [`cj-setup.md`](cj-setup.md) first.** It gets CJ from nothing to a working Claude
+Code session — accepting the GitHub invitation, installing the app, connecting the project.
+Nothing below works until that is done.
+
+The standing rules load on their own: they are a section of the project's `CLAUDE.md`, so
+they are in front of CJ's Claude in **every** session, not just this first one. This prompt
+is the introduction; `CLAUDE.md` is what makes it stick.
+
+Then paste everything below as the first message of CJ's first Claude Code session.
 
 ---
 
