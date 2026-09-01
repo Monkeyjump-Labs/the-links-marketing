@@ -46,6 +46,8 @@ import { buttonClasses } from '../lib/buttons';
 import { getVenues, venuePath } from '../lib/venues';
 import stillwaterRoom from '../assets/images/stillwater-room.jpg';
 import lakevilleNightPoster from '../assets/images/lakeville-night-poster.jpg';
+import lakevilleBays from '../assets/images/lakeville-bays.jpg';
+import lakevilleBar from '../assets/images/lakeville-bar.jpg';
 
 const venues = await getVenues();
 const leagues = (await getCollection('leagues')).filter((l) => l.data.published);
@@ -107,25 +109,40 @@ const things: Job[] = [
  * a photograph describes what the reader is already looking at. Its `alt` does
  * the describing, for search and for anyone who cannot see it.
  *
- * **Lakeville is still drawn, lit.** Its professional shoot exists but the files
- * have not been delivered, so there is nothing real to put here yet.
+ * **Lakeville now carries two real photographs** (FW — CJ supplied them
+ * 2026-09-01): the bay row and the bar, both shot on-site. They replace the
+ * drawn placeholder entirely, so `lakeville` renders through `photos` below
+ * instead of the single `photo` slot.
  *
  * The rule underneath is unchanged: Lakeville's frames never stand in for
  * Stillwater. That swap is the exact trust defect this rebuild exists to fix.
  */
-const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; caption?: string; needs: string }> = {
+const slots: Record<
+  string,
+  {
+    photo?: ImageMetadata;
+    /** Two-photo variant, used instead of `photo` when a venue has more than one shot. */
+    photos?: { photo: ImageMetadata; alt: string }[];
+    lit: boolean;
+    alt: string;
+    caption?: string;
+    needs: string;
+  }
+> = {
   lakeville: {
     lit: true,
-    /* In a customer's words, not the shoot brief's — "photo slot at 3:2" was
-       spec-speak, and dropping it from the page while leaving it in the alt
-       would just move it from the eye to the ear. It must still say it is a
-       DRAWING: describe the room as though photographed and a listener is told
-       this room has been pictured when it has not, which is the substitution
-       the drawn slot exists to refuse. */
-    alt: 'A drawing standing in for the photograph of the Lakeville room that has not been delivered yet: a near-black room, warm pendant light over the bar, and the lit simulator projection as the one bright cool thing in it.',
-    caption:
-      'A professional shoot of this room exists — warm, dark, pendant-lit, with the simulator projection as the only cool note. The files are not on the site yet.',
-    needs: 'deliver the files',
+    alt: '',
+    photos: [
+      {
+        photo: lakevilleBays,
+        alt: 'The Lakeville room seen down its length: a row of GolfZon simulator bays and putting mats under low black lighting on the left, a lit TwoVision screen at the far end, and high-top tables leading to the bar and its stools on the right, on a warm wood floor. The room is empty.',
+      },
+      {
+        photo: lakevilleBar,
+        alt: 'The Lakeville bar, looking down its length: a white marble-topped bar with black padded stools, shelves of liquor bottles and bar snacks against the wall, two mounted TVs showing sports and a golf broadcast, and the Lakeville Links logo on the far wall. The room is empty.',
+      },
+    ],
+    needs: 'confirm these two are the final Lakeville photos, or whether a commissioned shoot is still planned',
   },
   stillwater: {
     photo: stillwaterRoom,
@@ -412,7 +429,21 @@ const slots: Record<string, { photo?: ImageMetadata; lit: boolean; alt: string; 
               ]}
             >
               <div class:list={[i % 2 === 1 && 'lg:order-2']}>
-                {slot && <MediaSlot id={venue.data.slug} {...slot} />}
+                {slot?.photos ? (
+                  <div class="grid gap-s4 sm:grid-cols-2">
+                    {slot.photos.map((p, photoIndex) => (
+                      <MediaSlot
+                        id={`${venue.data.slug}-${photoIndex}`}
+                        photo={p.photo}
+                        lit
+                        alt={p.alt}
+                        needs={slot.needs}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  slot && <MediaSlot id={venue.data.slug} {...slot} />
+                )}
               </div>
 
               <div class:list={[i % 2 === 1 && 'lg:order-1']}>
