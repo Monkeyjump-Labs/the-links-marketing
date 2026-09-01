@@ -203,6 +203,20 @@ const venues = defineCollection({
      * publish an unverified venue fact silently.
      */
     verified: z.boolean().default(false),
+    /**
+     * Set true once the CURRENT `hours` rows have been confirmed by the venue
+     * (CJ confirmed both venues' summer hours 2026-09-01). Deliberately
+     * narrower than `verified`: a venue can have its hours confirmed while
+     * other fields (phone, map pin, capacity, etc.) are still outstanding —
+     * flipping the broader `verified` flag in that state would silently clear
+     * the pre-launch note on the venue page for facts that are NOT confirmed.
+     * Gates only the "Hours being confirmed" tag on the homepage.
+     *
+     * Not yet exposed in the Tina CMS (`tina/config.ts`) — adding it there
+     * needs a `tina:lock` regeneration this machine can't run. Ask a
+     * developer, or hand-edit here, until that's wired up.
+     */
+    hoursVerified: z.boolean().default(false),
     needsFromClient: z.array(z.string()).default([]),
   }),
 });

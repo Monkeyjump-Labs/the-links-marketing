@@ -48,7 +48,7 @@ const napKey = 'caps-label text-label-sm w-s9 shrink-0 text-inkMuted';
               {venue.data.name}
             </a>
 
-            <ReadoutCell label="Hours" size="xl" class="mt-s5">
+            <ReadoutCell label="Summer hours" size="xl" class="mt-s5">
               {summariseHours(venue).map((run, j) => (
                 <>
                   {j > 0 && <span class="text-ember"> · </span>}
@@ -57,7 +57,7 @@ const napKey = 'caps-label text-label-sm w-s9 shrink-0 text-inkMuted';
               ))}
             </ReadoutCell>
 
-            {!venue.data.verified && (
+            {!venue.data.hoursVerified && (
               <p class="caps-label mt-s3 inline-block rounded-surface border-rule border-accent px-s2 py-s1 text-accent">
                 Hours being confirmed
               </p>
