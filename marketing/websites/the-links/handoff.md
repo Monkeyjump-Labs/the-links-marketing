@@ -12,7 +12,7 @@
 | **Cutover date** | **2026-08-30** |
 | **Snapshot tag** | [`handoff-2026-08-30`](https://github.com/Monkeyjump-Labs/the-links-marketing/releases/tag/handoff-2026-08-30) → `ce1b35f` |
 | **Client GitHub user(s)** | `cjohnson-creator` (CJ Johnson), **write** — invited 2026-08-28 |
-| **Client Claude account** | CJ's own, Claude desktop app → Claude Code tab. Setup: [`cj-setup.md`](cj-setup.md), then [`onboarding-prompt-cj.md`](onboarding-prompt-cj.md) |
+| **Client Claude account** | CJ's own, Claude desktop app → Claude Code tab. Two pastes: [`cj-setup.md`](cj-setup.md) (agent does the setup), then [`onboarding-prompt-cj.md`](onboarding-prompt-cj.md) |
 | **Client sandbox** | `https://staging-the-links.vercel.app` (noindex) |
 | **Live site at cutover** | `https://the-links-marketing.vercel.app` — ⚠️ `thelinks.golf` still 301s to the old Squarespace site |
 | **Lead notifications switched to client email** | ✅ `info@lakevillelinks.com` since 2026-08-30. Styleguide test form stays on our inbox |
