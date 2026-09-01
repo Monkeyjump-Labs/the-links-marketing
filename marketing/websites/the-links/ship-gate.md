@@ -28,7 +28,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ✅ | Booking reachable in ≤2 clicks from every page | Header → venue chooser → Whoosh. The old "ACKNOWLEDGE AND GO TO BOOKING" interstitial is deleted |
 | ✅ | Leagues page has a registration path **and** a waitlist in all three states | The one component no audited competitor has |
 | ✅ | Email capture present with a stated reason to subscribe | |
-| 🟡 | Every form tested end-to-end; submissions arrive somewhere a human reads | **Built and verified live (FW-3975, FW-3999).** Six forms post to `/api/lead`, which writes to the *The Links Website Log* workbook then notifies. A submission is never reported successful unless it reached the sheet. Verified end-to-end in a real browser against the deployed site. **⚠️ Notifications still go to `hello@fareway.golf` — this is a cutover step, see below** |
+| 🟡 | Every form tested end-to-end; submissions arrive somewhere a human reads | **Built and verified live (FW-3975, FW-3999).** Six forms post to `/api/lead`, which writes to the *The Links Website Log* workbook then notifies. A submission is never reported successful unless it reached the sheet. Verified end-to-end in a real browser against the deployed site. **Notifications point at `info@lakevillelinks.com` since 2026-08-30.** |
 
 ## Content
 
@@ -54,7 +54,7 @@ Legend: ✅ done · 🟡 built but stubbed pending client data · ⬜ not starte
 | ✅ | Beginner reassurance on Leagues **and** Book | Required field on every league record |
 | ✅ | Menu is HTML | **Custom-coded 2026-08-04 (FW-4002).** Zero `<img>` tags, 39 priced items as text, `Menu` JSON-LD, editable in TinaCMS. The six PNGs are retired. Three genuine ambiguities in the source ship as gap marks rather than guesses |
 | ✅ | Leagues in the top nav | |
-| ✅ | Waitlist live and tested | Tested end-to-end against live Google and Resend 2026-08-04 (FW-3975). Submissions land on the workbook's Waitlist tab with the consent text recorded, and a notification sends. ⚠️ Notifications currently go to `hello@fareway.golf` — see the launch task |
+| ✅ | Waitlist live and tested | Tested end-to-end against live Google and Resend 2026-08-04 (FW-3975). Submissions land on the workbook's Waitlist tab with the consent text recorded, and a notification sends. Notifications point at `info@lakevillelinks.com` since 2026-08-30. |
 
 ## Not covered by the playbook — test independently
 
@@ -173,23 +173,25 @@ Do these **in order**. Steps 1 and 2 are independent; step 3 must come last, bec
 the domain at a site whose forms email the wrong inbox is the one combination that loses a
 real customer's enquiry silently.
 
-## 1. Point form notifications at the venue
+## 1. ~~Point form notifications at the venue~~ — DONE 2026-08-30
 
 ```ts
 // src/lib/leads/config.ts
 const INBOX = VENUE_INBOX;   // was TESTING_INBOX
 ```
 
-Notifications currently go to `hello@fareway.golf` so the team could test without putting
-practice enquiries in front of venue staff. `npm run leads:check` prints a banner on every run
-while that is true, so this cannot quietly survive.
+Enquiries now reach `info@lakevillelinks.com`. The `leads:check` banner clears itself — it
+keys off the literal `const INBOX = TESTING_INBOX`, so it cannot be left stale.
 
-**Why it is last-mile rather than a bug:** nothing is lost while it is wrong — the row is still
-written to the sheet, which is the system of record. But **the venue is not told**, and that
-failure is invisible from the outside: the form submits, the page thanks you, the site looks
-perfect. A planner waiting on a quote simply never hears back.
+One change went with it. The `styleguide` list used to point at `INBOX` too, on the reasoning
+that "the same inbox" cost nothing — true while that inbox was ours. It is now a real
+business, and a reference page whose purpose is to be poked at must not mail the venue every
+time someone tries a form. `styleguide` is pinned to `TESTING_INBOX`, which also makes it the
+safe way to exercise the mail path.
 
-Afterwards: submit one real enquiry and confirm it arrives at `info@lakevillelinks.com`.
+**Still to verify:** submit one real enquiry and confirm it arrives. Note that this now emails
+the venue for real — warn them first, or exercise the path from `/styleguide` instead, which
+notifies us.
 
 ## 2. Delete the old redirect, then point the domain
 
