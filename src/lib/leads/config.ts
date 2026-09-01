@@ -65,26 +65,29 @@ export type SheetTab = (typeof TABS)[keyof typeof TABS];
 export const DATA_TABS: SheetTab[] = [TABS.enquiries, TABS.waitlist, TABS.test];
 
 /**
- * ⚠️ TEMPORARY — notifications go to US, not to the venue.
+ * Where a form submission is announced.
  *
- * Set 2026-08-04 so the team can submit real forms and read the real
- * notifications without putting test enquiries in front of venue staff, and
- * without a customer's first genuine enquiry being the thing that discovers a
- * delivery bug.
+ * **Live to the venue since 2026-08-30** (ship-gate launch task 1). Between
+ * 2026-08-04 and then this pointed at `TESTING_INBOX` so the team could submit
+ * real forms and read real notifications without putting practice enquiries in
+ * front of venue staff, and without a customer's first genuine enquiry being the
+ * thing that discovered a delivery bug.
  *
- * **This MUST become `info@lakevillelinks.com` before launch.** While it is
- * wrong, every enquiry a customer sends reaches nobody who can answer it — the
- * row is still recorded in the sheet, so nothing is lost, but the venue is not
- * told. `npm run leads:check` warns loudly on a production build while this is
- * still in place, and it is a line item on the ship gate.
+ * A customer enquiry now reaches someone who can answer it. The sheet is still
+ * the system of record — the row is written first and a submission is never
+ * reported successful unless it landed there — so a mail failure loses nothing,
+ * it only delays the venue hearing about it.
  *
- * The real address is kept right here so the switch is a one-word diff:
- *   const INBOX = VENUE_INBOX;
+ * `TESTING_INBOX` is kept rather than deleted: flipping back is how you test a
+ * change to the mail path without sending practice enquiries to a real business.
+ * `npm run leads:check` prints a warning banner whenever it is selected, so a
+ * temporary flip cannot quietly become permanent.
  */
-const VENUE_INBOX = 'info@lakevillelinks.com'; // eslint-disable-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- kept as the deliberate escape hatch above
 const TESTING_INBOX = 'hello@fareway.golf';
+const VENUE_INBOX = 'info@lakevillelinks.com';
 
-const INBOX = TESTING_INBOX;
+const INBOX = VENUE_INBOX;
 
 export const LEAD_LISTS: Record<string, LeadList> = {
   event: {
@@ -136,13 +139,19 @@ export const LEAD_LISTS: Record<string, LeadList> = {
   /**
    * The styleguide renders live form components for reference. It is noindexed
    * and staging-only, but the forms are real and can be submitted, so the list
-   * is registered and routed to the same inbox rather than 400ing in a way that
-   * makes the styleguide look broken.
+   * is registered rather than 400ing in a way that makes the styleguide look
+   * broken.
+   *
+   * ⚠️ Deliberately NOT `INBOX`. It used to be, back when `INBOX` was our own
+   * testing address and "the same inbox" cost nothing. `INBOX` is now a real
+   * business, and a reference page whose whole purpose is to be poked at must
+   * not mail them every time someone tries a form. It lands on the Test tab and
+   * tells us, which is also what makes it the safe way to exercise the mail path.
    */
   styleguide: {
     label: 'Styleguide test submission',
     tab: TABS.test,
-    notify: INBOX,
+    notify: TESTING_INBOX,
   },
 };
 

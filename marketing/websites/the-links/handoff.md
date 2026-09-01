@@ -15,7 +15,7 @@
 | **Client Claude account** | CJ's own, Claude desktop app → Claude Code tab. Prompt: [`onboarding-prompt-cj.md`](onboarding-prompt-cj.md) |
 | **Client sandbox** | `https://staging-the-links.vercel.app` (noindex) |
 | **Live site at cutover** | `https://the-links-marketing.vercel.app` — ⚠️ `thelinks.golf` still 301s to the old Squarespace site |
-| **Lead notifications switched to client email** | ⬜ **Not done.** Still `hello@fareway.golf` — `ship-gate.md` launch task |
+| **Lead notifications switched to client email** | ✅ `info@lakevillelinks.com` since 2026-08-30. Styleguide test form stays on our inbox |
 
 ### Open at cutover, deliberately
 
@@ -168,7 +168,7 @@ Staging is `main` again. The next push redeploys; nothing to clean up in Vercel.
   site" (Tina Cloud project + 3 env vars + `tinacms build && astro build` as the Vercel
   build command + seeded lock). Set `TINA_BRANCH=staging` so Tina edits land in the
   sandbox too.
-- ⬜ Switch form notifications from `hello@fareway.golf` to the client's inbox
+- ✅ Switch form notifications from `hello@fareway.golf` to the client's inbox
   (ship-gate launch task) — at cutover, not before.
 - ⬜ Fill the **Cutover record** above and take the snapshot (§4).
 
