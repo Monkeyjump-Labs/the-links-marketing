@@ -126,12 +126,14 @@ const slots: Record<
     lit: boolean;
     alt: string;
     caption?: string;
-    needs: string;
+    /** Staging-only internal marker. Omit once nothing is outstanding — see MediaSlot. */
+    needs?: string;
   }
 > = {
   lakeville: {
     lit: true,
     alt: '',
+    // CJ confirmed 2026-09-01: these two are the final Lakeville photos, no shoot pending.
     photos: [
       {
         photo: lakevilleBays,
@@ -142,7 +144,6 @@ const slots: Record<
         alt: 'The Lakeville bar, looking down its length: a white marble-topped bar with black padded stools, shelves of liquor bottles and bar snacks against the wall, two mounted TVs showing sports and a golf broadcast, and the Lakeville Links logo on the far wall. The room is empty.',
       },
     ],
-    needs: 'confirm these two are the final Lakeville photos, or whether a commissioned shoot is still planned',
   },
   stillwater: {
     photo: stillwaterRoom,
