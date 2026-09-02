@@ -8,6 +8,8 @@
   "addressRegion": "MN",
   "postalCode": "55082",
   "phone": "612-699-0527",
+  "latitude": 45.033641649842814,
+  "longitude": -92.81297579426602,
   "bays": 4,
   "simulator": "GolfZon TwoVision NX",
   "bookingUrl": "https://app.whoosh.io/patron/club/linksstillwater/agenda/simulators/today",
@@ -72,22 +74,19 @@
       "closed": false
     }
   ],
-  "hoursNote": "Summer hours. If there are no pre-booked bay times, we reserve the right to open late or close early — so if you are making a special trip, book the bay rather than chancing it.",
+  "hoursNote": "Summer hours. Winter hours: 9am–10pm every day. If there are no pre-booked bay times, we reserve the right to open late or close early — so if you are making a special trip, book the bay rather than chancing it.",
   "amenities": [
-    "Food & drink via Stillwater Bowl & Lounge"
+    "Food & drink via Stillwater Bowl & Lounge",
+    "Up to 24 golfers",
+    "5 TVs",
+    "Private events up to 50 people"
   ],
   "verified": false,
   "hoursVerified": true,
   "needsFromClient": [
-    "Winter hours - the published schedule ends 30 Sept 2026",
-    "The map pin. We removed the latitude/longitude we had been publishing in schema because we geocoded them ourselves and one was about two miles out. Send the pin from the Google Business Profile if you want it back.",
-    "Photography - NO photo of this venue exists anywhere today",
-    "Capacity, TV count, private/event space",
-    "Whether food & beverage is Stillwater Bowl's offer or its own",
-    "Whether LinksFlex hour banks apply here (currently Lakeville-only)",
-    "A venue email address",
-    "The correct legal entity for this location",
-    "Whether Stillwater runs its own leagues - the first season is being designed now"
+    "Whether LinksFlex hour banks apply here — CJ said yes 2026-09-02, but the memberships page states Lakeville-only pricing/tiers throughout; needs confirmation of the actual terms (same per-hour price? same tiers?) before that page changes.",
+    "The correct LEGAL entity for this location — CJ gave 'The Links of Stillwater' 2026-09-02, which reads as the public name rather than a registered entity (compare Lakeville's on-file legal names: 'Head Honchos, LLC dba Lakeville Links' / 'UDBA 10 dba The Links of Lakeville'). Needed for the legal pages specifically; confirm before using it there.",
+    "A venue email address — CJ gave info@lakevillelinks.com 2026-09-02, which is the address already on file for Lakeville. Confirm this is a deliberate shared inbox before it goes on the Stillwater record, not a copy/paste."
   ],
   "schemaTypes": [
     "SportsActivityLocation"
