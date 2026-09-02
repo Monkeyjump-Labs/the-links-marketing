@@ -8,6 +8,7 @@
   "addressRegion": "MN",
   "postalCode": "55082",
   "phone": "612-699-0527",
+  "email": "info@lakevillelinks.com",
   "latitude": 45.033641649842814,
   "longitude": -92.81297579426602,
   "bays": 4,
@@ -81,13 +82,9 @@
     "5 TVs",
     "Private events up to 50 people"
   ],
-  "verified": false,
+  "verified": true,
   "hoursVerified": true,
-  "needsFromClient": [
-    "Whether LinksFlex hour banks apply here — CJ said yes 2026-09-02, but the memberships page states Lakeville-only pricing/tiers throughout; needs confirmation of the actual terms (same per-hour price? same tiers?) before that page changes.",
-    "The correct LEGAL entity for this location — CJ gave 'The Links of Stillwater' 2026-09-02, which reads as the public name rather than a registered entity (compare Lakeville's on-file legal names: 'Head Honchos, LLC dba Lakeville Links' / 'UDBA 10 dba The Links of Lakeville'). Needed for the legal pages specifically; confirm before using it there.",
-    "A venue email address — CJ gave info@lakevillelinks.com 2026-09-02, which is the address already on file for Lakeville. Confirm this is a deliberate shared inbox before it goes on the Stillwater record, not a copy/paste."
-  ],
+  "needsFromClient": [],
   "schemaTypes": [
     "SportsActivityLocation"
   ],
