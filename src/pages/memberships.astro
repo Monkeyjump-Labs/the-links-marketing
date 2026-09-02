@@ -170,7 +170,7 @@ const smallPrint = [
         tone="dark"
         cells={[
           { label: 'Monthly from', value: `$${cheapestMonthly}`, qualifier: 'a month, both venues' },
-          { label: 'LinksFlex from', value: `$${bestPerHour.toFixed(2)}`, qualifier: 'an hour, Lakeville only' },
+          { label: 'LinksFlex from', value: `$${bestPerHour.toFixed(2)}`, qualifier: 'an hour, both venues' },
           { label: 'Walk up', value: `$${WALK_UP}`, qualifier: 'an hour, no membership at all' },
           {
             label: 'Winter pricing',
@@ -321,7 +321,7 @@ const smallPrint = [
       </p>
 
       <div class="mt-s5 flex flex-wrap items-baseline gap-x-s6 gap-y-s3">
-        <ReadoutCell label="Where" size="name">Lakeville only</ReadoutCell>
+        <ReadoutCell label="Where" size="name">Both venues</ReadoutCell>
         <ReadoutCell label="Also included" size="name">21-day booking window · 10% off food</ReadoutCell>
       </div>
 
@@ -337,24 +337,27 @@ const smallPrint = [
         }))}
       />
 
-      <a
-        href={globalData.external.membershipsLakeville}
-        class:list={[buttonClasses('md', 'primary'), 'mt-s7']}
-        target="_blank"
-        rel="noopener"
-        data-analytics="linksflex:lakeville"
-      >
-        Buy a LinksFlex block <span aria-hidden="true">→</span>
-        <span class="sr-only">(opens the Whoosh store in a new tab)</span>
-      </a>
-
-      <div class="mt-s7 max-w-prose-page">
-        <GapCell
-          label="LinksFlex at Stillwater"
-          state="notSet"
-          size="name"
-          reason="Whether the hour banks can be spent at Stillwater has not been settled. Today they are Lakeville-only."
-        />
+      <div class="mt-s7 flex flex-wrap gap-s5">
+        <a
+          href={globalData.external.membershipsLakeville}
+          class={buttonClasses('md', 'primary')}
+          target="_blank"
+          rel="noopener"
+          data-analytics="linksflex:lakeville"
+        >
+          Buy a LinksFlex block at Lakeville <span aria-hidden="true">→</span>
+          <span class="sr-only">(opens the Whoosh store in a new tab)</span>
+        </a>
+        <a
+          href={globalData.external.membershipsStillwater}
+          class={buttonClasses('md', 'outline')}
+          target="_blank"
+          rel="noopener"
+          data-analytics="linksflex:stillwater"
+        >
+          Buy a LinksFlex block at Stillwater <span aria-hidden="true">→</span>
+          <span class="sr-only">(opens the Whoosh store in a new tab)</span>
+        </a>
       </div>
 
       <StubNote
