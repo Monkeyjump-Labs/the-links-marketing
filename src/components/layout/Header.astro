@@ -35,7 +35,14 @@ const currentPath = Astro.url.pathname;
     class="mx-auto flex max-w-content flex-wrap items-center gap-x-6 gap-y-3 px-gutter py-3 lg:flex-nowrap lg:px-gutter-lg"
   >
     <a href="/" class="flex min-h-tap shrink-0 items-center" aria-label={`${siteName} — home`}>
-      <Image src={linksLogo} alt="" width={661} height={224} class="h-9 w-auto md:h-10" />
+      {
+        /* width/height are the asset's own pixel dimensions and exist to reserve the
+          right box before it loads. They are NOT a display size — `h-9 w-auto` sets
+          that. If the logo file is replaced, these two numbers must be replaced with
+          the new file's dimensions in the same commit, or the reserved box has the
+          old aspect ratio and the header jumps as the image lands. */
+      }
+      <Image src={linksLogo} alt="" width={1006} height={389} class="h-9 w-auto md:h-10" />
     </a>
 
     <nav aria-label="Main" class="order-3 w-full lg:order-none lg:w-auto lg:min-w-0 lg:flex-1">
