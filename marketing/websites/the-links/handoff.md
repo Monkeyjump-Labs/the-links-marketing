@@ -12,7 +12,7 @@
 | **Cutover date** | **2026-08-30** |
 | **Snapshot tag** | [`handoff-2026-08-30`](https://github.com/Monkeyjump-Labs/the-links-marketing/releases/tag/handoff-2026-08-30) → `ce1b35f` |
 | **Client GitHub user(s)** | `cjohnson-creator` (CJ Johnson), **write** — invited 2026-08-28 |
-| **Client Claude account** | CJ's own, Claude desktop app → Claude Code tab. Two pastes: [`cj-setup.md`](cj-setup.md) (agent does the setup), then [`onboarding-prompt-cj.md`](onboarding-prompt-cj.md) |
+| **Client Claude account** | CJ's own, Claude desktop app → Claude Code tab. Setup is [`cj-setup.md`](cj-setup.md) — **two pastes in two sessions plus one terminal step CJ does himself**, rewritten 2026-09-03 after running it for real — then [`onboarding-prompt-cj.md`](onboarding-prompt-cj.md) |
 | **Client sandbox** | `https://staging-the-links.vercel.app` (noindex) |
 | **Live site at cutover** | `https://the-links-marketing.vercel.app` — ⚠️ `thelinks.golf` still 301s to the old Squarespace site |
 | **Lead notifications switched to client email** | ✅ `info@lakevillelinks.com` since 2026-08-30. Styleguide test form stays on our inbox |
@@ -151,8 +151,14 @@ Staging is `main` again. The next push redeploys; nothing to clean up in Vercel.
 - ⬜ **A Claude account with the Desktop app** — Pro at minimum; a **Team seat on our
   workspace is the streamlined option** (we manage billing, we pre-configure the project,
   they just sign in).
-- ⬜ **A GitHub account** (free) — one per person who will edit. No git knowledge required;
-  Claude drives it through the connector.
+- ⬜ **A GitHub account** (free) — one per person who will edit. No git knowledge required,
+  but they DO end up with a toolchain: Git, Node 22 and the GitHub CLI, all installed by
+  their agent from plain installers. See [`cj-setup.md`](cj-setup.md) for why, and for the
+  one step (`gh auth login`) an agent cannot do for them.
+- ⬜ **A working `gh auth login`.** Without the GitHub CLI the client's agent can push but
+  cannot open the promotion PR, so it sends them to the GitHub website to do it by hand —
+  where the auto-titled "Staging" fails the Conventional Commits check every time. That was
+  the state from cutover until 2026-09-03.
 - ⬜ 30 minutes for a walkthrough against `EDITING.md`.
 
 ### We do before cutover (operator)
@@ -160,9 +166,11 @@ Staging is `main` again. The next push redeploys; nothing to clean up in Vercel.
 - ⬜ Create the `staging` branch + Vercel branch domain + env scoping (§2).
 - ⬜ Invite client GitHub user(s) as collaborators with **write** (write lets them push
   `staging`; branch protection keeps `main` ours).
-- ⬜ In the client's Claude: connect the **GitHub connector** to the repo and create a
-  Claude **Project** with instructions (draft in §5) — always `staging`, follow
-  `EDITING.md`, never merge, never invent facts (stubs stay stubs).
+- ⬜ Walk the client through [`cj-setup.md`](cj-setup.md). ⚠️ Not the Desktop **GitHub
+  connector** — this originally said to use it, and §5 records why that assumption was
+  dropped in favour of the Claude Code tab. The standing rules live in the repo's
+  `CLAUDE.md` rather than in a Claude Project, so they load in every session and cannot be
+  lost with the Project.
 - ⬜ Decide **Tina Cloud on/off** for `/admin` prod editing. Off = Claude Desktop is the
   only content lane (simplest). On = follow CLAUDE.md "Enabling Tina Cloud on a forked
   site" (Tina Cloud project + 3 env vars + `tinacms build && astro build` as the Vercel
