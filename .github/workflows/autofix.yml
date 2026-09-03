@@ -8,24 +8,31 @@ name: 🧹 Autofix
 # `prettier --write` on every file being committed. On a developer's machine
 # that means a formatting slip never reaches CI at all.
 #
-# It has never once run on the CLIENT's machine. Husky installs its git hooks
-# from the `prepare` script during `npm install`, and CJ's setup
-# (marketing/websites/the-links/cj-setup.md) deliberately installs nothing but
-# Git — no Node, no npm, no `npm install`. So `.git/hooks` is empty there, the
-# formatter never fires, and the first thing that notices a mis-wrapped line is
+# For a long time it never ran on the CLIENT's machine at all. Husky installs
+# its git hooks from the `prepare` script during `npm install`, and CJ's setup
+# originally installed nothing but Git. So `.git/hooks` there was empty, the
+# formatter never fired, and the first thing that noticed a mis-wrapped line was
 # a red `Quality` check five minutes later, written in a vocabulary the client
 # cannot act on. It cost two round-trips on PR #47 for a single word on the
 # wrong side of a line break.
 #
-# So the fix goes where the client is not: formatting is repaired in CI and
-# pushed back to `staging`. Nothing changes on their machine, which is the same
-# move `deploy.yml` already makes for deploy attribution — when the client
-# cannot reasonably carry a piece of the toolchain, move it off them rather than
-# asking them to learn it.
+# CJ now has Node and has run `npm ci`, so the hooks DO work there
+# (marketing/websites/the-links/cj-setup.md, rewritten 2026-09-03). This
+# workflow is deliberately kept anyway, because a pre-commit hook is a
+# convenience and not a guarantee:
+#
+#   - hooks live in `.git/hooks`, which is not version-controlled and does not
+#     survive a re-clone until someone runs `npm ci` again
+#   - `--no-verify` skips them, and so does any tool that commits without
+#     invoking them
+#   - the next client onboarded from these docs starts where CJ started
+#
+# So: local hooks are the fast path, this is the floor. Formatting is repaired
+# in CI and pushed back to `staging` whichever way it arrives.
 #
 # THE GATE IS UNCHANGED. `Quality` still runs `npm run lint` and still blocks
-# the promotion PR into `main`. This only means the client stops being the one
-# who trips it on something a machine can fix.
+# the promotion PR into `main`. This only means nobody is left tripping it on
+# something a machine can fix.
 #
 # ─────────────────────────────────────────────────────────────────────────────
 # TWO PROPERTIES WORTH KNOWING BEFORE YOU EDIT THIS
