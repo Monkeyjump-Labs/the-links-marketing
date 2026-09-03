@@ -119,17 +119,13 @@ jobs:
       # deploys and can be looked at while showing a red mark, and the same
       # failure blocks the promotion PR. Broken-in-the-sandbox, blocked-at-the-gate.
       # ─────────────────────────────────────────────────────────────────────
-      # The browser binary is ~150MB and identical between runs. Cached on the
-      # lockfile hash, because that is what moves the Playwright version.
-      # `install --with-deps` still RUNS on a hit — it skips the download it no
-      # longer needs and goes on installing the OS libraries, which live in apt
-      # rather than in this directory and so are not cached with it.
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ hashFiles('package-lock.json') }}
-
+      # NOT cached, and that is a measured decision rather than an oversight.
+      # Caching ~/.cache/ms-playwright was tried on this PR: 6s to restore plus
+      # 14s to install, against 21s to install with no cache at all. A net
+      # second. The assumption behind the cache was that the ~150MB download
+      # dominated this step; it does not — `--with-deps` spends its time in apt
+      # installing OS libraries, which do not live in that directory and are not
+      # cached with it. Do not re-add it without measuring again.
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
