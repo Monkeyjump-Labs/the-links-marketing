@@ -32,21 +32,51 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
+      # ─────────────────────────────────────────────────────────────────────
+      # `cache: 'npm'` on setup-node above caches the npm DOWNLOAD cache
+      # (~/.npm), NOT node_modules — so `npm ci` still deletes and rebuilds the
+      # whole tree every run. That was 97s of a 284s job, the single largest
+      # line item, and it was being paid on every push to reinstall bytes that
+      # had not changed.
+      #
+      # Caching the tree itself keyed on the lockfile takes it to seconds. The
+      # key carries the Node major because native builds are not portable
+      # across versions, and the lockfile hash because that is exactly what
+      # decides the tree's contents. No `restore-keys`: a PARTIAL match would
+      # restore a tree that does not match the lockfile, and `npm ci` would be
+      # skipped — the one failure mode worth designing out, because it produces
+      # a green run against the wrong dependencies.
+      # ─────────────────────────────────────────────────────────────────────
+      - name: Cache node_modules
+        id: modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-22-${{ hashFiles('package-lock.json') }}
 
+      - name: Install dependencies
+        if: steps.modules.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      # ─────────────────────────────────────────────────────────────────────
+      # ORDER: cheapest and most-likely-to-fail first.
+      #
+      # These four cost ~8s between them and catch the great majority of real
+      # failures — a formatting slip used to be reported 45s in, behind the 29s
+      # Tina check, for no reason other than the order they were written in.
+      # Nothing here depends on anything below it.
+      # ─────────────────────────────────────────────────────────────────────
       - name: 🎨 Design tokens are in sync
         run: npm run tokens:check
 
-      - name: Tina schema lock is fresh
-        # Fails the PR if tina/config.ts changed but tina/tina-lock.json wasn't
-        # regenerated. Tina Cloud derives its remote schema from the committed lock,
-        # so a stale lock silently breaks prod editing. Secret-free: --skip-cloud-checks
-        # never contacts Tina Cloud and the client ID is not embedded in the lock.
-        run: npm run tina:lock:check
-
       - name: 📬 Lead capture is configured
         run: npm run leads:check
+
+      - name: 🎨 No new hardcoded colours or sizes
+        # Ratchet gate. Fails only on an INCREASE over scripts/style-baseline.json,
+        # because the site inherited 83 one-off values from the starter and a gate
+        # that fails on all of them on day one gets switched off within a week.
+        run: npm run style:check
 
       - name: Lint
         run: npm run lint
@@ -57,11 +87,15 @@ jobs:
       - name: Test
         run: npm test
 
-      - name: 🎨 No new hardcoded colours or sizes
-        # Ratchet gate. Fails only on an INCREASE over scripts/style-baseline.json,
-        # because the site inherited 83 one-off values from the starter and a gate
-        # that fails on all of them on day one gets switched off within a week.
-        run: npm run style:check
+      # Moved BELOW the cheap gates (it costs ~29s). Safe to reorder: `npm run
+      # build` is plain `astro build` and nothing in `src` imports
+      # `tina/__generated__`, so the build does not consume this step's output.
+      - name: Tina schema lock is fresh
+        # Fails the PR if tina/config.ts changed but tina/tina-lock.json wasn't
+        # regenerated. Tina Cloud derives its remote schema from the committed lock,
+        # so a stale lock silently breaks prod editing. Secret-free: --skip-cloud-checks
+        # never contacts Tina Cloud and the client ID is not embedded in the lock.
+        run: npm run tina:lock:check
 
       - name: Build
         run: npm run build
@@ -85,6 +119,17 @@ jobs:
       # deploys and can be looked at while showing a red mark, and the same
       # failure blocks the promotion PR. Broken-in-the-sandbox, blocked-at-the-gate.
       # ─────────────────────────────────────────────────────────────────────
+      # The browser binary is ~150MB and identical between runs. Cached on the
+      # lockfile hash, because that is what moves the Playwright version.
+      # `install --with-deps` still RUNS on a hit — it skips the download it no
+      # longer needs and goes on installing the OS libraries, which live in apt
+      # rather than in this directory and so are not cached with it.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('package-lock.json') }}
+
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
 
