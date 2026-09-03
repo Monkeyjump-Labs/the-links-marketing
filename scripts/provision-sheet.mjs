@@ -44,8 +44,8 @@ if (!GOOGLE_SERVICE_ACCOUNT_JSON_B64 || !LEAD_SHEET_ID) {
 // build step, so it cannot import the TypeScript module — the copy is kept
 // honest by `src/lib/leads/config.test.ts`, which reads this file and fails the
 // suite the moment the two lists diverge.
-const TABS = { readme: 'README', enquiries: 'Enquiries', waitlist: 'Waitlist', test: 'Test' };
-const DATA_TABS = [TABS.enquiries, TABS.waitlist, TABS.test];
+const TABS = { readme: 'README', enquiries: 'Enquiries', waitlist: 'Waitlist', updates: 'Updates', test: 'Test' };
+const DATA_TABS = [TABS.enquiries, TABS.waitlist, TABS.updates, TABS.test];
 const COLUMNS = [
   'timestamp',
   'list',
@@ -70,6 +70,10 @@ const TAB_NOTES = [
   [
     TABS.waitlist,
     'People who asked to hear when leagues or junior programmes open. Nothing to do until registration opens; then export this tab and email them.',
+  ],
+  [
+    TABS.updates,
+    'People who subscribed for general news from the bottom of a page. They asked for occasional email about leagues, events and what is on — not for anything else. Keep this list separate from Waitlist: these people did not ask about a specific league.',
   ],
   [TABS.test, 'Submissions from the internal style guide. Ignore — nothing here is a real customer.'],
 ];

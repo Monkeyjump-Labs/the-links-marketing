@@ -226,6 +226,47 @@ The starter ships local-mode only. To turn on live editing for a client site:
 3. First deploy will fail with a schema mismatch until the remote schema is seeded —
    run `npm run tina:lock`, commit the lock, and push so Tina Cloud indexes it.
 
+## The forms, and the one that is everywhere
+
+Five components post to `/api/lead/`, each registered as a `list` in
+`src/lib/leads/config.ts` and routed to a tab in the submissions workbook:
+
+| Component           | List(s)               | Tab       | Where it appears                       |
+| ------------------- | --------------------- | --------- | -------------------------------------- |
+| `EnquiryForm`       | `event`               | Enquiries | `/events`                              |
+| `LessonEnquiryForm` | `lessons`             | Enquiries | `/lessons`                             |
+| `WaitlistForm`      | `league-*`, `juniors` | Waitlist  | homepage band, `/leagues`, `/juniors`  |
+| `SubscribeForm`     | `updates`             | Updates   | **every content page**, via the layout |
+
+**`SubscribeBand` is mounted in `BaseLayout`, not on pages.** It sits above the
+footer on everything that renders chrome, and a page opts out with
+`subscribe={false}` — `/thanks`, `/privacy`, `/terms`, `/policy`, `/404` and
+`/styleguide` do. Two consequences worth knowing before you move it:
+
+- **It is chrome, so it must not join a page's composition.** The homepage
+  alternates grounds deliberately and spends the ember exactly once; a repeated
+  section inside that sequence breaks it the first time a page is reordered.
+  Greige is used by no page band, which is what lets this close every page the
+  same way.
+- **It must never outrank the form a page was built around.** The league
+  waitlist is the highest-value component on this site and `/events` is composed
+  around its enquiry form. The strip is one field at the foot of a finished
+  page, and that is the whole of its ambition. Do not promote it into the body
+  of a page that already has a primary form.
+
+⚠️ **A new list needs the workbook widened before it ships.** Tabs are created
+by `npm run sheet:provision`, which is idempotent and never deletes anything —
+but until it has run against the live sheet, a submission to a list whose tab
+does not exist fails the write and the visitor is told so. Register the list,
+run the provisioner, then deploy — in that order.
+
+The `updates` list carries **no double opt-in and no unsubscribe plumbing**;
+there is no list provider behind it, only the sheet (FW-3975, ClickUp
+868kkt2eu). That is fine for a venue mailing a few times a year from its own
+inbox and not fine as marketing automation. If it grows into scheduled
+campaigns, it needs a real provider with one-click unsubscribe _before_ the
+first send.
+
 ## Testing a form locally: the URL needs its trailing slash
 
 ⚠️ **`POST /api/lead` 404s under `astro dev`. `POST /api/lead/` works.**
@@ -253,8 +294,9 @@ Two related traps in the same area:
 
 - `LeadFormScript.astro`'s `ENDPOINT` is used both to `fetch` and to select forms
   by `form[action="…"]`. It must stay character-identical to the `action` on
-  `EnquiryForm`, `LessonEnquiryForm` and `WaitlistForm`, or the enhancement
-  silently matches nothing and every form falls back to a page navigation.
+  `EnquiryForm`, `LessonEnquiryForm`, `WaitlistForm` and `SubscribeForm`, or the
+  enhancement silently matches nothing and every form falls back to a page
+  navigation.
 - `astro dev` **auto-increments the port** when the one you asked for is taken,
   and says so only in its startup output. Read the port it actually bound before
   trusting a 404 — testing against a port another process owns proves nothing.

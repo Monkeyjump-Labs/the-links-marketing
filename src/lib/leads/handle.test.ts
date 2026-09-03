@@ -173,6 +173,26 @@ describe('handleLead — tab routing', () => {
     }
   });
 
+  it('routes a subscribe strip signup to Updates, not Waitlist', async () => {
+    // The two look alike — an address and nothing else — and filing them
+    // together is the mistake this asserts against. A Waitlist row is a promise
+    // about one named thing and gets exported the day that thing happens; an
+    // Updates row is an open subscription. Merged, the league export would mail
+    // everyone who ever used the footer strip, beyond the consent on their row.
+    const sheet = okSheet();
+    await handleLead({ fields: { ...base(), list: 'updates' }, now: NOW }, { sheet, formSecret: SECRET });
+    expect(sheet.tabs).toEqual(['Updates']);
+  });
+
+  it('records the updates consent promise on the row', async () => {
+    // The promise is stored with the address rather than living only in the
+    // page copy, so what someone agreed to is still answerable months later.
+    const sheet = okSheet();
+    await handleLead({ fields: { ...base(), list: 'updates' }, now: NOW }, { sheet, formSecret: SECRET });
+    expect(sheet.rows[0].consent).toBe(LEAD_LISTS.updates.consent);
+    expect(sheet.rows[0].consent).toBeTruthy();
+  });
+
   it('keeps styleguide submissions out of real data', async () => {
     const sheet = okSheet();
     await handleLead({ fields: { ...base(), list: 'styleguide' }, now: NOW }, { sheet, formSecret: SECRET });

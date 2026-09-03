@@ -18,6 +18,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import WaitlistForm from '../components/venue/WaitlistForm.astro';
+import SubscribeBand from '../components/forms/SubscribeBand.astro';
 import LeagueBlock from '../components/venue/LeagueBlock.astro';
 import HoursTable from '../components/venue/HoursTable.astro';
 import TrustStrip from '../components/venue/TrustStrip.astro';
@@ -281,7 +282,7 @@ const greige = value('palette.greige');
 const screenLight = value('palette.screenLight');
 ---
 
-<BaseLayout metadata={metadata}>
+<BaseLayout metadata={metadata} subscribe={false}>
   <div class="mx-auto max-w-content px-gutter py-section">
     <!-- ── Masthead ───────────────────────────────────────────────────────── -->
     <header class="border-b-4 pb-8" style={`border-color: ${ember}; font-family: var(--brand-font-display);`}>
@@ -1052,6 +1053,18 @@ const screenLight = value('palette.screenLight');
       </p>
       <div class="mt-4 max-w-2xl">
         <WaitlistForm listName="styleguide" heading="Join the list" />
+      </div>
+
+      <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>SubscribeBand</h3>
+      <p class="mt-1 max-w-prose-page text-sm" style={`color: ${inkMuted};`}>
+        The strip <code>BaseLayout</code> puts above the footer on every content page. This page opts out of that, so the
+        only one here is this specimen. Full-bleed by design — it is chrome, and greige is used by no page band, so it closes
+        any page the same way. Filed under <code>styleguide</code> rather than <code>updates</code>, so a stray submit
+        lands on the Test tab; that list carries no consent line, which is why the real strip shows one line of small
+        print and this one shows none.
+      </p>
+      <div class="mt-4">
+        <SubscribeBand listName="styleguide" />
       </div>
 
       <h3 class="mt-10 text-lg font-bold" style={`color: ${navy};`}>LeagueBlock — all three registration states</h3>
