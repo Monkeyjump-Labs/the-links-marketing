@@ -84,6 +84,12 @@ const rules = [
     'How long to book for',
     'Roughly one hour per person for 18 holes. One person is about an hour, four people in one bay is about four. If that is longer than you want, book two bays or play nine.',
   ],
+  /* Was a `notSet` gap in "Rules we have not set yet" below until CJ supplied the
+     policy on 2026-09-03. Worded to match /book — keep the two in step. */
+  [
+    'Walk-ins',
+    'Walk-ins are welcome, but not guaranteed to have a spot. Reserve a bay if you would rather not risk the drive, or ring ahead and ask what is free.',
+  ],
 ];
 
 /**
@@ -424,16 +430,10 @@ const safetyRules = [
     <section class="mt-section">
       <h2 class="text-2xl font-bold">Rules we have not set yet</h2>
       <p class="mt-3 max-w-prose-page text-inkMuted">
-        Four things people ask about that this page cannot answer yet. We would rather mark them than guess at them —
+        Three things people ask about that this page cannot answer yet. We would rather mark them than guess at them —
         phone the venue and someone will tell you how it works in practice.
       </p>
       <div class="mt-6 grid gap-6 sm:grid-cols-2">
-        <GapCell
-          label="Walk-ins"
-          state="notSet"
-          size="name"
-          reason="Whether you can turn up without a booking has not been published. Reserve a bay if you would rather not risk the drive, or ring ahead and ask what is free."
-        />
         <GapCell
           label="Bringing your own food or drink"
           state="notSet"
@@ -455,7 +455,7 @@ const safetyRules = [
       </div>
       <StubNote
         class="mt-6"
-        needs="The waiver above answers minimum age, supervision of minors, alcohol, damage liability and the photography permission, so those have come off this list. The four gaps beside this note are what is left: walk-ins, outside food and drink, dress and footwear, and group or event deposit terms. Membership and LinksFlex terms live with the /memberships page and need the same treatment."
+        needs="The waiver above answers minimum age, supervision of minors, alcohol, damage liability and the photography permission, so those have come off this list. Walk-ins came off on 2026-09-03 when CJ supplied the policy — it is now a plain rule in 'Your booking' above, worded identically on /book. The three gaps beside this note are what is left: outside food and drink, dress and footwear, and group or event deposit terms. Membership and LinksFlex terms live with the /memberships page and need the same treatment."
       />
     </section>
 
