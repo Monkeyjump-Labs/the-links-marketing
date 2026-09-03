@@ -38,12 +38,21 @@ export interface LeadList {
 /**
  * The workbook's tabs.
  *
- * A cover page first, then one tab per KIND OF WORK — not one per form. The two
+ * A cover page first, then one tab per KIND OF WORK — not one per form. The
  * data tabs exist because they have different rhythms and different readers:
  * `Enquiries` is worked through daily by whoever answers the phone, `Waitlist`
  * sits untouched until registration opens and is then exported in one go. A
  * venue owner can see that split in the tab strip; they would never find it in a
  * column filter.
+ *
+ * `Updates` is the general mailing list — the subscribe strip that sits at the
+ * foot of every content page. It is a THIRD rhythm, which is why it is a third
+ * tab rather than more rows on `Waitlist`. A waitlist row is a promise about one
+ * named thing ("we will email you when THIS league opens") and is exported once,
+ * when that thing happens. An updates row is an open-ended subscription with no
+ * event attached. Filing them together would mean that the day leagues open,
+ * whoever exports `Waitlist` mails a few hundred people who never asked about
+ * leagues — and the consent recorded on the row would not cover it.
  *
  * `Test` keeps styleguide submissions out of real data. The styleguide renders
  * live, submittable forms, and one accidental submit should not put a fake name
@@ -56,13 +65,14 @@ export const TABS = {
   readme: 'README',
   enquiries: 'Enquiries',
   waitlist: 'Waitlist',
+  updates: 'Updates',
   test: 'Test',
 } as const;
 
 export type SheetTab = (typeof TABS)[keyof typeof TABS];
 
 /** The tabs that receive submissions. README is prose and never written to. */
-export const DATA_TABS: SheetTab[] = [TABS.enquiries, TABS.waitlist, TABS.test];
+export const DATA_TABS: SheetTab[] = [TABS.enquiries, TABS.waitlist, TABS.updates, TABS.test];
 
 /**
  * Where a form submission is announced.
@@ -135,6 +145,32 @@ export const LEAD_LISTS: Record<string, LeadList> = {
     tab: TABS.waitlist,
     notify: INBOX,
     consent: 'One email when junior programmes open. Nothing else, ever.',
+  },
+  /**
+   * The general mailing list, collected by the subscribe strip at the foot of
+   * every content page. ONE list key for all of them, deliberately: the strip is
+   * the same offer wherever it appears, and a key per page would split one
+   * mailing list across a dozen filters for no gain. The `page` column already
+   * records where each row was submitted, which is the only per-page fact worth
+   * having.
+   *
+   * The consent line is the narrowest promise the copy can honestly make, and it
+   * is what the venue is bound to when they eventually send something. It is
+   * stored on every row (see `LeadList.consent`) so it stays attached to the
+   * address rather than living only in whatever the page said at the time.
+   *
+   * ⚠️ This list carries no double opt-in and no unsubscribe plumbing — there is
+   * no list provider behind it, only the sheet (FW-3975, ClickUp 868kkt2eu).
+   * That is fine for a small venue mailing a few times a year from their own
+   * inbox, and NOT fine as a marketing automation. If this ever grows into
+   * scheduled campaigns, it needs a real provider with one-click unsubscribe
+   * before the first send, not after.
+   */
+  updates: {
+    label: 'Updates subscriber',
+    tab: TABS.updates,
+    notify: INBOX,
+    consent: 'Occasional email about leagues, events and what is on. Unsubscribe any time.',
   },
   /**
    * The styleguide renders live form components for reference. It is noindexed

@@ -1,0 +1,109 @@
+---
+/**
+ * The general mailing-list signup — one email field and a button.
+ *
+ * **It is deliberately the smallest form on the site.** Every other lead form
+ * here is attached to a decision the visitor is already making: an event
+ * enquiry needs a date and a headcount, a league waitlist needs to know which
+ * league. This one is attached to nothing. Someone who has read half a page and
+ * is not ready to book has no facts to give us and no question to ask, so the
+ * only honest ask is an address — and each extra field is a reason to stop.
+ * Name is not collected: we would use it for nothing, and the sheet already has
+ * a `name` column that stays empty on these rows exactly as `date` and
+ * `groupSize` stay empty on a waitlist row.
+ *
+ * ⚠️ **It must never outrank the form a page was built around.** `/events` is
+ * composed around its enquiry form, `/leagues` around its waitlists, and the
+ * playbook is explicit that the league waitlist is the highest-value component
+ * on this site. So this renders as a quiet strip at the foot of the page, in a
+ * band the page has already finished — see `SubscribeBand.astro`, which is how
+ * it is meant to be placed. Do not promote it into the body of a page that
+ * already has a primary form.
+ *
+ * Posts to `/api/lead/` like every other form, with `list=updates`. The trailing
+ * slash is load-bearing: `trailingSlash: 'always'` applies to API routes, so
+ * under `astro dev` `POST /api/lead` is a 404 and `POST /api/lead/` works, and
+ * it must stay character-identical to `ENDPOINT` in `LeadFormScript.astro`,
+ * which finds forms to enhance by `form[action="…"]`. See FW-4023.
+ *
+ * Works with JavaScript disabled — a native POST gets a 303 to `/thanks/`.
+ * `LeadFormScript` (mounted site-wide in `BaseLayout`) upgrades that to an
+ * inline confirmation.
+ *
+ * **The consent line is read from the routing table, not typed here.**
+ * `LeadList.consent` is stored on every row so the promise stays attached to
+ * the address. Rendering the same string is what stops the page and the record
+ * drifting apart — if the copy needs to change, change it in
+ * `src/lib/leads/config.ts` and both move together.
+ */
+import { LEAD_LISTS } from '../../lib/leads/config';
+import { buttonClasses } from '../../lib/buttons';
+
+interface Props {
+  /** Which list the row is filed under. Overridden only by the styleguide. */
+  listName?: string;
+  /** Recorded on the row when the strip sits on a page about one venue. */
+  venue?: string;
+  buttonLabel?: string;
+  id?: string;
+  class?: string;
+}
+
+const { listName = 'updates', venue, buttonLabel = 'Subscribe', id, class: className = '' } = Astro.props;
+
+const formId = id ?? `subscribe-${listName.replace(/\W+/g, '-').toLowerCase()}`;
+const consent = LEAD_LISTS[listName]?.consent;
+
+// White field on the band's greige ground: navy text 12.06:1, inkMuted
+// placeholder 6.23:1. Same control recipe as every other form on the site.
+const field =
+  'min-h-tap w-full min-w-0 rounded-control border-rule border-navy bg-white px-s4 py-s3 text-body text-navy placeholder:text-inkMuted';
+---
+
+<form
+  class:list={['on-light', className]}
+  action="/api/lead/"
+  method="POST"
+  data-analytics={`subscribe:${listName}`}
+  data-success="You are subscribed. We will only email when there is something worth saying."
+  id={formId}
+>
+  <input type="hidden" name="list" value={listName} />
+  {venue && <input type="hidden" name="venue" value={venue} />}
+  <input type="hidden" name="_page" value={Astro.url.pathname} />
+  {/* Filled at runtime by LeadFormScript; absent on the no-JS path, which is accepted. */}
+  <input type="hidden" name="_ts" value="" />
+  <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+  {
+    /* One row on desktop, stacked on mobile. The button does not shrink: a
+      submit that has been squeezed narrower than its label is the failure this
+      strip would hit first, since it renders at every width on every page. */
+  }
+  <div class="flex flex-col gap-s4 sm:flex-row sm:items-center">
+    <label class="sr-only" for={`${formId}-email`}>Email address</label>
+    <input
+      id={`${formId}-email`}
+      name="email"
+      type="email"
+      required
+      autocomplete="email"
+      placeholder="you@example.com"
+      class={field}
+    />
+    <button type="submit" class:list={[buttonClasses('md', 'primary'), 'shrink-0 cursor-pointer']}>
+      {buttonLabel}
+    </button>
+  </div>
+
+  {consent && <p class="mt-s4 text-small leading-body text-inkMuted">{consent}</p>}
+
+  {/* Only ever shown on failure — success replaces the whole form. */}
+  <p
+    data-lead-status
+    role="alert"
+    hidden
+    class="mt-s4 border-l-slab border-accent pl-s4 text-small leading-body text-inkBody"
+  >
+  </p>
+</form>
