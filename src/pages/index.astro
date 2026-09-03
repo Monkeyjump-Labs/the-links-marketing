@@ -44,6 +44,7 @@ import MediaSlot from '../components/venue/MediaSlot.astro';
 import HeroFilm from '../components/venue/HeroFilm.astro';
 import { buttonClasses } from '../lib/buttons';
 import { getVenues, venuePath } from '../lib/venues';
+import { upcomingSeason } from '../lib/leagues';
 import stillwaterLounge from '../assets/images/stillwater-lounge.jpg';
 import lakevilleNightPoster from '../assets/images/lakeville-night-poster.jpg';
 import lakevilleBays from '../assets/images/lakeville-bays.jpg';
@@ -51,6 +52,12 @@ import lakevilleBar from '../assets/images/lakeville-bar.jpg';
 
 const venues = await getVenues();
 const leagues = (await getCollection('leagues')).filter((l) => l.data.published);
+/**
+ * Named from the first row that is NOT archived, same as /leagues — reading
+ * `leagues[0]` here picks Lakeville's archived 2025 season by sort accident
+ * and offers first word on registration that closed last December.
+ */
+const season = upcomingSeason(leagues);
 const testimonials = (await getCollection('testimonials')).sort((a, b) => a.data.order - b.data.order);
 // Gate the wrapper too, not just the note — otherwise production renders an
 // empty padded div where the staging marker used to be.
@@ -378,9 +385,8 @@ const slots: Record<
             Fall &amp; winter leagues
           </h2>
           <p class="mt-s5 text-lead leading-body text-surface">
-            Teams, handicaps, a live leaderboard and a bar tab. Registration for {
-              leagues[0]?.data.season ?? 'the coming season'
-            } has not opened yet — join the list and you will hear the day it does.
+            Teams, handicaps, a live leaderboard and a bar tab. Registration for {season} has not opened yet — join
+            the list and you will hear the day it does.
           </p>
           <p
             class="my-s6 border-y-score border-white py-s4 font-display text-row leading-display font-bold tracking-display text-white"
