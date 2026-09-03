@@ -99,6 +99,29 @@ When all five are good, just say I am ready and stop there.
 | **CJ installs** | Git, and only if it is missing |
 | **A "no" on any line** | A setup problem — send it to Daran rather than working around it |
 
+### Why this installs Git and nothing else
+
+Not an oversight — a decision, and one thing depends on it.
+
+CJ has no Node and no `npm`, so **`npm install` never runs on that machine, so husky never
+installs its git hooks, so the `prettier` pre-commit formatter never fires.** A mis-wrapped
+line therefore leaves CJ's machine unformatted and fails `Quality` five minutes later, in a
+vocabulary CJ cannot act on. That is exactly what happened on PR #47.
+
+The formatting is repaired in CI instead — `.github/workflows/autofix.yml` reformats and
+pushes back to `staging` — so nothing here needs to change. Same move `deploy.yml` makes for
+deploy attribution: when the client cannot reasonably carry a piece of the toolchain, move it
+off them rather than teaching them to hold it.
+
+**The cost, and it is the reason for rule 1 in `CLAUDE.md`:** that fix-up is a commit CJ does
+not have, so the clone diverges. CJ's agent must pull at the start of every session or the
+next push is rejected.
+
+If you ever DO want a local build on that machine — worth it only if CJ wants to preview a
+change before it reaches staging — it is Node 22 (see `.nvmrc`) plus one `npm install`, and
+then the pre-commit formatter starts working on its own and the autofix workflow simply stops
+finding anything to do.
+
 **The rules are not in this prompt on purpose.** They live in the project's `CLAUDE.md`, which
 loads in every session once the project is on the machine. This prompt only has to run once;
 the rules apply forever.

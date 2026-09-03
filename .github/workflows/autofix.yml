@@ -1,0 +1,138 @@
+---
+name: 🧹 Autofix
+
+# ─────────────────────────────────────────────────────────────────────────────
+# WHY THIS EXISTS
+#
+# `.husky/pre-commit` runs lint-staged, which runs `eslint --fix` and
+# `prettier --write` on every file being committed. On a developer's machine
+# that means a formatting slip never reaches CI at all.
+#
+# It has never once run on the CLIENT's machine. Husky installs its git hooks
+# from the `prepare` script during `npm install`, and CJ's setup
+# (marketing/websites/the-links/cj-setup.md) deliberately installs nothing but
+# Git — no Node, no npm, no `npm install`. So `.git/hooks` is empty there, the
+# formatter never fires, and the first thing that notices a mis-wrapped line is
+# a red `Quality` check five minutes later, written in a vocabulary the client
+# cannot act on. It cost two round-trips on PR #47 for a single word on the
+# wrong side of a line break.
+#
+# So the fix goes where the client is not: formatting is repaired in CI and
+# pushed back to `staging`. Nothing changes on their machine, which is the same
+# move `deploy.yml` already makes for deploy attribution — when the client
+# cannot reasonably carry a piece of the toolchain, move it off them rather than
+# asking them to learn it.
+#
+# THE GATE IS UNCHANGED. `Quality` still runs `npm run lint` and still blocks
+# the promotion PR into `main`. This only means the client stops being the one
+# who trips it on something a machine can fix.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# TWO PROPERTIES WORTH KNOWING BEFORE YOU EDIT THIS
+#
+# 1. NO LOOP, and not by luck. A push made with the default `GITHUB_TOKEN` does
+#    not trigger further workflow runs — that is GitHub's own recursion guard.
+#    The `github.actor` check below is a second belt. If you ever swap in a PAT
+#    to make downstream workflows fire, you REMOVE the guard that stops this
+#    workflow retriggering itself, and you must replace it with something else.
+#
+# 2. The consequence of (1): the fix-up commit gets no `Quality` run and no
+#    staging deploy of its own. That is deliberate and safe — the change is
+#    whitespace, so the built site is identical, and the staging alias is
+#    already being repointed by the deploy triggered by the original push. The
+#    formatted commit ships with whatever lands next.
+#
+# ⚠️ THE CLIENT'S CLONE DIVERGES when this pushes. Their agent must pull at the
+# start of a session or its next push is rejected as non-fast-forward. That rule
+# is in CLAUDE.md's operator section; if you remove it, remove this workflow too.
+# ─────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    branches: [staging]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: autofix-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  autofix:
+    name: Format and push back
+    # Never act on our own commit. Redundant with GitHub's recursion guard (see
+    # note 1 above) and kept because the cost of being wrong is an infinite loop.
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout staging
+        uses: actions/checkout@v6
+        with:
+          ref: staging
+          # Needed to push the fix back. Every other workflow in this repo sets
+          # this false; this is the one job whose whole purpose is to write.
+          persist-credentials: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      # `cache: 'npm'` above caches the npm DOWNLOAD cache, not node_modules, so
+      # `npm ci` still rebuilds the tree every run — 97s of a 4m45s Quality run.
+      # Caching the tree itself keyed on the lockfile takes it to seconds. The
+      # key includes the Node major because native builds are not portable across
+      # versions.
+      - name: Cache node_modules
+        id: modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-22-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      # `|| true` on the lint pass: `--fix` repairs what it can and then still
+      # exits non-zero for anything it cannot. Those are real problems for the
+      # `Quality` gate to report on the promotion PR — they are not this
+      # workflow's business, and failing here would leave the FORMATTING unfixed
+      # as well, which is the one thing it is here to do.
+      - name: eslint --fix
+        run: npx eslint src --ext .ts,.tsx,.astro --fix || true
+
+      - name: prettier --write
+        run: npx prettier --write src
+
+      - name: Commit and push if anything changed
+        run: |
+          if git diff --quiet; then
+            echo "Nothing to fix — formatting was already clean."
+            exit 0
+          fi
+
+          echo "Files repaired:"
+          git diff --name-only
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "style: apply automatic formatting
+
+          Pushed by .github/workflows/autofix.yml. The pre-commit formatter does
+          not run on the client's machine (no Node there by design), so this is
+          where a formatting slip gets repaired instead of failing CI."
+          git push origin HEAD:staging
+
+          {
+            echo "### Formatting repaired"
+            echo ""
+            echo "These files were reformatted and pushed back to \`staging\`:"
+            echo ""
+            git diff --name-only HEAD~1 HEAD | sed 's/^/- /'
+          } >> "$GITHUB_STEP_SUMMARY"

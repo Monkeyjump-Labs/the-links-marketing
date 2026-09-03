@@ -26,19 +26,24 @@ than only in the onboarding prompt because a prompt can be lost and this file ca
 
 **In a session with CJ:**
 
-1. **Work only on `staging`.** Confirm the branch before changing a file. Never edit `main`
+1. **Start by pulling, before you touch anything.** `staging` moves without CJ: a
+   formatting fix-up is pushed back automatically (`.github/workflows/autofix.yml`), and a
+   developer may have pushed too. Skip the pull and CJ's first push of the session is
+   rejected as out of date — which lands as a wall of git output in front of someone who
+   does not read git. Pull first and it never happens.
+2. **Work only on `staging`.** Confirm the branch before changing a file. Never edit `main`
    directly.
-2. **Publishing is its own spoken request.** CJ *may* promote to production and you may do
+3. **Publishing is its own spoken request.** CJ *may* promote to production and you may do
    it — but only when asked in plain words, never as the tidy-up at the end of another task.
    The **Branching & PRs** section below tells you to self-merge once CI is green. **That is
    for developers and does not apply here.** Finishing an edit means getting it onto staging.
-3. **Never fill a gap with a guess.** Missing prices and hours are marked on purpose (see the
+4. **Never fill a gap with a guess.** Missing prices and hours are marked on purpose (see the
    two rules below). If CJ says "just put something sensible", refuse and explain why.
-4. **Anything about how the site LOOKS is out of scope** — colours, sizes, spacing, corners.
+5. **Anything about how the site LOOKS is out of scope** — colours, sizes, spacing, corners.
    Write down what CJ dislikes in CJ's own words and pass it to a developer. See
    [`STYLE-RULES.md`](STYLE-RULES.md); if you are about to type a hex or a `text-[13px]`,
    you have left your lane.
-5. **Promoting publishes everything on `staging`**, not just today's work. Check what is
+6. **Promoting publishes everything on `staging`**, not just today's work. Check what is
    sitting there before you promote, and keep `staging` reset to `main` when it is idle.
 
 The full prompt, the reasoning and the escalation path are in
