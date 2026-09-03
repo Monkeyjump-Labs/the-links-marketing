@@ -5,17 +5,24 @@
  * Booking is offsite on Whoosh, two separate club accounts, so this page's job
  * is to ask which venue and then get out of the way.
  *
- * ── WALK-INS IS A GAP, NOT A STUB (FW-4013) ────────────────────────────────
+ * ── WALK-INS: GAP CLOSED 2026-09-03 ────────────────────────────────────────
  *
- * "Walk-ins" used to answer itself with the string "STUB — walk-in policy needs
- * confirming with the client", printed in the answer slot of a question a
- * customer had just asked. It is not a task of ours that happens to be visible;
- * it is a fact somebody standing in the car park wants, and we do not have it.
- * So it takes the gap system's first mark — same label, same row, an em-dash
- * where the answer goes, and a reason line — rather than being hidden. Hiding it
- * would leave the question silently unasked, which helps nobody.
+ * "Walk-ins" was the worked example of the gap system. It first answered itself
+ * with the string "STUB — walk-in policy needs confirming with the client",
+ * printed in the answer slot of a question a customer had just asked (FW-4013);
+ * that became a `GapCell` `notSet`, because it is not a task of ours that
+ * happens to be visible — it is a fact somebody standing in the car park wants
+ * and nobody had published.
  *
- * The same gap is marked on /policy the same way. Keep the two in step.
+ * CJ supplied the policy on 2026-09-03, so it is now a plain answer. That is the
+ * whole point of marking a gap rather than guessing at one: the mark comes off
+ * cleanly when the fact arrives, and nothing wrong was ever published meanwhile.
+ *
+ * The same gap was mirrored on /policy and has been closed there in the same
+ * pass — the rule now sits in that page's `rules` list. Keep the two in step.
+ *
+ * The `gap` field below stays in the type and in the renderer: it is the general
+ * mechanism, not a one-off for this row.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
@@ -48,11 +55,7 @@ const beforeYouBook: { q: string; a?: string; gap?: { label: string; reason: str
   { q: 'Never played', a: 'Fine. Put it on easy, nobody is waiting behind you, and the simulator does the scoring.' },
   {
     q: 'Walk-ins',
-    gap: {
-      label: 'Turning up without a booking',
-      reason:
-        'Whether you can turn up without a booking has not been published. Reserve a bay if you would rather not risk the drive, or ring ahead and ask what is free.',
-    },
+    a: 'Walk-ins are welcome, but not guaranteed to have a spot. Reserve a bay if you would rather not risk the drive, or ring ahead and ask what is free.',
   },
   {
     q: 'Cancelling',
