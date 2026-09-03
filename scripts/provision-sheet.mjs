@@ -11,6 +11,9 @@
  * a tab and never clears a data row: an operator re-running this on a live
  * workbook must not be able to destroy submissions.
  *
+ * The ONE thing it clears is the README, which it rewrites from scratch every
+ * run — see the note at that step for why a plain overwrite was not enough.
+ *
  * Why a cover page at all: the client opens this spreadsheet cold, months after
  * anyone explained it, usually because they are looking for one person's email
  * address. A grid of a dozen columns with no context is where they give up. The
@@ -206,6 +209,22 @@ await call(`${API}/values:batchUpdate`, {
   }),
 });
 console.log(`✓ header row written on ${DATA_TABS.length} data tabs`);
+
+// CLEAR BEFORE WRITING. A `PUT` of values overwrites the cells it covers and
+// leaves everything below untouched, so a README that gets SHORTER strands the
+// tail of the previous one underneath the new one. That is not hypothetical:
+// adding the `Updates` tab made this list one row longer, and a later run from
+// a checkout that predated it wrote the shorter version back and left orphaned
+// duplicates of the last few lines on the client's cover page (2026-09-03).
+//
+// Safe in a way clearing a data tab would never be — the README is prose that
+// this script owns outright, and `DATA_TABS` deliberately excludes it, so
+// nothing here can touch a submission.
+await call(`${API}/values/${encodeURIComponent(TABS.readme)}!A1:Z200:clear`, {
+  method: 'POST',
+  headers: H,
+  body: '{}',
+});
 
 await call(`${API}/values/${encodeURIComponent(TABS.readme)}!A1?valueInputOption=RAW`, {
   method: 'PUT',
