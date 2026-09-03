@@ -1,0 +1,67 @@
+---
+/**
+ * The subscribe strip that closes a page: a heading, one line of reason, and
+ * `SubscribeForm`.
+ *
+ * **Why it is a band and not a section.** It appears at the foot of every
+ * content page, so it must not participate in a page's composition — the
+ * homepage in particular alternates its grounds deliberately (midnight → white
+ * → midnight → white → ember → white) and spends the ember exactly once. A
+ * repeated element that joined that sequence would break it on one page or
+ * another the first time a page was reordered. So this reads as CHROME, like
+ * the footer directly beneath it: greige, which is used by no page band, with
+ * the 4px score rule the token ladder reserves for a band separator. Wherever a
+ * page ends, this closes it the same way.
+ *
+ * Mounted once in `BaseLayout` rather than pasted onto each page — see the
+ * `subscribe` prop there for how a page opts out. That is also what keeps it
+ * off the pages where an email capture would be wrong (the thanks page, the
+ * legal pages, 404).
+ *
+ * The heading is a question rather than an instruction ("Want to hear…" not
+ * "Subscribe"), because the button already says Subscribe and a strip that says
+ * it twice reads as an advert. Banned words apply here as everywhere: no
+ * "premier", "state-of-the-art", "ultimate" (CLAUDE.md).
+ */
+import SubscribeForm from './SubscribeForm.astro';
+
+interface Props {
+  heading?: string;
+  blurb?: string;
+  listName?: string;
+  /** Passed through to the row when the page is about one venue. */
+  venue?: string;
+  class?: string;
+}
+
+const {
+  heading = 'Want to hear what is on?',
+  blurb = 'Leagues, events and the odd thing worth driving out for. A few emails a year, not a few a week.',
+  listName = 'updates',
+  venue,
+  class: className = '',
+} = Astro.props;
+---
+
+<section class:list={['border-t-score border-navy bg-greige', className]} aria-labelledby="subscribe-band-heading">
+  <div class="mx-auto max-w-content px-gutter py-s8 lg:px-gutter-lg">
+    {
+      /* Two columns from `lg`, and the form column is the narrower one: the
+        strip is an offer, not a page section, and a full-width input reads as
+        the main event. Below `lg` they stack and the form comes second.
+        A five-column grid split 3/2 rather than an arbitrary `minmax()` track —
+        `npm run style:check` counts a one-off value as a design decision, and
+        this ratio does not need to be one. */
+    }
+    <div class="grid gap-s6 lg:grid-cols-5 lg:items-start lg:gap-s8">
+      <div class="lg:col-span-3">
+        <h2 id="subscribe-band-heading" class="text-row leading-display font-extrabold tracking-display text-ink">
+          {heading}
+        </h2>
+        <p class="mt-s3 max-w-prose-page text-body leading-body text-inkBody">{blurb}</p>
+      </div>
+
+      <SubscribeForm listName={listName} venue={venue} class="min-w-0 lg:col-span-2" />
+    </div>
+  </div>
+</section>

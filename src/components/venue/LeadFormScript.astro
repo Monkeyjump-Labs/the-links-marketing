@@ -19,15 +19,20 @@
  *
  * `ENDPOINT` below is used for BOTH the `fetch` and the `form[action="…"]`
  * selector that finds the forms to enhance, so it must stay character-identical
- * to the `action` attribute in `EnquiryForm.astro`, `LessonEnquiryForm.astro`
- * and `WaitlistForm.astro`. If they drift, this script matches nothing and
- * every form silently degrades to a full page navigation.
+ * to the `action` attribute in `EnquiryForm.astro`, `LessonEnquiryForm.astro`,
+ * `WaitlistForm.astro` and `SubscribeForm.astro`. If they drift, this script
+ * matches nothing and every form silently degrades to a full page navigation.
  *
  * That ordering matters on this site more than most. The homepage's ember band
  * is a waitlist and the events form is the brightest object on its page — a
  * visitor whose JavaScript failed to load should still be able to reach us,
  * because the alternative is silently losing the conversion the whole page is
  * built around.
+ *
+ * `SubscribeForm` raises the stakes on the no-JS path specifically, because it
+ * is mounted in `BaseLayout` and therefore renders on nearly every page. A
+ * regression here used to cost one page's conversions; it now costs a full-page
+ * navigation to `/thanks/` on all of them.
  *
  * It is one delegated listener on `document` rather than per-form wiring, so a
  * form rendered anywhere (including inside the styleguide) is covered without
