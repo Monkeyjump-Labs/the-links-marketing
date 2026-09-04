@@ -35,14 +35,6 @@
  * action colour is worth avoiding, so the capture band is ember at full strength
  * — once, like the homepage's.
  *
- * **"On the blanks" is the page's closing note and it is a promise, not an
- * apology.** The note commits to publishing night, format, length and price
- * TOGETHER, before registration opens rather than after you have paid. Nobody
- * asked for that. The 2026 fall lineup is the first time that promise has come
- * due, and it was kept: all four are on every Lakeville block, published the day
- * registration opened rather than after. Keep it that way — the note is now a
- * claim with a precedent behind it, which is worth more than the claim was.
- *
  * ── THE 2026 FALL SEASON LANDED 2026-09-04 ─────────────────────────────────
  *
  * CJ supplied the fall lineup and it changed what this page is. Five rows are
@@ -50,10 +42,21 @@
  * first time, Stillwater. Registration is at two different providers, which is
  * why the link lives per-league on the collection rather than once on the page.
  *
- * The nine blocks that follow the collection needed no code: `status: 'archive'`
- * still draws Lakeville's four older seasons disabled and they now sort BELOW
- * the live rows (`order` 6–9), so the first thing on the page is something you
- * can act on. That is the collection doing the job it exists to do.
+ * **The page is now only what you can register for.** Later the same day CJ
+ * asked for the four archived Lakeville seasons and the "On the blanks" closing
+ * note to come off, and both were written for the state this page is no longer
+ * in. The archives existed so a between-seasons page was not empty; it is not
+ * empty now, and four disabled blocks below five live ones are four chances to
+ * read "closed" on a page whose whole job is "open". "On the blanks" explained
+ * gaps that have largely been filled, so it had started to read as an apology
+ * for blanks that are not there.
+ *
+ * ⚠️ The archives are UNPUBLISHED, not deleted — `published: false` on the four
+ * JSON rows, which is the collection's own switch and the one thing here CJ can
+ * reverse alone in Tina. The files keep their real nights, formats and skins
+ * pots. Do not delete them to tidy up: `status: 'archive'` and its whole disabled
+ * treatment in `LeagueBlock` are still live code, and this is the data that
+ * exercises it the next time a season ends.
  *
  * **The entry fee is no longer a blanket gap, and the distinction still matters.**
  * Lakeville's fall rows carry a real `price` — $700 per team, from CJ's own
@@ -190,34 +193,12 @@ const steps = [
   </section>
 
   {
-    /* 5. ON THE BLANKS. The closing note, and a commitment rather than a
-      disclaimer. It is on greige so it reads as the page's own aside — and note
-      that emberMid is 3.66:1 on greige (`rules.noWarningOnGreige`), which is why
-      nothing here is set in the caution colour. */
+    /* 5. "On the blanks" stood here and was removed at CJ's request 2026-09-04,
+      in the same pass that unpublished the four archived Lakeville seasons. It
+      was written for a page that was mostly gaps, and it read as an apology for
+      blanks that are no longer there: the fall lineup states night, format,
+      length and price on every Lakeville row. See the header note. */
   }
-  <section class="bg-greige">
-    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={2}>On the blanks</SectionHead>
-      <div class="max-w-prose-page">
-        <p class="text-lead leading-body text-inkBody">
-          Most of the season above is filled in, and that is new. Every Lakeville night now states what it costs to
-          enter, not just what the skins pot is — the two are different numbers and this page will never quietly use one
-          for the other. Two things are still blank and are marked rather than guessed: Stillwater's lineup arrived with
-          its nights and format but no price, and prizes are not set at either venue. Lakeville's older seasons are kept
-          at the bottom as reference, not registration.
-        </p>
-        <p
-          class="mt-s5 border-l-slab border-ember pl-s4 font-display text-card leading-display font-bold tracking-display text-ink"
-        >
-          We said we would publish night, format, length and price together, before registration opened rather than
-          after you had paid. That is what the Lakeville blocks above are.
-        </p>
-        <p class="mt-s5 text-body leading-body text-inkBody">
-          If a league night has to change once it is running, everyone playing hears it from us first.
-        </p>
-      </div>
-    </div>
-  </section>
 
   <LeagueSchema leagues={leagues} />
 </BaseLayout>
