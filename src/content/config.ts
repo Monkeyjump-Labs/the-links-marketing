@@ -168,13 +168,25 @@ const venues = defineCollection({
      * carries three and ours carried none, which is why Stillwater was the only
      * page on this site SHORTER than the client's (324 words to our 294).
      *
-     * ⚠️ Each `body` must survive the truth audit on its own. Two things on
-     * Stillwater's live page are deliberately NOT reproduced here: the claim that
-     * league play "is in full force" (Stillwater has never run a season — see
-     * `leagues/fall-winter-2026-stillwater.json`, and their own page's CTA says
-     * "Coming Soon"), and St Andrews named as a playable course (the course list
-     * is marked *Not yet set* on /simulators because we do not have one). Their
-     * league FORMATS are restored as the plan, which is what they are.
+     * ⚠️ Each `body` must survive the truth audit on its own. St Andrews named as
+     * a playable course is deliberately NOT reproduced here — the course list is
+     * marked *Not yet set* on /simulators because we do not have one.
+     *
+     * ⚠️ KNOWN DIVERGENCE, and it is deliberate — do not "fix" it back.
+     * Stillwater's league body claimed nothing about a track record until
+     * 2026-09-04, because Stillwater has never run a league season: the record in
+     * `leagues/fall-winter-2026-stillwater.json` is titled "Stillwater's First
+     * League Season" and says so in its own `oneLiner`. On 2026-09-04 CJ, who
+     * owns the business, directed that Stillwater carry the same league body as
+     * Lakeville — "some of the most sought after and fun leagues in the area" —
+     * and was shown this contradiction and the alternatives before choosing it.
+     * It is the owner's claim about the owner's business, so it stands.
+     *
+     * What that costs, so the next person is not surprised by it: the Stillwater
+     * venue page and the Stillwater league page now say different things about
+     * whether leagues have run there, and the body that was replaced carried the
+     * waitlist hook. If either page is rewritten, reconcile the two rather than
+     * reverting one in isolation.
      */
     highlights: z
       .array(
