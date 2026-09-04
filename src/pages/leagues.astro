@@ -4,13 +4,21 @@
  * corpus. Ported to the converged Paper design 2026-08-03 (FW-3967);
  * spec in `design/SUBPAGE-EXPLORATION.md`.
  *
- * **The idea: the season is a TRACK, not a catalogue.** In August both venues
- * are between seasons, so a page built as a list of leagues you can join is a
- * page whose every row says "no". A track says something true and useful
- * instead — here is where the season is, and here is when the thing you want
- * happens. That is why `SeasonTrack` sits in the hero-strip position: it is the
- * ONE justified exception to the 4-cell strip, same furniture, but its rule is
- * only partly filled because progress is the fact it exists to show.
+ * **The idea: the season is a TRACK, not a catalogue.** The track was written in
+ * August, when both venues were between seasons and a page built as a list of
+ * leagues you could join would have been a page whose every row said "no". It
+ * earns its place just as much now that registration is open: the question has
+ * moved from "is there anything?" to "when does it start and how long is it",
+ * and the track answers that in the same three cells. That is why `SeasonTrack`
+ * sits in the hero-strip position: it is the ONE justified exception to the
+ * 4-cell strip, same furniture, but its rule is only partly filled because
+ * progress is the fact it exists to show.
+ *
+ * ⚠️ The track's three steps are HARDCODED here and its `activeIndex` with them.
+ * They are the one part of this page that does not follow the collection, so a
+ * season change has to move them by hand — they said "there is nothing to
+ * register for yet" for a fortnight after registration opened if nobody did.
+ * Check them whenever `state` changes on a live row.
  *
  * **The capture band is the largest thing after the hero**, deliberately. Across
  * all 126 audited simulator and golf-course sites, exactly ZERO offered a
@@ -30,22 +38,30 @@
  * **"On the blanks" is the page's closing note and it is a promise, not an
  * apology.** The note commits to publishing night, format, length and price
  * TOGETHER, before registration opens rather than after you have paid. Nobody
- * asked for that. It turns the page's largest gap into the reason to trust it,
- * and it is the single idea from this page's exploration most worth keeping —
- * MORE credible now that last season is on the page, because the promise is
- * made by someone visibly showing their working rather than by an empty page.
+ * asked for that. The 2026 fall lineup is the first time that promise has come
+ * due, and it was kept: all four are on every Lakeville block, published the day
+ * registration opened rather than after. Keep it that way — the note is now a
+ * claim with a precedent behind it, which is worth more than the claim was.
  *
- * **Lakeville's four blocks are archived seasons (FW-3998).** They carry real
- * nights, formats, lengths and skins pots from the venue's own league sheets and
- * are drawn disabled: reference, not registration. The treatment is a data state
- * on the collection (`status: 'archive'`), never a branch here — the client
- * flips a row to `live` in Tina when the 2026 lineup lands and this file does
- * not change. Note that every source document is Lakeville; Stillwater's first
- * season is genuinely still being designed and keeps its gaps.
+ * ── THE 2026 FALL SEASON LANDED 2026-09-04 ─────────────────────────────────
  *
- * The entry fee is a gap ON PURPOSE and must stay one. The dollar figures in
- * those sheets are SKINS BUY-INS — "to be paid at beginning of the season" — and
- * no document states what joining costs. See `LeagueBlock`'s facts table.
+ * CJ supplied the fall lineup and it changed what this page is. Five rows are
+ * `state: 'open'` with real register links — four Lakeville nights and, for the
+ * first time, Stillwater. Registration is at two different providers, which is
+ * why the link lives per-league on the collection rather than once on the page.
+ *
+ * The nine blocks that follow the collection needed no code: `status: 'archive'`
+ * still draws Lakeville's four older seasons disabled and they now sort BELOW
+ * the live rows (`order` 6–9), so the first thing on the page is something you
+ * can act on. That is the collection doing the job it exists to do.
+ *
+ * **The entry fee is no longer a blanket gap, and the distinction still matters.**
+ * Lakeville's fall rows carry a real `price` — $700 per team, from CJ's own
+ * lineup document — and that is an ENTRY FEE, unlike the dollar figures on the
+ * archived sheets, which are SKINS BUY-INS ("to be paid at beginning of the
+ * season"). The two fields stay separate for exactly that reason; see
+ * `LeagueBlock`'s facts table. Stillwater's document states no price at all, so
+ * its Cost cell is still a gap and must stay one until CJ supplies the figure.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -71,7 +87,7 @@ const season = upcomingSeason(leagues);
 const metadata = {
   metaTitle: 'Indoor Golf Leagues — Lakeville & Stillwater, MN',
   metaDescription:
-    'Fall and winter simulator golf leagues at The Links, Lakeville and Stillwater MN. Handicapped and beginner-friendly. Join the list for the next season.',
+    'Register for 2026 fall simulator golf leagues at The Links, Lakeville and Stillwater MN. Two-person teams, handicapped and beginner-friendly. Play starts the week of 4 October.',
 };
 
 /**
@@ -83,18 +99,18 @@ const metadata = {
 const steps = [
   {
     marker: 'Now',
-    title: 'Between seasons',
-    body: 'Summer play has wound down. There is nothing to register for yet, and we are not going to pretend otherwise.',
+    title: 'Registration is open',
+    body: 'Both venues are taking teams for the fall season. Pick your night and sign up — teams fill fastest in the first week.',
   },
   {
     marker: 'Next',
-    title: 'The lineup is published',
-    body: 'Night, format, length and price — all four at once, so you can decide with the whole picture in front of you.',
+    title: 'Play starts the week of 4 October',
+    body: 'You play the same night every week: Monday to Thursday at Lakeville, Sunday to Thursday at Stillwater.',
   },
   {
     marker: 'Then',
-    title: 'Registration opens',
-    body: 'Everyone on the list hears the day it does. Teams fill fastest in the first week.',
+    title: 'Ten weeks, through mid-December',
+    body: 'Lakeville runs eight weeks of regular season and two of playoffs, with Thanksgiving week off.',
   },
 ];
 ---
@@ -135,25 +151,31 @@ const steps = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
         <div>
-          <p class="caps-label text-white">Before anyone else</p>
+          <p class="caps-label text-white">Open now</p>
           <h2 class="mt-s4 text-section leading-display font-extrabold tracking-display-tight text-white">
-            Get first word on {season}
+            Registration is open for {season}
           </h2>
           <p class="mt-s5 text-lead leading-body text-surface">
-            Registration has not opened at either venue. One email the day it does — that is the whole arrangement, and
-            it is the only mail you will get from us.
+            Both venues are taking teams. Every league below has its own sign-up link — Lakeville and Stillwater
+            register in different places, so use the button on the night you want.
           </p>
           <p
             class="my-s6 border-y-score border-white py-s4 font-display text-row leading-display font-bold tracking-display text-white"
           >
-            Teams fill fastest in the first week. The list is how you are in it.
+            Teams fill fastest in the first week.
           </p>
         </div>
 
+        {
+          /* The list survives an open season, and this is the state it was built
+            for as much as the empty one. A night that fills, or four nights that
+            all fall wrong, is exactly where 11% of the corpus says "registration
+            closed" and stops. Here it still ends somewhere. */
+        }
         <WaitlistForm
           listName="league-general"
-          heading="Join the list"
-          blurb="One email when registration opens. Nothing else, ever."
+          heading="Can't make these nights?"
+          blurb="If a night fills or these dates do not suit, one email when the next season opens. Nothing else, ever."
         />
       </div>
     </div>
@@ -178,15 +200,17 @@ const steps = [
       <SectionHead index={2}>On the blanks</SectionHead>
       <div class="max-w-prose-page">
         <p class="text-lead leading-body text-inkBody">
-          You will have noticed how much of the season above is not filled in. Lakeville's blocks are last season's,
-          kept up so you can see the shape of the thing rather than an empty page — the nights and formats held up well,
-          and the only number in them is the skins pot. What it costs to join has never been written down, and
-          Stillwater has not run a league at all yet.
+          Most of the season above is filled in, and that is new. Every Lakeville night now states what it costs to
+          enter, not just what the skins pot is — the two are different numbers and this page will never quietly use one
+          for the other. Two things are still blank and are marked rather than guessed: Stillwater's lineup arrived with
+          its nights and format but no price, and prizes are not set at either venue. Lakeville's older seasons are kept
+          at the bottom as reference, not registration.
         </p>
         <p
           class="mt-s5 border-l-slab border-ember pl-s4 font-display text-card leading-display font-bold tracking-display text-ink"
         >
-          When they are set, we will publish all four together — before registration opens, not after you have paid.
+          We said we would publish night, format, length and price together, before registration opened rather than
+          after you had paid. That is what the Lakeville blocks above are.
         </p>
         <p class="mt-s5 text-body leading-body text-inkBody">
           If a league night has to change once it is running, everyone playing hears it from us first.

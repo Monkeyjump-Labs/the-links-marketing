@@ -172,21 +172,18 @@ const venues = defineCollection({
      * a playable course is deliberately NOT reproduced here — the course list is
      * marked *Not yet set* on /simulators because we do not have one.
      *
-     * ⚠️ KNOWN DIVERGENCE, and it is deliberate — do not "fix" it back.
-     * Stillwater's league body claimed nothing about a track record until
-     * 2026-09-04, because Stillwater has never run a league season: the record in
-     * `leagues/fall-winter-2026-stillwater.json` is titled "Stillwater's First
-     * League Season" and says so in its own `oneLiner`. On 2026-09-04 CJ, who
-     * owns the business, directed that Stillwater carry the same league body as
-     * Lakeville — "some of the most sought after and fun leagues in the area" —
-     * and was shown this contradiction and the alternatives before choosing it.
-     * It is the owner's claim about the owner's business, so it stands.
-     *
-     * What that costs, so the next person is not surprised by it: the Stillwater
-     * venue page and the Stillwater league page now say different things about
-     * whether leagues have run there, and the body that was replaced carried the
-     * waitlist hook. If either page is rewritten, reconcile the two rather than
-     * reverting one in isolation.
+     * ⚠️ Stillwater's league body was a KNOWN DIVERGENCE for one day and is no
+     * longer one. Keeping the history because it is the reason the wording is
+     * what it is: on 2026-09-04 CJ directed that Stillwater carry Lakeville's
+     * league body — "some of the most sought after and fun leagues in the area" —
+     * at a point when Stillwater had never run a league season and its own league
+     * record said so, and was shown that contradiction before choosing it. Later
+     * the same day CJ supplied the 2026 fall lineup, which opened registration at
+     * Stillwater for the first time (`leagues/2026-fall-stillwater-scramble.json`,
+     * `state: 'open'`). The venue page and the league page now agree, so there is
+     * nothing left to reconcile — but if the Stillwater league is ever pulled,
+     * this body goes back to claiming a record the site cannot support. Check it
+     * then rather than assuming it is still safe.
      */
     highlights: z
       .array(
