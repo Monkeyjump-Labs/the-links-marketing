@@ -1,7 +1,7 @@
 {
   "name": "Lakeville Winter Scramble",
   "venue": "lakeville",
-  "order": 3,
+  "order": 8,
   "state": "between",
   "status": "archive",
   "oneLiner": "Fourteen weeks of it, January through mid-April, with each night run as its own league rather than pooled — twelve weeks of regular play and two of playoffs.",
@@ -11,7 +11,7 @@
   "weeks": 14,
   "skins": "$48 per team, gross",
   "prizes": "Top 4 teams played off for 1st, 2nd and 3rd",
-  "nextSeasonNote": "This is how it ran last winter. Check back for the updated 2026 fall schedule.",
+  "nextSeasonNote": "This is how it ran before. The 2026 fall lineup is published and open for registration.",
   "season": "2026 Winter",
-  "published": true
+  "published": false
 }

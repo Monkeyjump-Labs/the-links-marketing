@@ -93,7 +93,7 @@ interface Job {
 
 const things: Job[] = [
   { title: 'Play', body: 'Book a bay by the hour.', reassure: 'Up to six of you, same price.', href: '/book/' },
-  { title: 'Compete', body: 'Fall and winter league play, planned at both venues.', href: '/leagues/' },
+  { title: 'Compete', body: 'Fall league play, open for sign-ups at both venues.', href: '/leagues/' },
   { title: 'Events', body: 'Work parties, birthdays, bachelor parties, fundraisers.', href: '/events/' },
   {
     title: 'Improve',
@@ -385,8 +385,8 @@ const slots: Record<
             Fall &amp; winter leagues
           </h2>
           <p class="mt-s5 text-lead leading-body text-surface">
-            Teams, handicaps, a live leaderboard and a bar tab. Registration for {season} has not opened yet — join the list
-            and you will hear the day it does.
+            Teams, handicaps, a live leaderboard and a bar tab. Registration for {season} is open at both venues, and play
+            starts the week of 4 October.
           </p>
           <p
             class="my-s6 border-y-score border-white py-s4 font-display text-row leading-display font-bold tracking-display text-white"
@@ -397,14 +397,14 @@ const slots: Record<
             href="/leagues/"
             class="inline-flex min-h-tap items-center font-bold text-surface underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-white"
           >
-            See how leagues work
+            See the nights and register
           </a>
         </div>
 
         <WaitlistForm
           listName="league-general"
-          heading="Get first word on league sign-ups"
-          blurb="One email when registration opens. Nothing else."
+          heading="Can't make these nights?"
+          blurb="If a night fills or these dates do not suit, one email when the next season opens. Nothing else."
         />
       </div>
     </div>

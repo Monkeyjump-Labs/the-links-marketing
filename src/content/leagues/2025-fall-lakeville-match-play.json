@@ -1,7 +1,7 @@
 {
   "name": "Lakeville Fall Match Play",
   "venue": "lakeville",
-  "order": 2,
+  "order": 7,
   "state": "between",
   "status": "archive",
   "oneLiner": "The same ten weeks, played head to head against another team — handicapped, so the match stayed close whoever turned up.",
@@ -11,7 +11,7 @@
   "weeks": 10,
   "skins": "$64 per team, net and gross",
   "prizes": "Top 4 teams played off for 1st, 2nd and 3rd",
-  "nextSeasonNote": "This is how it ran last year. Check back for the updated 2026 fall schedule.",
+  "nextSeasonNote": "This is how it ran before. The 2026 fall lineup is published and open for registration.",
   "season": "2025 Fall",
-  "published": true
+  "published": false
 }

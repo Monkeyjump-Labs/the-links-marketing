@@ -44,7 +44,7 @@ import WaitlistForm from './WaitlistForm.astro';
 import ReadoutCell from './ReadoutCell.astro';
 import GapCell from './GapCell.astro';
 import { buttonClasses } from '../../lib/buttons';
-import { LEAGUE_WAITLIST_ID } from '../../lib/leagues';
+import { LEAGUE_WAITLIST_ID, formatLeagueDate } from '../../lib/leagues';
 
 interface Props {
   league: CollectionEntry<'leagues'>;
@@ -91,7 +91,8 @@ const facts: { label: string; value?: string; reason?: string }[] = isArchive
       {
         label: 'Entry fee',
         value: d.price,
-        reason: 'Last season’s sheets set the skins pot and nothing else. The fee to join comes with the new schedule.',
+        reason:
+          'Last season’s sheets set the skins pot and nothing else, so what that season cost to enter was never written down. The 2026 fall nights above state their own fee.',
       },
       { label: 'Prizes', value: d.prizes },
     ]
@@ -99,7 +100,7 @@ const facts: { label: string; value?: string; reason?: string }[] = isArchive
       { label: 'Night', value: d.night },
       { label: 'Format', value: d.format },
       { label: 'Length', value: d.weeks ? `${d.weeks} weeks` : undefined },
-      { label: 'Starts', value: d.startDate },
+      { label: 'Starts', value: formatLeagueDate(d.startDate) },
       { label: 'Cost', value: d.price },
       { label: 'Prizes', value: d.prizes },
     ];

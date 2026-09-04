@@ -1,0 +1,17 @@
+{
+  "name": "Lakeville Thursday Scramble",
+  "venue": "lakeville",
+  "order": 4,
+  "state": "open",
+  "status": "live",
+  "oneLiner": "The Thursday night version of the Monday scramble — two-person, against the field, handicapped, with eight weeks of regular season and two of playoffs. League members take 10% off the menu.",
+  "beginnerNote": "The friendliest format on the schedule: you both hit, you play the better ball, and the scorecard never records which of you hit the bad one. Handicaps keep the field level.",
+  "night": "Thursdays, 6:00pm",
+  "format": "2-person scramble against the field, handicapped, 18 holes. Format may change based on player feedback.",
+  "weeks": 10,
+  "startDate": "2026-10-08",
+  "price": "$700 per team. A $50 non-refundable deposit per team holds your spot.",
+  "registerUrl": "https://app.primesignup.com/lakeville",
+  "season": "2026 Fall",
+  "published": true
+}
