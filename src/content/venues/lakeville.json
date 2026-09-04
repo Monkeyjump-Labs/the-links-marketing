@@ -17,6 +17,20 @@
   "openedYear": 2022,
   "tagline": "Your south metro clubhouse.",
   "intro": "Six GolfZon TwoVision NX bays, a full bar, food and nine TV's in the south metro.",
+  "highlights": [
+    {
+      "title": "Top-of-the-line simulator technology",
+      "body": "Six GolfZon TwoVision NX bays, incredible technology!"
+    },
+    {
+      "title": "Leagues and contests you'll love",
+      "body": "Floating and fixed day leagues, paired with weekly contests. These are some of the most sought after and fun leagues in the area!"
+    },
+    {
+      "title": "Full bar and menu",
+      "body": "Drink what you crave, eat what you want. No judging here."
+    }
+  ],
   "hours": [
     {
       "day": "Mon",
