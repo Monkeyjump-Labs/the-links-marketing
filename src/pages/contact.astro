@@ -10,9 +10,12 @@
  * one sentence, and only one of them was ever addressed to a visitor.
  *
  *   the form and the maps    work we owe. `StubNote`, staging only.
- *   parking                  a fact somebody about to drive here wants, and we
- *                            do not have it. That is a gap, so it takes a
- *                            `GapCell` and stays visible.
+ *   parking                  carried a `GapCell` until the owner asked for it
+ *                            to come off (2026-09-08). The fact was never
+ *                            supplied; the mark said so, and saying so is no
+ *                            longer wanted. If the venues ever describe their
+ *                            car parks it goes back as ordinary copy, not as
+ *                            a mark.
  *   hr@lakevillelinks.com    a REAL, USABLE ADDRESS that was buried inside a
  *                            stub. It is published as ordinary copy now, which
  *                            is what it should have been all along.
@@ -21,7 +24,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import HoursTable from '../components/venue/HoursTable.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import PendingTag from '../components/venue/PendingTag.astro';
-import GapCell from '../components/venue/GapCell.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import { getVenues, formatAddress, telHref, venuePath } from '../lib/venues';
 
@@ -90,21 +92,10 @@ const metadata = {
             </a>. Golf knowledge optional; enthusiasm for a warm building in February less so.
           </p>
         </div>
-        {
-          /* Parking is a real question for somebody about to drive to either
-            venue and we have nothing published on it. A gap mark says that;
-            silence would just leave them guessing in a car park. */
-        }
-        <GapCell
-          label="Parking"
-          state="notSet"
-          size="text"
-          reason="Neither venue publishes parking guidance and we are not going to describe a car park we have not stood in. Ring ahead and someone will tell you exactly where to leave the car."
-        />
       </div>
       <StubNote
         class="mt-6"
-        needs="Still to build on this page: a contact form routed through /api/lead, and an embedded map per venue. Parking guidance is marked as a gap beside this note rather than hidden — replace the GapCell with real copy once the venues describe their car parks."
+        needs="Still to build on this page: a contact form routed through /api/lead, and an embedded map per venue."
       />
     </section>
   </section>
