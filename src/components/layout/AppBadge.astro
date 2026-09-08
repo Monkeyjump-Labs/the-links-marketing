@@ -27,12 +27,22 @@ import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_NAME } from '../../lib/ap
   }
   <Image src={linksLogo} alt="" width={1006} height={389} class="h-7 w-auto shrink-0" />
 
-  <div class="min-w-0 flex-1">
+  {
+    /*
+     * `basis-64`, NOT `min-w-0 flex-1`. With the latter this column did not wrap
+     * when the row ran out of room — it SHRANK, and at a ~530px viewport it
+     * measured 43px wide and threw the sentence down eleven lines, standing the
+     * badge 383px tall. A flex basis gives the text a width it will not go below,
+     * so the row wraps it onto its own line instead, which is what wrapping is
+     * for. Checked at 375px, 530px and 1280px.
+     */
+  }
+  <div class="flex-1 basis-64">
     <p class="caps-label text-label-sm text-inkMuted">The {APP_NAME} app</p>
     <p class="mt-s2 text-small leading-body text-inkBody">{APP_PITCH}</p>
   </div>
 
-  <div class="flex flex-wrap gap-s3">
+  <div class="flex shrink-0 flex-wrap gap-s3">
     <a
       href={APP_STORE_URL}
       target="_blank"

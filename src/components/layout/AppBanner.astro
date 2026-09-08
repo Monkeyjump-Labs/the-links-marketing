@@ -16,12 +16,22 @@
  * reasoning as the note on `SubscribeBand` in CLAUDE.md — a promo surface that
  * appears on every page earns its place by staying quiet.
  *
- * ── GROUND ─────────────────────────────────────────────────────────────────
+ * ── GROUND, AND WHY THERE IS NO MARK HERE ──────────────────────────────────
  *
- * Greige, because the logo is the dark-ink mark and needs a light field, and
- * because paper is too close to the header's white to read as a separate strip.
- * The stack becomes greige / white / midnight, which is three distinguishable
+ * Greige: paper is too close to the header's white to read as a separate
+ * strip, so the stack is greige / white / midnight — three distinguishable
  * bands rather than a white sandwich.
+ *
+ * The strip carries NO logo. It shipped with one, and the only mark available
+ * is the site wordmark the header renders one row below it — the same artwork
+ * twice, a hand's width apart, which reads as a rendering fault rather than as
+ * branding. The owner chose to drop it here rather than repeat it (2026-09-08).
+ *
+ * If a real app icon lands later, this is where it goes: square, `shrink-0`,
+ * roughly `h-7`, first child of the row. A distinct icon earns its place
+ * because it says "this is an app"; the wordmark said only "this is the site
+ * you are already on". The footer badge keeps the wordmark, where nothing
+ * competes with it.
  *
  * ── ONE BUTTON, TWO STORES ─────────────────────────────────────────────────
  *
@@ -40,8 +50,6 @@
  * No cookie, nothing sent anywhere, and a visitor with storage disabled simply
  * keeps seeing the strip — which is the safe way for it to fail.
  */
-import { Image } from 'astro:assets';
-import linksLogo from '../../assets/images/links-logo-dark.png';
 import { buttonClasses } from '../../lib/buttons';
 import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_NAME } from '../../lib/app';
 ---
@@ -61,16 +69,6 @@ import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_NAME } from '../../lib/ap
      */
   }
   <div class="mx-auto flex max-w-content items-center gap-x-s4 px-gutter py-s2 lg:gap-x-s5 lg:px-gutter-lg">
-    {
-      /* Hidden below `sm`: at phone widths this is the wordmark that already
-        sits in the header one row below, and the room it costs comes straight
-        out of the sentence. width/height are the asset's own pixel dimensions
-        and reserve the box before it loads; `h-6` sets the display size.
-        Replacing the file means replacing these two numbers in the same commit —
-        the same rule the header's copy of this logo carries. */
-    }
-    <Image src={linksLogo} alt="" width={1006} height={389} class="hidden h-6 w-auto shrink-0 sm:block" />
-
     <p class="min-w-0 flex-1 text-label-sm leading-body text-inkBody sm:text-small">{APP_PITCH}</p>
 
     <a
