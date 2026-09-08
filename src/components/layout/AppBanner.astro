@@ -1,0 +1,132 @@
+---
+/**
+ * The app strip: one line, one compact Download, one dismiss. It rides at the
+ * top of the sticky stack in `BaseLayout`, so it stays put as the page scrolls.
+ *
+ * ── IT MUST NOT OUTRANK "BOOK A BAY" ───────────────────────────────────────
+ *
+ * The site's primary CTA is transactional and lives in the header directly
+ * below this strip (playbook core.md §6: two clicks to book from any page). An
+ * ember fill here would put a second ember button one row above the first and
+ * make the visitor choose between downloading an app and booking a bay — which
+ * is not a choice we want to offer, because only one of them is revenue today.
+ *
+ * So the Download control takes the `outline` variant: navy on greige, legible
+ * at 13.31:1, unmistakably secondary to the ember button beneath it. Same
+ * reasoning as the note on `SubscribeBand` in CLAUDE.md — a promo surface that
+ * appears on every page earns its place by staying quiet.
+ *
+ * ── GROUND, AND WHY THERE IS NO MARK HERE ──────────────────────────────────
+ *
+ * Greige: paper is too close to the header's white to read as a separate
+ * strip, so the stack is greige / white / midnight — three distinguishable
+ * bands rather than a white sandwich.
+ *
+ * The strip carries NO logo. It shipped with one, and the only mark available
+ * is the site wordmark the header renders one row below it — the same artwork
+ * twice, a hand's width apart, which reads as a rendering fault rather than as
+ * branding. The owner chose to drop it here rather than repeat it (2026-09-08).
+ *
+ * If a real app icon lands later, this is where it goes: square, `shrink-0`,
+ * roughly `h-7`, first child of the row. A distinct icon earns its place
+ * because it says "this is an app"; the wordmark said only "this is the site
+ * you are already on". The footer badge keeps the wordmark, where nothing
+ * competes with it.
+ *
+ * ── ONE BUTTON, TWO STORES ─────────────────────────────────────────────────
+ *
+ * The client asked for a single compact Download. It is server-rendered to
+ * Apple and rewritten to Google Play for an Android user agent by the inline
+ * script below — so it is correct without JS for everyone except Android, and
+ * correct with JS for everyone. The footer badge names both stores outright for
+ * anyone the sniff gets wrong; that is the fallback, not this.
+ *
+ * ── DISMISSAL ──────────────────────────────────────────────────────────────
+ *
+ * The × sets a flag in `localStorage` and the strip stays gone on later pages
+ * and later visits. The script is `is:inline` and sits immediately after the
+ * markup on purpose: a bundled module script is deferred until after parse, and
+ * a dismissed banner would flash into view on every page load before vanishing.
+ * No cookie, nothing sent anywhere, and a visitor with storage disabled simply
+ * keeps seeing the strip — which is the safe way for it to fail.
+ */
+import { buttonClasses } from '../../lib/buttons';
+import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_NAME } from '../../lib/app';
+---
+
+<aside class="border-b-hairline border-ink/15 bg-greige" aria-label={`${APP_NAME} app`} data-app-banner>
+  {
+    /*
+     * THIS ROW MUST NOT WRAP. Built with `flex-wrap` it measured 281px tall at
+     * 375px — every child took its own line — and the sticky stack then stood
+     * at 547px, two thirds of a phone screen, permanently. A promo strip that
+     * costs the visitor most of their viewport on every page is worse than no
+     * strip at all.
+     *
+     * So: one row, the sentence is the only thing allowed to take space
+     * (`min-w-0 flex-1`), and everything else is `shrink-0`. The floor is the
+     * 44px tap target inside the button, which is where it should be.
+     */
+  }
+  <div class="mx-auto flex max-w-content items-center gap-x-s4 px-gutter py-s2 lg:gap-x-s5 lg:px-gutter-lg">
+    <p class="min-w-0 flex-1 text-label-sm leading-body text-inkBody sm:text-small">{APP_PITCH}</p>
+
+    <a
+      href={APP_STORE_URL}
+      target="_blank"
+      rel="noopener"
+      class={`${buttonClasses('sm', 'outline')} shrink-0`}
+      data-app-store-link
+      data-play-url={PLAY_STORE_URL}
+      data-analytics="app-banner-download"
+    >
+      Download
+    </a>
+
+    <button
+      type="button"
+      class="flex min-h-tap min-w-tap shrink-0 items-center justify-center text-body text-inkMuted transition-colors duration-fast ease-standard hover:text-ink"
+      data-app-dismiss
+      aria-label={`Dismiss the ${APP_NAME} app message`}
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</aside>
+
+<script is:inline>
+  (function () {
+    var KEY = 'links:app-banner-dismissed';
+    var banner = document.querySelector('[data-app-banner]');
+    if (!banner) return;
+
+    // Hide before paint if this visitor has already dismissed it.
+    try {
+      if (window.localStorage.getItem(KEY) === '1') banner.hidden = true;
+    } catch {
+      /* storage blocked — keep the strip, it is not worth an error */
+    }
+
+    // Android users get Google Play; everyone else keeps the rendered Apple link.
+    try {
+      if (/android/i.test(navigator.userAgent)) {
+        var link = banner.querySelector('[data-app-store-link]');
+        if (link && link.dataset.playUrl) link.href = link.dataset.playUrl;
+      }
+    } catch {
+      /* keep the Apple link */
+    }
+
+    var dismiss = banner.querySelector('[data-app-dismiss]');
+    if (dismiss) {
+      dismiss.addEventListener('click', function () {
+        banner.hidden = true;
+        try {
+          window.localStorage.setItem(KEY, '1');
+        } catch {
+          /* dismissed for this page view only */
+        }
+      });
+    }
+  })();
+</script>
