@@ -58,7 +58,6 @@ import BookButton from '../components/venue/BookButton.astro';
 import SectionHead from '../components/venue/SectionHead.astro';
 import HeroStrip from '../components/venue/HeroStrip.astro';
 import ReadoutCell from '../components/venue/ReadoutCell.astro';
-import PendingTag from '../components/venue/PendingTag.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import TechPillar from '../components/venue/TechPillar.astro';
 import { buttonClasses } from '../lib/buttons';
@@ -293,14 +292,6 @@ const troubleshooting = [
     'Look for a blue circle around the ball on the hitting screen, and a blue strip of light on the keypad. If neither is there, the cameras cannot see the ball — move it away from the edge of the hitting area and try again.',
   ],
 ];
-
-/**
- * Stillwater's unverified specifics. Each one is something the venue knows and
- * we have not confirmed — the middle mark, every time.
- */
-const stillwaterPending = [
-  ['Club rental', 'Whether rental sets are available there at all, and whether they are the $15 Lakeville charges.'],
-];
 ---
 
 <BaseLayout metadata={metadata}>
@@ -525,16 +516,23 @@ const stillwaterPending = [
             <ReadoutCell label="Golfer capacity" size="xl">24</ReadoutCell>
           </div>
 
-          <ul class="mt-s6 border-t-hairline border-navy">
-            {
-              stillwaterPending.map(([what, why]) => (
-                <li class="border-b-hairline border-navy py-s4">
-                  <p class="caps-label text-label-sm text-inkMuted">{what}</p>
-                  <PendingTag class="mt-s2" reason={why} />
-                </li>
-              ))
-            }
-          </ul>
+          {
+            /*
+             * Stillwater's club rental was the last *Pending confirmation* mark
+             * on this page, and the owner answered it: rental sets exist, and
+             * availability is limited. So it becomes a stated fact in the same
+             * `ReadoutCell` Lakeville uses, rather than a mark.
+             *
+             * Note what is still NOT claimed. Lakeville's cell carries a price;
+             * this one does not, because the owner gave availability and not a
+             * figure. Do not copy Lakeville's $15 across on the assumption the
+             * two venues match — that assumption is exactly what the retired
+             * mark was written to prevent.
+             */
+          }
+          <div class="mt-s6">
+            <ReadoutCell label="Club rental" size="name">Limited availability</ReadoutCell>
+          </div>
 
           <div class="mt-s6"><BookButton venue={stillwater} size="sm" variant="outline" /></div>
         </div>
