@@ -43,7 +43,16 @@ const noIndex = metadata.noIndex || import.meta.env.PUBLIC_SITE_NOINDEX === 'tru
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.ico" />
+    {
+      /* Built by `npm run favicons:build` from src/assets/images/links-logo-square.png.
+        Do not hand-edit the files in public/ — regenerate them, or the set drifts
+        out of step with the artwork. The .ico carries 16/32/48 so the browser can
+        pick per context; the PNGs are for the surfaces that ignore .ico entirely. */
+    }
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <Seo
       title={metadata.metaTitle}
       description={metadata.metaDescription}

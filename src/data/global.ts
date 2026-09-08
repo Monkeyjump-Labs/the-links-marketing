@@ -53,7 +53,22 @@ export const globalData = {
     { label: 'Simulators', href: '/simulators/' },
     { label: 'Gift Cards', href: '/gift-cards/' },
     { label: 'FAQs', href: '/faq/' },
-    { label: 'About', href: '/about/' },
+    /**
+     * "Our Story", not "About", at the owner's request (2026-09-08) — and it
+     * points at `/about/`, which is not a mismatch but the whole point.
+     *
+     * The old site had BOTH `/about` (facility facts) and `/our-story` (the
+     * founders' account). They were deliberately merged onto one page, and
+     * `/our-story` 301s to it (vercel.json, seo-map.md §4). The story is the
+     * first thing on that page, so the label now names what a visitor is
+     * actually looking for. The owner went looking for "Our Story" in the
+     * footer and did not find it — which is the whole failure this fixes.
+     *
+     * Do NOT resurrect a separate `/our-story` page to match the label. It
+     * would be unreachable behind that 301, and lifting the 301 would put the
+     * same story on two URLs competing with each other.
+     */
+    { label: 'Our Story', href: '/about/' },
   ],
 
   social: [
