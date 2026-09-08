@@ -215,11 +215,11 @@ const modes = [
  * does, the three course levels and which one they recommend, the 6ft concede
  * floor, what is per-player and what is per-round.
  *
- * ⚠️ ONE LINE FROM THE SOURCE IS DELIBERATELY NOT HERE. It reads "Leave at
- * Difficult swing plate for more realistic play", and it is not clear whether
- * "Difficult" names a swing-plate option or is a typo for something else. The
- * floor movement is already described under the player levels, where the source
- * is unambiguous. Do not reconstruct that line from a guess — ask the venue.
+ * "Difficult" IS THE NAME OF A SWING-PLATE OPTION, confirmed by the owner
+ * 2026-09-08. The source line — "Leave at Difficult swing plate for more
+ * realistic play" — reads like a typo and is not one, so the row says to leave
+ * it there and says why. Anyone tidying that word into "difficulty" would be
+ * renaming a setting the machine actually has.
  */
 const settings = [
   [
@@ -243,12 +243,49 @@ const settings = [
     'Both are set per player, and tee height can be changed part way through a round if the driver is not sitting right.',
   ],
   [
+    'The swing plate',
+    'The floor under you tilts to match the lie you are standing on. Leave it on Difficult — that is the setting that plays most like being outdoors, and it is the one the venue suggests keeping.',
+  ],
+  [
     'Wind, greens and pins',
     'Wind, green speed and firmness, and the pin position are all chosen before you tee off. Turning the wind off entirely is a perfectly respectable thing to do.',
   ],
   [
     'How you play it',
     'Stroke play, match play, scramble and foursomes are all there, along with the arcade games — ask staff to set those up. One thing worth knowing before you start a scramble: teams are picked at the beginning and cannot change mid-round.',
+  ],
+];
+
+/**
+ * The three things that go wrong in a bay, and the fix for each.
+ *
+ * Same source as `settings` — the venue's own TWOVISIONNX Instructions,
+ * "Quick Troubleshooting, hints and gotchas". Added at the owner's request
+ * 2026-09-08 after being left out of the first pass as in-bay signage rather
+ * than website content.
+ *
+ * It earns the space on reflection. All three faults are the machine failing to
+ * see a shot, and a visitor who does not know that reads it as "I have broken
+ * it" or "this thing does not work" — which is a bad five minutes of an hour
+ * they paid for. The fix is a club-selection dropdown in every case.
+ *
+ * SCREEN WORDS ARE CAPITALISED BECAUSE THE SCREEN CAPITALISES THEM. DRIVER,
+ * PUTTER, TEE and APRON are labels a visitor is matching against the display in
+ * front of them, not emphasis. Do not sentence-case them to match house style —
+ * the point is that the word on the page is the word on the screen.
+ */
+const troubleshooting = [
+  [
+    'The ball is on the tee, you swing, and nothing happens',
+    'Check the club. When the bottom right of the hitting screen says TEE, the club has to say DRIVER — if it does not, choose DRIVER and hit again.',
+  ],
+  [
+    'You putt and the ball does not move',
+    'Check whether the ball is on the APRON, shown at the bottom right of the hitting screen. If it is, the club selection on the kiosk needs to say PUTTER.',
+  ],
+  [
+    'You hit off the mat, the rough or the sand and nothing happens',
+    'Look for a blue circle around the ball on the hitting screen, and a blue strip of light on the keypad. If neither is there, the cameras cannot see the ball — move it away from the edge of the hitting area and try again.',
   ],
 ];
 
@@ -529,9 +566,30 @@ const stillwaterPending = [
     </div>
   </section>
 
+  {/* 8. WHEN IT DOES NOT REGISTER A SHOT. Also from the venue's own document. */}
+  <section class="bg-white">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={7}>If it does not register your shot</SectionHead>
+      <p class="mb-s7 max-w-prose-page text-body leading-body text-inkBody">
+        Three things account for nearly all of it, and none of them means you have broken anything — the machine has
+        simply not seen the shot. Staff will sort any of it out if you would rather not fiddle.
+      </p>
+      <dl class="border-t-score border-navy">
+        {
+          troubleshooting.map(([title, body]) => (
+            <div class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
+              <dt class="font-display text-card leading-display font-bold tracking-display text-ink">{title}</dt>
+              <dd class="max-w-prose-page text-body leading-body text-inkBody">{body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead tone="dark" index={7}>Never used one?</SectionHead>
+      <SectionHead tone="dark" index={8}>Never used one?</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-paper">
         Staff start the bay for you and show you the screen. Turn the difficulty down, turn the wind off, and take as
         many shots as you like — there is no group behind you and the bay is yours for the hour. If you top one, the
