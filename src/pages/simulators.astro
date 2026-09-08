@@ -3,9 +3,18 @@
  * Simulators. Ported to the converged Paper design 2026-08-03 (FW-3967); spec in
  * `design/SUBPAGE-EXPLORATION.md`.
  *
- * **The idea: the machine measures things, so the page does too.** A bay
- * schematic, the readings named on the part of the machine that takes them, and
- * a handedness row that draws the unknown at the same size as the known.
+ * **The idea: the machine measures things, so the page does too.** The readings
+ * are named on the part of the machine that takes them, and nothing on the page
+ * counts them.
+ *
+ * ⚠️ HANDEDNESS IS GONE FROM THIS PAGE, AND FROM /book, /policy and the clubs
+ * FAQ with it. The owner confirmed 2026-09-08 that EVERY bay is set up
+ * right-handed. The site had been telling left-handers they were covered —
+ * "five of the six Lakeville bays play both ways", in body copy, in the hero
+ * strip, in a per-bay diagram and in FAQPage schema. That was not a missing
+ * fact, it was a wrong one, and a left-hander could have booked on it. If a
+ * left-handed bay ever exists, say so as a positive claim; do not restore the
+ * old numbers.
  *
  * **Name the readings; do not count them.** This is a correction, not a style
  * choice. Three different counts for one machine shipped across this project:
@@ -43,19 +52,17 @@
  * venue that knows how its own room is laid out. Nothing there is undecided; it
  * is unverified, and those are different promises to a reader.
  */
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import SectionHead from '../components/venue/SectionHead.astro';
 import HeroStrip from '../components/venue/HeroStrip.astro';
 import ReadoutCell from '../components/venue/ReadoutCell.astro';
-import GapCell from '../components/venue/GapCell.astro';
-import PendingTag from '../components/venue/PendingTag.astro';
 import StubNote from '../components/venue/StubNote.astro';
-import BaySchematic from '../components/venue/BaySchematic.astro';
-import HandednessRow from '../components/venue/HandednessRow.astro';
 import TechPillar from '../components/venue/TechPillar.astro';
 import { buttonClasses } from '../lib/buttons';
 import { getVenues, venuePath } from '../lib/venues';
+import nxBayDiagram from '../assets/images/golfzon-nx-bay-diagram.jpg';
 import courseRenderPoster from '../assets/images/golfzon-course-render-poster.jpg';
 import practiceToolsPoster from '../assets/images/golfzon-practice-tools-poster.jpg';
 import motionPlatePoster from '../assets/images/golfzon-motion-plate-poster.jpg';
@@ -69,7 +76,7 @@ const totalBays = venues.reduce((n, v) => n + v.data.bays, 0);
 const metadata = {
   metaTitle: 'GolfZon Simulator Bays — Lakeville & Stillwater MN',
   metaDescription:
-    'Ten GolfZon bays in Lakeville and Stillwater MN — a tilting swing plate, auto tee-up and real ball flight. Five of the six Lakeville bays suit lefties.',
+    'Ten GolfZon TwoVision NX bays in Lakeville and Stillwater MN — a tilting swing plate, auto tee-up, real ball flight and well over 300 courses.',
 };
 
 /**
@@ -238,10 +245,7 @@ const settings = [
     'Which tees you play off',
     'Black, blue and the rest — the same choice you would make walking onto a real first tee, and worth taking one box forward if the group is mixed.',
   ],
-  [
-    'Left- or right-handed, and tee height',
-    'Both are set per player, and tee height can be changed part way through a round if the driver is not sitting right.',
-  ],
+  ['Tee height', 'Set per player, and it can be changed part way through a round if the driver is not sitting right.'],
   [
     'The swing plate',
     'The floor under you tilts to match the lie you are standing on. Leave it on Difficult — that is the setting that plays most like being outdoors, and it is the one the venue suggests keeping.',
@@ -288,17 +292,6 @@ const troubleshooting = [
     'Look for a blue circle around the ball on the hitting screen, and a blue strip of light on the keypad. If neither is there, the cameras cannot see the ball — move it away from the edge of the hitting area and try again.',
   ],
 ];
-
-/**
- * Stillwater's unverified specifics. Each one is something the venue knows and
- * we have not confirmed — the middle mark, every time.
- */
-const stillwaterPending = [
-  ['Left-handed bays', 'How many of the four bays are set up for left-handers. Lakeville has five of six.'],
-  ['Screens', 'The TV count in the room. Lakeville has nine.'],
-  ['Seating', 'How many people the room seats, and whether the bowling side can take the overflow.'],
-  ['Club rental', 'Whether rental sets are available there at all, and whether they are the $15 Lakeville charges.'],
-];
 ---
 
 <BaseLayout metadata={metadata}>
@@ -318,15 +311,12 @@ const stillwaterPending = [
         tone="dark"
         cells={[
           { label: 'Bays', value: String(totalBays), qualifier: 'across two venues' },
-          { label: 'Lefty-friendly', value: '5 of 6', qualifier: 'at Lakeville — one bay is right-handed only' },
           { label: 'Balls', value: 'Included', qualifier: 'every bay has its own — never bring your own' },
+          { label: 'System', value: 'TwoVision NX', qualifier: 'GolfZon, tour spec — the same kit as their own tour' },
           {
-            label: 'Course list',
-            gap: {
-              state: 'notSet',
-              reason:
-                'A "240+ courses" figure exists only on two retired homepages and is not repeated on the current site, so we do not republish it.',
-            },
+            label: 'Course availability',
+            value: '300+',
+            qualifier: 'courses worldwide, plus arcade games',
           },
         ]}
       />
@@ -334,19 +324,76 @@ const stillwaterPending = [
   </section>
 
   {
-    /* 2. THE MACHINE. The schematic and the named readings — the page's central
-      idea, and the section that has to be physically correct. See BaySchematic
-      for why the ball arrows point UP. */
+    /* 2. THE MACHINE. GolfZon's labelled view of a bay and the named readings —
+      the page's central idea, and the section that has to be physically correct.
+
+      `BaySchematic` and `HandednessRow` were both retired from here on
+      2026-09-08 and are now imported by nothing. Left on disk rather than
+      deleted in the same breath as a content change; if they are still unused
+      next time someone passes through, delete them. */
   }
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead tone="dark" index={1}>What the machine reads</SectionHead>
+      <SectionHead tone="dark">What the machine reads</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-paper">
         Every bay runs a GolfZon TwoVision NX — the current model. Two different parts of it are watching, and they are
         watching two different things.
       </p>
 
-      <BaySchematic class="mt-s7" club={CLUB_READINGS} ball={BALL_READINGS} />
+      {
+        /*
+         * GOLFZON'S OWN LABELLED VIEW OF THE BAY, at the owner's request
+         * (2026-09-08), replacing the `BaySchematic` drawing that stood here.
+         *
+         * ⚠️ CAPPED AT ITS NATURAL WIDTH ON PURPOSE. The supplied file is
+         * 538x371. The content column runs past 1000px at desktop, and letting
+         * a 538px image fill it upscales the thing roughly twofold — a soft,
+         * smeared render of the machine directly under a line claiming the
+         * machine measures precisely. `max-w-lg` (512px) keeps every pixel at
+         * or below 1:1. If a larger original ever arrives, raise the cap; do
+         * not raise it without one.
+         *
+         * ⚠️ THE IMAGE IS GOLFZON'S, NOT OURS, and not shot in either room —
+         * the same standing caveat as the product films further down this page,
+         * for the same reason (STYLE-GUIDE §6.10).
+         *
+         * ⚠️ IT CARRIES A LABEL WE DO NOT: "Left-Handed Camera". The owner has
+         * confirmed every bay is set up right-handed and asked for left-handed
+         * copy to come off this page, and it has — but this is a manufacturer
+         * diagram of the hardware, and that camera is part of the hardware. The
+         * alt text below describes the bay without reciting the label, so
+         * nothing we WRITE contradicts the owner. Flagged to the owner rather
+         * than edited, because retouching a vendor's diagram is worse than
+         * showing it.
+         */
+      }
+      <Image
+        src={nxBayDiagram}
+        alt="A GolfZon TwoVision NX bay: overhead sensors above the hitting area, a motion plate in the floor, a course on the screen ahead and a touchscreen keypad to the side."
+        width={538}
+        height={371}
+        class="mt-s7 h-auto w-full max-w-lg"
+      />
+      {
+        /*
+         * THE NAMED READINGS SURVIVE THE SCHEMATIC. They used to be labels on
+         * the drawing; the drawing is gone and they are not, because the
+         * sentence above promises "two different things" and would otherwise
+         * never say what they are. Still named, still never counted
+         * (truth-audit.md §C6) — a total can be contradicted by a recount and a
+         * named list cannot. Source is GolfZon's own sensors page.
+         */
+      }
+      <div class="mt-s7 grid gap-s5 border-t-hairline border-slate pt-s5 md:grid-cols-2 md:gap-s7">
+        <div>
+          <p class="caps-label text-label-sm text-slate">Cameras overhead read the club</p>
+          <p class="mt-s3 max-w-prose-page text-body leading-body text-paper">{CLUB_READINGS.join(' · ')}</p>
+        </div>
+        <div>
+          <p class="caps-label text-label-sm text-slate">A sensor in the floor reads the ball</p>
+          <p class="mt-s3 max-w-prose-page text-body leading-body text-paper">{BALL_READINGS.join(' · ')}</p>
+        </div>
+      </div>
 
       <p class="mt-s6 max-w-prose-page text-body leading-body text-paper">
         That is why the numbers mean something. The ball data is measured off the ball itself rather than inferred from
@@ -370,7 +417,7 @@ const stillwaterPending = [
 
       <StubNote
         class="mt-s7"
-        needs="Still needed from GolfZon: the current course count, and five or six named courses people would recognise. A comparable venue publishes '100+', which makes the retired '240+' on the client's old pages look stale rather than merely unsourced."
+        needs="Still needed from GolfZon: five or six named courses people would recognise. The course count itself is answered — the owner gave 300+ on 2026-09-08, which retires the unsourced '240+' that survived on two dead homepages."
       />
     </div>
   </section>
@@ -392,7 +439,7 @@ const stillwaterPending = [
   }
   <section class="bg-greige">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={2}>What that looks like</SectionHead>
+      <SectionHead>What that looks like</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-inkBody">
         Four things the machine does that are hard to picture from a sentence. Each one is a few silent seconds — they
         start when you scroll to them, and you can stop any of them.
@@ -419,11 +466,9 @@ const stillwaterPending = [
   {/* 4. WHAT IS WHERE, per venue — including who can play in which bay. */}
   <section class="bg-white">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={3}>What is where</SectionHead>
+      <SectionHead>What is where</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-inkBody">
-        Ten bays across two rooms. Lakeville has been open since 2022 and is written up here down to which bay a lefty
-        gets. Stillwater opened in 2026, and the marks below are the details still being confirmed for this page rather
-        than things the room has not decided.
+        Ten bays across two locations. Lakeville has been open since 2022. Stillwater opened in 2026.
       </p>
 
       <div class="mt-s6 grid gap-s8 border-t-score border-navy pt-s6 lg:grid-cols-2">
@@ -440,16 +485,9 @@ const stillwaterPending = [
 
           <div class="mt-s5 flex flex-wrap gap-s7">
             <ReadoutCell label="Bays" size="xl">{lakeville?.data.bays}</ReadoutCell>
-            <ReadoutCell label="Screens" size="xl">9</ReadoutCell>
-            <ReadoutCell label="Seats" size="xl">36</ReadoutCell>
+            <ReadoutCell label="TV's" size="xl">9</ReadoutCell>
+            <ReadoutCell label="Golfer capacity" size="xl">36</ReadoutCell>
           </div>
-
-          <p class="caps-label mt-s6 text-label-sm text-inkMuted">Which bays a lefty can play</p>
-          <HandednessRow class="mt-s3" bays={['both', 'both', 'both', 'both', 'both', 'right']} />
-          <p class="mt-s4 max-w-prose-page text-small leading-body text-inkBody">
-            Five of the six take either handedness; the sixth is right-handed only. If you are a lefty in a group of
-            six, say so when you book and we will put you in the right bay.
-          </p>
 
           <div class="mt-s6">
             <ReadoutCell label="Club rental" size="name">$15 a set</ReadoutCell>
@@ -474,25 +512,27 @@ const stillwaterPending = [
 
           <div class="mt-s5 flex flex-wrap gap-s7">
             <ReadoutCell label="Bays" size="xl">{stillwater?.data.bays}</ReadoutCell>
+            <ReadoutCell label="TV's" size="xl">5</ReadoutCell>
+            <ReadoutCell label="Golfer capacity" size="xl">24</ReadoutCell>
           </div>
 
-          <p class="caps-label mt-s6 text-label-sm text-inkMuted">Which bays a lefty can play</p>
-          <HandednessRow
-            class="mt-s3"
-            bays={['unknown', 'unknown', 'unknown', 'unknown']}
-            pendingReason="We have not confirmed how many of Stillwater's four bays take left-handers. The venue knows; we have asked. Until it comes back we would rather draw four question marks than guess on your behalf."
-          />
-
-          <ul class="mt-s6 border-t-hairline border-navy">
-            {
-              stillwaterPending.map(([what, why]) => (
-                <li class="border-b-hairline border-navy py-s4">
-                  <p class="caps-label text-label-sm text-inkMuted">{what}</p>
-                  <PendingTag class="mt-s2" reason={why} />
-                </li>
-              ))
-            }
-          </ul>
+          {
+            /*
+             * Stillwater's club rental was the last *Pending confirmation* mark
+             * on this page, and the owner answered it: rental sets exist, and
+             * availability is limited. So it becomes a stated fact in the same
+             * `ReadoutCell` Lakeville uses, rather than a mark.
+             *
+             * Note what is still NOT claimed. Lakeville's cell carries a price;
+             * this one does not, because the owner gave availability and not a
+             * figure. Do not copy Lakeville's $15 across on the assumption the
+             * two venues match — that assumption is exactly what the retired
+             * mark was written to prevent.
+             */
+          }
+          <div class="mt-s6">
+            <ReadoutCell label="Club rental" size="name">Limited availability</ReadoutCell>
+          </div>
 
           <div class="mt-s6"><BookButton venue={stillwater} size="sm" variant="outline" /></div>
         </div>
@@ -503,7 +543,7 @@ const stillwaterPending = [
   {/* 5. THE HARDWARE, explained. Rows at one scale — a set of things, so no numerals. */}
   <section class="bg-greige">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={4}>What separates it from hitting into a net</SectionHead>
+      <SectionHead>What separates it from hitting into a net</SectionHead>
       <dl class="border-t-score border-navy">
         {
           hardware.map(([title, body]) => (
@@ -520,7 +560,7 @@ const stillwaterPending = [
   {/* 6. WHAT YOU CAN DO WITH IT. */}
   <section class="bg-white">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={5}>Practice, play, or just mess about</SectionHead>
+      <SectionHead>Practice, play, or just mess about</SectionHead>
       <dl class="border-t-score border-navy">
         {
           modes.map(([title, body]) => (
@@ -531,23 +571,13 @@ const stillwaterPending = [
           ))
         }
       </dl>
-
-      <div class="mt-s7 max-w-prose-page">
-        <GapCell
-          label="Courses on the machines"
-          state="notSet"
-          size="name"
-          reason='A "240+ courses and 6 arcade games" figure exists only on two retired homepages and is not repeated on the current site, so we do not republish it. We have asked for the current list.'
-        />
-      </div>
     </div>
   </section>
 
-  {/* 7. NEVER USED ONE. The largest addressable market (playbook-core.md §8). */}
   {/* 7. WHAT YOU CAN CHANGE. The old /simulator-settings page, as text. */}
   <section class="bg-greige">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={6}>What you can change in the bay</SectionHead>
+      <SectionHead>What you can change in the bay</SectionHead>
       <p class="mb-s7 max-w-prose-page text-body leading-body text-inkBody">
         Staff set the bay up on your first visit, so none of this is homework. It is here because people ask what they
         are allowed to change, and the answer is nearly all of it — most of it per player, from the screen beside you,
@@ -569,7 +599,7 @@ const stillwaterPending = [
   {/* 8. WHEN IT DOES NOT REGISTER A SHOT. Also from the venue's own document. */}
   <section class="bg-white">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={7}>If it does not register your shot</SectionHead>
+      <SectionHead>If it does not register your shot</SectionHead>
       <p class="mb-s7 max-w-prose-page text-body leading-body text-inkBody">
         Three things account for nearly all of it, and none of them means you have broken anything — the machine has
         simply not seen the shot. Staff will sort any of it out if you would rather not fiddle.
@@ -587,9 +617,10 @@ const stillwaterPending = [
     </div>
   </section>
 
+  {/* 9. NEVER USED ONE. The largest addressable market (playbook-core.md §8). */}
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead tone="dark" index={8}>Never used one?</SectionHead>
+      <SectionHead tone="dark">Never used one?</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-paper">
         Staff start the bay for you and show you the screen. Turn the difficulty down, turn the wind off, and take as
         many shots as you like — there is no group behind you and the bay is yours for the hour. If you top one, the
