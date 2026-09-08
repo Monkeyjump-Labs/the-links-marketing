@@ -40,5 +40,19 @@ export const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com
  */
 export const APP_PITCH = 'Get our App for easy access to leagues, events & promotions';
 
-/** What the app is called in both stores — used as the accessible name. */
+/**
+ * What the app is called IN BOTH STORES. This is the searchable name, so it is
+ * the one screen readers get — a visitor told to look for "The Links App" would
+ * not find it in either store.
+ */
 export const APP_NAME = 'Lakeville Links';
+
+/**
+ * What we CALL it in visible copy, at the owner's direction (2026-09-08).
+ *
+ * It differs from `APP_NAME` on purpose: the site's brand is The Links across
+ * two venues, and "Lakeville Links" in the footer of a page about Stillwater
+ * reads as the wrong venue rather than as the app's name. The store listing
+ * still says Lakeville Links and the links still go there.
+ */
+export const APP_LABEL = 'The Links App';

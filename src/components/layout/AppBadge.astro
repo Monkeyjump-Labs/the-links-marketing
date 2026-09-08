@@ -17,7 +17,7 @@
 import { Image } from 'astro:assets';
 import linksLogo from '../../assets/images/links-logo-dark.png';
 import { buttonClasses } from '../../lib/buttons';
-import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_NAME } from '../../lib/app';
+import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_LABEL } from '../../lib/app';
 ---
 
 <div class="flex flex-wrap items-center gap-x-s5 gap-y-s4 border-hairline border-ink/15 bg-paper p-cell">
@@ -38,7 +38,7 @@ import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_NAME } from '../../lib/ap
      */
   }
   <div class="flex-1 basis-64">
-    <p class="caps-label text-label-sm text-inkMuted">The {APP_NAME} app</p>
+    <p class="caps-label text-label-sm text-inkMuted">{APP_LABEL}</p>
     <p class="mt-s2 text-small leading-body text-inkBody">{APP_PITCH}</p>
   </div>
 
