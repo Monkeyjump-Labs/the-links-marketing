@@ -1,0 +1,55 @@
+---
+/**
+ * The permanent half of the app pitch: a badge in the footer that names BOTH
+ * stores outright.
+ *
+ * It is deliberately NOT dismissible and shares no state with `AppBanner`.
+ * Dismissing the strip at the top means "stop interrupting me", not "never tell
+ * me this app exists" — so the footer keeps the answer for anyone who dismissed
+ * the strip in January and goes looking for the app in March. It is also the
+ * fallback for the one thing the strip's single Download button can get wrong:
+ * a user agent that is neither obviously Android nor Apple still gets an
+ * explicit choice of store here.
+ *
+ * Square, per the radius rule — badges are 0, the 3px radius belongs to the two
+ * store buttons inside it and to nothing else in this component.
+ */
+import { Image } from 'astro:assets';
+import linksLogo from '../../assets/images/links-logo-dark.png';
+import { buttonClasses } from '../../lib/buttons';
+import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_NAME } from '../../lib/app';
+---
+
+<div class="flex flex-wrap items-center gap-x-s5 gap-y-s4 border-hairline border-ink/15 bg-paper p-cell">
+  {
+    /* Asset pixel dimensions reserve the box; `h-7` is the display size. Replace
+      both if the file is replaced — see the same note in the header. */
+  }
+  <Image src={linksLogo} alt="" width={1006} height={389} class="h-7 w-auto shrink-0" />
+
+  <div class="min-w-0 flex-1">
+    <p class="caps-label text-label-sm text-inkMuted">The {APP_NAME} app</p>
+    <p class="mt-s2 text-small leading-body text-inkBody">{APP_PITCH}</p>
+  </div>
+
+  <div class="flex flex-wrap gap-s3">
+    <a
+      href={APP_STORE_URL}
+      target="_blank"
+      rel="noopener"
+      class={buttonClasses('sm', 'outline')}
+      data-analytics="app-badge-apple"
+    >
+      App Store
+    </a>
+    <a
+      href={PLAY_STORE_URL}
+      target="_blank"
+      rel="noopener"
+      class={buttonClasses('sm', 'outline')}
+      data-analytics="app-badge-google"
+    >
+      Google Play
+    </a>
+  </div>
+</div>

@@ -6,6 +6,7 @@
  */
 import { getVenues, summariseHours, formatAddress, telHref, venuePath } from '../../lib/venues';
 import { globalData } from '../../data/global';
+import AppBadge from './AppBadge.astro';
 
 const venues = await getVenues();
 const { footerLinks, nav, social, copyright } = globalData;
@@ -74,6 +75,10 @@ const { footerLinks, nav, social, copyright } = globalData;
           }
         </ul>
       </nav>
+    </div>
+
+    <div class="mt-10">
+      <AppBadge />
     </div>
 
     <div class="mt-10 flex flex-wrap gap-4 border-t border-ink/10 pt-6 text-xs text-inkMuted">
