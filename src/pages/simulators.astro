@@ -58,7 +58,6 @@ import BookButton from '../components/venue/BookButton.astro';
 import SectionHead from '../components/venue/SectionHead.astro';
 import HeroStrip from '../components/venue/HeroStrip.astro';
 import ReadoutCell from '../components/venue/ReadoutCell.astro';
-import GapCell from '../components/venue/GapCell.astro';
 import PendingTag from '../components/venue/PendingTag.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import TechPillar from '../components/venue/TechPillar.astro';
@@ -326,26 +325,10 @@ const stillwaterPending = [
           {
             label: 'Course availability',
             value: '300+',
-            qualifier: 'courses, worldwide',
+            qualifier: 'courses worldwide, plus arcade games',
           },
         ]}
       />
-
-      {
-        /*
-         * The course count, at last, from the owner (2026-09-08).
-         *
-         * It had been a `notSet` mark for a year on a real principle: a "240+"
-         * figure survived only on two RETIRED homepages, was absent from the
-         * live site, and a comparable venue was publishing "100+" — so the
-         * number we held was both unsourced and probably stale. The owner's
-         * figure replaces it, and note it went UP, not down. Guessing from the
-         * old pages would have undersold the machine by a third.
-         */
-      }
-      <p class="mt-s6 max-w-prose-page text-body leading-body text-paper">
-        Well over 300 courses available to play, from around the world.
-      </p>
     </div>
   </section>
 
@@ -590,19 +573,9 @@ const stillwaterPending = [
           ))
         }
       </dl>
-
-      <div class="mt-s7 max-w-prose-page">
-        <GapCell
-          label="Courses on the machines"
-          state="notSet"
-          size="name"
-          reason='A "240+ courses and 6 arcade games" figure exists only on two retired homepages and is not repeated on the current site, so we do not republish it. We have asked for the current list.'
-        />
-      </div>
     </div>
   </section>
 
-  {/* 7. NEVER USED ONE. The largest addressable market (playbook-core.md §8). */}
   {/* 7. WHAT YOU CAN CHANGE. The old /simulator-settings page, as text. */}
   <section class="bg-greige">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
@@ -646,6 +619,7 @@ const stillwaterPending = [
     </div>
   </section>
 
+  {/* 9. NEVER USED ONE. The largest addressable market (playbook-core.md §8). */}
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead tone="dark">Never used one?</SectionHead>
