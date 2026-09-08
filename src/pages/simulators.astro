@@ -189,6 +189,70 @@ const modes = [
 ];
 
 /**
+ * The settings a visitor can actually change, written out as text.
+ *
+ * ── WHY THIS EXISTS ────────────────────────────────────────────────────────
+ *
+ * The old site had a whole page for this — `/simulator-settings`, in its main
+ * nav — and the page was FIVE PNGs with empty alt text and 33 characters of
+ * real writing. None of it was readable by a search engine, a screen reader, or
+ * anyone trying to copy a line of it. seo-map.md §4 row 23 planned for that:
+ * cut the page, 301 it to `/simulators`, rewrite the how-to as text here. The
+ * redirect shipped; the rewrite did not, so the content simply fell out of the
+ * site. This is that rewrite, a year late.
+ *
+ * ── THE SOURCE IS THE CLIENT'S OWN, WHICH IS THE POINT ─────────────────────
+ *
+ * From "TWOVISIONNX Instructions", the venue's own staff/player document,
+ * supplied by the owner 2026-09-08. It is THEIR writing about THEIR machine —
+ * not GolfZon's manual — so it is ours to rewrite and publish. If a future
+ * source is a manufacturer document instead, that is a different question and
+ * the answer is not "paste it in".
+ *
+ * Rewritten, not copied: the source is a numbered staff walkthrough ("Step 3:
+ * Enter your player seetings/difficulty"), and this page is not a walkthrough.
+ * The facts are theirs and unchanged — the four player levels and what each one
+ * does, the three course levels and which one they recommend, the 6ft concede
+ * floor, what is per-player and what is per-round.
+ *
+ * ⚠️ ONE LINE FROM THE SOURCE IS DELIBERATELY NOT HERE. It reads "Leave at
+ * Difficult swing plate for more realistic play", and it is not clear whether
+ * "Difficult" names a swing-plate option or is a typo for something else. The
+ * floor movement is already described under the player levels, where the source
+ * is unambiguous. Do not reconstruct that line from a guess — ask the venue.
+ */
+const settings = [
+  [
+    'How hard you want it to be',
+    'Four levels, and each player in the bay picks their own — so a first-timer and a scratch golfer can share a round without either of them having a bad night. Beginner holds the floor flat and helps the ball along: less slice and hook, easier out of the rough and sand, and a bit more distance. Amateur and Pro bring the floor back and take the help away by degrees. Tour plays about like golf outdoors, and it is what most people here settle on.',
+  ],
+  [
+    'How hard the course plays',
+    'A separate setting from your own, and it applies to the whole round. Casual is the gentlest. Semi-Tour is the one the venue suggests — closer to outdoors without being unkind. Tour gives you very little help and is worth saving until you know the system.',
+  ],
+  [
+    'How short a putt is given',
+    'The concede distance. Six feet is the shortest it goes, and it is the setting that keeps a four-ball moving.',
+  ],
+  [
+    'Which tees you play off',
+    'Black, blue and the rest — the same choice you would make walking onto a real first tee, and worth taking one box forward if the group is mixed.',
+  ],
+  [
+    'Left- or right-handed, and tee height',
+    'Both are set per player, and tee height can be changed part way through a round if the driver is not sitting right.',
+  ],
+  [
+    'Wind, greens and pins',
+    'Wind, green speed and firmness, and the pin position are all chosen before you tee off. Turning the wind off entirely is a perfectly respectable thing to do.',
+  ],
+  [
+    'How you play it',
+    'Stroke play, match play, scramble and foursomes are all there, along with the arcade games — ask staff to set those up. One thing worth knowing before you start a scramble: teams are picked at the beginning and cannot change mid-round.',
+  ],
+];
+
+/**
  * Stillwater's unverified specifics. Each one is something the venue knows and
  * we have not confirmed — the middle mark, every time.
  */
@@ -443,9 +507,31 @@ const stillwaterPending = [
   </section>
 
   {/* 7. NEVER USED ONE. The largest addressable market (playbook-core.md §8). */}
+  {/* 7. WHAT YOU CAN CHANGE. The old /simulator-settings page, as text. */}
+  <section class="bg-greige">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead index={6}>What you can change in the bay</SectionHead>
+      <p class="mb-s7 max-w-prose-page text-body leading-body text-inkBody">
+        Staff set the bay up on your first visit, so none of this is homework. It is here because people ask what they
+        are allowed to change, and the answer is nearly all of it — most of it per player, from the screen beside you,
+        in about a minute.
+      </p>
+      <dl class="border-t-score border-navy">
+        {
+          settings.map(([title, body]) => (
+            <div class="grid gap-s3 border-b-hairline border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
+              <dt class="font-display text-card leading-display font-bold tracking-display text-ink">{title}</dt>
+              <dd class="max-w-prose-page text-body leading-body text-inkBody">{body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead tone="dark" index={6}>Never used one?</SectionHead>
+      <SectionHead tone="dark" index={7}>Never used one?</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-paper">
         Staff start the bay for you and show you the screen. Turn the difficulty down, turn the wind off, and take as
         many shots as you like — there is no group behind you and the bay is yours for the hour. If you top one, the
