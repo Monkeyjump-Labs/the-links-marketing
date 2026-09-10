@@ -1,18 +1,20 @@
 {
-  "name": "Summer Monthly - Family",
+  "name": "Off-Peak",
   "kind": "monthly",
   "order": 2,
   "venue": "both",
   "recommended": false,
   "price": 199,
   "cadence": "a month",
-  "forWho": "The purchaser plus immediate family, sharing one membership.",
+  "window": "Monday to Friday 8am-5pm, and Sundays 5pm-10pm",
+  "forWho": "The same two hours a day, at the quieter end of the week.",
   "includes": [
     "Two hours of bay time every day",
+    "Monday to Friday 8am-5pm, and Sundays 5pm-10pm",
     "21-day booking window",
     "10% off food and drink",
     "No guest fees",
-    "Usable by the purchaser and immediate family"
+    "Both venues"
   ],
   "published": true
 }

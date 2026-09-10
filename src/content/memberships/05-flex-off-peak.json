@@ -1,8 +1,8 @@
 {
-  "name": "LinksFlex Off Peak",
+  "name": "LinksFlex Off-Peak",
   "kind": "flex",
-  "order": 3,
-  "venue": "lakeville",
+  "order": 5,
+  "venue": "both",
   "recommended": true,
   "recommendedNote": "Lowest cost per hour of anything we sell",
   "window": "Monday to Friday 8am-5pm, and Sundays after 3pm",

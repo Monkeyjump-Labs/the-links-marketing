@@ -1,0 +1,14 @@
+{
+  "name": "LinksFlex Anytime",
+  "kind": "flex",
+  "order": 6,
+  "venue": "both",
+  "recommended": false,
+  "window": "Any day, any time - no window on when the hours are used",
+  "banks": [
+    { "hours": 12, "price": 549 },
+    { "hours": 24, "price": 1049 },
+    { "hours": 48, "price": 1899 }
+  ],
+  "published": true
+}

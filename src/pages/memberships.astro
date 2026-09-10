@@ -66,6 +66,14 @@ import { globalData } from '../data/global';
 /** The walk-up rate every membership on this page is measured against. */
 const WALK_UP = 35;
 
+/**
+ * The early-bird deadline, as one date in one place. ISO so the inline
+ * script can parse it; the label beside it is what a reader sees.
+ */
+const EARLY_BIRD_ENDS = '2026-10-31';
+const EARLY_BIRD_LABEL = '31 October 2026';
+const earlyBirdLive = new Date() <= new Date(EARLY_BIRD_ENDS + 'T23:59:59');
+
 const all = (await getCollection('memberships'))
   .filter((m) => m.data.published)
   .sort((a, b) => a.data.order - b.data.order);
@@ -85,18 +93,38 @@ const flex = all.filter((m) => m.data.kind === 'flex');
 const bestPerHour = Math.min(
   ...flex.filter((f) => !f.data.ageRestricted).flatMap((f) => f.data.banks.map((b) => b.price / b.hours)),
 );
-const cheapestMonthly = Math.min(...monthly.map((m) => m.data.price ?? Infinity));
+/**
+ * The cheapest monthly a GENERAL READER can actually buy.
+ *
+ * `ageRestricted` now guards the monthly tiers as well as the flex ones, and for
+ * the same reason it was invented: Senior / Vet and Junior are both $149, both
+ * cheaper than anything an unrestricted adult can join, and a "Monthly from
+ * $149" headline computed over every tier is arithmetic that is correct and
+ * still misleads. The general entry point is Off-Peak at $199.
+ *
+ * (Vet is a service status rather than an age. The field is doing the job it was
+ * built for — keeping a headline to prices the reader can act on — so it guards
+ * that tier too rather than growing a second flag that means the same thing.)
+ */
+const generalMonthly = monthly.filter((m) => !m.data.ageRestricted);
+const cheapestMonthly = Math.min(...generalMonthly.map((m) => m.data.price ?? Infinity));
 
 /**
- * The payback point, divided rather than asserted: $149 ÷ $35 = 4.257…
+ * The payback point for a given tier, divided rather than asserted.
  *
- * Shown to ONE decimal. The exact quotient is false precision in a sentence that
- * already says "about", and the division is printed beside it either way, so a
- * reader who wants the exact number can do it themselves — which is the whole
- * argument for a reason over a "Most popular" sticker.
+ * ⚠️ THIS TAKES A TIER. It used to be one number computed from the cheapest
+ * monthly and then printed inside every recommended card — which was right only
+ * while the cheapest tier and the recommended tier were the same one. They are
+ * no longer: the recommendation is Anytime at $299 and the cheapest general tier
+ * is Off-Peak at $199, so a single shared figure would have printed "$299 ÷ $35
+ * pays for itself past about 5.7 hours", which is the wrong quotient beside the
+ * right division. Divide per tier or do not print the sentence.
+ *
+ * One decimal: the exact quotient is false precision in a sentence that already
+ * says "about", and the division is printed beside it either way.
  */
-const paybackHours = cheapestMonthly / WALK_UP;
-const payback = paybackHours.toFixed(1);
+const paybackFor = (price: number) => (price / WALK_UP).toFixed(1);
+const payback = paybackFor(cheapestMonthly);
 
 const metadata = {
   metaTitle: 'Golf Memberships & LinksFlex — Lakeville & Stillwater',
@@ -135,7 +163,7 @@ const smallPrint = [
   ],
   [
     'Hours restrictions',
-    'The monthly memberships include two hours a day and are subject to opening hours — a membership does not guarantee a walk-in bay. LinksFlex Off Peak and Junior hours are limited to the windows above; there is no restriction on how long you take to use them.',
+    'The monthly memberships include two hours a day and are subject to opening hours — a membership does not guarantee a walk-in bay. Every tier except Anytime is limited to the window printed on it, and the LinksFlex hours the same; there is no restriction on how long you take to use a bank.',
   ],
   ['Do you have to be there?', 'Yes. The member has to be present at the tee time.'],
   [
@@ -144,7 +172,7 @@ const smallPrint = [
   ],
   [
     'Commitment',
-    'The monthly memberships bill automatically each month until 3 October 2026, or until you cancel. LinksFlex is a one-off purchase with no monthly commitment. Its hours have no expiry date — the terms hold them open for as long as you are in good standing and we still offer the service — but they are non-transferable and all sales are final.',
+    'The monthly memberships bill automatically each month until you cancel. LinksFlex is a one-off purchase with no monthly commitment. Its hours have no expiry date — the terms hold them open for as long as you are in good standing and we still offer the service — but they are non-transferable and all sales are final.',
   ],
 ];
 ---
@@ -172,18 +200,57 @@ const smallPrint = [
           { label: 'Monthly from', value: `$${cheapestMonthly}`, qualifier: 'a month, both venues' },
           { label: 'LinksFlex from', value: `$${bestPerHour.toFixed(2)}`, qualifier: 'an hour, both venues' },
           { label: 'Walk up', value: `$${WALK_UP}`, qualifier: 'an hour, no membership at all' },
-          {
-            label: 'Winter pricing',
-            gap: {
-              state: 'notSet',
-              reason:
-                'The winter terms are not set yet. These are the summer ones, and winter is the real season here.',
-            },
-          },
+          { label: 'Season', value: '2026/27', qualifier: 'the prices on this page' },
         ]}
       />
     </div>
   </section>
+
+  {
+    /*
+     * EARLY BIRD — A DATED PROMOTION, AND IT HAS TO BE ABLE TO EXPIRE.
+     *
+     * A discount band that outlives its own deadline is the defect this repo has
+     * shipped before: content that was true when written, still on the page a
+     * year later. This one cannot, because it retires itself twice over.
+     *
+     *   1. `EARLY_BIRD_ENDS` is checked at BUILD time, so any deploy after the
+     *      date drops the band from the HTML.
+     *   2. The inline script re-checks against the VISITOR's clock, because a
+     *      static site that nobody rebuilds keeps serving whatever it last
+     *      built. Without this, no deploy between now and November means a
+     *      November visitor is told the offer ends on 31 October.
+     *
+     * The date is also written into the band in words, so even a stale render is
+     * self-evidently expired rather than quietly wrong.
+     *
+     * Ember band, paper ink — the same treatment as the league waitlist, and the
+     * only other place on this page allowed to carry the action colour.
+     */
+  }
+  {
+    earlyBirdLive && (
+      <section class="on-accent-band bg-primary" data-early-bird data-ends={EARLY_BIRD_ENDS}>
+        <div class="mx-auto flex max-w-content flex-wrap items-baseline gap-x-s6 gap-y-s3 px-gutter py-s6 lg:px-gutter-lg">
+          <p class="caps-label text-label-sm text-surface">Early bird</p>
+          <p class="text-lead leading-body font-bold text-surface">20% off memberships · 10% off hour packages</p>
+          <p class="text-body leading-body text-surface">
+            Ends {EARLY_BIRD_LABEL}. Gift cards cannot be used to pay for a membership.
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <script is:inline>
+    (function () {
+      var band = document.querySelector('[data-early-bird]');
+      if (!band) return;
+      // Ends at the close of the stated day, in the visitor's own timezone.
+      var ends = new Date(band.dataset.ends + 'T23:59:59');
+      if (!isNaN(ends.valueOf()) && Date.now() > ends.valueOf()) band.hidden = true;
+    })();
+  </script>
 
   {/* 2. THE CHOOSER. Three rows, and the third one sells nothing. */}
   <section class="bg-white">
@@ -240,11 +307,19 @@ const smallPrint = [
               {/* The recommendation is a REASON, not a sticker. */}
               {tier.data.recommended && tier.data.recommendedNote && (
                 <p class="mt-s4 border-l-slab border-ember pl-s4 text-small leading-body text-inkBody">
-                  <span class="font-display font-bold tracking-display text-ink">{tier.data.recommendedNote}</span> — $
-                  {tier.data.price} ÷ ${WALK_UP} means it pays for itself past about {payback} hours of bay time a
-                  month. Fewer than that and you are better off booking by the hour.
+                  {/* One expression, not `$` + a line break + the number: JSX keeps
+                    that newline as a space and the page rendered "$ 299". */}
+                  <span class="font-display font-bold tracking-display text-ink">{tier.data.recommendedNote}</span>
+                  {` — $${tier.data.price} ÷ $${WALK_UP} means it pays for itself past about ${paybackFor(
+                    tier.data.price ?? 0,
+                  )} hours of bay time a month. Fewer than that and you are better off booking by the hour.`}
                 </p>
               )}
+
+              {/* The window is the difference between these tiers and the
+                  only reason three of them are cheaper than the fourth, so it
+                  is printed with the price rather than left in the list. */}
+              {tier.data.window && <p class="caps-label mt-s3 text-label-sm text-inkMuted">{tier.data.window}</p>}
 
               <p class="mt-s5 text-body leading-body text-inkBody">{tier.data.forWho}</p>
 
@@ -362,11 +437,19 @@ const smallPrint = [
 
       <StubNote
         class="mt-s6"
-        needs="LinksFlex Anytime is held back on purpose. At $549 / $1,049 / $1,899 for 12 / 24 / 48 hours it works out at $45.75, $43.71 and $39.56 an hour — MORE than the $35 walk-up rate. Selling a premium tier that costs more than turning up is not something we will do, so it is not on the page. Needed from the client: a repriced Anytime tier, or a decision to retire it. This is a pricing call, not a wording one."
+        needs="The Off-Peak and Senior / Vet windows open at 8am and the Junior window at 2pm, and these are the 2026/27 SEASON prices — Lakeville's winter hours are 8am-10pm, so they agree from the start of winter. They do NOT agree today: the published summer hours run 11am-9pm until 3 October, so an 8am off-peak slot cannot be booked yet. Confirm the date the season pricing takes effect, and whether these windows apply before winter hours begin."
       />
       <StubNote
         class="mt-s5"
-        needs="The Off Peak window starts at 8am and the Junior window at 2pm, but Lakeville currently opens at 11am. Either the windows were written for winter hours, or the published hours are wrong. One of the two has to change."
+        needs="The poster gives two different Sunday windows for Off-Peak: the MONTHLY tier reads 'Sun 5p-10p' and the HOUR PACKAGE reads 'Sun after 3p'. Both are on the page as given, because they may genuinely differ between the two products. Confirm - if they are meant to match, one of them is wrong on the poster and on this page."
+      />
+      <StubNote
+        class="mt-s5"
+        needs="Senior / Vet has no eligibility stated anywhere: no qualifying age for senior, and nothing on what counts as a veteran or what proof is wanted. A reduced rate with no published test is a conversation at the till. Get the rule and it becomes a line in the card."
+      />
+      <StubNote
+        class="mt-s5"
+        needs="The poster's 'Save 35%' and 'Save 54%' badges are NOT on this page. Against the published $35 walk-up rate the numbers do not come out: Off-Peak works out at $29.15-$33.25 an hour (17-5% off) and Anytime at $39.56-$45.75, which is MORE than walking in. They only make sense against a winter hourly rate, and no winter rate has ever been published - it is still the oldest open gap on the site. Publish the winter rate and the badges can go up with a divisor a customer can check."
       />
     </div>
   </section>

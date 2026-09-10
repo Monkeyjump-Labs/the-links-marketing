@@ -1,19 +1,20 @@
 {
-  "name": "Summer Monthly - Individual",
+  "name": "Anytime",
   "kind": "monthly",
   "order": 1,
   "venue": "both",
   "recommended": true,
-  "recommendedNote": "Start here if you are not sure",
-  "price": 149,
+  "recommendedNote": "The one with no restrictions",
+  "price": 299,
   "cadence": "a month",
-  "forWho": "One golfer who wants to play most weeks.",
+  "forWho": "Any day, any time. The membership with no window on it — book whenever the bay is free.",
   "includes": [
     "Two hours of bay time every day",
+    "Any day, any time",
     "21-day booking window - you book before everyone else",
     "10% off food and drink",
     "No guest fees",
-    "Purchase more hours any time"
+    "Both venues"
   ],
   "published": true
 }

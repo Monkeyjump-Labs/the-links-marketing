@@ -107,8 +107,24 @@ const money2 = (n: number) => `$${n.toFixed(2)}`;
                   <span class="mt-s3 block h-score w-full bg-greige" aria-hidden="true">
                     <span class="block h-full bg-amber" style={`width: ${(bank.hours / maxHours) * 100}%`} />
                   </span>
+                  {/*
+                   * ⚠️ A BANK CAN COST MORE PER HOUR THAN WALKING IN, and this
+                   * line has to survive that. Written as `walkUp - rate` it
+                   * printed "$-10.75 an hour less than walking in" the moment
+                   * LinksFlex Anytime went on the page — a negative number
+                   * inside a sentence that has already committed to the word
+                   * "less".
+                   *
+                   * It says which direction it goes instead. Anytime is an
+                   * in-season package priced for in-season demand and it is
+                   * dearer per hour than the current walk-up rate; that is a
+                   * fact a buyer can divide for themselves in one step, so the
+                   * page had better be the one to say it.
+                   */}
                   <span class="mt-s2 block text-small leading-body text-inkMuted">
-                    {money2(walkUp - rate)} an hour less than walking in
+                    {rate < walkUp
+                      ? `${money2(walkUp - rate)} an hour less than walking in`
+                      : `${money2(rate - walkUp)} an hour more than the current walk-up rate`}
                   </span>
                 </td>
               );
