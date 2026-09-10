@@ -20,10 +20,11 @@
  *
  * **Two honest things this page keeps, both of which cost us a sale sometimes:**
  *
- * 1. *The recommendation is arithmetic.* The recommended tier carries its own
- *    division — price ÷ the walk-up rate — so a reader can check the payback
- *    point themselves. Never a "Most popular" sticker, which is a claim about
- *    other people that we have no data for.
+ * 1. *The recommendation names a reason, never a crowd.* It used to be a
+ *    division the reader could check — price ÷ the walk-up rate — which was
+ *    better, and it went when the rate came off the page (see the note by
+ *    `WALK_UP`). What it must never become is a "Most popular" sticker: that is
+ *    a claim about other people, and we have no data for it.
  * 2. *The chooser's last row is "neither".* Play now and then, and the right
  *    answer is to book a bay and buy nothing. A page willing to tell you not to
  *    buy is more persuasive than one that isn't.
@@ -87,10 +88,6 @@ import { globalData } from '../data/global';
  */
 const WALK_UP = 60;
 
-/** What a walk-in pays until the season rate starts. Same source as the cards. */
-const WALK_UP_TODAY = 35;
-const WALK_UP_FROM = '4 October';
-
 /**
  * The early-bird deadline, as one date in one place. ISO so the inline
  * script can parse it; the label beside it is what a reader sees.
@@ -107,16 +104,18 @@ const monthly = all.filter((m) => m.data.kind === 'monthly');
 const flex = all.filter((m) => m.data.kind === 'flex');
 
 /**
- * The strip's hour-package headline: the best per-hour rate a general reader can
- * ACTUALLY BUY, so age-restricted tiers are excluded from it.
+ * The strip's hour-package headline, and the deepest saving on offer — both over
+ * tiers a general reader can ACTUALLY BUY, so age-restricted ones are excluded.
  *
- * The Junior bank is the cheapest per hour on the page by a distance, and a
- * "Hour packages from $20.81" headline computed over every tier is arithmetic that
- * is technically correct and still misleads — an adult reads a price and then
- * discovers they are not eligible. `ageRestricted` exists for this one line.
+ * The Junior banks are the cheapest and the deepest-discounted on the page by a
+ * distance, and either figure computed over every tier is arithmetic that is
+ * correct and still misleads: an adult reads it, then discovers they are not
+ * eligible. `ageRestricted` exists for exactly these two lines.
  */
-const bestPerHour = Math.min(
-  ...flex.filter((f) => !f.data.ageRestricted).flatMap((f) => f.data.banks.map((b) => b.price / b.hours)),
+const generalFlex = flex.filter((f) => !f.data.ageRestricted);
+const cheapestBank = Math.min(...generalFlex.flatMap((f) => f.data.banks.map((b) => b.price)));
+const deepestSaving = Math.max(
+  ...generalFlex.flatMap((f) => f.data.banks.map((b) => Math.round(((WALK_UP - b.price / b.hours) / WALK_UP) * 100))),
 );
 /**
  * The cheapest monthly a GENERAL READER can actually buy.
@@ -135,21 +134,16 @@ const generalMonthly = monthly.filter((m) => !m.data.ageRestricted);
 const cheapestMonthly = Math.min(...generalMonthly.map((m) => m.data.price ?? Infinity));
 
 /**
- * The payback point for a given tier, divided rather than asserted.
+ * ⚠️ THERE IS NO PAYBACK SENTENCE ON THIS PAGE ANY MORE, and that is a decision,
+ * not an omission. It read "$199 ÷ $60 pays for itself past about 3.3 hours a
+ * month" — arithmetic a reader could check, which is the standard this page held
+ * itself to. The owner took the hourly rate off the page on 2026-09-10, and the
+ * sentence cannot be written without quoting it.
  *
- * ⚠️ THIS TAKES A TIER. It used to be one number computed from the cheapest
- * monthly and then printed inside every recommended card — which was right only
- * while the cheapest tier and the recommended tier were the same one. They are
- * no longer: the recommendation is Anytime at $299 and the cheapest general tier
- * is Off-Peak at $199, so a single shared figure would have printed "$299 ÷ $35
- * pays for itself past about 5.7 hours", which is the wrong quotient beside the
- * right division. Divide per tier or do not print the sentence.
- *
- * One decimal: the exact quotient is false precision in a sentence that already
- * says "about", and the division is printed beside it either way.
+ * So the recommendation is a plain claim now rather than a division. If the rate
+ * ever goes back on the page, restore this first: it was the page's best answer
+ * to "why should I believe you", and `WALK_UP` is still here to divide by.
  */
-const paybackFor = (price: number) => (price / WALK_UP).toFixed(1);
-const payback = paybackFor(cheapestMonthly);
 
 const metadata = {
   metaTitle: 'Golf Memberships & Hour Packages — Lakeville & Stillwater',
@@ -165,7 +159,7 @@ const chooser = [
   {
     when: 'You play most weeks',
     answer: 'Monthly membership',
-    why: `Two hours a day and the 21-day booking window. It pays for itself past about ${payback} hours a month.`,
+    why: 'Two hours of bay time every day, plus the 21-day booking window that gets you the Saturday slot first.',
   },
   {
     when: 'You play in bursts',
@@ -175,7 +169,7 @@ const chooser = [
   {
     when: 'You play now and then',
     answer: 'Neither',
-    why: `Book a bay and buy nothing — $${WALK_UP_TODAY} an hour now, $${WALK_UP} from ${WALK_UP_FROM}. Up to six of you, same price. Come back to this page when that stops being the cheapest way.`,
+    why: 'Book a bay by the hour and buy nothing. Up to six of you, same price. Come back to this page when that stops being the cheapest way.',
     none: true,
   },
 ];
@@ -223,12 +217,8 @@ const smallPrint = [
         tone="dark"
         cells={[
           { label: 'Monthly from', value: `$${cheapestMonthly}`, qualifier: 'a month, both venues' },
-          { label: 'Hours from', value: `$${bestPerHour.toFixed(2)}`, qualifier: 'an hour, both venues' },
-          {
-            label: 'Walk up',
-            value: `$${WALK_UP}`,
-            qualifier: `an hour from ${WALK_UP_FROM} — $${WALK_UP_TODAY} until then`,
-          },
+          { label: 'Hour packages from', value: `$${cheapestBank}`, qualifier: 'for a 12-hour bank, both venues' },
+          { label: 'Save up to', value: `${deepestSaving}%`, qualifier: 'on the largest off-peak bank' },
           { label: 'Season', value: '2026/27', qualifier: 'the prices on this page' },
         ]}
       />
@@ -336,12 +326,8 @@ const smallPrint = [
               {/* The recommendation is a REASON, not a sticker. */}
               {tier.data.recommended && tier.data.recommendedNote && (
                 <p class="mt-s4 border-l-slab border-ember pl-s4 text-small leading-body text-inkBody">
-                  {/* One expression, not `$` + a line break + the number: JSX keeps
-                    that newline as a space and the page rendered "$ 299". */}
                   <span class="font-display font-bold tracking-display text-ink">{tier.data.recommendedNote}</span>
-                  {` — $${tier.data.price} ÷ $${WALK_UP} means it pays for itself past about ${paybackFor(
-                    tier.data.price ?? 0,
-                  )} hours of bay time a month. Fewer than that and you are better off booking by the hour.`}
+                  {' — no window on it, so a Saturday morning bay is the same membership as a Tuesday afternoon one.'}
                 </p>
               )}
 
@@ -505,8 +491,8 @@ const smallPrint = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead tone="dark">Not sure yet?</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-paper">
-        Book an hour at the normal rate first. Three hours in a month costs ${WALK_UP * 3}, so a membership only starts
-        paying for itself past about {payback} hours — ${cheapestMonthly} ÷ ${WALK_UP}. Buy nothing until then.
+        Book a bay by the hour first and see how often you actually come. If it turns into most weeks, a membership is
+        the cheaper way round — and if it does not, you have bought nothing you did not use.
       </p>
       <div class="mt-s6"><BookButton size="lg" variant="onDark" /></div>
     </div>
