@@ -1,12 +1,21 @@
 {
-  "season": "Winter 2026-27",
+  "season": "2026/27 Season",
   "order": 2,
-  "effectiveFrom": "2026-10-04",
+  "effectiveFrom": "Oct 4th, 2026",
   "current": false,
-  "note": "Winter pricing is not set yet. The rate above holds until 3 October 2026 and the winter one will be published here the moment it is decided — we are not going to put a number up that we would have to take back down. Winter is the busy half of the year here, so it is worth checking back.",
-  "buildNote": "Winter pricing has not been supplied by the client. The current published rate expires 3 Oct 2026 and there is no winter rate anywhere on the existing site. This card cannot go live with real numbers until it lands, and the two rows below carry no price on purpose — leaving the field out draws the Not yet set mark. Do not put TBC back in it.",
+  "note": "This is the rate from 4 October, when the current season ends. Memberships and hour packages are priced against it, so buying either before then is priced on this number and not on the one above.",
   "rows": [
-    { "label": "Bay rental - peak", "venue": "both" },
-    { "label": "Bay rental - off peak", "venue": "both" }
+    {
+      "label": "Bay rental",
+      "price": "$60 / hour",
+      "eligibility": "Per bay, any day, from 4 Oct 2026",
+      "venue": "both"
+    },
+    {
+      "label": "Club rental",
+      "price": "$15",
+      "eligibility": "Per set, per visit",
+      "venue": "lakeville"
+    }
   ]
 }

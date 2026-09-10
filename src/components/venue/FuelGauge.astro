@@ -1,6 +1,6 @@
 ---
 /**
- * LinksFlex as a **fuel gauge** — bank sizes across, tiers down, a proportional
+ * Links Hour Packages as a **fuel gauge** — bank sizes across, tiers down, a proportional
  * amber bar in every cell.
  *
  * **Why this is not a third and fourth pricing card.** A monthly membership and
@@ -62,8 +62,9 @@ const money2 = (n: number) => `$${n.toFixed(2)}`;
 <div class:list={[className]}>
   <table class="w-full border-collapse text-left">
     <caption class="sr-only">
-      LinksFlex prepaid hour banks. For each tier and bank size: the price, and what it works out at per hour compared
-      with the {money(walkUp)} walk-up rate.
+      Prepaid hour banks. For each tier and bank size: the price, and what it works out at per hour compared with the {
+        money(walkUp)
+      } walk-up rate.
     </caption>
     <thead>
       <tr class="border-b-score border-navy">
@@ -111,7 +112,7 @@ const money2 = (n: number) => `$${n.toFixed(2)}`;
                    * ⚠️ A BANK CAN COST MORE PER HOUR THAN WALKING IN, and this
                    * line has to survive that. Written as `walkUp - rate` it
                    * printed "$-10.75 an hour less than walking in" the moment
-                   * LinksFlex Anytime went on the page — a negative number
+                   * the Anytime package went on the page — a negative number
                    * inside a sentence that has already committed to the word
                    * "less".
                    *

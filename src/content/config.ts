@@ -356,11 +356,11 @@ const memberships = defineCollection({
     /** When these hours can be used. The restriction IS the product. */
     window: z.string().optional(),
     /**
-     * True when a tier is limited by age (LinksFlex Junior is 13–18).
+     * True when a tier is limited by age (the Junior hour package is 13–18).
      *
      * It exists so a "from $X an hour" headline cannot quote a price most
      * readers are not eligible for. The Junior bank is the cheapest per hour on
-     * the page by some way, and an adult reading "LinksFlex from $20.81" and
+     * the page by some way, and an adult reading "Hour packages from $20.81" and
      * then finding they cannot buy it has been misled by arithmetic that was
      * technically correct.
      */

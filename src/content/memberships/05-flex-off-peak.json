@@ -1,15 +1,24 @@
 {
-  "name": "LinksFlex Off-Peak",
+  "name": "Off-Peak",
   "kind": "flex",
   "order": 5,
   "venue": "both",
   "recommended": true,
   "recommendedNote": "Lowest cost per hour of anything we sell",
-  "window": "Monday to Friday 8am-5pm, and Sundays after 3pm",
+  "window": "Monday to Friday 8am-5pm, and Sundays after 5pm",
   "banks": [
-    { "hours": 12, "price": 399 },
-    { "hours": 24, "price": 749 },
-    { "hours": 48, "price": 1399 }
+    {
+      "hours": 12,
+      "price": 399
+    },
+    {
+      "hours": 24,
+      "price": 749
+    },
+    {
+      "hours": 48,
+      "price": 1399
+    }
   ],
   "published": true
 }
