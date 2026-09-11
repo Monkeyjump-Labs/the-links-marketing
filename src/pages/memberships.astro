@@ -64,7 +64,6 @@ import SectionHead from '../components/venue/SectionHead.astro';
 import HeroStrip from '../components/venue/HeroStrip.astro';
 import FuelGauge from '../components/venue/FuelGauge.astro';
 import ReadoutCell from '../components/venue/ReadoutCell.astro';
-import GapCell from '../components/venue/GapCell.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import { buttonClasses } from '../lib/buttons';
 import { globalData } from '../data/global';
@@ -495,16 +494,25 @@ const smallPrint = [
           </dd>
         </div>
 
-        {/* Cancellation: nobody has told us the mechanism. That is an absence. */}
+        {
+          /* Cancellation, answered by the owner 2026-09-11. It was the last
+            not-yet-set mark on this page, and the one that mattered most: a
+            page selling an automatically renewing subscription that cannot say
+            how to stop it is the shape of a complaint.
+
+            Both halves are stated because a notice period is the half people
+            get caught by — you email, and you still pay out the term you are
+            in. Saying only "email us" would leave that to be discovered. */
+        }
         <div class="grid gap-s3 border-b-score border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
           <dt class="caps-label text-label-sm text-inkMuted">How to cancel</dt>
-          <dd class="max-w-prose-page">
-            <GapCell
-              label="Notice period and mechanism"
-              state="notSet"
-              size="text"
-              reason="“Automatic monthly renewal until cancelled” is the only language that exists today, and it does not tell anyone how to cancel. We have asked."
-            />
+          <dd class="max-w-prose-page text-body leading-body text-inkBody">
+            To cancel a monthly membership, email{' '}
+            <a
+              href="mailto:info@lakevillelinks.com"
+              class="font-bold underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+              >info@lakevillelinks.com</a
+            >. The membership ends after the current monthly term, not immediately.
           </dd>
         </div>
       </dl>
