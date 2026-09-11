@@ -1,0 +1,24 @@
+{
+  "name": "Junior",
+  "kind": "flex",
+  "order": 7,
+  "venue": "both",
+  "recommended": false,
+  "window": "Monday to Friday 2pm-5pm, for players aged 13 to 18",
+  "ageRestricted": true,
+  "banks": [
+    {
+      "hours": 12,
+      "price": 299
+    },
+    {
+      "hours": 24,
+      "price": 549
+    },
+    {
+      "hours": 48,
+      "price": 999
+    }
+  ],
+  "published": true
+}

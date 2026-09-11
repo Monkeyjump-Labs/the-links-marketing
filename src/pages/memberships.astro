@@ -5,21 +5,29 @@
  * 2026-08-03 (FW-3967); spec in `design/SUBPAGE-EXPLORATION.md`.
  *
  * **The idea: two unlike products get two grammars.** Monthly is a card
- * comparison. LinksFlex is a `FuelGauge` — bank sizes across, tiers down, a
- * proportional bar per cell — because an hour bank is a punch card, not a SaaS
- * plan. Drawing both as pricing cards is what made this page read as four
+ * comparison. The hour packages are a `FuelGauge` — bank sizes across, tiers
+ * down, a proportional bar per cell — because an hour bank is a punch card, not
+ * a SaaS plan. Drawing both as pricing cards is what made this page read as four
  * near-identical boxes, and it also flattered the wrong product: a bank of hours
  * compared card-to-card against a subscription looks like a worse subscription.
  *
+ * ⚠️ THE PRODUCT IS CALLED "LINKS HOUR PACKAGES", not LinksFlex, from
+ * 2026-09-10 at the owner's instruction. The old name is retired everywhere it
+ * was customer-facing. It survives in exactly one place on purpose — the
+ * condition on the hours below quotes the T&Cs, and those terms are a signed
+ * document that still says LinksFlex. Renaming a clause inside a quotation is
+ * not a rename, it is a misquotation.
+ *
  * **Two honest things this page keeps, both of which cost us a sale sometimes:**
  *
- * 1. *The recommendation is arithmetic.* Individual is flagged "Start here if
- *    you are not sure" because $149 ÷ $35 pays back after about 4¼ hours of bay
- *    time a month — a reason the customer can check, not a "Most popular"
- *    sticker, which is a claim about other people that we have no data for.
+ * 1. *The recommendation names a reason, never a crowd.* It used to be a
+ *    division the reader could check — price ÷ the walk-up rate — which was
+ *    better, and it went when the rate came off the page (see the note by
+ *    `WALK_UP`). What it must never become is a "Most popular" sticker: that is
+ *    a claim about other people, and we have no data for it.
  * 2. *The chooser's last row is "neither".* Play now and then, and the right
- *    answer is to book a bay at $35 and buy nothing. A page willing to tell you
- *    not to buy is more persuasive than one that isn't.
+ *    answer is to book a bay and buy nothing. A page willing to tell you not to
+ *    buy is more persuasive than one that isn't.
  *
  * Prices are HTML text (playbook-core.md §8). On the current live site every one
  * of these numbers is inside a JPEG. They now live in the `memberships`
@@ -27,12 +35,12 @@
  * and cannot drift out of agreement with the prices beside them.
  *
  * ⚠️ "Hours never expire" is the CLIENT'S marketing line and it is true as far
- * as it goes, but the LinksFlex T&Cs attach a condition: hours stay valid "for
- * as long as the customer is in good standing with the Company and the Company
- * continues to offer the associated service". This page states that condition
- * once, in "Before you join", and every other mention points at it. Do not
- * restore a bare "never expire" — a promise published without its condition is
- * the shape of a complaint (truth-audit §U5).
+ * as it goes, but the T&Cs attach a condition: hours stay valid "for as long as
+ * the customer is in good standing with the Company and the Company continues to
+ * offer the associated service". This page states that condition once, in
+ * "Before you join", and every other mention points at it. Do not restore a bare
+ * "never expire" — a promise published without its condition is the shape of a
+ * complaint (truth-audit §U5).
  *
  * ✅ The guest policy is RESOLVED (client-answers.md §13): members bring guests,
  * there is no guest fee, and the member must be present. It carried a
@@ -42,14 +50,12 @@
  * saying so, and this is the one that costs somebody money at the till
  * (truth-audit §U3) — but the answer is now known, so it is stated plainly.
  *
- * ⚠️ LinksFlex "Anytime" is still held back, but OUR REASONING WAS WRONG and is
- * recorded here so nobody reinstates it. We withheld it because at $39.56–$45.75
- * an hour it costs more than the $35 walk-up rate, and we read that as a pricing
- * mistake (strategy.md §7.4). It is not: Anytime is an IN-SEASON promo and is
- * priced for in-season demand, while Summer Monthly is the summer answer
- * (client-answers.md §13). Publishing it is now a positioning question — does it
- * read as a premium or as a worse deal — not a repricing one. Decide before
- * launch rather than leaving it in a `StubNote` by default.
+ * ✅ Anytime is PUBLISHED, and the arithmetic that kept it off finally works.
+ * It was withheld because at $39.56–$45.75 an hour it cost more than the $35
+ * walk-up rate; the reasoning was wrong twice over. It is an in-season package
+ * (client-answers.md §13), and the season rate is $60 — against that, every bank
+ * on the page is cheaper than walking in. The lesson worth keeping: the tier was
+ * never mispriced, it was being measured against the wrong season.
  */
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -58,13 +64,36 @@ import SectionHead from '../components/venue/SectionHead.astro';
 import HeroStrip from '../components/venue/HeroStrip.astro';
 import FuelGauge from '../components/venue/FuelGauge.astro';
 import ReadoutCell from '../components/venue/ReadoutCell.astro';
-import GapCell from '../components/venue/GapCell.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import { buttonClasses } from '../lib/buttons';
 import { globalData } from '../data/global';
 
-/** The walk-up rate every membership on this page is measured against. */
-const WALK_UP = 35;
+/**
+ * The walk-up rate every package on this page is measured against.
+ *
+ * ⚠️ $60 IS THE RATE FROM 4 OCTOBER, NOT THE RATE TODAY. The owner set it
+ * (2026-09-10) in answer to what the season rate would be; the season card in
+ * `rates/` carries the same number and the same start date, so the two cannot
+ * drift. Until 4 October a walk-in still pays the $35 on the current card.
+ *
+ * That gap is stated on the page rather than papered over. Every membership and
+ * package here is a SEASON product — the early-bird band sells them before the
+ * season starts — so measuring them against the rate that will be in force when
+ * they are used is the honest comparison, and measuring them against a rate that
+ * expires in three weeks is not. Both numbers appear, with their dates.
+ *
+ * Change this and you must change `rates/winter-2026-27.json` in the same
+ * commit, or the site quotes two different hourly rates for the same season.
+ */
+const WALK_UP = 60;
+
+/**
+ * The early-bird deadline, as one date in one place. ISO so the inline
+ * script can parse it; the label beside it is what a reader sees.
+ */
+const EARLY_BIRD_ENDS = '2026-10-31';
+const EARLY_BIRD_LABEL = '31 October 2026';
+const earlyBirdLive = new Date() <= new Date(EARLY_BIRD_ENDS + 'T23:59:59');
 
 const all = (await getCollection('memberships'))
   .filter((m) => m.data.published)
@@ -74,34 +103,51 @@ const monthly = all.filter((m) => m.data.kind === 'monthly');
 const flex = all.filter((m) => m.data.kind === 'flex');
 
 /**
- * The strip's LinksFlex headline: the best per-hour rate a general reader can
- * ACTUALLY BUY, so age-restricted tiers are excluded from it.
+ * The strip's hour-package headline, and the deepest saving on offer — both over
+ * tiers a general reader can ACTUALLY BUY, so age-restricted ones are excluded.
  *
- * The Junior bank is the cheapest per hour on the page by a distance, and a
- * "LinksFlex from $20.81" headline computed over every tier is arithmetic that
- * is technically correct and still misleads — an adult reads a price and then
- * discovers they are not eligible. `ageRestricted` exists for this one line.
+ * The Junior banks are the cheapest and the deepest-discounted on the page by a
+ * distance, and either figure computed over every tier is arithmetic that is
+ * correct and still misleads: an adult reads it, then discovers they are not
+ * eligible. `ageRestricted` exists for exactly these two lines.
  */
-const bestPerHour = Math.min(
-  ...flex.filter((f) => !f.data.ageRestricted).flatMap((f) => f.data.banks.map((b) => b.price / b.hours)),
+const generalFlex = flex.filter((f) => !f.data.ageRestricted);
+const cheapestBank = Math.min(...generalFlex.flatMap((f) => f.data.banks.map((b) => b.price)));
+const deepestSaving = Math.max(
+  ...generalFlex.flatMap((f) => f.data.banks.map((b) => Math.round(((WALK_UP - b.price / b.hours) / WALK_UP) * 100))),
 );
-const cheapestMonthly = Math.min(...monthly.map((m) => m.data.price ?? Infinity));
+/**
+ * The cheapest monthly a GENERAL READER can actually buy.
+ *
+ * `ageRestricted` now guards the monthly tiers as well as the flex ones, and for
+ * the same reason it was invented: Senior / Vet and Junior are both $149, both
+ * cheaper than anything an unrestricted adult can join, and a "Monthly from
+ * $149" headline computed over every tier is arithmetic that is correct and
+ * still misleads. The general entry point is Off-Peak at $199.
+ *
+ * (Vet is a service status rather than an age. The field is doing the job it was
+ * built for — keeping a headline to prices the reader can act on — so it guards
+ * that tier too rather than growing a second flag that means the same thing.)
+ */
+const generalMonthly = monthly.filter((m) => !m.data.ageRestricted);
+const cheapestMonthly = Math.min(...generalMonthly.map((m) => m.data.price ?? Infinity));
 
 /**
- * The payback point, divided rather than asserted: $149 ÷ $35 = 4.257…
+ * ⚠️ THERE IS NO PAYBACK SENTENCE ON THIS PAGE ANY MORE, and that is a decision,
+ * not an omission. It read "$199 ÷ $60 pays for itself past about 3.3 hours a
+ * month" — arithmetic a reader could check, which is the standard this page held
+ * itself to. The owner took the hourly rate off the page on 2026-09-10, and the
+ * sentence cannot be written without quoting it.
  *
- * Shown to ONE decimal. The exact quotient is false precision in a sentence that
- * already says "about", and the division is printed beside it either way, so a
- * reader who wants the exact number can do it themselves — which is the whole
- * argument for a reason over a "Most popular" sticker.
+ * So the recommendation is a plain claim now rather than a division. If the rate
+ * ever goes back on the page, restore this first: it was the page's best answer
+ * to "why should I believe you", and `WALK_UP` is still here to divide by.
  */
-const paybackHours = cheapestMonthly / WALK_UP;
-const payback = paybackHours.toFixed(1);
 
 const metadata = {
-  metaTitle: 'Golf Memberships & LinksFlex — Lakeville & Stillwater',
+  metaTitle: 'Golf Memberships & Hour Packages — Lakeville & Stillwater',
   metaDescription:
-    'Monthly memberships and LinksFlex prepaid hours at The Links, Lakeville and Stillwater MN. No expiry date on LinksFlex hours. Compare tiers and join online.',
+    'Monthly memberships and prepaid Links Hour Packages at The Links, Lakeville and Stillwater MN. No expiry date on the hours. Compare tiers and join online.',
 };
 
 /**
@@ -112,17 +158,17 @@ const chooser = [
   {
     when: 'You play most weeks',
     answer: 'Monthly membership',
-    why: `Two hours a day and the 21-day booking window. It pays for itself past about ${payback} hours a month.`,
+    why: 'Two hours of bay time every day, plus the 21-day booking window that gets you the Saturday slot first.',
   },
   {
     when: 'You play in bursts',
-    answer: 'LinksFlex hours',
+    answer: 'An hour package',
     why: 'A bank you draw down whenever, with no monthly bill and no expiry date. A quiet month costs you nothing.',
   },
   {
     when: 'You play now and then',
     answer: 'Neither',
-    why: `Book a bay at $${WALK_UP} an hour and buy nothing. Up to six of you, same price. Come back to this page when that stops being the cheapest way.`,
+    why: 'Book a bay by the hour and buy nothing. Up to six of you, same price. Come back to this page when that stops being the cheapest way.',
     none: true,
   },
 ];
@@ -135,7 +181,7 @@ const smallPrint = [
   ],
   [
     'Hours restrictions',
-    'The monthly memberships include two hours a day and are subject to opening hours — a membership does not guarantee a walk-in bay. LinksFlex Off Peak and Junior hours are limited to the windows above; there is no restriction on how long you take to use them.',
+    'The monthly memberships include two hours a day and are subject to opening hours — a membership does not guarantee a walk-in bay. Every tier except Anytime is limited to the window printed on it, and the hour packages the same; there is no restriction on how long you take to use a bank. Everything on this page is also tied to one venue: a membership or a package bought at Lakeville cannot be used at Stillwater, or the other way round.',
   ],
   ['Do you have to be there?', 'Yes. The member has to be present at the tee time.'],
   [
@@ -144,46 +190,90 @@ const smallPrint = [
   ],
   [
     'Commitment',
-    'The monthly memberships bill automatically each month until 3 October 2026, or until you cancel. LinksFlex is a one-off purchase with no monthly commitment. Its hours have no expiry date — the terms hold them open for as long as you are in good standing and we still offer the service — but they are non-transferable and all sales are final.',
+    'The monthly memberships bill automatically each month until you cancel. An hour package is a one-off purchase with no monthly commitment. Its hours have no expiry date — the terms hold them open for as long as you are in good standing and we still offer the service — but they are non-transferable and all sales are final.',
   ],
 ];
 ---
 
 <BaseLayout metadata={metadata}>
   {
-    /* 1. HERO + the 4-cell strip. The strip answers the four things a visitor
-      screens on before reading a word of the page: what the two products cost at
-      their entry point, what the best hourly rate is, and what it costs to buy
-      nothing — which is the number everything else is compared against. */
+    /* 1. HERO + the 4-cell strip. The strip answers what a visitor screens on
+      before reading a word of the page: what the two products cost at their entry
+      point, the deepest saving on offer, and which season the prices belong to.
+
+      It used to end on the walk-up rate — the number everything else was
+      compared against — which came off the page with the rest of the hourly
+      comparison on 2026-09-10. See the note by `WALK_UP`. */
   }
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
       <p class="caps-label text-amber">Two ways to pay less per hour</p>
-      <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Memberships</h1>
+      <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">
+        Memberships &amp; Hour Packages
+      </h1>
       <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
-        A monthly membership if you play most weeks, or a bank of prepaid LinksFlex hours with no expiry date if you
-        play in bursts. You do not need to be any good at golf to be worth one.
+        A monthly membership if you play most weeks, or a prepaid bank of hours with no expiry date if you play in
+        bursts. You do not have to be good at golf for either to be worth it.
       </p>
 
       <HeroStrip
         class="mt-s8"
         tone="dark"
         cells={[
-          { label: 'Monthly from', value: `$${cheapestMonthly}`, qualifier: 'a month, both venues' },
-          { label: 'LinksFlex from', value: `$${bestPerHour.toFixed(2)}`, qualifier: 'an hour, both venues' },
-          { label: 'Walk up', value: `$${WALK_UP}`, qualifier: 'an hour, no membership at all' },
-          {
-            label: 'Winter pricing',
-            gap: {
-              state: 'notSet',
-              reason:
-                'The winter terms are not set yet. These are the summer ones, and winter is the real season here.',
-            },
-          },
+          { label: 'Monthly from', value: `$${cheapestMonthly}`, qualifier: 'a month, per location' },
+          { label: 'Hour packages from', value: `$${cheapestBank}`, qualifier: 'for a 12-hour bank, per location' },
+          { label: 'Save up to', value: `${deepestSaving}%`, qualifier: 'on the largest off-peak bank' },
+          { label: 'Season', value: '2026/27', qualifier: 'the prices on this page' },
         ]}
       />
     </div>
   </section>
+
+  {
+    /*
+     * EARLY BIRD — A DATED PROMOTION, AND IT HAS TO BE ABLE TO EXPIRE.
+     *
+     * A discount band that outlives its own deadline is the defect this repo has
+     * shipped before: content that was true when written, still on the page a
+     * year later. This one cannot, because it retires itself twice over.
+     *
+     *   1. `EARLY_BIRD_ENDS` is checked at BUILD time, so any deploy after the
+     *      date drops the band from the HTML.
+     *   2. The inline script re-checks against the VISITOR's clock, because a
+     *      static site that nobody rebuilds keeps serving whatever it last
+     *      built. Without this, no deploy between now and November means a
+     *      November visitor is told the offer ends on 31 October.
+     *
+     * The date is also written into the band in words, so even a stale render is
+     * self-evidently expired rather than quietly wrong.
+     *
+     * Ember band, paper ink — the same treatment as the league waitlist, and the
+     * only other place on this page allowed to carry the action colour.
+     */
+  }
+  {
+    earlyBirdLive && (
+      <section class="on-accent-band bg-primary" data-early-bird data-ends={EARLY_BIRD_ENDS}>
+        <div class="mx-auto flex max-w-content flex-wrap items-baseline gap-x-s6 gap-y-s3 px-gutter py-s6 lg:px-gutter-lg">
+          <p class="caps-label text-label-sm text-surface">Early bird</p>
+          <p class="text-lead leading-body font-bold text-surface">20% off memberships · 10% off hour packages</p>
+          <p class="text-body leading-body text-surface">
+            Ends {EARLY_BIRD_LABEL}. Gift cards cannot be used to pay for a membership.
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <script is:inline>
+    (function () {
+      var band = document.querySelector('[data-early-bird]');
+      if (!band) return;
+      // Ends at the close of the stated day, in the visitor's own timezone.
+      var ends = new Date(band.dataset.ends + 'T23:59:59');
+      if (!isNaN(ends.valueOf()) && Date.now() > ends.valueOf()) band.hidden = true;
+    })();
+  </script>
 
   {/* 2. THE CHOOSER. Three rows, and the third one sells nothing. */}
   <section class="bg-white">
@@ -215,8 +305,8 @@ const smallPrint = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead index={2}>Monthly membership</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-inkBody">
-        Available at both venues. Two hours of bay time a day, every day, plus the booking window that gets you the
-        Saturday slot before anyone else asks for it.
+        Sold at both venues and used at the one you join — two hours of bay time a day, every day, plus the booking
+        window that gets you the Saturday slot before anyone else asks for it.
       </p>
 
       <ul class="mt-s7 grid gap-s6 md:grid-cols-2">
@@ -240,11 +330,15 @@ const smallPrint = [
               {/* The recommendation is a REASON, not a sticker. */}
               {tier.data.recommended && tier.data.recommendedNote && (
                 <p class="mt-s4 border-l-slab border-ember pl-s4 text-small leading-body text-inkBody">
-                  <span class="font-display font-bold tracking-display text-ink">{tier.data.recommendedNote}</span> — $
-                  {tier.data.price} ÷ ${WALK_UP} means it pays for itself past about {payback} hours of bay time a
-                  month. Fewer than that and you are better off booking by the hour.
+                  <span class="font-display font-bold tracking-display text-ink">{tier.data.recommendedNote}</span>
+                  {' — no window on it, so a Saturday morning bay is the same membership as a Tuesday afternoon one.'}
                 </p>
               )}
+
+              {/* The window is the difference between these tiers and the
+                  only reason three of them are cheaper than the fourth, so it
+                  is printed with the price rather than left in the list. */}
+              {tier.data.window && <p class="caps-label mt-s3 text-label-sm text-inkMuted">{tier.data.window}</p>}
 
               <p class="mt-s5 text-body leading-body text-inkBody">{tier.data.forWho}</p>
 
@@ -258,7 +352,11 @@ const smallPrint = [
         }
       </ul>
 
-      <div class="mt-s7 flex flex-wrap gap-s5">
+      <p class="mt-s7 max-w-prose-page text-small leading-body text-inkMuted">
+        Join at the venue you play at: a membership is used at the one you join, not at both.
+      </p>
+
+      <div class="mt-s6 flex flex-wrap gap-s5">
         <a
           href={globalData.external.membershipsLakeville}
           class={buttonClasses('md', 'primary')}
@@ -280,39 +378,21 @@ const smallPrint = [
           <span class="sr-only">(opens the Whoosh store in a new tab)</span>
         </a>
       </div>
-
-      {
-        /* The winter gap, stated where a buyer meets the summer price rather
-          than in a footnote. Untinted `quoted` would be wrong here: nobody is
-          holding a winter number back, it genuinely does not exist yet.
-
-          On a WHITE slab, because this band is greige and a `notSet` cell tints
-          itself greige — on the alternating field the tint is the same colour as
-          the ground, so the mark loses the very form that distinguishes it from
-          a `quoted` one. See the ground note in `GapCell`. */
-      }
-      <div class="mt-s7 max-w-prose-page bg-white p-cell">
-        <GapCell
-          label="Winter membership"
-          state="notSet"
-          size="name"
-          reason="These are the summer terms, renewing until 3 October 2026. Winter pricing, included hours and start date have not been set — and winter is this venue's real season."
-        />
-      </div>
     </div>
   </section>
 
   {
-    /* 4. LINKSFLEX — the fuel gauge. No peer in the competitive scan offers
+    /* 4. HOUR PACKAGES — the fuel gauge. No peer in the competitive scan offers
       prepaid hours with no expiry date; it is the strongest differentiator on the
       site and currently lives in a terms-and-conditions page (strategy.md §2). */
   }
   <section class="bg-white">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={3}>LinksFlex — prepaid hours</SectionHead>
+      <SectionHead index={3}>Links Hour Packages — prepaid hours</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-inkBody">
         Buy a block of hours up front and use them whenever. There is no expiry date on them, so a bad month costs you
-        nothing, and there is no monthly bill. The one condition is in{' '}
+        nothing, and there is no monthly bill. A package is tied to the venue you buy it at — Lakeville hours are used
+        at Lakeville, Stillwater hours at Stillwater — so buy it where you play. The other condition is in{' '}
         <a
           href="#before-you-join"
           class="font-bold underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
@@ -321,7 +401,18 @@ const smallPrint = [
       </p>
 
       <div class="mt-s5 flex flex-wrap items-baseline gap-x-s6 gap-y-s3">
-        <ReadoutCell label="Where" size="name">Both venues</ReadoutCell>
+        {
+          /* ⚠️ "Both venues" was wrong here, and — corrected a day later — wrong
+            in the monthly section too. BOTH products are sold at both venues and
+            spent at ONE: the one you bought them at. Nothing on this page is
+            transferable between Lakeville and Stillwater.
+
+            Written out because the first fix only covered the packages, on the
+            reasonable-sounding assumption that a subscription would work at
+            either. It does not. If a third product ever appears here, ask which
+            venue it is good at before writing "both" anywhere near it. */
+        }
+        <ReadoutCell label="Where" size="name">Sold at both · used at one</ReadoutCell>
         <ReadoutCell label="Also included" size="name">21-day booking window · 10% off food</ReadoutCell>
       </div>
 
@@ -337,7 +428,11 @@ const smallPrint = [
         }))}
       />
 
-      <div class="mt-s7 flex flex-wrap gap-s5">
+      <p class="mt-s7 max-w-prose-page text-small leading-body text-inkMuted">
+        Buy at the venue you play at: these hours cannot be moved between Lakeville and Stillwater.
+      </p>
+
+      <div class="mt-s6 flex flex-wrap gap-s5">
         <a
           href={globalData.external.membershipsLakeville}
           class={buttonClasses('md', 'primary')}
@@ -345,7 +440,7 @@ const smallPrint = [
           rel="noopener"
           data-analytics="linksflex:lakeville"
         >
-          Buy a LinksFlex block at Lakeville <span aria-hidden="true">→</span>
+          Buy an hour package at Lakeville <span aria-hidden="true">→</span>
           <span class="sr-only">(opens the Whoosh store in a new tab)</span>
         </a>
         <a
@@ -355,18 +450,14 @@ const smallPrint = [
           rel="noopener"
           data-analytics="linksflex:stillwater"
         >
-          Buy a LinksFlex block at Stillwater <span aria-hidden="true">→</span>
+          Buy an hour package at Stillwater <span aria-hidden="true">→</span>
           <span class="sr-only">(opens the Whoosh store in a new tab)</span>
         </a>
       </div>
 
       <StubNote
         class="mt-s6"
-        needs="LinksFlex Anytime is held back on purpose. At $549 / $1,049 / $1,899 for 12 / 24 / 48 hours it works out at $45.75, $43.71 and $39.56 an hour — MORE than the $35 walk-up rate. Selling a premium tier that costs more than turning up is not something we will do, so it is not on the page. Needed from the client: a repriced Anytime tier, or a decision to retire it. This is a pricing call, not a wording one."
-      />
-      <StubNote
-        class="mt-s5"
-        needs="The Off Peak window starts at 8am and the Junior window at 2pm, but Lakeville currently opens at 11am. Either the windows were written for winter hours, or the published hours are wrong. One of the two has to change."
+        needs="The poster's 'Save 35%' and 'Save 54%' badges are still not on this page, and now for a smaller reason than before. Against the $60 season rate every bank IS cheaper than walking in - Off-Peak saves 45-51%, Anytime 24-34%, Junior 58-65% - so the badges understate two tiers and roughly match one. Publishing a percentage we cannot reproduce from the two numbers beside it is the thing to avoid; either drop them or replace them with the per-bank figures the gauge already divides."
       />
     </div>
   </section>
@@ -403,16 +494,25 @@ const smallPrint = [
           </dd>
         </div>
 
-        {/* Cancellation: nobody has told us the mechanism. That is an absence. */}
+        {
+          /* Cancellation, answered by the owner 2026-09-11. It was the last
+            not-yet-set mark on this page, and the one that mattered most: a
+            page selling an automatically renewing subscription that cannot say
+            how to stop it is the shape of a complaint.
+
+            Both halves are stated because a notice period is the half people
+            get caught by — you email, and you still pay out the term you are
+            in. Saying only "email us" would leave that to be discovered. */
+        }
         <div class="grid gap-s3 border-b-score border-navy py-row md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-s6">
           <dt class="caps-label text-label-sm text-inkMuted">How to cancel</dt>
-          <dd class="max-w-prose-page">
-            <GapCell
-              label="Notice period and mechanism"
-              state="notSet"
-              size="text"
-              reason="“Automatic monthly renewal until cancelled” is the only language that exists today, and it does not tell anyone how to cancel. We have asked."
-            />
+          <dd class="max-w-prose-page text-body leading-body text-inkBody">
+            To cancel a monthly membership, email{' '}
+            <a
+              href="mailto:info@lakevillelinks.com"
+              class="font-bold underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+              >info@lakevillelinks.com</a
+            >. The membership ends after the current monthly term, not immediately.
           </dd>
         </div>
       </dl>
@@ -424,8 +524,8 @@ const smallPrint = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead tone="dark">Not sure yet?</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-paper">
-        Book an hour at the normal rate first. Three hours in a month costs ${WALK_UP * 3}, so a membership only starts
-        paying for itself past about {payback} hours — ${cheapestMonthly} ÷ ${WALK_UP}. Buy nothing until then.
+        Book a bay by the hour first and see how often you actually come. If it turns into most weeks, a membership is
+        the cheaper way round — and if it does not, you have bought nothing you did not use.
       </p>
       <div class="mt-s6"><BookButton size="lg" variant="onDark" /></div>
     </div>

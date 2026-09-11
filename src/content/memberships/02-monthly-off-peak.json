@@ -1,0 +1,20 @@
+{
+  "name": "Off-Peak",
+  "kind": "monthly",
+  "order": 2,
+  "venue": "both",
+  "recommended": false,
+  "price": 199,
+  "cadence": "a month",
+  "window": "Monday to Friday 8am-5pm, and Sundays 5pm-10pm",
+  "forWho": "The same two hours a day, at the quieter end of the week.",
+  "includes": [
+    "Two hours of bay time every day",
+    "Monday to Friday 8am-5pm, and Sundays 5pm-10pm",
+    "21-day booking window",
+    "10% off food and drink",
+    "No guest fees",
+    "Used at the venue you join at"
+  ],
+  "published": true
+}
