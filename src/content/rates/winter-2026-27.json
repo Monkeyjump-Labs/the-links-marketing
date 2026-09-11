@@ -3,12 +3,12 @@
   "order": 2,
   "effectiveFrom": "Oct 4th, 2026",
   "current": false,
-  "note": "This is the rate from 4 October, when the current season ends. Memberships and hour packages are priced against it, so buying either before then is priced on this number and not on the one above.",
+  "note": "This is the rate from October 4th, when the current season ends. Memberships and hour packages are priced against it, so buying either before then is priced on this number and not on the one above.",
   "rows": [
     {
       "label": "Bay rental",
       "price": "$60 / hour",
-      "eligibility": "Per bay, any day, from 4 Oct 2026",
+      "eligibility": "Per bay, any day, from Oct 4th, 2026",
       "venue": "both"
     },
     {

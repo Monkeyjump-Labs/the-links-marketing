@@ -81,9 +81,7 @@ const bodyTone = tone === 'dark' ? 'text-paper' : 'text-inkBody';
           class:list={['py-s5 md:pr-s5', i >= 1 && 'border-t-hairline md:border-t-0 md:border-l-hairline md:pl-s5']}
           aria-current={i === activeIndex ? 'step' : undefined}
         >
-          <p class:list={['caps-label text-label-sm', i === activeIndex ? titleTone : labelTone]}>
-            <span class="scoreboard">{String(i + 1).padStart(2, '0')}</span> {step.marker}
-          </p>
+          <p class:list={['caps-label text-label-sm', i === activeIndex ? titleTone : labelTone]}>{step.marker}</p>
           <p class:list={['mt-s3 font-display text-card leading-display font-bold tracking-display', titleTone]}>
             {step.title}
           </p>
