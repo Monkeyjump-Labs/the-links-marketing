@@ -54,7 +54,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import PendingTag from '../components/venue/PendingTag.astro';
-import GapCell from '../components/venue/GapCell.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import { getVenues, telHref } from '../lib/venues';
 
@@ -65,6 +64,35 @@ const metadata = {
   metaDescription:
     'How booking, payment and cancellation work at The Links in Lakeville and Stillwater, Minnesota. Read this before you reserve a simulator bay.',
 };
+
+/**
+ * House rules, supplied by the owner 2026-09-11. These replaced three `GapCell`
+ * marks — the page could not answer them before, and said so rather than
+ * guessing, which is why the answers read as rules and not as hedges.
+ *
+ * Dress keeps the owner's order deliberately: what is encouraged first, what is
+ * forbidden second. "Golf attire recommended, street shoes prohibited" is a
+ * welcome with one hard edge; led with the prohibition it is a dress code, and
+ * this is a venue whose whole argument is that you do not need to be a golfer.
+ */
+const houseRules = [
+  [
+    'Bringing your own food or drink',
+    'Outside food and drink are not allowed at either venue. Both have their own menu and bar, and the kitchen is part of what you are booking.',
+  ],
+  [
+    'Dress and footwear',
+    'Golf attire is recommended but not required — come comfortable. The one rule is footwear: street shoes are not allowed on the playing surfaces, so wear golf shoes or trainers you can play in.',
+  ],
+  [
+    'Group and event deposits',
+    'Deposit and cancellation terms for a private event depend on the date and the size of the group. Contact the venue and they will go through it with you.',
+  ],
+  [
+    'Items left behind',
+    'Anything left at either venue goes into lost and found and is kept for seven days. After that it is donated or thrown away. Neither venue is responsible for items left in its facilities, so check the bay before you go.',
+  ],
+];
 
 /** The rules the current site does publish, in plain words. */
 const rules = [
@@ -133,7 +161,10 @@ const waiverDefinitions: [string, string][] = [
     'Equipment',
     'Golf equipment including but not limited to golf clubs, golf balls, tees, gloves and footwear, as well as electronic golf simulators and all of their ancillary equipment.',
   ],
-  ['Facility', "The Company's facility located at 17630 Juniper Path, Suite H, Lakeville, MN 55044."],
+  [
+    'Facility',
+    "The Company's facilities located at 17630 Juniper Path, Suite H, Lakeville, MN 55044 & 5862 Omaha Ave N, Stillwater, MN 55082.",
+  ],
   ['Golfing', 'Use of the Facility and/or Equipment.'],
 ];
 
@@ -405,58 +436,45 @@ const safetyRules = [
           reconciliation, which really is ours, moves to the `StubNote` below. */
       }
       <p class="mt-6 border-l-slab border-ink/25 bg-surface p-6 text-inkBody">
-        <strong>Which venue this waiver names.</strong> The Company is now both venues — UDBA 10 LLC dba The Links of Lakeville
-        and URN 8 LLC dba The Links of Stillwater. The clause defining the facility, further down, still gives the Lakeville
-        address on its own, so the two halves of the document do not yet agree with each other. That is with the venue's lawyer
-        rather than being tidied up here, because changing which building a waiver covers is a legal act and not a copy edit.
-        If you are booking Stillwater and want to know where that leaves you, ask us before you play.
+        <strong>Which venue this waiver names.</strong> Both of them. The Company is UDBA 10 LLC dba The Links of Lakeville
+        and URN 8 LLC dba The Links of Stillwater, and the facility is defined as both addresses — Juniper Path in Lakeville
+        and Omaha Avenue North in Stillwater. Whichever venue you booked, this is the waiver that applies to you. It has not
+        been through a lawyer yet, which is said plainly at the top of this page and is worth knowing before you rely on any
+        of it.
       </p>
       <StubNote
         class="mt-4"
-        needs="For a lawyer, not a copywriter. RESOLVED 2026-09-11: Lakeville's two conflicting entity names are settled — the owner confirmed UDBA 10 LLC dba The Links of Lakeville, retiring 'Head Honchos, LLC dba Lakeville Links', and URN 8 LLC dba The Links of Stillwater was already confirmed on 2026-09-02. The Company definition now names both. STILL OPEN: the Facility clause gives the Lakeville address only, so the waiver now binds two companies to one building. Needed: a facility definition that covers both venues, reviewed by the client's lawyer, not by us. See FW-4008."
+        needs="For a lawyer, not a copywriter. RESOLVED 2026-09-11: both halves of the waiver now cover both venues. The owner confirmed UDBA 10 LLC dba The Links of Lakeville — retiring 'Head Honchos, LLC dba Lakeville Links', one of two conflicting Lakeville names — alongside URN 8 LLC dba The Links of Stillwater, confirmed 2026-09-02, and gave the Stillwater address for the Facility clause. STILL OPEN, and it is the whole of what is left: none of this document has been through a lawyer. A waiver assembled from a client's answers is not a reviewed waiver. See FW-4008."
       />
     </section>
 
     {
-      /* This section used to be called "Still to be written" and its body was a
-        note to ourselves. But every item on it is a rule a CUSTOMER would look
-        for and not find, which makes each one a gap rather than a task — so it
-        takes the gap system's first mark and stays visible. Same information,
-        turned round to face the reader.
+      /* ⚠️ THIS WAS "RULES WE HAVE NOT SET YET" AND IS NOT ANY MORE. All three
+        gaps — outside food and drink, dress and footwear, event deposits — were
+        answered by the owner on 2026-09-11, so they become plain rules and the
+        `GapCell` grid goes with them. "Items left" is new in the same pass.
 
-        `notSet` cells tint greige and this section sits on the page's white
-        ground, so the tint reads as a tint. Do not move them onto a `bg-surface`
-        band without giving them a white slab first (see `GapCell`). */
+        Worth keeping in mind if a rule is ever withdrawn: the gap system exists
+        so an unanswered question is VISIBLY unanswered rather than silently
+        absent. Deleting a rule from this list does not restore that — put the
+        `GapCell` back. */
     }
     <section class="mt-section">
-      <h2 class="text-2xl font-bold">Rules we have not set yet</h2>
-      <p class="mt-3 max-w-prose-page text-inkMuted">
-        Three things people ask about that this page cannot answer yet. We would rather mark them than guess at them —
-        phone the venue and someone will tell you how it works in practice.
-      </p>
-      <div class="mt-6 grid gap-6 sm:grid-cols-2">
-        <GapCell
-          label="Bringing your own food or drink"
-          state="notSet"
-          size="name"
-          reason="There is no published rule either way. Lakeville has its own kitchen and bar; ask when you book."
-        />
-        <GapCell
-          label="Dress and footwear"
-          state="notSet"
-          size="name"
-          reason="No dress or footwear rule has been published. If you are wondering whether trainers are fine, ask — we would rather answer than invent a rule nobody set."
-        />
-        <GapCell
-          label="Group and event deposits"
-          state="notSet"
-          size="name"
-          reason="Deposit and cancellation terms for a private event have not been published. Raise it when you enquire on the events page and it will come back with the quote."
-        />
-      </div>
+      <h2 class="text-2xl font-bold">House rules</h2>
+      <p class="mt-3 max-w-prose-page text-inkMuted">The things people ask about most often before they arrive.</p>
+      <dl class="mt-6 space-y-6">
+        {
+          houseRules.map(([title, body]) => (
+            <div>
+              <dt class="font-semibold">{title}</dt>
+              <dd class="mt-1 max-w-prose-page text-inkMuted">{body}</dd>
+            </div>
+          ))
+        }
+      </dl>
       <StubNote
         class="mt-6"
-        needs="The waiver above answers minimum age, supervision of minors, alcohol, damage liability and the photography permission, so those have come off this list. Walk-ins came off on 2026-09-03 when CJ supplied the policy — it is now a plain rule in 'Your booking' above, worded identically on /book. The three gaps beside this note are what is left: outside food and drink, dress and footwear, and group or event deposit terms. Membership and hour-package terms live with the /memberships page and need the same treatment."
+        needs="The three gaps that stood here — outside food and drink, dress and footwear, group and event deposits — were answered by the owner on 2026-09-11 and are now plain rules, alongside a new one on items left behind. What is still open on this page: the 3% credit-card surcharge under Paying, and the facility clause of the waiver has never been through a lawyer."
       />
     </section>
 
