@@ -108,23 +108,27 @@ const rules = [
  * rather than legalese it is marked as a plain-English summary and the operative
  * wording is kept alongside it, because a shortened waiver is a changed waiver.
  *
- * ⚠️ WHAT IS WRONG WITH IT, AND IS NOT OURS TO FIX SILENTLY: the waiver names
- * "Head Honchos, LLC dba Lakeville Links" as the Company and defines the
- * Facility as the Lakeville address only. Stillwater is not in it anywhere. The
- * membership terms on the same site name a THIRD entity ("UDBA 10 dba The Links
- * of Lakeville") and define Company as both venues collectively. So a customer
- * booking Stillwater is shown a waiver that, read literally, is about a building
- * they are not in.
+ * ⚠️ THE COMPANY DEFINITION WAS CHANGED BY THE OWNER, 2026-09-11, and that is
+ * why it no longer matches the waiver as the old site published it. It now
+ * names both entities — UDBA 10 LLC dba The Links of Lakeville and URN 8 LLC
+ * dba The Links of Stillwater — retiring "Head Honchos, LLC dba Lakeville
+ * Links", which was one of two conflicting Lakeville names in circulation.
  *
- * We restore what they publish and say plainly that it does not cover
- * Stillwater. We do NOT quietly extend it by editing the definitions to name
- * both venues — rewriting the scope of a liability waiver is a legal act, not a
- * copy edit, and it is the client's lawyer's to make. See /terms, which already
- * records that three entity names appear across their legal pages and none
- * names Stillwater.
+ * It was asked for as "UDBA 10 … dba The Links of Stillwater & URN 8 … dba The
+ * Links of Stillwater", naming Stillwater twice and no Lakeville entity at all.
+ * That was put back to the owner rather than published, because the old site's
+ * own membership terms say UDBA 10 trades as Lakeville, and the owner confirmed
+ * that reading. A liability waiver is the last place to resolve a typo by
+ * guessing.
+ *
+ * ⚠️ THE DOCUMENT IS NOW INTERNALLY INCONSISTENT, AND DELIBERATELY SO. Company
+ * names two venues; the FACILITY clause still gives the Lakeville address only.
+ * That was not part of the instruction and is not ours to take: widening which
+ * building a waiver covers is a legal act, not a copy edit. It is stated to the
+ * reader and flagged for the lawyer instead of quietly reconciled.
  */
 const waiverDefinitions: [string, string][] = [
-  ['Company', 'Head Honchos, LLC dba Lakeville Links.'],
+  ['Company', 'UDBA 10 LLC dba The Links of Lakeville & URN 8 LLC dba The Links of Stillwater.'],
   [
     'Equipment',
     'Golf equipment including but not limited to golf clubs, golf balls, tees, gloves and footwear, as well as electronic golf simulators and all of their ancillary equipment.',
@@ -238,21 +242,18 @@ const safetyRules = [
         </li>
       </ul>
       {
-        /* The two payment rules above are transcribed from the venue's own
-          booking pages, which this rebuild deletes — so they are believed, not
-          verified. `PendingTag` is the mark for exactly that, and unlike
-          `StubNote` it renders in production, because it is addressed to the
-          reader standing next to the fact rather than to us. Removing the old
-          stub without leaving this would have quietly promoted an unverified
-          statement to a verified one. */
+        /* The pending mark on these two payment rules came off on 2026-09-11:
+          the owner confirmed them, which is what it was waiting for. They were
+          transcribed from booking pages this rebuild deletes, so until then they
+          were believed rather than verified, and `PendingTag` said so in
+          production because that caveat was addressed to the reader standing
+          next to the fact rather than to us.
+
+          The surcharge question below is a different one and is still open. */
       }
-      <PendingTag
-        class="mt-4"
-        reason="Both of these are transcribed from the venue's own booking pages and we are re-confirming them. If how you are charged matters to you, ring the venue before you book."
-      />
       <StubNote
         class="mt-4"
-        needs="Confirm both payment rules above are still current — they are transcribed from booking pages this rebuild deletes. Also confirm the 3% credit-card surcharge that appears on the Lakeville menu, and whether it applies to bay time as well as food."
+        needs="Confirm the 3% credit-card surcharge that appears on the Lakeville menu, and whether it applies to bay time as well as food. The two payment rules above are confirmed as of 2026-09-11."
       />
     </section>
 
@@ -404,15 +405,15 @@ const safetyRules = [
           reconciliation, which really is ours, moves to the `StubNote` below. */
       }
       <p class="mt-6 border-l-slab border-ink/25 bg-surface p-6 text-inkBody">
-        <strong>Which venue this waiver names.</strong> As published, it names Head Honchos, LLC dba Lakeville Links as the
-        Company and defines the facility as the Lakeville address. Stillwater is not mentioned in it. We have reproduced it
-        exactly as the venue publishes it rather than widening it ourselves, because changing who a waiver binds is a lawyer's
-        job and not a copy edit. It is being reviewed. If you are booking Stillwater and want to know where that leaves you,
-        ask us before you play.
+        <strong>Which venue this waiver names.</strong> The Company is now both venues — UDBA 10 LLC dba The Links of Lakeville
+        and URN 8 LLC dba The Links of Stillwater. The clause defining the facility, further down, still gives the Lakeville
+        address on its own, so the two halves of the document do not yet agree with each other. That is with the venue's lawyer
+        rather than being tidied up here, because changing which building a waiver covers is a legal act and not a copy edit.
+        If you are booking Stillwater and want to know where that leaves you, ask us before you play.
       </p>
       <StubNote
         class="mt-4"
-        needs="For a lawyer, not a copywriter. The waiver names Head Honchos, LLC dba Lakeville Links and defines the Facility as the Lakeville address only; Stillwater does not appear in it. The membership terms on the same site name a third entity again (“UDBA 10 dba The Links of Lakeville”) and define the Company as both venues together. CJ confirmed 2026-09-02 that Stillwater's own registered name is 'URN 8 LLC dba The Links of Stillwater' — but Lakeville's two conflicting names are still unresolved, and CJ was not asked about that. Needed: reconciliation of Lakeville's entity name, and a waiver whose scope actually covers Stillwater under its correct name. See FW-4008."
+        needs="For a lawyer, not a copywriter. RESOLVED 2026-09-11: Lakeville's two conflicting entity names are settled — the owner confirmed UDBA 10 LLC dba The Links of Lakeville, retiring 'Head Honchos, LLC dba Lakeville Links', and URN 8 LLC dba The Links of Stillwater was already confirmed on 2026-09-02. The Company definition now names both. STILL OPEN: the Facility clause gives the Lakeville address only, so the waiver now binds two companies to one building. Needed: a facility definition that covers both venues, reviewed by the client's lawyer, not by us. See FW-4008."
       />
     </section>
 
