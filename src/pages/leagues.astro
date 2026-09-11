@@ -90,12 +90,13 @@ const season = upcomingSeason(leagues);
 const metadata = {
   metaTitle: 'Indoor Golf Leagues — Lakeville & Stillwater, MN',
   metaDescription:
-    'Register for 2026 fall simulator golf leagues at The Links, Lakeville and Stillwater MN. Two-person teams, handicapped and beginner-friendly. Play starts the week of 4 October.',
+    'Register for 2026 fall simulator golf leagues at The Links, Lakeville and Stillwater MN. Two-person teams, handicapped and beginner-friendly. Play starts the week of October 4th.',
 };
 
 /**
- * The three steps of a season, in order over time — the site's ONE sanctioned
- * use of the `01 / 02 / 03` numerals after convergence. `activeIndex` is 0
+ * The three steps of a season, in order over time. The `01 / 02 / 03` numerals
+ * that used to mark them came off on 2026-09-11 at the owner's request; the
+ * Now / Next / Then markers carry the order on their own. `activeIndex` is 0
  * because both venues are between seasons today; move it when the lineup lands
  * and the filled rule moves with it.
  */
@@ -107,7 +108,7 @@ const steps = [
   },
   {
     marker: 'Next',
-    title: 'Play starts the week of 4 October',
+    title: 'Play starts the week of October 4th',
     body: 'You play the same night every week: Monday to Thursday at Lakeville, Sunday to Thursday at Stillwater.',
   },
   {
