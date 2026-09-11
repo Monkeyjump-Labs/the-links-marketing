@@ -12,11 +12,23 @@
  * compared card-to-card against a subscription looks like a worse subscription.
  *
  * ⚠️ THE PRODUCT IS CALLED "LINKS HOUR PACKAGES", not LinksFlex, from
- * 2026-09-10 at the owner's instruction. The old name is retired everywhere it
- * was customer-facing. It survives in exactly one place on purpose — the
- * condition on the hours below quotes the T&Cs, and those terms are a signed
- * document that still says LinksFlex. Renaming a clause inside a quotation is
- * not a rename, it is a misquotation.
+ * 2026-09-10 at the owner's instruction, and the old name is gone from this
+ * codebase entirely as of 2026-09-11 — copy, headings, metadata, the gauge's
+ * screen-reader caption, and the two `data-analytics` markers on the store
+ * links, which nothing reads yet and so cost nothing to rename.
+ *
+ * An earlier version of this note claimed the name survived here in a quotation
+ * from the T&Cs. It does not: the page quotes the CONDITION on the hours ("in
+ * good standing… continues to offer the associated service") and never the
+ * product name, so there was nothing to preserve. The underlying point still
+ * holds if a real quotation ever appears — you do not rename a clause inside
+ * quotation marks — but it was not true of this page.
+ *
+ * ⚠️ THE SIGNED T&Cs STILL SAY LINKSFLEX. That is the client's document, not
+ * ours, and the archive of it under `marketing/.../_ingest/` is a verbatim
+ * record of the old site that must NOT be find-and-replaced — rewriting an
+ * archive destroys the only evidence of what was published. Both are reasons to
+ * get the terms themselves updated, not reasons to edit them here.
  *
  * **Two honest things this page keeps, both of which cost us a sale sometimes:**
  *
@@ -438,7 +450,7 @@ const smallPrint = [
           class={buttonClasses('md', 'primary')}
           target="_blank"
           rel="noopener"
-          data-analytics="linksflex:lakeville"
+          data-analytics="hour-package:lakeville"
         >
           Buy an hour package at Lakeville <span aria-hidden="true">→</span>
           <span class="sr-only">(opens the Whoosh store in a new tab)</span>
@@ -448,7 +460,7 @@ const smallPrint = [
           class={buttonClasses('md', 'outline')}
           target="_blank"
           rel="noopener"
-          data-analytics="linksflex:stillwater"
+          data-analytics="hour-package:stillwater"
         >
           Buy an hour package at Stillwater <span aria-hidden="true">→</span>
           <span class="sr-only">(opens the Whoosh store in a new tab)</span>

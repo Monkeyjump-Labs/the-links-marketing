@@ -54,7 +54,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
 import PendingTag from '../components/venue/PendingTag.astro';
-import GapCell from '../components/venue/GapCell.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import { getVenues, telHref } from '../lib/venues';
 
@@ -65,6 +64,35 @@ const metadata = {
   metaDescription:
     'How booking, payment and cancellation work at The Links in Lakeville and Stillwater, Minnesota. Read this before you reserve a simulator bay.',
 };
+
+/**
+ * House rules, supplied by the owner 2026-09-11. These replaced three `GapCell`
+ * marks — the page could not answer them before, and said so rather than
+ * guessing, which is why the answers read as rules and not as hedges.
+ *
+ * Dress keeps the owner's order deliberately: what is encouraged first, what is
+ * forbidden second. "Golf attire recommended, street shoes prohibited" is a
+ * welcome with one hard edge; led with the prohibition it is a dress code, and
+ * this is a venue whose whole argument is that you do not need to be a golfer.
+ */
+const houseRules = [
+  [
+    'Bringing your own food or drink',
+    'Outside food and drink are not allowed at either venue. Both have their own menu and bar, and the kitchen is part of what you are booking.',
+  ],
+  [
+    'Dress and footwear',
+    'Golf attire is recommended but not required — come comfortable. The one rule is footwear: street shoes are not allowed on the playing surfaces, so wear golf shoes or trainers you can play in.',
+  ],
+  [
+    'Group and event deposits',
+    'Deposit and cancellation terms for a private event depend on the date and the size of the group. Contact the venue and they will go through it with you.',
+  ],
+  [
+    'Items left behind',
+    'Anything left at either venue goes into lost and found and is kept for seven days. After that it is donated or thrown away. Neither venue is responsible for items left in its facilities, so check the bay before you go.',
+  ],
+];
 
 /** The rules the current site does publish, in plain words. */
 const rules = [
@@ -108,28 +136,35 @@ const rules = [
  * rather than legalese it is marked as a plain-English summary and the operative
  * wording is kept alongside it, because a shortened waiver is a changed waiver.
  *
- * ⚠️ WHAT IS WRONG WITH IT, AND IS NOT OURS TO FIX SILENTLY: the waiver names
- * "Head Honchos, LLC dba Lakeville Links" as the Company and defines the
- * Facility as the Lakeville address only. Stillwater is not in it anywhere. The
- * membership terms on the same site name a THIRD entity ("UDBA 10 dba The Links
- * of Lakeville") and define Company as both venues collectively. So a customer
- * booking Stillwater is shown a waiver that, read literally, is about a building
- * they are not in.
+ * ⚠️ THE COMPANY DEFINITION WAS CHANGED BY THE OWNER, 2026-09-11, and that is
+ * why it no longer matches the waiver as the old site published it. It now
+ * names both entities — UDBA 10 LLC dba The Links of Lakeville and URN 8 LLC
+ * dba The Links of Stillwater — retiring "Head Honchos, LLC dba Lakeville
+ * Links", which was one of two conflicting Lakeville names in circulation.
  *
- * We restore what they publish and say plainly that it does not cover
- * Stillwater. We do NOT quietly extend it by editing the definitions to name
- * both venues — rewriting the scope of a liability waiver is a legal act, not a
- * copy edit, and it is the client's lawyer's to make. See /terms, which already
- * records that three entity names appear across their legal pages and none
- * names Stillwater.
+ * It was asked for as "UDBA 10 … dba The Links of Stillwater & URN 8 … dba The
+ * Links of Stillwater", naming Stillwater twice and no Lakeville entity at all.
+ * That was put back to the owner rather than published, because the old site's
+ * own membership terms say UDBA 10 trades as Lakeville, and the owner confirmed
+ * that reading. A liability waiver is the last place to resolve a typo by
+ * guessing.
+ *
+ * ⚠️ THE DOCUMENT IS NOW INTERNALLY INCONSISTENT, AND DELIBERATELY SO. Company
+ * names two venues; the FACILITY clause still gives the Lakeville address only.
+ * That was not part of the instruction and is not ours to take: widening which
+ * building a waiver covers is a legal act, not a copy edit. It is stated to the
+ * reader and flagged for the lawyer instead of quietly reconciled.
  */
 const waiverDefinitions: [string, string][] = [
-  ['Company', 'Head Honchos, LLC dba Lakeville Links.'],
+  ['Company', 'UDBA 10 LLC dba The Links of Lakeville & URN 8 LLC dba The Links of Stillwater.'],
   [
     'Equipment',
     'Golf equipment including but not limited to golf clubs, golf balls, tees, gloves and footwear, as well as electronic golf simulators and all of their ancillary equipment.',
   ],
-  ['Facility', "The Company's facility located at 17630 Juniper Path, Suite H, Lakeville, MN 55044."],
+  [
+    'Facility',
+    "The Company's facilities located at 17630 Juniper Path, Suite H, Lakeville, MN 55044 & 5862 Omaha Ave N, Stillwater, MN 55082.",
+  ],
   ['Golfing', 'Use of the Facility and/or Equipment.'],
 ];
 
@@ -238,21 +273,18 @@ const safetyRules = [
         </li>
       </ul>
       {
-        /* The two payment rules above are transcribed from the venue's own
-          booking pages, which this rebuild deletes — so they are believed, not
-          verified. `PendingTag` is the mark for exactly that, and unlike
-          `StubNote` it renders in production, because it is addressed to the
-          reader standing next to the fact rather than to us. Removing the old
-          stub without leaving this would have quietly promoted an unverified
-          statement to a verified one. */
+        /* The pending mark on these two payment rules came off on 2026-09-11:
+          the owner confirmed them, which is what it was waiting for. They were
+          transcribed from booking pages this rebuild deletes, so until then they
+          were believed rather than verified, and `PendingTag` said so in
+          production because that caveat was addressed to the reader standing
+          next to the fact rather than to us.
+
+          The surcharge question below is a different one and is still open. */
       }
-      <PendingTag
-        class="mt-4"
-        reason="Both of these are transcribed from the venue's own booking pages and we are re-confirming them. If how you are charged matters to you, ring the venue before you book."
-      />
       <StubNote
         class="mt-4"
-        needs="Confirm both payment rules above are still current — they are transcribed from booking pages this rebuild deletes. Also confirm the 3% credit-card surcharge that appears on the Lakeville menu, and whether it applies to bay time as well as food."
+        needs="Confirm the 3% credit-card surcharge that appears on the Lakeville menu, and whether it applies to bay time as well as food. The two payment rules above are confirmed as of 2026-09-11."
       />
     </section>
 
@@ -404,58 +436,45 @@ const safetyRules = [
           reconciliation, which really is ours, moves to the `StubNote` below. */
       }
       <p class="mt-6 border-l-slab border-ink/25 bg-surface p-6 text-inkBody">
-        <strong>Which venue this waiver names.</strong> As published, it names Head Honchos, LLC dba Lakeville Links as the
-        Company and defines the facility as the Lakeville address. Stillwater is not mentioned in it. We have reproduced it
-        exactly as the venue publishes it rather than widening it ourselves, because changing who a waiver binds is a lawyer's
-        job and not a copy edit. It is being reviewed. If you are booking Stillwater and want to know where that leaves you,
-        ask us before you play.
+        <strong>Which venue this waiver names.</strong> Both of them. The Company is UDBA 10 LLC dba The Links of Lakeville
+        and URN 8 LLC dba The Links of Stillwater, and the facility is defined as both addresses — Juniper Path in Lakeville
+        and Omaha Avenue North in Stillwater. Whichever venue you booked, this is the waiver that applies to you. It has not
+        been through a lawyer yet, which is said plainly at the top of this page and is worth knowing before you rely on any
+        of it.
       </p>
       <StubNote
         class="mt-4"
-        needs="For a lawyer, not a copywriter. The waiver names Head Honchos, LLC dba Lakeville Links and defines the Facility as the Lakeville address only; Stillwater does not appear in it. The membership terms on the same site name a third entity again (“UDBA 10 dba The Links of Lakeville”) and define the Company as both venues together. CJ confirmed 2026-09-02 that Stillwater's own registered name is 'URN 8 LLC dba The Links of Stillwater' — but Lakeville's two conflicting names are still unresolved, and CJ was not asked about that. Needed: reconciliation of Lakeville's entity name, and a waiver whose scope actually covers Stillwater under its correct name. See FW-4008."
+        needs="For a lawyer, not a copywriter. RESOLVED 2026-09-11: both halves of the waiver now cover both venues. The owner confirmed UDBA 10 LLC dba The Links of Lakeville — retiring 'Head Honchos, LLC dba Lakeville Links', one of two conflicting Lakeville names — alongside URN 8 LLC dba The Links of Stillwater, confirmed 2026-09-02, and gave the Stillwater address for the Facility clause. STILL OPEN, and it is the whole of what is left: none of this document has been through a lawyer. A waiver assembled from a client's answers is not a reviewed waiver. See FW-4008."
       />
     </section>
 
     {
-      /* This section used to be called "Still to be written" and its body was a
-        note to ourselves. But every item on it is a rule a CUSTOMER would look
-        for and not find, which makes each one a gap rather than a task — so it
-        takes the gap system's first mark and stays visible. Same information,
-        turned round to face the reader.
+      /* ⚠️ THIS WAS "RULES WE HAVE NOT SET YET" AND IS NOT ANY MORE. All three
+        gaps — outside food and drink, dress and footwear, event deposits — were
+        answered by the owner on 2026-09-11, so they become plain rules and the
+        `GapCell` grid goes with them. "Items left" is new in the same pass.
 
-        `notSet` cells tint greige and this section sits on the page's white
-        ground, so the tint reads as a tint. Do not move them onto a `bg-surface`
-        band without giving them a white slab first (see `GapCell`). */
+        Worth keeping in mind if a rule is ever withdrawn: the gap system exists
+        so an unanswered question is VISIBLY unanswered rather than silently
+        absent. Deleting a rule from this list does not restore that — put the
+        `GapCell` back. */
     }
     <section class="mt-section">
-      <h2 class="text-2xl font-bold">Rules we have not set yet</h2>
-      <p class="mt-3 max-w-prose-page text-inkMuted">
-        Three things people ask about that this page cannot answer yet. We would rather mark them than guess at them —
-        phone the venue and someone will tell you how it works in practice.
-      </p>
-      <div class="mt-6 grid gap-6 sm:grid-cols-2">
-        <GapCell
-          label="Bringing your own food or drink"
-          state="notSet"
-          size="name"
-          reason="There is no published rule either way. Lakeville has its own kitchen and bar; ask when you book."
-        />
-        <GapCell
-          label="Dress and footwear"
-          state="notSet"
-          size="name"
-          reason="No dress or footwear rule has been published. If you are wondering whether trainers are fine, ask — we would rather answer than invent a rule nobody set."
-        />
-        <GapCell
-          label="Group and event deposits"
-          state="notSet"
-          size="name"
-          reason="Deposit and cancellation terms for a private event have not been published. Raise it when you enquire on the events page and it will come back with the quote."
-        />
-      </div>
+      <h2 class="text-2xl font-bold">House rules</h2>
+      <p class="mt-3 max-w-prose-page text-inkMuted">The things people ask about most often before they arrive.</p>
+      <dl class="mt-6 space-y-6">
+        {
+          houseRules.map(([title, body]) => (
+            <div>
+              <dt class="font-semibold">{title}</dt>
+              <dd class="mt-1 max-w-prose-page text-inkMuted">{body}</dd>
+            </div>
+          ))
+        }
+      </dl>
       <StubNote
         class="mt-6"
-        needs="The waiver above answers minimum age, supervision of minors, alcohol, damage liability and the photography permission, so those have come off this list. Walk-ins came off on 2026-09-03 when CJ supplied the policy — it is now a plain rule in 'Your booking' above, worded identically on /book. The three gaps beside this note are what is left: outside food and drink, dress and footwear, and group or event deposit terms. Membership and hour-package terms live with the /memberships page and need the same treatment."
+        needs="The three gaps that stood here — outside food and drink, dress and footwear, group and event deposits — were answered by the owner on 2026-09-11 and are now plain rules, alongside a new one on items left behind. What is still open on this page: the 3% credit-card surcharge under Paying, and the facility clause of the waiver has never been through a lawyer."
       />
     </section>
 

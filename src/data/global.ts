@@ -71,8 +71,20 @@ export const globalData = {
     { label: 'Our Story', href: '/about/' },
   ],
 
+  /**
+   * ⚠️ THESE ARE NOT JUST FOOTER LINKS. `OrganizationSchema` maps this array
+   * straight into `sameAs`, which is how a search engine ties this site to the
+   * venues' social profiles. A wrong URL here is a wrong URL in structured data,
+   * where nobody looks at it and Google does.
+   *
+   * Lakeville moved to the rebranded page on 2026-09-11, at the owner's
+   * instruction, from `/lakevillelinks/`. Unverifiable from here either way:
+   * Facebook answers 400 to any request without a browser's fingerprint, and it
+   * does so for the old URL and the new one alike, so a reachability check tells
+   * you nothing. Open it in a browser if it is ever in doubt.
+   */
   social: [
-    { label: 'Facebook — Lakeville', href: 'https://www.facebook.com/lakevillelinks/' },
+    { label: 'Facebook — Lakeville', href: 'https://www.facebook.com/TheLinksofLakeville/' },
     { label: 'Facebook — Stillwater', href: 'https://www.facebook.com/linksofstillwater/' },
   ],
 
