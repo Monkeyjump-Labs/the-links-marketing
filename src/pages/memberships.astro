@@ -182,7 +182,7 @@ const smallPrint = [
   ],
   [
     'Hours restrictions',
-    'The monthly memberships include two hours a day and are subject to opening hours — a membership does not guarantee a walk-in bay. Every tier except Anytime is limited to the window printed on it, and the hour packages the same; there is no restriction on how long you take to use a bank. Hours are also tied to the venue that sold them: a Lakeville package cannot be spent at Stillwater, or the other way round.',
+    'The monthly memberships include two hours a day and are subject to opening hours — a membership does not guarantee a walk-in bay. Every tier except Anytime is limited to the window printed on it, and the hour packages the same; there is no restriction on how long you take to use a bank. Everything on this page is also tied to one venue: a membership or a package bought at Lakeville cannot be used at Stillwater, or the other way round.',
   ],
   ['Do you have to be there?', 'Yes. The member has to be present at the tee time.'],
   [
@@ -219,7 +219,7 @@ const smallPrint = [
         class="mt-s8"
         tone="dark"
         cells={[
-          { label: 'Monthly from', value: `$${cheapestMonthly}`, qualifier: 'a month, both venues' },
+          { label: 'Monthly from', value: `$${cheapestMonthly}`, qualifier: 'a month, at one venue' },
           { label: 'Hour packages from', value: `$${cheapestBank}`, qualifier: 'for a 12-hour bank, at one venue' },
           { label: 'Save up to', value: `${deepestSaving}%`, qualifier: 'on the largest off-peak bank' },
           { label: 'Season', value: '2026/27', qualifier: 'the prices on this page' },
@@ -304,8 +304,8 @@ const smallPrint = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead index={2}>Monthly membership</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-inkBody">
-        Available at both venues. Two hours of bay time a day, every day, plus the booking window that gets you the
-        Saturday slot before anyone else asks for it.
+        Sold at both venues and used at the one you join — two hours of bay time a day, every day, plus the booking
+        window that gets you the Saturday slot before anyone else asks for it.
       </p>
 
       <ul class="mt-s7 grid gap-s6 md:grid-cols-2">
@@ -351,7 +351,11 @@ const smallPrint = [
         }
       </ul>
 
-      <div class="mt-s7 flex flex-wrap gap-s5">
+      <p class="mt-s7 max-w-prose-page text-small leading-body text-inkMuted">
+        Join at the venue you play at: a membership is used at the one you join, not at both.
+      </p>
+
+      <div class="mt-s6 flex flex-wrap gap-s5">
         <a
           href={globalData.external.membershipsLakeville}
           class={buttonClasses('md', 'primary')}
@@ -397,11 +401,15 @@ const smallPrint = [
 
       <div class="mt-s5 flex flex-wrap items-baseline gap-x-s6 gap-y-s3">
         {
-          /* ⚠️ "Both venues" was WRONG here and right two sections up. Both venues
-            SELL these; a package is spent at the one that sold it. The monthly
-            memberships genuinely do work at either, so the page has to be precise
-            about which product it is talking about — the two sat one screen apart
-            saying the same three words and meaning different things. */
+          /* ⚠️ "Both venues" was wrong here, and — corrected a day later — wrong
+            in the monthly section too. BOTH products are sold at both venues and
+            spent at ONE: the one you bought them at. Nothing on this page is
+            transferable between Lakeville and Stillwater.
+
+            Written out because the first fix only covered the packages, on the
+            reasonable-sounding assumption that a subscription would work at
+            either. It does not. If a third product ever appears here, ask which
+            venue it is good at before writing "both" anywhere near it. */
         }
         <ReadoutCell label="Where" size="name">Sold at both · used at one</ReadoutCell>
         <ReadoutCell label="Also included" size="name">21-day booking window · 10% off food</ReadoutCell>
