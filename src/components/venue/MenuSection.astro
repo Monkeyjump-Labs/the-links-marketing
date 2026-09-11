@@ -49,8 +49,15 @@ import GapCell from './GapCell.astro';
 
 interface Props {
   entry: CollectionEntry<'menu'>;
-  /** 1-based; renders as `SECTION 0X` in the head's index lane. */
-  index: number;
+  /**
+   * 1-based, and OPTIONAL because the site stopped numbering its sections on
+   * 2026-09-11 (owner's call, all five pages). Kept rather than deleted: the
+   * index lane is a real feature of `SectionHead` — it is how a section carries
+   * a numeral without stealing the `01/02/03` motif that means steps in order —
+   * and a menu long enough to want numbering again would want this, not a new
+   * prop. Nothing passes it today.
+   */
+  index?: number;
   /** Where this section is served. Venue scope is not a footnote here — Lakeville
    *  runs its own kitchen and Stillwater's food is Stillwater Bowl's, so a
    *  section that does not say which one it belongs to misrepresents a business. */

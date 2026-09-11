@@ -200,12 +200,7 @@ const band = (i: number) => (isGreige(i) ? 'bg-greige' : 'bg-white');
     sections.map((entry, i) => (
       <section class={band(i + 1)}>
         <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-          <MenuSection
-            entry={entry}
-            index={i + 1}
-            venueLabel={venueName(entry.data.venue)}
-            onGreige={isGreige(i + 1)}
-          />
+          <MenuSection entry={entry} venueLabel={venueName(entry.data.venue)} onGreige={isGreige(i + 1)} />
         </div>
       </section>
     ))
@@ -217,7 +212,7 @@ const band = (i: number) => (isGreige(i) ? 'bg-greige' : 'bg-white');
   }
   <section class={band(sections.length + 1)}>
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead index={sections.length + 1}>Paying</SectionHead>
+      <SectionHead>Paying</SectionHead>
       <div class="flex flex-wrap gap-x-s8 gap-y-s6">
         <ReadoutCell label="Credit card" size="md">3% surcharge</ReadoutCell>
         <ReadoutCell label="Cash and debit" size="md">No surcharge</ReadoutCell>
