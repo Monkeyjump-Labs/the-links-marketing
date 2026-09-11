@@ -198,10 +198,13 @@ const smallPrint = [
 
 <BaseLayout metadata={metadata}>
   {
-    /* 1. HERO + the 4-cell strip. The strip answers the four things a visitor
-      screens on before reading a word of the page: what the two products cost at
-      their entry point, what the best hourly rate is, and what it costs to buy
-      nothing — which is the number everything else is compared against. */
+    /* 1. HERO + the 4-cell strip. The strip answers what a visitor screens on
+      before reading a word of the page: what the two products cost at their entry
+      point, the deepest saving on offer, and which season the prices belong to.
+
+      It used to end on the walk-up rate — the number everything else was
+      compared against — which came off the page with the rest of the hourly
+      comparison on 2026-09-10. See the note by `WALK_UP`. */
   }
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
@@ -209,7 +212,7 @@ const smallPrint = [
       <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Memberships</h1>
       <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
         A monthly membership if you play most weeks, or a prepaid bank of hours with no expiry date if you play in
-        bursts. You do not need to be any good at golf to be worth one.
+        bursts. You do not have to be good at golf for either to be worth it.
       </p>
 
       <HeroStrip
