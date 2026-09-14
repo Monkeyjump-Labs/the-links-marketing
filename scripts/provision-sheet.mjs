@@ -47,8 +47,15 @@ if (!GOOGLE_SERVICE_ACCOUNT_JSON_B64 || !LEAD_SHEET_ID) {
 // build step, so it cannot import the TypeScript module — the copy is kept
 // honest by `src/lib/leads/config.test.ts`, which reads this file and fails the
 // suite the moment the two lists diverge.
-const TABS = { readme: 'README', enquiries: 'Enquiries', waitlist: 'Waitlist', updates: 'Updates', test: 'Test' };
-const DATA_TABS = [TABS.enquiries, TABS.waitlist, TABS.updates, TABS.test];
+const TABS = {
+  readme: 'README',
+  enquiries: 'Enquiries',
+  waitlist: 'Waitlist',
+  updates: 'Updates',
+  applications: 'Applications',
+  test: 'Test',
+};
+const DATA_TABS = [TABS.enquiries, TABS.waitlist, TABS.updates, TABS.applications, TABS.test];
 const COLUMNS = [
   'timestamp',
   'list',
@@ -62,6 +69,8 @@ const COLUMNS = [
   'page',
   'consent',
   'lessonFor',
+  'role',
+  'availability',
 ];
 
 /** What each data tab is for, in the client's terms rather than ours. */
@@ -77,6 +86,10 @@ const TAB_NOTES = [
   [
     TABS.updates,
     'People who subscribed for general news from the bottom of a page. They asked for occasional email about leagues, events and what is on — not for anything else. Keep this list separate from Waitlist: these people did not ask about a specific league.',
+  ],
+  [
+    TABS.applications,
+    'People applying for a job, from the Careers page. Read these yourself rather than leaving them to whoever is on the desk — they contain work histories. If they said they were sending a resume, it will be in the hr@ inbox under the same name.',
   ],
   [TABS.test, 'Submissions from the internal style guide. Ignore — nothing here is a real customer.'],
 ];

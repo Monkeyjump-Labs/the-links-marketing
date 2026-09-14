@@ -118,14 +118,31 @@ describe('handleLead — validation', () => {
     expect(sheet.rows).toHaveLength(0);
   });
 
+  // `role` used to be the second example here, on the strength of looking like
+  // a privilege field. It is now a REAL column — the careers form asks what kind
+  // of work someone wants — so the example moved rather than the assertion.
+  // Pick a name here that no form will ever legitimately post.
   it('stores only allowlisted fields — an injected extra never reaches the sheet', async () => {
     const sheet = okSheet();
     await handleLead(
-      { fields: { ...base(), sneaky: 'value', role: 'admin' }, now: NOW },
+      { fields: { ...base(), sneaky: 'value', isAdmin: 'true' }, now: NOW },
       { sheet, formSecret: SECRET },
     );
     expect(Object.keys(sheet.rows[0])).not.toContain('sneaky');
-    expect(Object.keys(sheet.rows[0])).not.toContain('role');
+    expect(Object.keys(sheet.rows[0])).not.toContain('isAdmin');
+  });
+
+  // The server writes `consent` from the routing table, and the whole point of
+  // storing it is that it records what we promised rather than what was posted.
+  // A submitted `consent` must therefore lose to the configured one — otherwise
+  // the defensible record is whatever the client said it was.
+  it('a posted consent field cannot overwrite the promise on record', async () => {
+    const sheet = okSheet();
+    await handleLead(
+      { fields: { ...base(), list: 'juniors', consent: 'anything I like' }, now: NOW },
+      { sheet, formSecret: SECRET },
+    );
+    expect(sheet.rows[0].consent).toBe(LEAD_LISTS.juniors.consent);
   });
 
   it('records the consent text alongside a waitlist address', async () => {

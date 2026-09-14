@@ -54,6 +54,11 @@ const BODY_FIELDS: [key: string, label: string][] = [
   // the paragraph, not after it. Absent on every other form, and a field that
   // is not present is not printed.
   ['lessonFor', 'Who the lesson is for'],
+  // Same reasoning as the line above, for an application: these two are what
+  // decide whether there is a conversation to have, so they are read before the
+  // paragraph rather than after it. Absent on every other form.
+  ['role', 'Kind of work'],
+  ['availability', 'When they can work'],
   ['message', 'Message'],
 ];
 

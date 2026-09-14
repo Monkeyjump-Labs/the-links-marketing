@@ -58,6 +58,16 @@ export interface LeadList {
  * live, submittable forms, and one accidental submit should not put a fake name
  * in front of someone working the enquiry list.
  *
+ * `Applications` is people asking for a job, and it is a fourth rhythm AND a
+ * fourth reader. Filing them on `Enquiries` would have shipped sooner — no new
+ * tab means no provisioning step — and it would have been wrong twice over. The
+ * rhythm is wrong: `Enquiries` is cleared daily by whoever is on the phone, and
+ * an application does not go stale that way. The reader is wrong, and that is
+ * the half that matters: someone hands over their work history on the
+ * understanding that the person hiring reads it, not that it sits on the tab the
+ * front desk has open all shift. A separate tab is the cheapest honest version
+ * of that.
+ *
  * README is `Sheet1` renamed and moved to the front, so the first thing anyone
  * opening the workbook sees is an explanation rather than a grid of columns.
  */
@@ -66,13 +76,14 @@ export const TABS = {
   enquiries: 'Enquiries',
   waitlist: 'Waitlist',
   updates: 'Updates',
+  applications: 'Applications',
   test: 'Test',
 } as const;
 
 export type SheetTab = (typeof TABS)[keyof typeof TABS];
 
 /** The tabs that receive submissions. README is prose and never written to. */
-export const DATA_TABS: SheetTab[] = [TABS.enquiries, TABS.waitlist, TABS.updates, TABS.test];
+export const DATA_TABS: SheetTab[] = [TABS.enquiries, TABS.waitlist, TABS.updates, TABS.applications, TABS.test];
 
 /**
  * Where a form submission is announced.
@@ -96,6 +107,19 @@ export const DATA_TABS: SheetTab[] = [TABS.enquiries, TABS.waitlist, TABS.update
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- kept as the deliberate escape hatch above
 const TESTING_INBOX = 'hello@fareway.golf';
 const VENUE_INBOX = 'info@lakevillelinks.com';
+
+/**
+ * Hiring, and deliberately NOT `INBOX`.
+ *
+ * Already published as ordinary copy on `/contact/` — a real, working address
+ * the venue gave out long before this form existed, which is why the careers
+ * form could be built without waiting on anyone to decide where applications go.
+ *
+ * Separate from the customer inbox for the same reason `Applications` is a
+ * separate tab: routing it to the general inbox would put somebody's work
+ * history in front of whoever is answering the phone about a birthday party.
+ */
+const HR_INBOX = 'hr@lakevillelinks.com';
 
 const INBOX = VENUE_INBOX;
 
@@ -173,6 +197,32 @@ export const LEAD_LISTS: Record<string, LeadList> = {
     consent: 'Occasional email about leagues, events and what is on. Unsubscribe any time.',
   },
   /**
+   * The employment application, from `/careers/`.
+   *
+   * **It asks nothing a spreadsheet should not hold.** Name, contact, which
+   * venue, the kind of work they want, when they can work, and a paragraph in
+   * their own words. No date of birth, no work-eligibility attestation, no
+   * background-history question, no EEO monitoring fields. Every one of those is
+   * a legal instrument rather than a form field: it needs an employer decision
+   * and a lawyer behind it, and it would land in a spreadsheet several people
+   * can open. They belong wherever the venue handles an actual offer, not on a
+   * public web form. The page says as much in the open.
+   *
+   * No resume upload either — this pipeline is a sheet row plus a notification
+   * and has no file store. The page asks for one by email to `HR_INBOX`, which
+   * is the address this notification already lands in, so the two halves meet in
+   * one inbox rather than in two systems.
+   *
+   * The consent line is narrow on purpose. An applicant is not a subscriber, and
+   * nothing here may put them on the mailing list.
+   */
+  employment: {
+    label: 'Employment application',
+    tab: TABS.applications,
+    notify: HR_INBOX,
+    consent: 'Your details are kept so we can consider you for work at The Links. Not added to any mailing list.',
+  },
+  /**
    * The styleguide renders live form components for reference. It is noindexed
    * and staging-only, but the forms are real and can be submitted, so the list
    * is registered rather than 400ing in a way that makes the styleguide look
@@ -239,6 +289,14 @@ export const SHEET_COLUMNS = [
   // waitlist row — one schema, per-form fields left empty, so the writer never
   // has to know which columns exist where.
   'lessonFor',
+  // Added for the employment application on /careers/. Blank on every other
+  // form, exactly as `date` and `groupSize` are blank on a waitlist row.
+  // `role` is what the applicant typed, not a value we offered them from a
+  // menu: there are no named openings, so the page asks in their words and
+  // records them verbatim rather than flattening everyone into three invented
+  // job titles.
+  'role',
+  'availability',
 ] as const;
 
 export type SheetColumn = (typeof SHEET_COLUMNS)[number];

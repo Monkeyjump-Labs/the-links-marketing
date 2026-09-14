@@ -51,7 +51,18 @@ export interface LeadResult {
 }
 
 /** Only these ever reach the sheet. An unknown field is dropped, not stored. */
-const ALLOWED = ['name', 'email', 'phone', 'venue', 'date', 'groupSize', 'message', 'lessonFor'] as const;
+const ALLOWED = [
+  'name',
+  'email',
+  'phone',
+  'venue',
+  'date',
+  'groupSize',
+  'message',
+  'lessonFor',
+  'role',
+  'availability',
+] as const;
 
 const EMAIL_RE = /^[^@\s]+@[^@\s.]+\.[^@\s]+$/;
 
