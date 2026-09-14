@@ -53,6 +53,13 @@ export interface LeadResult {
 /** Only these ever reach the sheet. An unknown field is dropped, not stored. */
 const ALLOWED = ['name', 'email', 'phone', 'venue', 'date', 'groupSize', 'message', 'lessonFor'] as const;
 
+/**
+ * The cap applied to every stored value. Named because `foldIntoMessage` has to
+ * apply it too — a folded field that skipped the cap would be a way to write an
+ * unbounded cell through a field that has no column of its own.
+ */
+const MAX_VALUE = 2000;
+
 const EMAIL_RE = /^[^@\s]+@[^@\s.]+\.[^@\s]+$/;
 
 export async function handleLead(input: LeadInput, deps: LeadDeps): Promise<LeadResult> {
@@ -93,7 +100,28 @@ export async function handleLead(input: LeadInput, deps: LeadDeps): Promise<Lead
   };
   for (const key of ALLOWED) {
     const value = fields[key]?.trim();
-    if (value) row[key] = value.slice(0, 2000);
+    if (value) row[key] = value.slice(0, MAX_VALUE);
+  }
+
+  /**
+   * Fields this list collects that have no column of their own, folded into
+   * `message` as labelled lines. See `LeadList.foldIntoMessage` for why a form
+   * would ever be in that position.
+   *
+   * They go ABOVE the visitor's own words, not below: on an application these
+   * two lines are what decide whether there is a conversation to have, and a
+   * reader should not have to scroll past a paragraph to reach them. The result
+   * is capped again after joining, so a list with several folded fields cannot
+   * add up to an oversized cell.
+   */
+  const folded = (list.foldIntoMessage ?? [])
+    .map(([key, label]) => {
+      const value = fields[key]?.trim();
+      return value ? `${label}: ${value.slice(0, MAX_VALUE)}` : '';
+    })
+    .filter(Boolean);
+  if (folded.length) {
+    row.message = [...folded, '', row.message ?? ''].join('\n').trim().slice(0, MAX_VALUE);
   }
 
   try {

@@ -69,6 +69,14 @@ export const globalData = {
      * same story on two URLs competing with each other.
      */
     { label: 'Our Story', href: '/about/' },
+    /**
+     * Careers goes in the FOOTER and stays there. The top nav is seven slots
+     * chosen on corpus evidence and every one of them is a commercial link; a
+     * jobs page would have to displace one to get in, and someone looking for
+     * work will look at the bottom of the page, which is where every venue site
+     * in the corpus puts it. Do not promote this.
+     */
+    { label: 'Careers', href: '/careers/' },
   ],
 
   /**

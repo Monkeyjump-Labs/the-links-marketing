@@ -68,7 +68,7 @@ const COLUMNS = [
 const TAB_NOTES = [
   [
     TABS.enquiries,
-    'Someone asking about an event, a party, a group booking or a lesson. Reply to these — they are waiting.',
+    'Someone asking about an event, a party, a group booking or a lesson. Reply to these — they are waiting. Job applications from the Careers page land here too — the "list" column says which is which, and those are worth reading yourself rather than leaving to whoever is on the desk.',
   ],
   [
     TABS.waitlist,

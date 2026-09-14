@@ -1,0 +1,180 @@
+---
+/**
+ * Careers — "Work at The Links", and the employment application.
+ *
+ * Added 2026-09-14 at the owner's request: an application form, and a page to
+ * put it on. Two decisions worth writing down, because both are the kind that
+ * get "tidied" later by someone reading the page rather than this comment.
+ *
+ * ── 1. NO OPENINGS ARE NAMED, AND THAT IS NOT AN UNFINISHED PAGE ────────────
+ *
+ * The owner was asked directly (2026-09-14) whether there were specific jobs to
+ * list and said no — this is an open, standing application. So the page invites
+ * one at any time and names no roles, no wage, no shift pattern and no benefits.
+ *
+ * That means it carries **no gap mark of any kind** for those things — not a
+ * `GapCell`, not a `PendingTag`. This is the `/lessons/` price rule applied to
+ * hiring: a mark tells a reader that a figure exists and is being kept from
+ * them, and here there is no list of vacancies being withheld. There is no list.
+ * If named openings ever arrive, they arrive as content, and THEN an unstated
+ * wage beside a named job is a real gap worth marking.
+ *
+ * ── 1a. LAKEVILLE ONLY, AND THAT IS THE POINT OF THE PAGE ───────────────────
+ *
+ * The Links employs nobody at Stillwater (owner, 2026-09-14). So this is the one
+ * page on the site where the two-venue dimension collapses to one, and it does
+ * so in CONTENT rather than by forking the page — there is still exactly one
+ * careers page, it just describes one venue, the same way `/rates/` would if a
+ * rate applied at only one of them.
+ *
+ * Two consequences, both easy to undo by accident:
+ *
+ *   - The form asks no "which venue" question. Every other form on this site
+ *     opens with one. Do not add it back for consistency; a choice of two would
+ *     invite applications for jobs that do not exist. The slug is passed to the
+ *     component and recorded on the row instead.
+ *   - Nothing here explains what Stillwater's staffing arrangement IS. It is
+ *     inside Stillwater Bowl & Lounge, which makes the obvious inference an
+ *     obvious one — and nobody has confirmed it, so the page does not say it.
+ *     "Our roles are at Lakeville" is the whole of what is known and the whole
+ *     of what is published.
+ *
+ * If Stillwater ever hires, the fix is this page and the `venue` prop, not a
+ * second careers page.
+ *
+ * ── 2. NO `JobPosting` SCHEMA, FOR THE SAME REASON ──────────────────────────
+ *
+ * `JobPosting` requires a title, a `datePosted` and a hiring organization, and
+ * Google's job experience additionally expects a real, dated vacancy. Emitting
+ * one for "we accept applications whenever" means inventing every required
+ * field, which is invalid markup asserting a job that does not exist. Same call
+ * the league schema makes: a stub league emits nothing rather than bad markup.
+ * When there is a dated vacancy with a title, add it then.
+ *
+ * ── 3. WHAT THE FORM ASKS, AND WHAT IT MUST NOT ─────────────────────────────
+ *
+ * Contact details, the kind of work, availability, and a paragraph. No date of
+ * birth, no work-eligibility attestation, no background-history question, no EEO
+ * monitoring. Those are legal instruments, several are regulated as to when in a
+ * hiring process they may be asked at all, and every answer would land in a
+ * shared spreadsheet. They belong wherever the venue handles an actual offer —
+ * not on a public web form nobody has had reviewed. Reasoning in full at the
+ * head of `JobApplicationForm.astro` and on the `employment` list in
+ * `lib/leads/config.ts`.
+ *
+ * ── 4. IT FILES ONTO `Enquiries`, AND THAT WAS A CHOICE MADE OUT LOUD ───────
+ *
+ * This was built with an `Applications` tab of its own — a different rhythm and,
+ * more to the point, a different reader. A new tab cannot ship until
+ * `npm run sheet:provision` has run against the live workbook, and adding the
+ * two extra columns it wanted would have widened every data tab, so publishing
+ * before provisioning would have broken all five forms on the site, not just
+ * this one.
+ *
+ * On 2026-09-14 the owner was shown that trade and chose to publish. So the list
+ * points at `Enquiries`, `role` and `availability` are folded into the message
+ * column instead of taking columns of their own, and the workbook needs no
+ * changes at all for this page to work.
+ *
+ * **The cost is real and is not a styling matter:** an application now lands on
+ * the tab the front desk works through daily, which is not where somebody's work
+ * history ideally sits. The upgrade path is written down on `TABS` in
+ * `lib/leads/config.ts` and is about four lines. Take it the day the workbook
+ * can be provisioned.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import JobApplicationForm from '../components/forms/JobApplicationForm.astro';
+import StubNote from '../components/venue/StubNote.astro';
+import { getVenues, venuePath } from '../lib/venues';
+
+/** Published on `/contact/` as ordinary copy already; the same address the form notifies. */
+const HR_EMAIL = 'hr@lakevillelinks.com';
+
+/**
+ * The one venue that hires. Looked up rather than typed out so the address and
+ * the bay count stay whatever the venue record says — but the SLUG is the
+ * decision, and it is here, in the open, because it is the fact the page turns
+ * on. See note 1a at the head of this file.
+ */
+const HIRING_VENUE_SLUG = 'lakeville';
+const venues = await getVenues();
+const hiringVenue = venues.find((venue) => venue.data.slug === HIRING_VENUE_SLUG);
+if (!hiringVenue) {
+  // Loud rather than a silently empty section: this page has no reason to exist
+  // if the venue it is about has gone.
+  throw new Error('careers.astro: no venue with slug ' + HIRING_VENUE_SLUG);
+}
+
+const metadata = {
+  metaTitle: 'Jobs & Careers — The Links of Lakeville, MN',
+  metaDescription:
+    'Work at The Links of Lakeville. We take applications year-round for our indoor golf venue in Lakeville, Minnesota. No golf experience needed.',
+};
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">Work at The Links</h1>
+    <p class="mt-6 max-w-2xl text-lg text-inkMuted">
+      We take applications all year, whether or not something is open at the moment. Our roles are at the Lakeville
+      venue. If the work sounds like you, send it in and we will keep it on file.
+    </p>
+
+    {/* 2. What the job actually is, for someone who has never worked in a golf venue. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">What the work is like</h2>
+      <p class="mt-3 max-w-2xl text-inkMuted">
+        Most of it is hospitality rather than golf. You are looking after people who have booked a bay for a couple of
+        hours — getting them started on the simulator, running food and drinks, keeping the place clean and the night
+        moving. Plenty of our customers have never played a round in their lives, and neither had plenty of our staff
+        when they started.
+      </p>
+      <p class="mt-4 max-w-2xl text-inkMuted">
+        Golf knowledge is optional. Enthusiasm for a warm building in February slightly less so — the work is indoors
+        and year-round, and the busiest months here are the cold ones, which is the opposite of every outdoor course in
+        Minnesota.
+      </p>
+      <p class="mt-4 max-w-2xl text-inkMuted">
+        If you have not seen the place, <a href="/simulators/" class="font-semibold underline">the simulators page</a>
+        shows what you would be working with, and <a href="/about/" class="font-semibold underline">our story</a> covers how
+        the place came about.
+      </p>
+    </section>
+
+    {/* 3. Where the work is. One venue — see note 1a at the head of this file. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">Where</h2>
+      <p class="mt-3 max-w-2xl text-inkMuted">
+        Everything is at <a href={venuePath(hiringVenue)} class="font-semibold underline">{hiringVenue.data.name}</a> — {
+          hiringVenue.data.streetAddress
+        }, {hiringVenue.data.addressLocality}, {hiringVenue.data.addressRegion}{' '}
+        {hiringVenue.data.postalCode}. {hiringVenue.data.bays} bays and a full bar.
+      </p>
+      <p class="mt-4 max-w-2xl text-inkMuted">
+        It is in the south metro. If getting there on a January evening would be a long drive, say so on the form rather
+        than finding out in week three — and put the hours you can actually do in the availability box.
+      </p>
+    </section>
+
+    {/* 4. The form the page exists for. */}
+    <section class="mt-section" id="apply">
+      <JobApplicationForm listName="employment" venue={HIRING_VENUE_SLUG} hrEmail={HR_EMAIL} id="job-application" />
+      <StubNote
+        class="mt-6"
+        needs="(1) Applications currently land on the Enquiries tab, beside event and lesson enquiries, because shipping them to a tab of their own needed the live workbook provisioned first and the owner chose to publish on 2026-09-14 rather than wait. This is a known compromise, not a finished state: the day `npm run sheet:provision` can be run, move the employment list to its own Applications tab and promote `role` and `availability` to real columns — the four-line recipe is on TABS in lib/leads/config.ts. Worth chasing, because a work history sitting on the tab the front desk reads all shift is the thing this was designed to avoid. Also worth asking who currently has access to that workbook. (2) Ask the owner whether a formal application document is wanted on top of this intake form — work eligibility, an EEO statement, any background question. All of it was deliberately left out: those are legal instruments, some are regulated as to when they may be asked, and none of them should sit in a shared spreadsheet without a lawyer having looked. (3) Also unasked, and all of them owner decisions rather than gaps: whether to publish pay ranges, shift patterns, a minimum age for serving alcohol at Lakeville, or any benefit. The page names no roles on purpose — the owner confirmed on 2026-09-14 there are no specific openings to list, and that The Links employs nobody at Stillwater, which is why this page and its form are Lakeville-only. (4) Nothing here states WHY there are no Stillwater jobs — the venue sits inside Stillwater Bowl & Lounge and the obvious inference is that its staff are employed by the bowling alley, but nobody has confirmed that, so it is not published. Worth asking, because applicants will."
+      />
+    </section>
+
+    {/* 5. The other door. Not everyone writing about work wants a form. */}
+    <section class="mt-section rounded bg-surface p-8">
+      <h2 class="text-2xl font-bold">Rather just email us?</h2>
+      <p class="mt-3 max-w-2xl text-inkMuted">
+        Anything about working here — this application, a resume, or a question before you apply — goes to <a
+          href={`mailto:${HR_EMAIL}`}
+          class="font-semibold underline">{HR_EMAIL}</a
+        >. For anything that is not about a job, <a href="/contact/" class="font-semibold underline">contact us</a> instead
+        and you will get a faster answer.
+      </p>
+    </section>
+  </section>
+</BaseLayout>

@@ -118,14 +118,31 @@ describe('handleLead — validation', () => {
     expect(sheet.rows).toHaveLength(0);
   });
 
+  // `role` used to be the second example here, on the strength of looking like
+  // a privilege field. It is now a REAL column — the careers form asks what kind
+  // of work someone wants — so the example moved rather than the assertion.
+  // Pick a name here that no form will ever legitimately post.
   it('stores only allowlisted fields — an injected extra never reaches the sheet', async () => {
     const sheet = okSheet();
     await handleLead(
-      { fields: { ...base(), sneaky: 'value', role: 'admin' }, now: NOW },
+      { fields: { ...base(), sneaky: 'value', isAdmin: 'true' }, now: NOW },
       { sheet, formSecret: SECRET },
     );
     expect(Object.keys(sheet.rows[0])).not.toContain('sneaky');
-    expect(Object.keys(sheet.rows[0])).not.toContain('role');
+    expect(Object.keys(sheet.rows[0])).not.toContain('isAdmin');
+  });
+
+  // The server writes `consent` from the routing table, and the whole point of
+  // storing it is that it records what we promised rather than what was posted.
+  // A submitted `consent` must therefore lose to the configured one — otherwise
+  // the defensible record is whatever the client said it was.
+  it('a posted consent field cannot overwrite the promise on record', async () => {
+    const sheet = okSheet();
+    await handleLead(
+      { fields: { ...base(), list: 'juniors', consent: 'anything I like' }, now: NOW },
+      { sheet, formSecret: SECRET },
+    );
+    expect(sheet.rows[0].consent).toBe(LEAD_LISTS.juniors.consent);
   });
 
   it('records the consent text alongside a waitlist address', async () => {
@@ -197,6 +214,66 @@ describe('handleLead — tab routing', () => {
     const sheet = okSheet();
     await handleLead({ fields: { ...base(), list: 'styleguide' }, now: NOW }, { sheet, formSecret: SECRET });
     expect(sheet.tabs).toEqual(['Test']);
+  });
+
+  /**
+   * `foldIntoMessage` exists because the careers form collects two answers that
+   * have no column of their own. These assert the three things that make that
+   * safe to rely on: the answers survive, they are not silently dropped for want
+   * of a column, and they cannot be used to write past the value cap.
+   */
+  describe('foldIntoMessage', () => {
+    it('folds uncolumned fields into message, above the applicant own words', async () => {
+      const sheet = okSheet();
+      await handleLead(
+        {
+          fields: {
+            ...base(),
+            list: 'employment',
+            role: 'Behind the bar',
+            availability: 'Evenings and weekends',
+            message: 'I worked at a bowling alley for two years.',
+          },
+          now: NOW,
+        },
+        { sheet, formSecret: SECRET },
+      );
+      expect(sheet.rows[0].message).toBe(
+        [
+          'Kind of work: Behind the bar',
+          'When they can work: Evenings and weekends',
+          '',
+          'I worked at a bowling alley for two years.',
+        ].join('\n'),
+      );
+    });
+
+    it('never puts a folded field in a column of its own', async () => {
+      const sheet = okSheet();
+      await handleLead(
+        { fields: { ...base(), list: 'employment', role: 'Anything going' }, now: NOW },
+        { sheet, formSecret: SECRET },
+      );
+      // The whole point: SHEET_COLUMNS has no "role", so a row that carried one
+      // would be written into the wrong cell or off the end of the grid.
+      expect(Object.keys(sheet.rows[0])).not.toContain('role');
+      expect(sheet.rows[0].message).toContain('Kind of work: Anything going');
+    });
+
+    it('caps the folded result, so an uncolumned field cannot write an oversized cell', async () => {
+      const sheet = okSheet();
+      await handleLead(
+        { fields: { ...base(), list: 'employment', role: 'x'.repeat(5000), message: 'y'.repeat(5000) }, now: NOW },
+        { sheet, formSecret: SECRET },
+      );
+      expect(sheet.rows[0].message!.length).toBeLessThanOrEqual(2000);
+    });
+
+    it('leaves a list without folded fields exactly as it was', async () => {
+      const sheet = okSheet();
+      await handleLead({ fields: { ...base(), message: 'Just a party.' }, now: NOW }, { sheet, formSecret: SECRET });
+      expect(sheet.rows[0].message).toBe('Just a party.');
+    });
   });
 
   it('every registered list names a tab that actually exists', async () => {

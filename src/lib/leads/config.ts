@@ -33,6 +33,24 @@ export interface LeadList {
    * cannot drift apart.
    */
   consent?: string;
+  /**
+   * Fields this list collects that have NO column of their own, folded into
+   * `message` as labelled lines before the row is written.
+   *
+   * **This is a deliberate trade, not a shortcut.** Adding a column to
+   * `SHEET_COLUMNS` is the better answer for anything a reader will want to sort
+   * or filter on — but it is a change to the SHARED layout, so it widens every
+   * data tab and cannot ship until `npm run sheet:provision` has run against the
+   * live workbook. That ordering (register → provision → deploy) is not always
+   * available: the careers form shipped on a day when the workbook could not be
+   * touched, and folding two answers into the message column let the page go
+   * live without leaving the other four forms writing rows wider than their tabs.
+   *
+   * The cost is honest and worth knowing: a folded field is prose, not a column.
+   * Nobody can sort by it. If one of these ever needs sorting, promote it to a
+   * real column and provision — do not add a sixth folded field instead.
+   */
+  foldIntoMessage?: [key: string, label: string][];
 }
 
 /**
@@ -57,6 +75,22 @@ export interface LeadList {
  * `Test` keeps styleguide submissions out of real data. The styleguide renders
  * live, submittable forms, and one accidental submit should not put a fake name
  * in front of someone working the enquiry list.
+ *
+ * ⚠️ **There is no `Applications` tab, and that is a known compromise rather
+ * than an oversight.** Job applications were built with one — they are a fourth
+ * rhythm and, more to the point, a fourth READER: someone hands over their work
+ * history on the understanding that the person hiring reads it, not that it sits
+ * on the tab the front desk has open all shift. A new tab needs
+ * `npm run sheet:provision` run against the live workbook before it can ship,
+ * and on the day the careers page went live (2026-09-14) that could not happen.
+ * The owner chose publishing over waiting, with the trade explained.
+ *
+ * So `employment` files onto `Enquiries`, and the `list` column is what tells
+ * an application apart from a birthday party. **If the workbook is ever
+ * provisioned, move it back** — add `applications: 'Applications'` here and to
+ * `DATA_TABS`, point the `employment` list at it, and promote its two folded
+ * fields (`role`, `availability`) to real columns while you are there. Nothing
+ * else needs to change.
  *
  * README is `Sheet1` renamed and moved to the front, so the first thing anyone
  * opening the workbook sees is an explanation rather than a grid of columns.
@@ -96,6 +130,19 @@ export const DATA_TABS: SheetTab[] = [TABS.enquiries, TABS.waitlist, TABS.update
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- kept as the deliberate escape hatch above
 const TESTING_INBOX = 'hello@fareway.golf';
 const VENUE_INBOX = 'info@lakevillelinks.com';
+
+/**
+ * Hiring, and deliberately NOT `INBOX`.
+ *
+ * Already published as ordinary copy on `/contact/` — a real, working address
+ * the venue gave out long before this form existed, which is why the careers
+ * form could be built without waiting on anyone to decide where applications go.
+ *
+ * Separate from the customer inbox for the same reason `Applications` is a
+ * separate tab: routing it to the general inbox would put somebody's work
+ * history in front of whoever is answering the phone about a birthday party.
+ */
+const HR_INBOX = 'hr@lakevillelinks.com';
 
 const INBOX = VENUE_INBOX;
 
@@ -173,6 +220,55 @@ export const LEAD_LISTS: Record<string, LeadList> = {
     consent: 'Occasional email about leagues, events and what is on. Unsubscribe any time.',
   },
   /**
+   * The employment application, from `/careers/`.
+   *
+   * **It asks nothing a spreadsheet should not hold.** Name, contact, the kind
+   * of work they want, when they can work, and a paragraph in their own words.
+   * No date of birth, no work-eligibility attestation, no
+   * background-history question, no EEO monitoring fields. Every one of those is
+   * a legal instrument rather than a form field: it needs an employer decision
+   * and a lawyer behind it, and it would land in a spreadsheet several people
+   * can open. They belong wherever the venue handles an actual offer, not on a
+   * public web form. The page says as much in the open.
+   *
+   * No resume upload either — this pipeline is a sheet row plus a notification
+   * and has no file store. The page asks for one by email to `HR_INBOX`, which
+   * is the address this notification already lands in, so the two halves meet in
+   * one inbox rather than in two systems.
+   *
+   * The consent line is narrow on purpose. An applicant is not a subscriber, and
+   * nothing here may put them on the mailing list.
+   */
+  employment: {
+    /**
+     * Lakeville only. The Links employs nobody at Stillwater (owner,
+     * 2026-09-14), so the form asks no venue question and records the slug
+     * instead — the `venue` column on these rows is therefore always the same
+     * value, which is correct rather than redundant. If Stillwater ever hires,
+     * it becomes a real field again on `/careers/`.
+     */
+    label: 'Employment application',
+    /**
+     * `Enquiries`, not an `Applications` tab of its own — see the ⚠️ on TABS.
+     * A compromise taken knowingly so the page could ship without widening the
+     * workbook. Revisit the day `sheet:provision` can be run.
+     */
+    tab: TABS.enquiries,
+    notify: HR_INBOX,
+    consent: 'Your details are kept so we can consider you for work at The Links. Not added to any mailing list.',
+    /**
+     * Two answers with nowhere of their own to go. They are the most useful
+     * lines on the row — what they want to do and when they can do it — so they
+     * lead the message rather than trailing it. The notification email prints
+     * them as their own labelled lines regardless (see `BODY_FIELDS`); this is
+     * only about the spreadsheet.
+     */
+    foldIntoMessage: [
+      ['role', 'Kind of work'],
+      ['availability', 'When they can work'],
+    ],
+  },
+  /**
    * The styleguide renders live form components for reference. It is noindexed
    * and staging-only, but the forms are real and can be submitted, so the list
    * is registered rather than 400ing in a way that makes the styleguide look
@@ -239,6 +335,12 @@ export const SHEET_COLUMNS = [
   // waitlist row — one schema, per-form fields left empty, so the writer never
   // has to know which columns exist where.
   'lessonFor',
+  // ⚠️ The careers form collects two more answers than there are columns here —
+  // `role` and `availability`. They are folded into `message` instead (see
+  // `LeadList.foldIntoMessage`) SPECIFICALLY so that this list still matches the
+  // live workbook. Adding them here is the better design and is a one-line
+  // change, but it widens every data tab and must not ship until
+  // `npm run sheet:provision` has run. Do not add them without that.
 ] as const;
 
 export type SheetColumn = (typeof SHEET_COLUMNS)[number];

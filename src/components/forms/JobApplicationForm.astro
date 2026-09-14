@@ -1,0 +1,191 @@
+---
+/**
+ * The employment application, on `/careers/`.
+ *
+ * **Why not `EnquiryForm`.** That one asks an events question — headcount and a
+ * date — because a planner arrives knowing both. Someone looking for work knows
+ * neither, and being asked "how many people" is the form telling them they are
+ * on the wrong page. The plumbing is shared (`/api/lead`, the honeypot, the
+ * signed stamp, `LeadFormScript`); the field set is not. Same split as
+ * `LessonEnquiryForm`.
+ *
+ * **`role` is the load-bearing field, and it is free text on purpose.** There
+ * are no named openings, so a select would mean inventing three or four job
+ * titles and quietly asserting that those are the jobs that exist here. Nobody
+ * has said they do. Asking in the applicant's own words costs a tidy spreadsheet
+ * column and buys an answer that is actually true — and it is the one line that
+ * decides whether there is a conversation to have, so it goes first, above the
+ * rule, the way `lessonFor` does on the lessons form.
+ *
+ * ── WHAT THIS FORM DELIBERATELY DOES NOT ASK ────────────────────────────────
+ *
+ * No date of birth. No work-eligibility attestation. No background-history
+ * question. No EEO monitoring fields. Every one of those is a legal instrument
+ * rather than a form field: it needs an employer decision and a lawyer behind
+ * it, several of them are regulated as to WHEN in the process they may be asked
+ * at all, and every answer would land in a spreadsheet that more than one person
+ * can open. They belong wherever the venue handles an actual offer. Do not add
+ * one here because a template elsewhere had it.
+ *
+ * **No resume upload.** The lead pipeline is a sheet row plus a notification and
+ * has no file store; building one is a real piece of work and not a field. So
+ * the page asks for a resume by email to the same address the notification goes
+ * to (`hr@lakevillelinks.com`, the `employment` list's `notify`), which means
+ * the two halves of an application meet in one inbox rather than in two systems.
+ * If a file store is ever added, this is the note to come back to.
+ *
+ * **It does not ask which venue, and that is a fact rather than an omission.**
+ * The Links employs nobody at Stillwater (owner, 2026-09-14), so every other
+ * form on this site opens with a venue question and this one must not: offering
+ * a choice of two would invite applications for jobs that do not exist, and
+ * offering a select with one option in it is a question with no question in it.
+ * The venue is passed in and recorded on the row instead, so the spreadsheet
+ * column stays populated and the day Stillwater does hire, this becomes a real
+ * field again rather than a hidden value nobody remembers is there.
+ *
+ * A greige slab on the page's white ground, matching `LessonEnquiryForm` — the
+ * same component doing the same job, so it should not look like a new thing.
+ *
+ * Posts to `/api/lead/` — fixed and same-origin, like every other form here.
+ * Works with JavaScript disabled: a native POST gets a 303 to `/thanks/`, and
+ * `LeadFormScript` upgrades that to an inline confirmation.
+ *
+ * ⚠️ **Keep the trailing slash on that action.** `trailingSlash: 'always'`
+ * applies to API routes as well as pages: under `astro dev`, `POST /api/lead`
+ * is a 404 and `POST /api/lead/` works. Production 308s the slashless form, so
+ * dropping the slash breaks local testing ONLY — and silently. It must also stay
+ * identical to `ENDPOINT` in `LeadFormScript.astro`, which selects forms by
+ * `action`. See FW-4023.
+ */
+import { buttonClasses } from '../../lib/buttons';
+
+interface Props {
+  heading?: string;
+  blurb?: string;
+  listName: string;
+  /**
+   * The venue slug recorded on the row. NOT asked of the applicant — see the
+   * header. Passed in so the one place that knows which venues hire is the page,
+   * not this component.
+   */
+  venue: string;
+  /** Where a resume should be sent. Rendered in the copy AND in the success message. */
+  hrEmail: string;
+  id?: string;
+  class?: string;
+}
+
+const {
+  heading = 'Apply to work here',
+  blurb = 'There is no closing date and nothing to upload. Tell us what you are after and when you can work, and someone will read it. If you have a resume, send it along separately — the address is under the form.',
+  listName,
+  venue,
+  hrEmail,
+  id,
+  class: className = '',
+} = Astro.props;
+
+const formId = id ?? `job-application-${listName.replace(/\W+/g, '-').toLowerCase()}`;
+
+const field =
+  'min-h-tap w-full min-w-0 rounded-control border-rule border-navy bg-white px-s4 py-s3 text-body text-navy placeholder:text-inkMuted';
+const labelClass = 'caps-label block text-label-sm text-inkMuted';
+---
+
+<div class:list={['bg-greige border-t-score border-primary p-cell lg:p-cell-lg', className]}>
+  <h2 class="text-section leading-display font-extrabold tracking-display-tight text-ink">{heading}</h2>
+  <p class="mt-s3 max-w-prose-page text-body leading-body text-inkBody">{blurb}</p>
+
+  <form
+    class="mt-s6"
+    action="/api/lead/"
+    method="POST"
+    data-analytics={`application:${listName}`}
+    data-success="Thanks — we have got it, and someone will read it. If you are sending a resume, hr@lakevillelinks.com is the address."
+    id={formId}
+  >
+    <input type="hidden" name="list" value={listName} />
+    {/* Recorded, not asked. See the header. */}
+    <input type="hidden" name="venue" value={venue} />
+    <input type="hidden" name="_page" value={Astro.url.pathname} />
+    {/* Filled at runtime by LeadFormScript; absent on the no-JS path, which is accepted. */}
+    <input type="hidden" name="_ts" value="" />
+    <input type="text" name="_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+    {
+      /* The question the rest of it turns on, first and alone above the 4px
+        rule — the same move the lessons form makes with who the lesson is for.
+        A text input rather than a menu: see the header. The placeholder gives
+        two examples so the field is not intimidating, and neither of them
+        claims a vacancy. */
+    }
+    <div class="border-b-score border-navy pb-s6">
+      <label class={labelClass} for={`${formId}-role`}>What kind of work you are looking for</label>
+      <input
+        id={`${formId}-role`}
+        name="role"
+        type="text"
+        required
+        placeholder='In your own words — "behind the bar" and "anything going" are both fine answers.'
+        class={`mt-s2 ${field}`}
+      />
+    </div>
+
+    {
+      /* Five cells, every slot filled: name and email pair, then phone pairs
+        with availability rather than leaving a hole beside it. The venue select
+        that used to lead this grid is gone — see the header. */
+    }
+    <div class="mt-s6 grid gap-s5 sm:grid-cols-2">
+      <div class="min-w-0">
+        <label class={labelClass} for={`${formId}-name`}>Your name</label>
+        <input id={`${formId}-name`} name="name" type="text" required class={`mt-s2 ${field}`} />
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-email`}>Email</label>
+        <input id={`${formId}-email`} name="email" type="email" required class={`mt-s2 ${field}`} />
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-phone`}>Phone</label>
+        <input id={`${formId}-phone`} name="phone" type="tel" class={`mt-s2 ${field}`} />
+      </div>
+      <div>
+        <label class={labelClass} for={`${formId}-availability`}>When you can work</label>
+        <input
+          id={`${formId}-availability`}
+          name="availability"
+          type="text"
+          placeholder="Evenings, weekends, weekday daytimes."
+          class={`mt-s2 ${field}`}
+        />
+      </div>
+      <div class="sm:col-span-2">
+        <label class={labelClass} for={`${formId}-message`}>Anything you want us to know</label>
+        <textarea
+          id={`${formId}-message`}
+          name="message"
+          rows="5"
+          placeholder="Where you have worked before, if anywhere. It is genuinely fine if this is your first job."
+          class={`mt-s2 ${field}`}></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class:list={[buttonClasses('md', 'primary'), 'mt-s6 w-full cursor-pointer']}>
+      Send my application
+    </button>
+
+    <p class="mt-s4 max-w-prose-page text-small leading-body text-inkBody">
+      Got a resume? Email it to <a href={`mailto:${hrEmail}`} class="font-semibold underline">{hrEmail}</a> — it reaches the
+      same person this form does. You do not need one to apply.
+    </p>
+
+    {/* Only ever shown on failure — success replaces the whole form. */}
+    <p
+      data-lead-status
+      role="alert"
+      hidden
+      class="mt-s4 border-l-slab border-accent pl-s4 text-small leading-body text-inkBody"
+    >
+    </p>
+  </form>
+</div>
