@@ -34,6 +34,15 @@
  * the two halves of an application meet in one inbox rather than in two systems.
  * If a file store is ever added, this is the note to come back to.
  *
+ * **It does not ask which venue, and that is a fact rather than an omission.**
+ * The Links employs nobody at Stillwater (owner, 2026-09-14), so every other
+ * form on this site opens with a venue question and this one must not: offering
+ * a choice of two would invite applications for jobs that do not exist, and
+ * offering a select with one option in it is a question with no question in it.
+ * The venue is passed in and recorded on the row instead, so the spreadsheet
+ * column stays populated and the day Stillwater does hire, this becomes a real
+ * field again rather than a hidden value nobody remembers is there.
+ *
  * A greige slab on the page's white ground, matching `LessonEnquiryForm` — the
  * same component doing the same job, so it should not look like a new thing.
  *
@@ -48,13 +57,18 @@
  * identical to `ENDPOINT` in `LeadFormScript.astro`, which selects forms by
  * `action`. See FW-4023.
  */
-import { getVenues } from '../../lib/venues';
 import { buttonClasses } from '../../lib/buttons';
 
 interface Props {
   heading?: string;
   blurb?: string;
   listName: string;
+  /**
+   * The venue slug recorded on the row. NOT asked of the applicant — see the
+   * header. Passed in so the one place that knows which venues hire is the page,
+   * not this component.
+   */
+  venue: string;
   /** Where a resume should be sent. Rendered in the copy AND in the success message. */
   hrEmail: string;
   id?: string;
@@ -65,12 +79,12 @@ const {
   heading = 'Apply to work here',
   blurb = 'There is no closing date and nothing to upload. Tell us what you are after and when you can work, and someone will read it. If you have a resume, send it along separately — the address is under the form.',
   listName,
+  venue,
   hrEmail,
   id,
   class: className = '',
 } = Astro.props;
 
-const venues = await getVenues();
 const formId = id ?? `job-application-${listName.replace(/\W+/g, '-').toLowerCase()}`;
 
 const field =
@@ -91,6 +105,8 @@ const labelClass = 'caps-label block text-label-sm text-inkMuted';
     id={formId}
   >
     <input type="hidden" name="list" value={listName} />
+    {/* Recorded, not asked. See the header. */}
+    <input type="hidden" name="venue" value={venue} />
     <input type="hidden" name="_page" value={Astro.url.pathname} />
     {/* Filled at runtime by LeadFormScript; absent on the no-JS path, which is accepted. */}
     <input type="hidden" name="_ts" value="" />
@@ -116,19 +132,12 @@ const labelClass = 'caps-label block text-label-sm text-inkMuted';
     </div>
 
     {
-      /* Six cells, every slot filled — venue leads because it is the one
-        question a two-location venue must not lose, and it pairs with the name
-        rather than leaving a hole beside the phone. */
+      /* Five cells, every slot filled: name and email pair, then phone pairs
+        with availability rather than leaving a hole beside it. The venue select
+        that used to lead this grid is gone — see the header. */
     }
     <div class="mt-s6 grid gap-s5 sm:grid-cols-2">
       <div class="min-w-0">
-        <label class={labelClass} for={`${formId}-venue`}>Which venue</label>
-        <select id={`${formId}-venue`} name="venue" required class={`mt-s2 ${field}`}>
-          {venues.map((venue) => <option value={venue.data.slug}>{venue.data.name}</option>)}
-          <option value="either">Either — whichever needs people</option>
-        </select>
-      </div>
-      <div>
         <label class={labelClass} for={`${formId}-name`}>Your name</label>
         <input id={`${formId}-name`} name="name" type="text" required class={`mt-s2 ${field}`} />
       </div>
@@ -140,13 +149,13 @@ const labelClass = 'caps-label block text-label-sm text-inkMuted';
         <label class={labelClass} for={`${formId}-phone`}>Phone</label>
         <input id={`${formId}-phone`} name="phone" type="tel" class={`mt-s2 ${field}`} />
       </div>
-      <div class="sm:col-span-2">
+      <div>
         <label class={labelClass} for={`${formId}-availability`}>When you can work</label>
         <input
           id={`${formId}-availability`}
           name="availability"
           type="text"
-          placeholder="Evenings and weekends, weekday daytimes, term-time only — whatever is true."
+          placeholder="Evenings, weekends, weekday daytimes."
           class={`mt-s2 ${field}`}
         />
       </div>

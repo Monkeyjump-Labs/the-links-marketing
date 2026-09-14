@@ -199,9 +199,9 @@ export const LEAD_LISTS: Record<string, LeadList> = {
   /**
    * The employment application, from `/careers/`.
    *
-   * **It asks nothing a spreadsheet should not hold.** Name, contact, which
-   * venue, the kind of work they want, when they can work, and a paragraph in
-   * their own words. No date of birth, no work-eligibility attestation, no
+   * **It asks nothing a spreadsheet should not hold.** Name, contact, the kind
+   * of work they want, when they can work, and a paragraph in their own words.
+   * No date of birth, no work-eligibility attestation, no
    * background-history question, no EEO monitoring fields. Every one of those is
    * a legal instrument rather than a form field: it needs an employer decision
    * and a lawyer behind it, and it would land in a spreadsheet several people
@@ -217,6 +217,13 @@ export const LEAD_LISTS: Record<string, LeadList> = {
    * nothing here may put them on the mailing list.
    */
   employment: {
+    /**
+     * Lakeville only. The Links employs nobody at Stillwater (owner,
+     * 2026-09-14), so the form asks no venue question and records the slug
+     * instead — the `venue` column on these rows is therefore always the same
+     * value, which is correct rather than redundant. If Stillwater ever hires,
+     * it becomes a real field again on `/careers/`.
+     */
     label: 'Employment application',
     tab: TABS.applications,
     notify: HR_INBOX,
