@@ -33,6 +33,24 @@ export interface LeadList {
    * cannot drift apart.
    */
   consent?: string;
+  /**
+   * Fields this list collects that have NO column of their own, folded into
+   * `message` as labelled lines before the row is written.
+   *
+   * **This is a deliberate trade, not a shortcut.** Adding a column to
+   * `SHEET_COLUMNS` is the better answer for anything a reader will want to sort
+   * or filter on — but it is a change to the SHARED layout, so it widens every
+   * data tab and cannot ship until `npm run sheet:provision` has run against the
+   * live workbook. That ordering (register → provision → deploy) is not always
+   * available: the careers form shipped on a day when the workbook could not be
+   * touched, and folding two answers into the message column let the page go
+   * live without leaving the other four forms writing rows wider than their tabs.
+   *
+   * The cost is honest and worth knowing: a folded field is prose, not a column.
+   * Nobody can sort by it. If one of these ever needs sorting, promote it to a
+   * real column and provision — do not add a sixth folded field instead.
+   */
+  foldIntoMessage?: [key: string, label: string][];
 }
 
 /**
@@ -58,15 +76,21 @@ export interface LeadList {
  * live, submittable forms, and one accidental submit should not put a fake name
  * in front of someone working the enquiry list.
  *
- * `Applications` is people asking for a job, and it is a fourth rhythm AND a
- * fourth reader. Filing them on `Enquiries` would have shipped sooner — no new
- * tab means no provisioning step — and it would have been wrong twice over. The
- * rhythm is wrong: `Enquiries` is cleared daily by whoever is on the phone, and
- * an application does not go stale that way. The reader is wrong, and that is
- * the half that matters: someone hands over their work history on the
- * understanding that the person hiring reads it, not that it sits on the tab the
- * front desk has open all shift. A separate tab is the cheapest honest version
- * of that.
+ * ⚠️ **There is no `Applications` tab, and that is a known compromise rather
+ * than an oversight.** Job applications were built with one — they are a fourth
+ * rhythm and, more to the point, a fourth READER: someone hands over their work
+ * history on the understanding that the person hiring reads it, not that it sits
+ * on the tab the front desk has open all shift. A new tab needs
+ * `npm run sheet:provision` run against the live workbook before it can ship,
+ * and on the day the careers page went live (2026-09-14) that could not happen.
+ * The owner chose publishing over waiting, with the trade explained.
+ *
+ * So `employment` files onto `Enquiries`, and the `list` column is what tells
+ * an application apart from a birthday party. **If the workbook is ever
+ * provisioned, move it back** — add `applications: 'Applications'` here and to
+ * `DATA_TABS`, point the `employment` list at it, and promote its two folded
+ * fields (`role`, `availability`) to real columns while you are there. Nothing
+ * else needs to change.
  *
  * README is `Sheet1` renamed and moved to the front, so the first thing anyone
  * opening the workbook sees is an explanation rather than a grid of columns.
@@ -76,14 +100,13 @@ export const TABS = {
   enquiries: 'Enquiries',
   waitlist: 'Waitlist',
   updates: 'Updates',
-  applications: 'Applications',
   test: 'Test',
 } as const;
 
 export type SheetTab = (typeof TABS)[keyof typeof TABS];
 
 /** The tabs that receive submissions. README is prose and never written to. */
-export const DATA_TABS: SheetTab[] = [TABS.enquiries, TABS.waitlist, TABS.updates, TABS.applications, TABS.test];
+export const DATA_TABS: SheetTab[] = [TABS.enquiries, TABS.waitlist, TABS.updates, TABS.test];
 
 /**
  * Where a form submission is announced.
@@ -225,9 +248,25 @@ export const LEAD_LISTS: Record<string, LeadList> = {
      * it becomes a real field again on `/careers/`.
      */
     label: 'Employment application',
-    tab: TABS.applications,
+    /**
+     * `Enquiries`, not an `Applications` tab of its own — see the ⚠️ on TABS.
+     * A compromise taken knowingly so the page could ship without widening the
+     * workbook. Revisit the day `sheet:provision` can be run.
+     */
+    tab: TABS.enquiries,
     notify: HR_INBOX,
     consent: 'Your details are kept so we can consider you for work at The Links. Not added to any mailing list.',
+    /**
+     * Two answers with nowhere of their own to go. They are the most useful
+     * lines on the row — what they want to do and when they can do it — so they
+     * lead the message rather than trailing it. The notification email prints
+     * them as their own labelled lines regardless (see `BODY_FIELDS`); this is
+     * only about the spreadsheet.
+     */
+    foldIntoMessage: [
+      ['role', 'Kind of work'],
+      ['availability', 'When they can work'],
+    ],
   },
   /**
    * The styleguide renders live form components for reference. It is noindexed
@@ -296,14 +335,12 @@ export const SHEET_COLUMNS = [
   // waitlist row — one schema, per-form fields left empty, so the writer never
   // has to know which columns exist where.
   'lessonFor',
-  // Added for the employment application on /careers/. Blank on every other
-  // form, exactly as `date` and `groupSize` are blank on a waitlist row.
-  // `role` is what the applicant typed, not a value we offered them from a
-  // menu: there are no named openings, so the page asks in their words and
-  // records them verbatim rather than flattening everyone into three invented
-  // job titles.
-  'role',
-  'availability',
+  // ⚠️ The careers form collects two more answers than there are columns here —
+  // `role` and `availability`. They are folded into `message` instead (see
+  // `LeadList.foldIntoMessage`) SPECIFICALLY so that this list still matches the
+  // live workbook. Adding them here is the better design and is a one-line
+  // change, but it widens every data tab and must not ship until
+  // `npm run sheet:provision` has run. Do not add them without that.
 ] as const;
 
 export type SheetColumn = (typeof SHEET_COLUMNS)[number];

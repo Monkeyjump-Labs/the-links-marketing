@@ -62,10 +62,25 @@
  * head of `JobApplicationForm.astro` and on the `employment` list in
  * `lib/leads/config.ts`.
  *
- * ⚠️ The `employment` list writes to a NEW `Applications` tab. Until
- * `npm run sheet:provision` has run against the live workbook, a submission here
- * fails and the applicant is told so. Register → provision → deploy, in that
- * order (CLAUDE.md, "The forms").
+ * ── 4. IT FILES ONTO `Enquiries`, AND THAT WAS A CHOICE MADE OUT LOUD ───────
+ *
+ * This was built with an `Applications` tab of its own — a different rhythm and,
+ * more to the point, a different reader. A new tab cannot ship until
+ * `npm run sheet:provision` has run against the live workbook, and adding the
+ * two extra columns it wanted would have widened every data tab, so publishing
+ * before provisioning would have broken all five forms on the site, not just
+ * this one.
+ *
+ * On 2026-09-14 the owner was shown that trade and chose to publish. So the list
+ * points at `Enquiries`, `role` and `availability` are folded into the message
+ * column instead of taking columns of their own, and the workbook needs no
+ * changes at all for this page to work.
+ *
+ * **The cost is real and is not a styling matter:** an application now lands on
+ * the tab the front desk works through daily, which is not where somebody's work
+ * history ideally sits. The upgrade path is written down on `TABS` in
+ * `lib/leads/config.ts` and is about four lines. Take it the day the workbook
+ * can be provisioned.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import JobApplicationForm from '../components/forms/JobApplicationForm.astro';
@@ -146,7 +161,7 @@ const metadata = {
       <JobApplicationForm listName="employment" venue={HIRING_VENUE_SLUG} hrEmail={HR_EMAIL} id="job-application" />
       <StubNote
         class="mt-6"
-        needs="Before this page is promoted to production: (1) `npm run sheet:provision` MUST be run against the live workbook — the `employment` list writes to a new `Applications` tab, and until that tab exists every application fails and the applicant is told so. (2) Ask the owner whether a formal application document is wanted on top of this intake form — work eligibility, an EEO statement, any background question. All of it was deliberately left out: those are legal instruments, some are regulated as to when they may be asked, and none of them should sit in a shared spreadsheet without a lawyer having looked. (3) Also unasked, and all of them owner decisions rather than gaps: whether to publish pay ranges, shift patterns, a minimum age for serving alcohol at Lakeville, or any benefit. The page names no roles on purpose — the owner confirmed on 2026-09-14 there are no specific openings to list, and that The Links employs nobody at Stillwater, which is why this page and its form are Lakeville-only. (4) Nothing here states WHY there are no Stillwater jobs — the venue sits inside Stillwater Bowl & Lounge and the obvious inference is that its staff are employed by the bowling alley, but nobody has confirmed that, so it is not published. Worth asking, because applicants will."
+        needs="(1) Applications currently land on the Enquiries tab, beside event and lesson enquiries, because shipping them to a tab of their own needed the live workbook provisioned first and the owner chose to publish on 2026-09-14 rather than wait. This is a known compromise, not a finished state: the day `npm run sheet:provision` can be run, move the employment list to its own Applications tab and promote `role` and `availability` to real columns — the four-line recipe is on TABS in lib/leads/config.ts. Worth chasing, because a work history sitting on the tab the front desk reads all shift is the thing this was designed to avoid. Also worth asking who currently has access to that workbook. (2) Ask the owner whether a formal application document is wanted on top of this intake form — work eligibility, an EEO statement, any background question. All of it was deliberately left out: those are legal instruments, some are regulated as to when they may be asked, and none of them should sit in a shared spreadsheet without a lawyer having looked. (3) Also unasked, and all of them owner decisions rather than gaps: whether to publish pay ranges, shift patterns, a minimum age for serving alcohol at Lakeville, or any benefit. The page names no roles on purpose — the owner confirmed on 2026-09-14 there are no specific openings to list, and that The Links employs nobody at Stillwater, which is why this page and its form are Lakeville-only. (4) Nothing here states WHY there are no Stillwater jobs — the venue sits inside Stillwater Bowl & Lounge and the obvious inference is that its staff are employed by the bowling alley, but nobody has confirmed that, so it is not published. Worth asking, because applicants will."
       />
     </section>
 
