@@ -131,15 +131,15 @@ const deepestSaving = Math.max(
 /**
  * The cheapest monthly a GENERAL READER can actually buy.
  *
- * `ageRestricted` now guards the monthly tiers as well as the flex ones, and for
- * the same reason it was invented: Senior / Vet and Junior are both $149, both
- * cheaper than anything an unrestricted adult can join, and a "Monthly from
- * $149" headline computed over every tier is arithmetic that is correct and
- * still misleads. The general entry point is Off-Peak at $199.
+ * `ageRestricted` guards the monthly tiers as well as the flex ones, and for the
+ * same reason it was invented: Junior is $149, cheaper than anything an
+ * unrestricted adult can join, and a "Monthly from $149" headline computed over
+ * every tier is arithmetic that is correct and still misleads. The general entry
+ * point is Off-Peak at $199.
  *
- * (Vet is a service status rather than an age. The field is doing the job it was
- * built for — keeping a headline to prices the reader can act on — so it guards
- * that tier too rather than growing a second flag that means the same thing.)
+ * It used to guard Senior / Vet too, at the same $149. That tier was retired on
+ * 2026-09-16 — it is a discount you ring and ask for now, not a price — so
+ * Junior is the only restricted monthly left.
  */
 const generalMonthly = monthly.filter((m) => !m.data.ageRestricted);
 const cheapestMonthly = Math.min(...generalMonthly.map((m) => m.data.price ?? Infinity));
@@ -334,10 +334,32 @@ const smallPrint = [
                 {tier.data.name}
               </h3>
 
-              <p class="mt-s4 flex items-baseline gap-s3">
-                <span class="scoreboard text-score-xl leading-score text-ink">${tier.data.price}</span>
-                <span class="text-small leading-body text-inkMuted">{tier.data.cadence}</span>
-              </p>
+              {/* ⚠️ A MONTHLY TIER CAN HAVE NO PRICE, and this slot has to hold
+                  that. Written as a bare `${tier.data.price}` it printed
+                  "$undefined" the moment the Seniors / Veterans / First
+                  Responders card arrived, because that tier is a discount you
+                  ask for rather than a published rate.
+
+                  The ask takes the price's place rather than sitting below it:
+                  the eye goes to that slot looking for the number, and finding
+                  the instruction there is the whole point. Do not invent a
+                  figure to fill it — see the note on that tier. */}
+              {tier.data.price ? (
+                <p class="mt-s4 flex items-baseline gap-s3">
+                  <span class="scoreboard text-score-xl leading-score text-ink">${tier.data.price}</span>
+                  <span class="text-small leading-body text-inkMuted">{tier.data.cadence}</span>
+                </p>
+              ) : (
+                <p class="mt-s4 font-display text-card leading-display font-bold tracking-display text-ink">
+                  <a
+                    href="/contact/"
+                    class="underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+                  >
+                    Call or email
+                  </a>
+                  {' for available discounts'}
+                </p>
+              )}
 
               {/* The recommendation is a REASON, not a sticker. */}
               {tier.data.recommended && tier.data.recommendedNote && (
@@ -352,7 +374,7 @@ const smallPrint = [
                   is printed with the price rather than left in the list. */}
               {tier.data.window && <p class="caps-label mt-s3 text-label-sm text-inkMuted">{tier.data.window}</p>}
 
-              <p class="mt-s5 text-body leading-body text-inkBody">{tier.data.forWho}</p>
+              {tier.data.forWho && <p class="mt-s5 text-body leading-body text-inkBody">{tier.data.forWho}</p>}
 
               <ul class="mt-s5 flex-1 border-t-hairline border-navy">
                 {tier.data.includes.map((line) => (
@@ -469,7 +491,7 @@ const smallPrint = [
 
       <StubNote
         class="mt-s6"
-        needs="The poster's 'Save 35%' and 'Save 54%' badges are still not on this page, and now for a smaller reason than before. Against the $60 season rate every bank IS cheaper than walking in - Off-Peak saves 45-51%, Anytime 24-34%, Junior 58-65% - so the badges understate two tiers and roughly match one. Publishing a percentage we cannot reproduce from the two numbers beside it is the thing to avoid; either drop them or replace them with the per-bank figures the gauge already divides."
+        needs="The flyer's 'Save 35%' and 'Save 54%' badges are still not on this page, and the 2026-09-16 prices widen the gap again. Against the $60 season rate the real figures are Off-Peak 45-50%, Anytime 24-38%, Junior 58-65%, so a flat 35% understates two tiers and a flat 54% understates the third. The page divides per bank instead, from the same prices printed beside them."
       />
     </div>
   </section>
