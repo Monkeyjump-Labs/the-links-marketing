@@ -321,25 +321,6 @@ const smallPrint = [
         window that gets you the Saturday slot before anyone else asks for it.
       </p>
 
-      {
-        /* ⚠️ THIS REPLACED A PRICED TIER, it did not get added alongside one.
-          Senior / Vet was a $149 monthly tier here until 2026-09-16, when the
-          owner's flyer dropped it in favour of a discount you ask for — and
-          widened it to active first responders at the same time.
-
-          No figure is published because the flyer gives none. Do not reconstruct
-          the old $149 as "the senior price": it was a different product, and a
-          discount quoted from a retired tier is a number somebody gets told is
-          wrong at the till. */
-      }
-      <p class="mt-s5 max-w-prose-page border-l-slab border-ember pl-s4 text-body leading-body text-inkBody">
-        Senior, veteran or active first responder? There are discounts available — <a
-          href="/contact/"
-          class="font-bold underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
-          >call the venue</a
-        > and ask.
-      </p>
-
       <ul class="mt-s7 grid gap-s6 md:grid-cols-2">
         {
           monthly.map((tier) => (
@@ -353,10 +334,32 @@ const smallPrint = [
                 {tier.data.name}
               </h3>
 
-              <p class="mt-s4 flex items-baseline gap-s3">
-                <span class="scoreboard text-score-xl leading-score text-ink">${tier.data.price}</span>
-                <span class="text-small leading-body text-inkMuted">{tier.data.cadence}</span>
-              </p>
+              {/* ⚠️ A MONTHLY TIER CAN HAVE NO PRICE, and this slot has to hold
+                  that. Written as a bare `${tier.data.price}` it printed
+                  "$undefined" the moment the Seniors / Veterans / First
+                  Responders card arrived, because that tier is a discount you
+                  ask for rather than a published rate.
+
+                  The ask takes the price's place rather than sitting below it:
+                  the eye goes to that slot looking for the number, and finding
+                  the instruction there is the whole point. Do not invent a
+                  figure to fill it — see the note on that tier. */}
+              {tier.data.price ? (
+                <p class="mt-s4 flex items-baseline gap-s3">
+                  <span class="scoreboard text-score-xl leading-score text-ink">${tier.data.price}</span>
+                  <span class="text-small leading-body text-inkMuted">{tier.data.cadence}</span>
+                </p>
+              ) : (
+                <p class="mt-s4 font-display text-card leading-display font-bold tracking-display text-ink">
+                  <a
+                    href="/contact/"
+                    class="underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
+                  >
+                    Call or email
+                  </a>
+                  {' for available discounts'}
+                </p>
+              )}
 
               {/* The recommendation is a REASON, not a sticker. */}
               {tier.data.recommended && tier.data.recommendedNote && (
@@ -371,7 +374,7 @@ const smallPrint = [
                   is printed with the price rather than left in the list. */}
               {tier.data.window && <p class="caps-label mt-s3 text-label-sm text-inkMuted">{tier.data.window}</p>}
 
-              <p class="mt-s5 text-body leading-body text-inkBody">{tier.data.forWho}</p>
+              {tier.data.forWho && <p class="mt-s5 text-body leading-body text-inkBody">{tier.data.forWho}</p>}
 
               <ul class="mt-s5 flex-1 border-t-hairline border-navy">
                 {tier.data.includes.map((line) => (
