@@ -33,13 +33,28 @@
  * you are already on". The footer badge keeps the wordmark, where nothing
  * competes with it.
  *
- * ── ONE BUTTON, TWO STORES ─────────────────────────────────────────────────
+ * ── ONE BUTTON, AND WHERE IT NOW POINTS ────────────────────────────────────
  *
- * The client asked for a single compact Download. It is server-rendered to
- * Apple and rewritten to Google Play for an Android user agent by the inline
- * script below — so it is correct without JS for everyone except Android, and
- * correct with JS for everyone. The footer badge names both stores outright for
- * anyone the sniff gets wrong; that is the fallback, not this.
+ * The client asked for a single compact Download and that has not changed. What
+ * changed on 2026-09-18 is the DEFAULT.
+ *
+ * It used to server-render to APPLE and be rewritten to Google Play for an
+ * Android user agent. That is correct for a phone the sniff recognises and
+ * wrong for everyone else — desktop, an unrecognised UA, JS disabled — and it
+ * failed silently, always toward the same store. The owner found it pointing at
+ * the App Store from a desktop, which is exactly the case the sniff never
+ * covered.
+ *
+ * So the default is now `/app/`, the page that names both stores and lets the
+ * visitor choose. The sniff survives as an OPTIMISATION: a recognised iPhone or
+ * Android goes straight to its store and saves a tap; everyone else, and
+ * everyone without JS, gets the choice. The failure mode inverted — it now
+ * fails toward a page that is right for everybody rather than a store that is
+ * right for some.
+ *
+ * `target="_blank"` is set BY THE SCRIPT, not in the markup, for the same
+ * reason: `/app/` is a page on this site and an internal link opens in place.
+ * The attribute goes on only once the href has been rewritten to a store.
  *
  * ── DISMISSAL ──────────────────────────────────────────────────────────────
  *
@@ -72,11 +87,10 @@ import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_NAME } from '../../lib/ap
     <p class="min-w-0 flex-1 text-label-sm leading-body text-inkBody sm:text-small">{APP_PITCH}</p>
 
     <a
-      href={APP_STORE_URL}
-      target="_blank"
-      rel="noopener"
+      href="/app/"
       class={`${buttonClasses('sm', 'outline')} shrink-0`}
       data-app-store-link
+      data-apple-url={APP_STORE_URL}
       data-play-url={PLAY_STORE_URL}
       data-analytics="app-banner-download"
     >
@@ -107,14 +121,21 @@ import { APP_STORE_URL, PLAY_STORE_URL, APP_PITCH, APP_NAME } from '../../lib/ap
       /* storage blocked — keep the strip, it is not worth an error */
     }
 
-    // Android users get Google Play; everyone else keeps the rendered Apple link.
+    // A recognised phone skips the chooser and goes straight to its own store.
+    // Anything else keeps the rendered /app/ link, which is correct for it.
     try {
-      if (/android/i.test(navigator.userAgent)) {
-        var link = banner.querySelector('[data-app-store-link]');
-        if (link && link.dataset.playUrl) link.href = link.dataset.playUrl;
+      var link = banner.querySelector('[data-app-store-link]');
+      var ua = navigator.userAgent;
+      // iPadOS 13+ reports a desktop Mac UA, so it is identified by touch points.
+      var isApple = /iphone|ipad|ipod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+      var store = /android/i.test(ua) ? link.dataset.playUrl : isApple ? link.dataset.appleUrl : null;
+      if (link && store) {
+        link.href = store;
+        link.target = '_blank';
+        link.rel = 'noopener';
       }
     } catch {
-      /* keep the Apple link */
+      /* keep the /app/ link — the correct destination for everyone */
     }
 
     var dismiss = banner.querySelector('[data-app-dismiss]');
