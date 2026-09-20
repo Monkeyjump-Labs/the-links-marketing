@@ -119,6 +119,10 @@ const ROUTES = [
   // it missing. It carries a lead form, and an unaudited form is precisely the
   // regression this list exists to catch.
   '/careers/',
+  // Added with the page itself (2026-09-18). It is the destination of the app
+  // banner's Download button on every page that renders chrome, so a regression
+  // here is a regression on the whole site's most-rendered control.
+  '/app/',
 ];
 
 /**
