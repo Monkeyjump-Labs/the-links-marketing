@@ -18,13 +18,23 @@
  * shared "check balance" link would answer "no such card" to half the people
  * who used it, and a holder reads that as "my card is void", not "wrong link".
  *
- * ── FOUR GAPS CLOSED, AND ONE CLAIM DELIBERATELY RESTORED (2026-09-20) ─────
+ * ── THIS PAGE CARRIES NO MARKS AT ALL, AND THAT IS FINISHED, NOT UNFINISHED ─
  *
- * This page shipped with four `GapCell`s — denominations, whether it covers
- * food and drink, how it arrives, and whether it works at both venues. The
- * owner answered all four, so all four are published facts now and the marks
- * are gone. The page carries no `GapCell` at all any more; do not read that
- * absence as an oversight and do not re-add one without a question to go in it.
+ * It shipped with four `GapCell`s — denominations, whether it covers food and
+ * drink, how it arrives, and whether it works at both venues — and a `StubNote`
+ * holding three questions for the client. The owner answered every one of them
+ * across 2026-09-20. All seven are published facts now, so every mark is gone
+ * and the `StubNote` with them.
+ *
+ * **Do not read that absence as an oversight.** A page with no gap and no stub
+ * is the goal state, not a page somebody forgot to mark up. Re-add a `GapCell`
+ * only when you have an actual unanswered question to put inside it.
+ *
+ * The three the `StubNote` was holding, for the record: cards do not expire;
+ * they cannot be put toward memberships, hour packages or league entries; and
+ * the Toast vendor is dead — its cards were migrated into Square and still
+ * work, which is now stated on the page because a legacy holder would
+ * otherwise bin a live card.
  *
  * ⚠️ ONE OF THOSE ANSWERS REVERSES A STANDING INSTRUCTION. The old site claimed
  * a card covered food and drink; the build could find no source for it, marked
@@ -33,13 +43,14 @@
  * 2026-09-20. The claim is back on purpose and that instruction is discharged.
  * This is written down so nobody finds the old note and strips it out again.
  *
- * ⚠️ Two gift-card vendors were in circulation on the old site — Square on the
- * live pages, Toast on an orphaned old homepage. Square is the one wired up in
- * globalData.external and the one used here. Confirm Toast is dead before launch.
+ * Two gift-card vendors were once in circulation — Square on the live pages,
+ * Toast on an orphaned old homepage. **That is now settled: Toast is dead and
+ * its balances were migrated into Square** (owner, 2026-09-20). Square is the
+ * only vendor this page points at. The earlier "confirm Toast is dead before
+ * launch" task is done; do not re-open it.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
-import StubNote from '../components/venue/StubNote.astro';
 import { globalData } from '../data/global';
 
 const metadata = {
@@ -84,6 +95,10 @@ const theDetails = [
   [
     'A card in hand, or an email',
     'Come in and buy a traditional card if you want something to hand over, or have it sent by email — which is the one that still works on 23 December.',
+  ],
+  [
+    'It never expires',
+    'There is no expiry date. A card found in a drawer three years from now is still good for what was put on it.',
   ],
 ];
 
@@ -161,10 +176,10 @@ const whyItWorks = [
       }
     </div>
 
-    {/* 3. What a card actually is — the four questions that used to be gaps. */}
+    {/* 3. What a card actually is — every question that used to be a gap. */}
     <section class="mt-section">
       <h2 class="text-3xl font-bold">What you get</h2>
-      <dl class="mt-8 grid gap-8 md:grid-cols-3">
+      <dl class="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {
           theDetails.map(([title, body]) => (
             <div>
@@ -174,14 +189,32 @@ const whyItWorks = [
           ))
         }
       </dl>
-      <p class="mt-8 max-w-prose-page text-inkMuted">
+
+      {
+        /* The exclusion sits directly under the claims it qualifies. Someone
+         buying a card to cover a winter league entry is a real and specific
+         disappointment, and leagues are the highest-value thing on this site —
+         so it is stated, not left to the till. */
+      }
+      <p class="mt-10 max-w-prose-page text-inkMuted">
+        <strong class="font-semibold text-ink">What a card will not cover:</strong> memberships, hour packages and league
+        entries are bought separately and cannot be paid for with a gift card. It is for bay time, food and drink.
+      </p>
+
+      {
+        /* Legacy holders. Toast was the vendor before Square and its cards are
+         still in drawers; the balances came across, so saying nothing here is
+         how somebody throws away a live card. */
+      }
+      <p class="mt-6 max-w-prose-page text-inkMuted">
+        <strong class="font-semibold text-ink">Got an older card?</strong> Cards bought before we moved to Square came across
+        with their balances and still work. If yours will not scan, call the venue and they will sort it out.
+      </p>
+
+      <p class="mt-6 max-w-prose-page text-inkMuted">
         Anything else — or if you would rather buy one over the phone — either venue will sort it out. The numbers are
         on the <a href="/contact/" class="font-semibold underline">contact page</a>.
       </p>
-      <StubNote
-        class="mt-6"
-        needs="Still to confirm with the client: whether cards carry an expiry, and whether one can be put toward a membership or an hour package rather than spent at the till. Also still open — confirm the Toast vendor on the orphaned old homepage is dead, since Square is the only vendor this page points at. NOTE FOR ANYONE EDITING: the food-and-drink claim on this page is sourced (owner, 2026-09-20, for both venues) and the earlier 'do not put this claim back without a source' instruction is discharged. Do not strip it out again."
-      />
     </section>
 
     {/* 4. Written for the buyer, who often does not play golf. */}
