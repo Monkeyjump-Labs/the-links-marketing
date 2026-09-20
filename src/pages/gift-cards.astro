@@ -5,44 +5,87 @@
  * (playbook-sim-venue.md §1). So the copy is written for someone buying for a
  * golfer, not for a golfer.
  *
- * Two things this page must do that the current site does not: put "check a
- * balance" on the same page as "buy", and say whether one card works at both
- * venues. The second is unknown, so it is marked.
+ * ── THE CARD IS TIED TO THE VENUE, AND THAT RESTRUCTURED THIS PAGE ─────────
  *
- * ⚠️ Two gift-card vendors are in circulation on the current site — Square on the
+ * Owner, 2026-09-20: the two venues run SEPARATE Square accounts and a card is
+ * only good where it was bought. That is not a detail — it is the first
+ * decision the buyer makes, and it cannot be undone once they have paid. So
+ * the venue choice comes BEFORE the buy button rather than after it, and the
+ * restriction is stated above both, in plain words, where it will not be
+ * missed by someone scanning for the orange button.
+ *
+ * This is also why `global.ts` carries four gift-card URLs instead of two. A
+ * shared "check balance" link would answer "no such card" to half the people
+ * who used it, and a holder reads that as "my card is void", not "wrong link".
+ *
+ * ── FOUR GAPS CLOSED, AND ONE CLAIM DELIBERATELY RESTORED (2026-09-20) ─────
+ *
+ * This page shipped with four `GapCell`s — denominations, whether it covers
+ * food and drink, how it arrives, and whether it works at both venues. The
+ * owner answered all four, so all four are published facts now and the marks
+ * are gone. The page carries no `GapCell` at all any more; do not read that
+ * absence as an oversight and do not re-add one without a question to go in it.
+ *
+ * ⚠️ ONE OF THOSE ANSWERS REVERSES A STANDING INSTRUCTION. The old site claimed
+ * a card covered food and drink; the build could find no source for it, marked
+ * it as a gap, and left a note reading "Do not put the claim back without a
+ * source." The source arrived — the owner, directly, for both venues, on
+ * 2026-09-20. The claim is back on purpose and that instruction is discharged.
+ * This is written down so nobody finds the old note and strips it out again.
+ *
+ * ⚠️ Two gift-card vendors were in circulation on the old site — Square on the
  * live pages, Toast on an orphaned old homepage. Square is the one wired up in
  * globalData.external and the one used here. Confirm Toast is dead before launch.
- *
- * ── "THE DETAILS" IS A GAP TABLE NOW, NOT A STUB (FW-4013) ─────────────────
- *
- * This section used to open "STUB — what a buyer needs before they will click,
- * and none of it is published today", followed by a bulleted brief addressed to
- * us. It rendered in production, under the heading "The details", to the exact
- * person it was describing.
- *
- * Every bullet in it was a QUESTION THE BUYER IS ASKING — what amounts, does it
- * cover food, how fast does it arrive, does it work at the other venue. Those
- * are the gap system's first mark, not a stub: they are customer-facing on
- * purpose, they are typeset like a published answer would be, and they say
- * plainly that we do not have the answer rather than pretending the question was
- * never asked. Somebody about to spend money in December is better served by
- * four marked absences and a phone number than by a confident silence.
- *
- * What is genuinely OURS — expiry, whether a card pays for a membership or a
- * hour-package block, physical cards, killing the Toast vendor — went to a
- * `StubNote` and shows on staging only.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookButton from '../components/venue/BookButton.astro';
-import GapCell from '../components/venue/GapCell.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import { globalData } from '../data/global';
 
 const metadata = {
   metaTitle: 'Golf Gift Cards — The Links, Lakeville & Stillwater',
   metaDescription:
-    'Buy a The Links gift card online for indoor golf in Lakeville or Stillwater, MN — or check a balance in a couple of clicks.',
+    'Buy a The Links gift card online for indoor golf in Lakeville or Stillwater, MN. Any amount from $5 to $1,000, good for bay time, food and drink.',
 };
+
+/**
+ * One array, two venues. Written once so the pair cannot drift — the moment
+ * these are two hand-written blocks, one venue gets a correction the other does
+ * not, and a wrong Square token on this page takes real money to the wrong
+ * account.
+ *
+ * Each venue's two URLs share a token BY CONSTRUCTION. See the note in
+ * `global.ts`: if they ever differ, that is a typo, not a quirk of Square.
+ */
+const venues = [
+  {
+    name: 'The Links of Lakeville',
+    short: 'Lakeville',
+    buy: globalData.external.giftCardBuyLakeville,
+    balance: globalData.external.giftCardBalanceLakeville,
+    slug: 'lakeville',
+  },
+  {
+    name: 'The Links of Stillwater',
+    short: 'Stillwater',
+    buy: globalData.external.giftCardBuyStillwater,
+    balance: globalData.external.giftCardBalanceStillwater,
+    slug: 'stillwater',
+  },
+];
+
+/** What a card is and does. All verified with the owner, 2026-09-20. */
+const theDetails = [
+  ['Any amount from $5 to $1,000', 'You choose the figure at checkout rather than picking from a fixed set.'],
+  [
+    'Bay time, food or drink',
+    'It is not restricted to golf. A card can cover a meal and a round of drinks as easily as an hour in a bay.',
+  ],
+  [
+    'A card in hand, or an email',
+    'Come in and buy a traditional card if you want something to hand over, or have it sent by email — which is the one that still works on 23 December.',
+  ],
+];
 
 /** Why this is a good present, written for the non-golfer buying it. */
 const whyItWorks = [
@@ -65,47 +108,83 @@ const whyItWorks = [
   <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
     <h1 class="text-4xl font-bold lg:text-5xl">Gift cards</h1>
     <p class="mt-4 max-w-2xl text-lg text-inkMuted">
-      An hour in a bay, bought online in a couple of clicks. They pick the night.
+      An hour in a bay, a meal, a round of drinks — any amount from $5 to $1,000. They pick the night.
     </p>
 
-    {/* 1. Buy and check balance, together, at the top. */}
-    <div class="mt-10 grid gap-6 md:grid-cols-2">
-      <div class="rounded border-2 border-primary p-6">
-        <h2 class="text-2xl font-bold">Buy a gift card</h2>
-        <p class="mt-3 text-inkMuted">
-          Gift cards are sold through Square. Choose an amount and pay; Square handles the rest.
-        </p>
-        <a
-          href={globalData.external.giftCardBuy}
-          class="mt-6 inline-block rounded bg-primary px-6 py-3 font-semibold text-surface transition hover:opacity-90"
-          target="_blank"
-          rel="noopener"
-          data-analytics="giftcard:buy"
-        >
-          Buy a gift card <span aria-hidden="true">→</span>
-          <span class="sr-only">(opens our gift card page in a new tab)</span>
-        </a>
-      </div>
-
-      <div class="rounded border-2 border-ink/15 p-6">
-        <h2 class="text-2xl font-bold">Check a balance</h2>
-        <p class="mt-3 text-inkMuted">
-          Been sitting in a wallet since last Christmas? Enter the number and it will tell you what is left on it.
-        </p>
-        <a
-          href={globalData.external.giftCardBalance}
-          class="mt-6 inline-block rounded border-2 border-current px-6 py-3 font-semibold text-ink transition hover:bg-ink hover:text-surface"
-          target="_blank"
-          rel="noopener"
-          data-analytics="giftcard:balance"
-        >
-          Check my balance <span aria-hidden="true">→</span>
-          <span class="sr-only">(opens our gift card balance page in a new tab)</span>
-        </a>
-      </div>
+    {
+      /* 1. THE RESTRICTION, ABOVE THE BUTTONS. It decides which button the buyer
+       presses and it cannot be undone after payment, so it does not belong in a
+       footnote underneath them. */
+    }
+    <div class="mt-8 border-hairline border-ink/15 bg-surface p-cell">
+      <p class="caps-label text-label-sm text-inkMuted">Choose the location first</p>
+      <p class="mt-s3 max-w-prose-page text-body leading-body text-ink">
+        <strong class="font-semibold">A gift card only works at the location it was bought from.</strong> Lakeville and Stillwater
+        run separate accounts, so a Lakeville card cannot be spent at Stillwater, or the other way round. If you are not certain
+        which one they go to, it is worth asking before you buy.
+      </p>
     </div>
 
-    {/* 2. Written for the buyer, who often does not play golf. */}
+    {/* 2. Buy and check a balance, per venue, together. */}
+    <div id="buy" class="mt-10 grid gap-6 md:grid-cols-2">
+      {
+        venues.map((venue) => (
+          <div class="flex flex-col border-hairline border-ink/15 bg-paper p-cell">
+            <h2 class="text-2xl font-bold">{venue.name}</h2>
+            <p class="mt-s3 flex-1 text-inkMuted">
+              Sold through Square. Choose an amount and pay; Square handles the rest.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-4">
+              <a
+                href={venue.buy}
+                class="inline-block rounded bg-primary px-6 py-3 font-semibold text-surface transition hover:opacity-90"
+                target="_blank"
+                rel="noopener"
+                data-analytics={'giftcard:buy-' + venue.slug}
+              >
+                Buy a gift card <span aria-hidden="true">→</span>
+                <span class="sr-only">for {venue.name} (opens Square in a new tab)</span>
+              </a>
+              <a
+                href={venue.balance}
+                class="inline-block rounded border-2 border-current px-6 py-3 font-semibold text-ink transition hover:bg-ink hover:text-surface"
+                target="_blank"
+                rel="noopener"
+                data-analytics={'giftcard:balance-' + venue.slug}
+              >
+                Check a balance
+                <span class="sr-only">for a {venue.short} gift card (opens Square in a new tab)</span>
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    {/* 3. What a card actually is — the four questions that used to be gaps. */}
+    <section class="mt-section">
+      <h2 class="text-3xl font-bold">What you get</h2>
+      <dl class="mt-8 grid gap-8 md:grid-cols-3">
+        {
+          theDetails.map(([title, body]) => (
+            <div>
+              <dt class="text-lg font-semibold">{title}</dt>
+              <dd class="mt-2 text-inkMuted">{body}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-8 max-w-prose-page text-inkMuted">
+        Anything else — or if you would rather buy one over the phone — either venue will sort it out. The numbers are
+        on the <a href="/contact/" class="font-semibold underline">contact page</a>.
+      </p>
+      <StubNote
+        class="mt-6"
+        needs="Still to confirm with the client: whether cards carry an expiry, and whether one can be put toward a membership or an hour package rather than spent at the till. Also still open — confirm the Toast vendor on the orphaned old homepage is dead, since Square is the only vendor this page points at. NOTE FOR ANYONE EDITING: the food-and-drink claim on this page is sourced (owner, 2026-09-20, for both venues) and the earlier 'do not put this claim back without a source' instruction is discharged. Do not strip it out again."
+      />
+    </section>
+
+    {/* 4. Written for the buyer, who often does not play golf. */}
     <section class="mt-section">
       <h2 class="text-3xl font-bold">Buying for a golfer, and you are not one</h2>
       <dl class="mt-8 grid gap-8 md:grid-cols-3">
@@ -120,48 +199,8 @@ const whyItWorks = [
       </dl>
     </section>
 
-    {/* 3. The questions a gift-card buyer asks that nobody answers. */}
-    <section class="mt-section">
-      <h2 class="text-3xl font-bold">The details</h2>
-      <p class="mt-3 max-w-prose-page text-inkMuted">
-        Four questions a buyer reasonably asks that the venue does not publish answers to. We are not going to guess at
-        any of them with your money on the line, so here they are, marked. Either venue will answer them on the phone —
-        the numbers are on the <a href="/contact/" class="font-semibold underline">contact page</a>.
-      </p>
-      <div class="mt-6 grid gap-6 sm:grid-cols-2">
-        <GapCell
-          label="Denominations"
-          state="notSet"
-          size="name"
-          reason="Whether you choose the amount or pick from a fixed set, and whether there is a minimum, is not published anywhere the venue controls."
-        />
-        <GapCell
-          label="Food and drink, or bay time only"
-          state="notSet"
-          size="name"
-          reason="Nothing the venue publishes says either way, and it is the first thing the person opening it will try to do with it. Worth a phone call before you buy if a meal is part of the present."
-        />
-        <GapCell
-          label="How it arrives"
-          state="notSet"
-          size="name"
-          reason="Whether the card comes by email, how quickly, and whether it can be used the same day is not published — which is the whole question if you are buying on 23 December."
-        />
-        <GapCell
-          label="Works at both venues"
-          state="notSet"
-          size="name"
-          reason="Lakeville and Stillwater run separate booking accounts, and whether one card is good at both has never been stated. If the golfer is a Stillwater one, ask us first."
-        />
-      </div>
-      <StubNote
-        class="mt-6"
-        needs="Also to confirm, and none of it is a buyer's question: expiry (if any), whether a card can be used against a membership or an hour package, whether physical cards exist for someone who wants something to hand over, and confirmation that the Toast vendor on the orphaned old homepage is dead. Note that this page used to claim a card covered food and drink as well as bay time; nothing the venue publishes supports that, so it is now marked as a gap. Do not put the claim back without a source."
-      />
-    </section>
-
     {
-      /* 4. Seasonality. The featured-offer slot leans on this in Nov–Dec
+      /* 5. Seasonality. The featured-offer slot leans on this in Nov–Dec
        (strategy.md §5) — this section is the landing point for it. */
     }
     <section class="mt-section rounded bg-surface p-8">
@@ -185,18 +224,9 @@ const whyItWorks = [
         A bay is priced by the hour, not the head. Book one and take them with you — cheaper than most presents and you
         get to come too.
       </p>
-      <div class="mt-6 flex flex-wrap gap-4">
-        <a
-          href={globalData.external.giftCardBuy}
-          class="inline-block rounded bg-primary px-8 py-4 text-lg font-semibold text-surface transition hover:opacity-90"
-          target="_blank"
-          rel="noopener"
-          data-analytics="giftcard:buy-footer"
-        >
-          Buy a gift card <span aria-hidden="true">→</span>
-          <span class="sr-only">(opens our gift card page in a new tab)</span>
-        </a>
-        <BookButton size="lg" variant="outline" />
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <BookButton size="lg" />
+        <a href="#buy" class="font-semibold underline">Back to the gift cards</a>
       </div>
     </section>
   </section>

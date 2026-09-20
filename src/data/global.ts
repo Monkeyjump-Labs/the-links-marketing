@@ -98,8 +98,24 @@ export const globalData = {
 
   /** Third-party surfaces we hand off to. Booking stays on Whoosh (decision #5). */
   external: {
-    giftCardBuy: 'https://app.squareup.com/gift/MLYARTM9VAGFK/order',
-    giftCardBalance: 'https://app.squareup.com/gift/MLYARTM9VAGFK/check-balance',
+    /**
+     * Gift cards are PER VENUE and the balance does not cross between them
+     * (owner, 2026-09-20). Each venue is a separate Square account, so a
+     * Lakeville card checked against Stillwater's balance endpoint comes back
+     * as not found — which reads to the holder as "your card is void" rather
+     * than "wrong link". That is the whole reason these are four keys and not
+     * two: a single shared pair cannot be right for both venues.
+     *
+     * The buy and check-balance URLs for ONE venue always share a token.
+     * If you are adding or replacing a venue and the two tokens differ, that
+     * is the error — not a quirk of Square. (Reported that way once and it was
+     * a typo; `MLYARTM9VAGFK` is Lakeville throughout, `ML2KBKNGRDBWG` is
+     * Stillwater throughout.)
+     */
+    giftCardBuyLakeville: 'https://app.squareup.com/gift/MLYARTM9VAGFK/order',
+    giftCardBalanceLakeville: 'https://app.squareup.com/gift/MLYARTM9VAGFK/check-balance',
+    giftCardBuyStillwater: 'https://app.squareup.com/gift/ML2KBKNGRDBWG/order',
+    giftCardBalanceStillwater: 'https://app.squareup.com/gift/ML2KBKNGRDBWG/check-balance',
     leaguesLakeville: 'https://ply.golf/venue/lakeville-links/leagues',
     membershipsLakeville: 'https://app.whoosh.io/patron/club/the-links-indoor-golf/store/packages',
     membershipsStillwater: 'https://app.whoosh.io/patron/club/linksstillwater/store/packages',
