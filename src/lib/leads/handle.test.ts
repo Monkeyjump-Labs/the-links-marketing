@@ -151,6 +151,24 @@ describe('handleLead — validation', () => {
     expect(sheet.rows[0].consent).toContain('One email when registration opens');
   });
 
+  // The consent promise belongs on the workbook row, not in the notification.
+  // Quoted into the email it read as a fragment addressed to nobody and the
+  // venue reported it as stray text. The row keeps the record; the email says
+  // which form was used, which is what the reader actually needs.
+  it('the notification names the form and does not quote the consent promise', async () => {
+    const sheet = okSheet();
+    const notifier = okNotifier();
+    await handleLead(
+      { fields: { ...base(), list: 'league-general' }, now: NOW },
+      { sheet, notifier, formSecret: SECRET },
+    );
+    const { text } = notifier.send.mock.calls[0][0];
+    expect(text).not.toContain('They were shown');
+    expect(text).not.toContain(LEAD_LISTS['league-general'].consent);
+    expect(text).toContain(`Form: ${LEAD_LISTS['league-general'].label}`);
+    expect(sheet.rows[0].consent).toContain('One email when registration opens');
+  });
+
   it('stores who a lesson is for — the field that enquiry actually turns on', async () => {
     // `lessonFor` decides which coach the notification gets forwarded to. Drop
     // it from the allowlist and the form still looks like it works, while every

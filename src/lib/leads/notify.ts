@@ -69,18 +69,18 @@ const BODY_FIELDS: [key: string, label: string][] = [
  */
 export function formatNotification(
   list: LeadList,
-  listKey: string,
   data: Record<string, string>,
   pageUrl?: string,
 ): { subject: string; text: string } {
   const who = data.name || data.email || 'someone';
   const lines = BODY_FIELDS.filter(([k]) => data[k]).map(([k, label]) => `${label}: ${data[k]}`);
 
-  if (list.consent) {
-    lines.push('', `They were shown: "${list.consent}"`);
-  }
+  // The consent promise is deliberately NOT repeated here. It is written onto
+  // every row of the workbook (`handle.ts`), which is where it belongs as a
+  // record — in the notification it read as a stray fragment addressed to
+  // nobody, and the venue reported it as such. Removing it loses no record.
   if (pageUrl) lines.push('', `Submitted from: ${pageUrl}`);
-  lines.push('', `List: ${listKey}`, 'This is recorded in the submissions spreadsheet.');
+  lines.push('', `Form: ${list.label}`, 'This is recorded in the submissions spreadsheet.');
 
   return {
     subject: `${list.label} — ${who}`,
