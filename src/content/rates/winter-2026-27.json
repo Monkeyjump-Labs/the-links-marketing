@@ -3,7 +3,7 @@
   "order": 2,
   "effectiveFrom": "Oct 4th, 2026",
   "current": false,
-  "note": "These are the rates from October 4th, when the current season ends, at both venues. Memberships and hour packages are measured against these rates, not the summer rate above.",
+  "note": "These are the rates from October 4th, when the current season ends, at both venues.",
   "rows": [
     {
       "label": "Bay rental — off-peak",
