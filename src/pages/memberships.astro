@@ -81,23 +81,33 @@ import { buttonClasses } from '../lib/buttons';
 import { globalData } from '../data/global';
 
 /**
- * The walk-up rate every package on this page is measured against.
+ * The walk-up rates every package on this page is measured against.
  *
- * ⚠️ $60 IS THE RATE FROM 4 OCTOBER, NOT THE RATE TODAY. The owner set it
- * (2026-09-10) in answer to what the season rate would be; the season card in
- * `rates/` carries the same number and the same start date, so the two cannot
- * drift. Until 4 October a walk-in still pays the $35 on the current card.
+ * ⚠️ THESE ARE THE RATES FROM 4 OCTOBER, NOT THE RATE TODAY. The owner set the
+ * 2026/27 season at $60 (2026-09-10), then split it into peak $60 and off-peak
+ * $45 (2026-10-01); the season card in `rates/` carries the same numbers and the
+ * same start date. Until 4 October a walk-in still pays the $35 on the current card.
  *
  * That gap is stated on the page rather than papered over. Every membership and
  * package here is a SEASON product — the early-bird band sells them before the
  * season starts — so measuring them against the rate that will be in force when
  * they are used is the honest comparison, and measuring them against a rate that
- * expires in three weeks is not. Both numbers appear, with their dates.
+ * expires in days is not. Both numbers appear, with their dates.
  *
- * Change this and you must change `rates/winter-2026-27.json` in the same
+ * WHICH RATE A TIER IS MEASURED AGAINST follows when its hours can be spent.
+ * Off-Peak and Junior hours can only be used in off-peak windows, so a walk-in
+ * at those times pays $45 — measuring them against $60 would overstate the
+ * saving by about half. Anytime hours can be spent at peak, so they are
+ * measured against $60. A tier this does not name defaults to the LOWER rate:
+ * understating a saving is recoverable, overstating one is not.
+ *
+ * Change these and you must change `rates/winter-2026-27.json` in the same
  * commit, or the site quotes two different hourly rates for the same season.
  */
-const WALK_UP = 60;
+const PEAK = 60;
+const OFF_PEAK = 45;
+const WALK_UP = OFF_PEAK;
+const walkUpFor = (m: { data: { name: string } }) => (m.data.name === 'Anytime' ? PEAK : OFF_PEAK);
 
 /**
  * The early-bird deadline, as one date in one place. ISO so the inline
@@ -125,9 +135,14 @@ const flex = all.filter((m) => m.data.kind === 'flex');
  */
 const generalFlex = flex.filter((f) => !f.data.ageRestricted);
 const cheapestBank = Math.min(...generalFlex.flatMap((f) => f.data.banks.map((b) => b.price)));
-const deepestSaving = Math.max(
-  ...generalFlex.flatMap((f) => f.data.banks.map((b) => Math.round(((WALK_UP - b.price / b.hours) / WALK_UP) * 100))),
+const savings = generalFlex.flatMap((f) =>
+  f.data.banks.map((b) => ({
+    tier: f.data.name,
+    pct: Math.round(((walkUpFor(f) - b.price / b.hours) / walkUpFor(f)) * 100),
+  })),
 );
+const deepest = savings.reduce((best, s) => (s.pct > best.pct ? s : best), savings[0]);
+const deepestSaving = deepest.pct;
 /**
  * The cheapest monthly a GENERAL READER can actually buy.
  *
@@ -234,7 +249,7 @@ const smallPrint = [
         cells={[
           { label: 'Monthly from', value: `$${cheapestMonthly}`, qualifier: 'a month, per location' },
           { label: 'Hour packages from', value: `$${cheapestBank}`, qualifier: 'for a 12-hour bank, per location' },
-          { label: 'Save up to', value: `${deepestSaving}%`, qualifier: 'on the largest off-peak bank' },
+          { label: 'Save up to', value: `${deepestSaving}%`, qualifier: `on the largest ${deepest.tier} bank` },
           { label: 'Season', value: '2026/27', qualifier: 'the prices on this page' },
         ]}
       />
@@ -459,6 +474,7 @@ const smallPrint = [
           recommended: f.data.recommended,
           recommendedNote: f.data.recommendedNote,
           banks: f.data.banks,
+          walkUp: walkUpFor(f),
         }))}
       />
 
@@ -491,7 +507,7 @@ const smallPrint = [
 
       <StubNote
         class="mt-s6"
-        needs="The flyer's 'Save 35%' and 'Save 54%' badges are still not on this page, and the 2026-09-16 prices widen the gap again. Against the $60 season rate the real figures are Off-Peak 45-50%, Anytime 24-38%, Junior 58-65%, so a flat 35% understates two tiers and a flat 54% understates the third. The page divides per bank instead, from the same prices printed beside them."
+        needs="The flyer's 'Save 35%' and 'Save 54%' badges are still not on this page, and the 2026-09-16 prices widen the gap again. Against the 2026/27 rates (off-peak $45 for Off-Peak and Junior, peak $60 for Anytime) the real figures are Off-Peak 26-33%, Anytime 24-38%, Junior 45-54%, so a flat 35% overstates Off-Peak and a flat 54% only matches Junior's largest bank. The page divides per bank instead, from the same prices printed beside them."
       />
     </div>
   </section>
