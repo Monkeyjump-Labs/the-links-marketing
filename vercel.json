@@ -7,142 +7,142 @@
   "cleanUrls": true,
   "redirects": [
     {
-      "source": "/home",
+      "source": "/home{/}?",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/home-2",
+      "source": "/home-2{/}?",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/home-old",
+      "source": "/home-old{/}?",
       "destination": "/",
       "permanent": true
     },
     {
-      "source": "/our-story",
+      "source": "/our-story{/}?",
       "destination": "/about/",
       "permanent": true
     },
     {
-      "source": "/specials",
+      "source": "/specials{/}?",
       "destination": "/rates/",
       "permanent": true
     },
     {
-      "source": "/farewaygolf/lakeville-links-memberships",
+      "source": "/farewaygolf/lakeville-links-memberships{/}?",
       "destination": "/memberships/",
       "permanent": true
     },
     {
-      "source": "/leagues-contests",
+      "source": "/leagues-contests{/}?",
       "destination": "/leagues/",
       "permanent": true
     },
     {
-      "source": "/juniorleagues",
+      "source": "/juniorleagues{/}?",
       "destination": "/juniors/",
       "permanent": true
     },
     {
-      "source": "/groups",
+      "source": "/groups{/}?",
       "destination": "/events/",
       "permanent": true
     },
     {
-      "source": "/instruction",
+      "source": "/instruction{/}?",
       "destination": "/lessons/",
       "permanent": true
     },
     {
-      "source": "/stillwater",
+      "source": "/stillwater{/}?",
       "destination": "/locations/stillwater/",
       "permanent": true
     },
     {
-      "source": "/booking",
+      "source": "/booking{/}?",
       "destination": "/book/?venue=lakeville",
       "permanent": true
     },
     {
-      "source": "/bookingstillwater",
+      "source": "/bookingstillwater{/}?",
       "destination": "/book/?venue=stillwater",
       "permanent": true
     },
     {
-      "source": "/bookinglanding",
+      "source": "/bookinglanding{/}?",
       "destination": "/book/",
       "permanent": true
     },
     {
-      "source": "/booking-scheduler",
+      "source": "/booking-scheduler{/}?",
       "destination": "/book/",
       "permanent": true
     },
     {
-      "source": "/simulator-settings",
+      "source": "/simulator-settings{/}?",
       "destination": "/simulators/",
       "permanent": true
     },
     {
-      "source": "/photo-gallery",
+      "source": "/photo-gallery{/}?",
       "destination": "/about/",
       "permanent": true
     },
     {
-      "source": "/advertisinglogos",
+      "source": "/advertisinglogos{/}?",
       "destination": "/about/#sponsors",
       "permanent": true
     },
     {
-      "source": "/align-logo",
+      "source": "/align-logo{/}?",
       "destination": "/about/#sponsors",
       "permanent": true
     },
     {
-      "source": "/feedback",
+      "source": "/feedback{/}?",
       "destination": "/contact/",
       "permanent": true
     },
     {
-      "source": "/sms-opt-in-form",
+      "source": "/sms-opt-in-form{/}?",
       "destination": "/contact/#sms",
       "permanent": true
     },
     {
-      "source": "/sms-opt-in-form-1",
+      "source": "/sms-opt-in-form-1{/}?",
       "destination": "/contact/#sms",
       "permanent": true
     },
     {
-      "source": "/linksflex-terms-conditions",
+      "source": "/linksflex-terms-conditions{/}?",
       "destination": "/policy/",
       "permanent": true
     },
     {
-      "source": "/membership-packages-terms-conditions-copy",
+      "source": "/membership-packages-terms-conditions-copy{/}?",
       "destination": "/policy/",
       "permanent": true
     },
     {
-      "source": "/news",
+      "source": "/news{/}?",
       "destination": "/about/#press",
       "permanent": true
     },
     {
-      "source": "/news/indoor-golf-leagues-stay-active-and-social-with-high-tech-simulators-all-winter-long",
+      "source": "/news/indoor-golf-leagues-stay-active-and-social-with-high-tech-simulators-all-winter-long{/}?",
       "destination": "/leagues/",
       "permanent": true
     },
     {
-      "source": "/news/first-look-at-lakeville-indoor-golf",
+      "source": "/news/first-look-at-lakeville-indoor-golf{/}?",
       "destination": "/about/#press",
       "permanent": true
     },
     {
-      "source": "/news/sneak-peak-pre-opening-look-inside-lakeville-links-by-twincitiesgolfcom",
+      "source": "/news/sneak-peak-pre-opening-look-inside-lakeville-links-by-twincitiesgolfcom{/}?",
       "destination": "/about/#press",
       "permanent": true
     }

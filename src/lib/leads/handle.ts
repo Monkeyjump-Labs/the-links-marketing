@@ -142,7 +142,7 @@ export async function handleLead(input: LeadInput, deps: LeadDeps): Promise<Lead
   // Past this point the lead is durable, so nothing here can fail the request.
   if (deps.notifier) {
     try {
-      const { subject, text } = formatNotification(list, listKey, fields, pageUrl);
+      const { subject, text } = formatNotification(list, fields, pageUrl);
       await deps.notifier.send({ to: list.notify, subject, text, replyTo: email });
     } catch (err) {
       log('error', `lead: notification failed for list "${listKey}" (lead IS saved): ${(err as Error).message}`);
