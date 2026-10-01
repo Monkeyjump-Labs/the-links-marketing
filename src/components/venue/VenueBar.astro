@@ -23,10 +23,15 @@ import { getVenues, venuePath, orderedHours, formatTime, type Day } from '../../
 const venues = await getVenues();
 const currentPath = Astro.url.pathname;
 
-const DAY_INDEX: Day[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as Day[];
-const buildDay = DAY_INDEX[new Date().getDay()];
+/**
+ * The day is the VENUE'S day, not the server's or the visitor's. The build runs
+ * in UTC, so `new Date().getDay()` labelled Thursday evenings in Minnesota as
+ * Friday. Both venues are in Minnesota, so Central time decides "today".
+ */
+const VENUE_TZ = 'America/Chicago';
+const buildDay = new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: VENUE_TZ }).format(new Date()) as Day;
 
-/** Every day, so the client script can relabel to the visitor's real day. */
+/** Every day, so the client script can relabel to the venue's real day. */
 const hoursFor = (venue: (typeof venues)[number]) =>
   Object.fromEntries(
     orderedHours(venue).map((r) => [r.day, r.closed ? 'Closed' : `${formatTime(r.opens)}–${formatTime(r.closes)}`]),
@@ -73,9 +78,16 @@ const AREA: Record<string, string> = {
             <span class="hidden text-label tracking-label-wide text-slate uppercase md:inline">
               {AREA[venue.data.slug]}
             </span>
-            <span class="text-label tracking-label-wide text-slate uppercase" data-venue-hours>
-              <span class="sr-only">Hours today, {buildDay}: </span>
-              {map[buildDay]}
+            {/*
+              The static HTML names the build day ("Thu"), which is always true of
+              the hours beside it. The script below swaps it for "Today" and the
+              real day's hours once the page loads, so a stale build never claims
+              Thursday's hours are today's.
+            */}
+            <span class="text-label tracking-label-wide text-slate uppercase">
+              <span class="sr-only">Hours </span>
+              <span data-venue-day>{buildDay}</span>
+              <span class="sr-only">:</span> <span data-venue-hours>{map[buildDay]}</span>
             </span>
             {here ? (
               <span class="text-label tracking-label-wide text-amber uppercase">You are here</span>
@@ -92,18 +104,25 @@ const AREA: Record<string, string> = {
 </div>
 
 <script>
-  // The server renders the BUILD day. Relabel to the visitor's real day.
-  // Enhancement only — the links and the rendered hours are already correct for
-  // the day shown, and nothing here changes what page you are on.
+  // The server renders the BUILD day by name. Swap in today's hours, labelled
+  // "Today". "Today" means today at the venue (Central time), not in the
+  // visitor's own time zone. Enhancement only: without this script the bar still
+  // shows a named day and that day's hours, which is never wrong.
   const bar = document.querySelector('[data-venue-bar]');
   if (bar) {
-    const today = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date().getDay()];
+    const today = new Intl.DateTimeFormat('en-US', { weekday: 'short', timeZone: 'America/Chicago' }).format(
+      new Date(),
+    );
     bar.querySelectorAll('[data-venue-link]').forEach((node) => {
       const link = node as HTMLElement;
-      const label = link.querySelector('[data-venue-hours]');
+      const day = link.querySelector('[data-venue-day]');
+      const hours = link.querySelector('[data-venue-hours]');
       try {
         const map = JSON.parse(link.dataset.hours ?? '{}') as Record<string, string>;
-        if (label && map[today]) label.textContent = map[today];
+        if (day && hours && map[today]) {
+          day.textContent = 'Today';
+          hours.textContent = map[today];
+        }
       } catch {
         /* keep the server-rendered day */
       }
