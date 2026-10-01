@@ -35,47 +35,47 @@
     {
       "day": "Mon",
       "opens": "12:00",
-      "closes": "21:00",
+      "closes": "23:00",
       "closed": false
     },
     {
       "day": "Tue",
-      "opens": "15:00",
-      "closes": "21:00",
+      "opens": "12:00",
+      "closes": "23:00",
       "closed": false
     },
     {
       "day": "Wed",
-      "opens": "15:00",
-      "closes": "21:00",
+      "opens": "12:00",
+      "closes": "23:00",
       "closed": false
     },
     {
       "day": "Thu",
-      "opens": "15:00",
-      "closes": "21:00",
+      "opens": "12:00",
+      "closes": "23:00",
       "closed": false
     },
     {
       "day": "Fri",
-      "opens": "15:00",
-      "closes": "21:00",
+      "opens": "12:00",
+      "closes": "23:00",
       "closed": false
     },
     {
       "day": "Sat",
       "opens": "10:00",
-      "closes": "22:00",
+      "closes": "23:00",
       "closed": false
     },
     {
       "day": "Sun",
-      "opens": "12:00",
-      "closes": "19:00",
+      "opens": "10:00",
+      "closes": "21:00",
       "closed": false
     }
   ],
-  "hoursNote": "Above are Summer hours. Winter hours: 9am–10pm every day. If there are no pre-booked bay times, we reserve the right to open late or close early — so if you are making a special trip, book the bay rather than chancing it.",
+  "hoursNote": "If there are no pre-booked bay times, we reserve the right to open late or close early — so if you are making a special trip, book the bay rather than chancing it.",
   "amenities": [
     "Food & drink via Stillwater Bowl & Lounge",
     "Up to 24 golfers",
