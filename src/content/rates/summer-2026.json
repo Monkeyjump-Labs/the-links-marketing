@@ -3,7 +3,7 @@
   "order": 1,
   "effectiveFrom": "May 3rd, 2026",
   "effectiveTo": "Oct 3rd, 2026",
-  "current": true,
+  "current": false,
   "note": "Rates are per bay, not per person - six of you in a bay costs the same as one.",
   "rows": [
     {

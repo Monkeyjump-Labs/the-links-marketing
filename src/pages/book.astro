@@ -34,7 +34,7 @@ const venues = await getVenues();
 const metadata = {
   metaTitle: 'Book a Bay — Indoor Golf in Lakeville & Stillwater, MN',
   metaDescription:
-    'Book a GolfZon bay at The Links. $35 an hour per bay, up to six players, clubs available. Choose Lakeville or Stillwater.',
+    'Book a GolfZon bay at The Links. $45–$60 an hour per bay, up to six players, clubs available. Choose Lakeville or Stillwater.',
 };
 
 /**
@@ -46,7 +46,10 @@ const metadata = {
  * "STUB", "—") in `a`: that is the flat-page behaviour the gap system replaces.
  */
 const beforeYouBook: { q: string; a?: string; gap?: { label: string; reason: string } }[] = [
-  { q: 'What it costs', a: '$35 an hour, per bay — not per person. Through October 3rd, 2026.' },
+  {
+    q: 'What it costs',
+    a: '$45 an hour off-peak, $60 at peak — per bay, not per person. Off-peak is Monday to Friday 8am–5pm, and Sunday from 5pm.',
+  },
   { q: 'How many fit', a: 'Up to six people in a bay comfortably.' },
   {
     q: 'Clubs',
