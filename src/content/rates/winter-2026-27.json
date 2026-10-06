@@ -2,8 +2,8 @@
   "season": "2026/27 Season",
   "order": 2,
   "effectiveFrom": "Oct 4th, 2026",
-  "current": false,
-  "note": "These are the rates from October 4th, when the current season ends, at both venues.",
+  "current": true,
+  "note": "Rates are per bay, not per person - six of you in a bay costs the same as one.",
   "rows": [
     {
       "label": "Bay rental — off-peak",

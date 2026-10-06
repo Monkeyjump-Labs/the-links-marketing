@@ -22,12 +22,19 @@ import BookButton from '../components/venue/BookButton.astro';
 import { getVenues } from '../lib/venues';
 
 const venues = await getVenues();
-const cards = (await getCollection('rates')).sort((a, b) => a.data.order - b.data.order);
+const allCards = (await getCollection('rates')).sort((a, b) => a.data.order - b.data.order);
+/**
+ * Show the current card and anything after it; hide seasons that have ended.
+ * An expired card stays in `content/rates` so it can be reused next year, but a
+ * visitor should never see last season's price beside this season's.
+ */
+const currentIdx = allCards.findIndex((c) => c.data.current);
+const cards = currentIdx < 0 ? allCards : allCards.slice(currentIdx);
 
 const metadata = {
   metaTitle: 'Rates & Hours — Indoor Golf, Lakeville & Stillwater MN',
   metaDescription:
-    'What an hour costs at The Links and when we are open. $35 per bay per hour through October 3rd, 2026. Full weekly hours for both Twin Cities venues.',
+    'What an hour costs at The Links and when we are open. $45 per bay per hour off-peak, $60 at peak. Full weekly hours for both Twin Cities venues.',
 };
 ---
 
