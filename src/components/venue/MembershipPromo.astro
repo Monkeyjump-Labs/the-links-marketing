@@ -1,0 +1,149 @@
+---
+/**
+ * The membership pop-up: a flyer-style card that opens once, a few seconds after
+ * a visitor lands, and then stays away for a week.
+ *
+ * ── IT MUST NOT GET IN THE WAY OF BOOKING ──────────────────────────────────
+ * The primary action on this site is "Book a bay". So the pop-up waits (it never
+ * opens in the first few seconds, when a returning customer is already tapping
+ * Book), it is one tap or Escape to close, it is shown at most once a week per
+ * browser, and it is suppressed on `/memberships/` itself and on the pages
+ * `BaseLayout` already opts out of the subscribe strip for.
+ *
+ * ── PRICES COME FROM THE COLLECTION ────────────────────────────────────────
+ * The two monthly figures are read from `src/content/memberships/`, never typed
+ * here, so the pop-up cannot drift from the page it links to. Only unrestricted
+ * tiers appear (`ageRestricted` excluded) for the same reason `/memberships`
+ * leads with them: a price a general reader cannot buy is a misleading headline.
+ *
+ * ── THE EARLY-BIRD LINE EXPIRES ITSELF ─────────────────────────────────────
+ * Same deadline and same double check as the band on `/memberships/` — build
+ * time, then the visitor's clock. Keep `EARLY_BIRD_ENDS` in step with that file.
+ *
+ * Native `<dialog>`: focus trap, Escape, and the backdrop come from the browser.
+ * Without JavaScript it simply never opens.
+ */
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import { buttonClasses } from '../../lib/buttons';
+import flyerPhoto from '../../assets/images/lakeville-bays.jpg';
+
+const EARLY_BIRD_ENDS = '2026-10-31';
+const EARLY_BIRD_LABEL = '31 October';
+const earlyBirdLive = new Date() <= new Date(EARLY_BIRD_ENDS + 'T23:59:59');
+
+const tiers = (await getCollection('memberships'))
+  .filter((m) => m.data.published && m.data.kind === 'monthly' && !m.data.ageRestricted && m.data.price)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<dialog
+  class="m-auto w-[min(92vw,56rem)] max-w-none overflow-visible border-0 bg-transparent p-0 backdrop:bg-midnight/70"
+  aria-labelledby="membership-promo-title"
+  data-membership-promo
+>
+  <div class="on-dark relative grid overflow-hidden bg-midnight md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+    <div class="relative hidden min-h-full md:block">
+      <Image
+        src={flyerPhoto}
+        alt="Golf simulator bays and the bar at The Links of Lakeville"
+        widths={[480, 720]}
+        sizes="(min-width: 768px) 450px, 0px"
+        class="absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="max-h-[88vh] overflow-y-auto p-s6 pt-s7 lg:p-s7">
+      <p class="caps-label text-amber">Memberships</p>
+      <h2
+        id="membership-promo-title"
+        class="mt-s4 font-display text-hero leading-hero font-extrabold tracking-display-tight text-white"
+      >
+        Play more. Pay less.
+      </h2>
+      <p class="mt-s4 text-body leading-body text-paper">
+        Two hours of bay time every day, a 21-day booking window, and 10% off food and drink. Used at the venue you
+        join.
+      </p>
+
+      <ul class="mt-s5 border-t-hairline border-paper/30">
+        {
+          tiers.map((t) => (
+            <li class="flex items-baseline justify-between gap-s4 border-b-hairline border-paper/30 py-s3">
+              <span class="font-display font-bold tracking-display text-white">{t.data.name}</span>
+              <span class="text-body text-paper">
+                <span class="scoreboard text-score-md text-white">${t.data.price}</span> {t.data.cadence}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+
+      {
+        earlyBirdLive && (
+          <p
+            class="mt-s5 border-l-slab border-amber pl-s4 text-small leading-body text-paper"
+            data-ends={EARLY_BIRD_ENDS}
+          >
+            <strong class="text-amber">Early bird:</strong> 20% off memberships until {EARLY_BIRD_LABEL}.
+          </p>
+        )
+      }
+
+      <div class="mt-s6 flex flex-wrap gap-s4">
+        <a href="/memberships/" class={buttonClasses('md', 'onDark')} data-analytics="membership-promo-cta">
+          See memberships
+        </a>
+        <button type="button" class={buttonClasses('md', 'ghostDark')} data-promo-close>Maybe later</button>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="absolute top-s2 right-s2 flex min-h-tap min-w-tap items-center justify-center text-score-md text-paper transition-colors duration-fast ease-standard hover:text-amber"
+      data-promo-close
+      aria-label="Close the membership message"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</dialog>
+
+<script is:inline>
+  (function () {
+    var KEY = 'links:membership-promo-seen';
+    var WEEK = 7 * 24 * 60 * 60 * 1000;
+    var dlg = document.querySelector('[data-membership-promo]');
+    if (!dlg || typeof dlg.showModal !== 'function') return;
+
+    try {
+      var seen = Number(window.localStorage.getItem(KEY));
+      if (seen && Date.now() - seen < WEEK) return;
+    } catch {
+      /* storage blocked — show it; once per page load is the safe failure */
+    }
+
+    var early = dlg.querySelector('[data-ends]');
+    if (early && Date.now() > new Date(early.dataset.ends + 'T23:59:59').valueOf()) early.hidden = true;
+
+    function remember() {
+      try {
+        window.localStorage.setItem(KEY, String(Date.now()));
+      } catch {
+        /* nothing to do */
+      }
+    }
+
+    dlg.addEventListener('close', remember);
+    dlg.addEventListener('click', function (e) {
+      // A click on the backdrop lands on the <dialog> itself, not its content.
+      if (e.target === dlg || e.target.closest('[data-promo-close]')) dlg.close();
+      else if (e.target.closest('a')) remember();
+    });
+
+    setTimeout(function () {
+      if (!dlg.open) dlg.showModal();
+    }, 4000);
+  })();
+</script>

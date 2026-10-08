@@ -8,6 +8,7 @@ import VenueBar from '../components/venue/VenueBar.astro';
 import OrganizationSchema from '../components/venue/OrganizationSchema.astro';
 import LeadFormScript from '../components/venue/LeadFormScript.astro';
 import SubscribeBand from '../components/forms/SubscribeBand.astro';
+import MembershipPromo from '../components/venue/MembershipPromo.astro';
 import type { PageMetadata } from '../lib/types';
 
 interface Props {
@@ -82,6 +83,7 @@ const noIndex = metadata.noIndex || import.meta.env.PUBLIC_SITE_NOINDEX === 'tru
     }
     {chrome && subscribe && <SubscribeBand />}
     {chrome && <Footer />}
+    {chrome && subscribe && !Astro.url.pathname.startsWith('/memberships') && <MembershipPromo />}
     <OrganizationSchema />
     {
       /* Progressive enhancement for every `/api/lead` form. Mounted site-wide
