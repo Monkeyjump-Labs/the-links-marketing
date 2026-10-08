@@ -44,11 +44,11 @@ const offers = [
 ---
 
 <dialog
-  class="m-auto w-[min(92vw,56rem)] max-w-none overflow-visible border-0 bg-transparent p-0 backdrop:bg-midnight/70"
+  class="m-auto w-11/12 max-w-content overflow-visible border-0 bg-transparent p-0 backdrop:bg-midnight/70"
   aria-labelledby="membership-promo-title"
   data-membership-promo
 >
-  <div class="on-dark relative grid overflow-hidden bg-midnight md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+  <div class="on-dark relative grid overflow-hidden bg-midnight md:grid-cols-2">
     <div class="relative hidden min-h-full md:block">
       <Image
         src={flyerPhoto}
@@ -60,7 +60,7 @@ const offers = [
       />
     </div>
 
-    <div class="max-h-[88vh] overflow-y-auto p-s6 pt-s7 lg:p-s7">
+    <div class="max-h-svh overflow-y-auto p-s6 pt-s7 lg:p-s7">
       <p class="caps-label text-amber">Memberships</p>
       <h2
         id="membership-promo-title"
