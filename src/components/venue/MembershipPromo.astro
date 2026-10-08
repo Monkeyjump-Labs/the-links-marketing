@@ -32,9 +32,15 @@ const EARLY_BIRD_ENDS = '2026-10-31';
 const EARLY_BIRD_LABEL = '31 October';
 const earlyBirdLive = new Date() <= new Date(EARLY_BIRD_ENDS + 'T23:59:59');
 
-const tiers = (await getCollection('memberships'))
-  .filter((m) => m.data.published && m.data.kind === 'monthly' && !m.data.ageRestricted && m.data.price)
-  .sort((a, b) => a.data.order - b.data.order);
+const all = (await getCollection('memberships')).filter((m) => m.data.published && !m.data.ageRestricted);
+const cheapestMonthly = Math.min(...all.filter((m) => m.data.kind === 'monthly').map((m) => m.data.price ?? Infinity));
+const cheapestBank = Math.min(
+  ...all.filter((m) => m.data.kind === 'flex').flatMap((m) => m.data.banks.map((b) => b.price)),
+);
+const offers = [
+  { label: 'Monthly from', price: cheapestMonthly, qualifier: 'a month, per location' },
+  { label: 'Hour packages from', price: cheapestBank, qualifier: 'for a 12-hour bank, per location' },
+];
 ---
 
 <dialog
@@ -69,12 +75,12 @@ const tiers = (await getCollection('memberships'))
 
       <ul class="mt-s5 border-t-hairline border-paper/30">
         {
-          tiers.map((t) => (
-            <li class="flex items-baseline justify-between gap-s4 border-b-hairline border-paper/30 py-s3">
-              <span class="font-display font-bold tracking-display text-white">{t.data.name}</span>
-              <span class="text-body text-paper">
-                <span class="scoreboard text-score-md text-white">${t.data.price}</span> {t.data.cadence}
-              </span>
+          offers.map((o) => (
+            <li class="border-b-hairline border-paper/30 py-s4">
+              <p class="caps-label text-label-sm text-amber">{o.label}</p>
+              <p class="mt-s2 text-body text-paper">
+                <span class="scoreboard text-score-md text-white">${o.price}</span> {o.qualifier}
+              </p>
             </li>
           ))
         }
