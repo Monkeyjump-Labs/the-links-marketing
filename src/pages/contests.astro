@@ -1,0 +1,73 @@
+---
+/**
+ * A hand-off page: contest registration happens on Ply, not here. The page's whole
+ * job is to make the venue choice, because a registration is per location and the
+ * two venues run separate contests. Same shape as the gift-cards venue pair.
+ *
+ * Both URLs live in `global.ts` (`external.contests*`). Nothing here states a
+ * date, prize or fee — those are on Ply, and repeating them here would be a fact
+ * we have not verified.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { globalData } from '../data/global';
+
+const metadata = {
+  metaTitle: 'Golf Contests — The Links, Lakeville & Stillwater',
+  metaDescription:
+    'Register for an indoor golf contest at The Links of Lakeville or The Links of Stillwater, MN. Choose your location to sign up.',
+};
+
+const venues = [
+  {
+    name: 'The Links of Lakeville',
+    short: 'Lakeville',
+    href: globalData.external.contestsLakeville,
+    slug: 'lakeville',
+  },
+  {
+    name: 'The Links of Stillwater',
+    short: 'Stillwater',
+    href: globalData.external.contestsStillwater,
+    slug: 'stillwater',
+  },
+];
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">Contests</h1>
+    <p class="mt-4 max-w-2xl text-lg text-inkMuted">
+      Pick your location to register. You will finish signing up on the Fareway app.
+    </p>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+      {
+        venues.map((venue) => (
+          <div class="flex flex-col border-hairline border-ink/15 bg-paper p-cell">
+            <h2 class="text-2xl font-bold">{venue.name}</h2>
+            <p class="mt-s3 flex-1 text-inkMuted">Register for the {venue.short} contest.</p>
+            <div class="mt-6">
+              <a
+                href={venue.href}
+                class="inline-block rounded bg-primary px-6 py-3 font-semibold text-surface transition hover:opacity-90"
+                target="_blank"
+                rel="noopener"
+                data-analytics={'contests:register-' + venue.slug}
+              >
+                Register in {venue.short} <span aria-hidden="true">→</span>
+                <span class="sr-only">(opens Ply in a new tab)</span>
+              </a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="mt-10 max-w-prose-page text-inkMuted">
+      Questions before you sign up? The numbers for both venues are on the <a
+        href="/contact/"
+        class="font-semibold underline">contact page</a
+      >.
+    </p>
+  </section>
+</BaseLayout>
