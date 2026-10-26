@@ -1,0 +1,90 @@
+---
+/**
+ * Lakeville Specials. Deliberately UNLINKED: it is not in the nav, the footer or
+ * the sitemap, and it carries `noIndex`, so it is reachable only by a direct link
+ * (a social post, a QR code, a text). Link it from somewhere only on purpose.
+ *
+ * Every figure below is read off the flyer image, which is the source of truth.
+ * The image alone is not enough — prices and offers are HTML text on this site —
+ * so the same facts are repeated as text. Change the flyer and this text together.
+ */
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getVenue } from '../lib/venues';
+import flyer from '../assets/images/sunday-tailgate-bay.webp';
+
+const lakeville = await getVenue('lakeville');
+
+const metadata = {
+  metaTitle: 'Lakeville Specials — The Links of Lakeville',
+  metaDescription:
+    'The Sunday Tailgate Bay at The Links of Lakeville: a 3-hour simulator rental with beer, pizza and wings for up to 6 people.',
+  noIndex: true,
+};
+
+const includes = [
+  '3-hour simulator rental',
+  'Up to 6 people',
+  'Domestic beer bucket',
+  'Large pizza',
+  'Wings / appetizer',
+  'Football on 9 TVs',
+];
+---
+
+<BaseLayout metadata={metadata}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <p class="inline-block bg-primary px-3 py-1 text-sm font-bold uppercase tracking-wide text-surface">
+      Lakeville Location Only
+    </p>
+    <h1 class="mt-4 text-4xl font-bold lg:text-5xl">Lakeville Specials</h1>
+
+    <div class="mt-10 grid gap-10 lg:grid-cols-2 lg:items-start">
+      <Image
+        src={flyer}
+        widths={[480, 720, 960]}
+        sizes="(min-width: 1024px) 480px, 100vw"
+        alt="Flyer for the Sunday Tailgate Bay at The Links: a 3-hour simulator rental, up to 6 people, a domestic beer bucket, a large pizza, wings or an appetizer and football on 9 TVs, all in for $149 per bay. Below it, the Vikings Score, You Save offer."
+        class="w-full"
+      />
+
+      <div>
+        <h2 class="text-3xl font-bold">Sunday Tailgate Bay</h2>
+        <p class="mt-3 text-lg text-inkMuted">What is included, all in, per bay:</p>
+        <ul class="mt-4 list-disc space-y-1 pl-6 text-lg">
+          {includes.map((item) => <li>{item}</li>)}
+        </ul>
+        <p class="mt-6 text-3xl font-bold">$149 <span class="text-lg font-semibold">all in, per bay</span></p>
+
+        <h2 class="mt-10 text-3xl font-bold">Vikings Score, You Save!</h2>
+        <p class="mt-3 text-lg">The Vikings score difference is the percent off a gift card.</p>
+        <ul class="mt-4 list-disc space-y-1 pl-6">
+          <li>Limited to a $200 gift card.</li>
+          <li>The gift card cannot be used that day.</li>
+        </ul>
+
+        <p class="mt-6 text-inkMuted">
+          See store for details. Limited availability. Valid with Sunday Tailgate Bay booking.
+        </p>
+
+        {
+          lakeville && (
+            <div class="mt-8">
+              <a
+                href={lakeville.data.bookingUrl}
+                class="inline-block rounded bg-primary px-6 py-3 font-semibold text-surface transition hover:opacity-90"
+                target="_blank"
+                rel="noopener"
+                data-analytics="lakeville-specials:book-lakeville"
+              >
+                Book Lakeville <span aria-hidden="true">→</span>
+                <span class="sr-only">(opens the Lakeville booking page in a new tab)</span>
+              </a>
+              <p class="mt-2 text-sm text-inkMuted">Lakeville Location Only</p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
