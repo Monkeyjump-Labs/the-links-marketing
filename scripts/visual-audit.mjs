@@ -116,6 +116,7 @@ const ROUTES = [
   '/juniors/',
   '/gift-cards/',
   '/contests/',
+  '/lakeville-specials/',
   // Added with the page itself (2026-09-14), rather than after someone noticed
   // it missing. It carries a lead form, and an unaudited form is precisely the
   // regression this list exists to catch.
