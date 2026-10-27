@@ -73,6 +73,7 @@ import LeagueSchema from '../components/venue/LeagueSchema.astro';
 import SeasonTrack from '../components/venue/SeasonTrack.astro';
 import SectionHead from '../components/venue/SectionHead.astro';
 import WaitlistForm from '../components/venue/WaitlistForm.astro';
+import { buttonClasses } from '../lib/buttons';
 import { LEAGUE_WAITLIST_ID, upcomingSeason } from '../lib/leagues';
 
 const leagues = (await getCollection('leagues'))
@@ -145,6 +146,24 @@ const steps = [
           exception — see the file header and `SeasonTrack`. */
       }
       <SeasonTrack class="mt-s8" steps={steps} activeIndex={0} tone="dark" />
+      {
+        /* Jump links to the two venue bands below. Same page on purpose: five
+          leagues do not need a landing page, and a click before the nights is a
+          click between a visitor and the answer. The ids are on the bands. */
+      }
+      <div class="mt-s7 flex flex-col gap-s4 sm:flex-row">
+        {
+          venueGroups.map((group) => (
+            <a
+              href={'#' + group.slug}
+              class={buttonClasses('lg', 'onDark')}
+              data-analytics={'leagues:jump-' + group.slug}
+            >
+              {group.heading} Leagues <span aria-hidden="true">↓</span>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </section>
 
