@@ -87,6 +87,12 @@ const leagues = (await getCollection('leagues'))
  */
 const season = upcomingSeason(leagues);
 
+/** One band per venue, in the order the collection sorts them. A venue with no published league gets no band. */
+const venueGroups = [
+  { slug: 'lakeville', heading: 'Lakeville Location', leagues: leagues.filter((l) => l.data.venue === 'lakeville') },
+  { slug: 'stillwater', heading: 'Stillwater Location', leagues: leagues.filter((l) => l.data.venue === 'stillwater') },
+].filter((g) => g.leagues.length > 0);
+
 const metadata = {
   metaTitle: 'Indoor Golf Leagues — Lakeville & Stillwater, MN',
   metaDescription:
@@ -185,13 +191,24 @@ const steps = [
     </div>
   </section>
 
-  {/* 4. THE VENUE BLOCKS — one ruled column, not two cards. */}
-  <section class="bg-white">
-    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead>League play at both venues</SectionHead>
-      {leagues.map((league, i) => <LeagueBlock league={league} first={i === 0} last={i === leagues.length - 1} />)}
-    </div>
-  </section>
+  {
+    /* 4. THE VENUE BLOCKS — one ruled column per venue. Each venue is its own
+      band with its own heading, because a registration is per location and the
+      two run on different providers: a visitor should know which venue a block
+      belongs to before reading it, not from the word in its title. */
+  }
+  {
+    venueGroups.map((group) => (
+      <section class="bg-white" id={group.slug}>
+        <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+          <SectionHead>{group.heading}</SectionHead>
+          {group.leagues.map((league, i) => (
+            <LeagueBlock league={league} first={i === 0} last={i === group.leagues.length - 1} />
+          ))}
+        </div>
+      </section>
+    ))
+  }
 
   {
     /* 5. "On the blanks" stood here and was removed at CJ's request 2026-09-04,
