@@ -1,0 +1,18 @@
+{
+  "name": "Lakeville Wednesday Match Play",
+  "venue": "lakeville",
+  "order": 3,
+  "state": "open",
+  "status": "live",
+  "oneLiner": "Two-person team match play, team against team over 18 holes, handicapped so a first-timer and a scratch player can have a genuinely tight night. League Member Extra’s: (2) Hours of anytime sim time to use outside of league!",
+  "beginnerNote": "Match play is scored hole by hole rather than over the whole round, so one bad hole costs you that hole and nothing more. Handicaps set the strokes, and a rough start is forgotten by the next tee.",
+  "night": "Wednesdays, 6:00pm",
+  "format": "2-person team-vs-team match play, handicapped, 18 holes. Format may change based on player feedback.",
+  "weeks": 14,
+  "startDate": "2027-01-13",
+  "price": "$980 per team. A $50 non-refundable deposit per team holds your spot.",
+  "prizes": "Prizes dependent on size of League",
+  "registerUrl": "https://app.primesignup.com/customer/events/the-links-of-lakeville-winter-2027-league-wednesday-night",
+  "season": "2027 Winter",
+  "published": true
+}
