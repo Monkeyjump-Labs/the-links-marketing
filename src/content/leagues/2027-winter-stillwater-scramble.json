@@ -4,15 +4,15 @@
   "order": 5,
   "state": "open",
   "status": "live",
-  "oneLiner": "Stillwater's first Winter league season: a two-person team scramble where every team plays every other team each week for points, 18 holes at a time on a course that changes each week.",
+  "oneLiner": "Stillwater's first Winter league season: a two-person team scramble where every team plays every other team each week for points, 9 holes at a time on a course that changes each week.",
   "beginnerNote": "A scramble is the friendliest format there is: you both hit, you take the better ball and go again. Nine holes takes about two hours, and both men and women are welcome.",
   "season": "2027 Winter",
   "published": true,
-  "night": "Sundays 3:30pm or 5:30pm, Monday thru Thursday 5:30pm or 7:30pm — you play the same night every week",
-  "format": "2-person team scramble against the field, with all teams playing all other teams from every night for points. 18 holes, course varies week to week, about 2 hours.",
-  "weeks": 10,
-  "startDate": "Week of November 29th, skip both Christmas and New Years weeks, and runs through week of February 14th.",
-  "price": "$700 per team.",
-  "prizes": "Prizes dependent on size of League",
-  "registerUrl": "https://ply.golf/venue/links-of-stillwater/leagues/152"
+  "night": "Sundays 5:00pm, Monday thru Thursday 6:00pm — you play the same night every week",
+  "format": "2-person team scramble against the field, with all teams playing all other teams from every other night for points. Handicapped. 9 holes, course varies week to week, about 2 hours.",
+  "weeks": 14,
+  "startDate": "Week of January 10th and runs through week of April 11th. 14 weeks: 12 regular season, 2 play-off/fun nights.",
+  "price": "$600 per team.",
+  "prizes": "Prizes dependent on size of League, in the form of gift cards from The Links of Lakeville",
+  "registerUrl": "https://ply.golf/venue/links-of-stillwater/leagues/155"
 }
