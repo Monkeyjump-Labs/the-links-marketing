@@ -47,10 +47,14 @@ const stillwater = venues.find((v) => v.data.slug === 'stillwater');
  */
 const HEADLINE_CAPACITY = 36;
 
+/** Whole-venue event capacity, as supplied by CJ 2026-10-29. Distinct from the golfers-on-bays figure above. */
+const LAKEVILLE_EVENT_CAPACITY = 80;
+const STILLWATER_EVENT_CAPACITY = 50;
+
 const metadata = {
   metaTitle: 'Golf Simulator Parties & Corporate Events — Twin Cities',
   metaDescription:
-    'Corporate outings, birthdays and bachelor parties on golf simulators in Lakeville and Stillwater, MN. Room for up to 36 at Lakeville. Capacity and an enquiry form.',
+    'Corporate outings, birthdays and bachelor parties on golf simulators in Lakeville and Stillwater, MN. Events at both locations: up to 80 guests at Lakeville, up to 50 at Stillwater. Capacity and an enquiry form.',
 };
 
 /** The three recurring jobs the segment actually gets booked for. No numerals — they are not steps. */
@@ -81,10 +85,13 @@ const jobs = [
       <div class="grid gap-s8 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-start lg:gap-s9">
         <div>
           <p class="caps-label text-amber">Work outings · birthdays · parties</p>
-          <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Room for 36.</h1>
+          <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">
+            Events at both locations.
+          </h1>
           <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
-            That is Lakeville, across all six bays. Tell us the date and the headcount and we come back with a price —
-            that is the whole process.
+            We host events at The Links of Lakeville (up to 80 guests) and The Links of Stillwater (up to 50 guests).
+            Tell us the date, the headcount and which location, and we come back with a price — that is the whole
+            process.
           </p>
 
           {
@@ -100,8 +107,8 @@ const jobs = [
               that actually emits dt/dd, like `HeroStrip`. */
           }
           <div class="mt-s7 grid grid-cols-2 gap-s5 border-t-score border-amber pt-s5">
-            <ReadoutCell label="Lakeville" tone="dark" size="xl">{HEADLINE_CAPACITY}</ReadoutCell>
-            <ReadoutCell label="Bays there" tone="dark" size="xl">{lakeville?.data.bays}</ReadoutCell>
+            <ReadoutCell label="Lakeville, up to" tone="dark" size="xl">{LAKEVILLE_EVENT_CAPACITY}</ReadoutCell>
+            <ReadoutCell label="Stillwater, up to" tone="dark" size="xl">{STILLWATER_EVENT_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Per bay" tone="dark" size="name">Up to 6 people</ReadoutCell>
             <ReadoutCell label="Priced by" tone="dark" size="name">The bay, not the head</ReadoutCell>
           </div>
@@ -132,7 +139,7 @@ const jobs = [
   {/* 3. HOW MANY FIT, per venue — one honest number and one honest gap. */}
   <section class="bg-greige">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead>How many people fit</SectionHead>
+      <SectionHead>How many people fit, at each location</SectionHead>
 
       <div class="grid gap-s7 border-t-score border-navy pt-s6 md:grid-cols-2 md:gap-s8">
         <div>
@@ -140,7 +147,8 @@ const jobs = [
             {lakeville?.data.name}
           </h3>
           <div class="mt-s5 flex flex-wrap gap-s7">
-            <ReadoutCell label="Golfers" size="xl">{HEADLINE_CAPACITY}</ReadoutCell>
+            <ReadoutCell label="Guests, up to" size="xl">{LAKEVILLE_EVENT_CAPACITY}</ReadoutCell>
+            <ReadoutCell label="Golfers on the bays" size="xl">{HEADLINE_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Bays" size="xl">{lakeville?.data.bays}</ReadoutCell>
           </div>
           <p class="mt-s5 max-w-prose-page text-body leading-body text-inkBody">
@@ -153,20 +161,9 @@ const jobs = [
             {stillwater?.data.name}
           </h3>
           <div class="mt-s5 flex flex-wrap gap-s7">
+            <ReadoutCell label="Guests, up to" size="xl">{STILLWATER_EVENT_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Bays" size="xl">{stillwater?.data.bays}</ReadoutCell>
           </div>
-          {
-            /* The bay count is published; the venue total is not. Rather than
-              multiply four by six and present the product as a fact, the cell
-              says what it is. */
-          }
-          <GapCell
-            class="mt-s5"
-            label="Golfers"
-            state="notSet"
-            size="xl"
-            reason="Stillwater's total headcount, its seating, and whether the bowling side can take a larger group have not been supplied. We are not going to multiply the bays by six and call that a capacity."
-          />
         </div>
       </div>
 
