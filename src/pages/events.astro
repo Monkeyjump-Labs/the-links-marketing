@@ -101,7 +101,6 @@ const jobs = [
             <ReadoutCell label="Lakeville, up to" tone="dark" size="xl">{LAKEVILLE_EVENT_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Stillwater, up to" tone="dark" size="xl">{STILLWATER_EVENT_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Per bay" tone="dark" size="name">Up to 6 people</ReadoutCell>
-            <ReadoutCell label="Priced by" tone="dark" size="name">The bay, not the head</ReadoutCell>
           </div>
         </div>
 
@@ -141,9 +140,7 @@ const jobs = [
             <ReadoutCell label="Guests, up to" size="xl">{LAKEVILLE_EVENT_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Bays" size="xl">{lakeville?.data.bays}</ReadoutCell>
           </div>
-          <p class="mt-s5 max-w-prose-page text-body leading-body text-inkBody">
-            Each bay takes up to six people. Four per bay is the pace we recommend if you want the round to finish.
-          </p>
+          <p class="mt-s5 max-w-prose-page text-body leading-body text-inkBody">Each bay takes up to six people.</p>
         </div>
 
         <div>
@@ -156,11 +153,6 @@ const jobs = [
           </div>
         </div>
       </div>
-
-      <p class="mt-s7 max-w-prose-page text-body leading-body text-inkBody">
-        For timing, use about an hour per person for 18 holes — a group of four in one bay is roughly a four-hour round.
-        If that is longer than you want the event to run, book more bays and play fewer holes. Most groups do.
-      </p>
     </div>
   </section>
 
@@ -174,8 +166,7 @@ const jobs = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead>What it costs</SectionHead>
 
-      <div class="grid gap-s7 border-y-quiet border-navy py-s6 md:grid-cols-3">
-        <ReadoutCell label="A bay, by the hour" size="xl">$45–60</ReadoutCell>
+      <div class="grid gap-s7 border-y-quiet border-navy py-s6 md:grid-cols-2">
         <GapCell
           label="Event packages"
           state="quoted"
@@ -191,8 +182,8 @@ const jobs = [
       </div>
 
       <p class="mt-s6 max-w-prose-page text-body leading-body text-inkBody">
-        Groups of twelve or more are priced as a group. Under twelve, there is nothing to quote — the hourly rate above
-        is the whole price, and you can book it yourself right now.
+        Groups of twelve or more are priced as a group. Under twelve, there is nothing to quote — you can book it
+        yourself right now at the normal hourly rate.
       </p>
 
       {
@@ -222,16 +213,12 @@ const jobs = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead>Food and drink</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-inkBody">
-        Lakeville has a full bar and a food menu of its own — pizza, wings, appetisers — and the tab runs through the
-        venue, so one person settles it at the end. Stillwater's food and drink comes from Stillwater Bowl &amp; Lounge,
-        the business the bays sit inside.
+        <strong>Lakeville</strong> has a full bar and a food menu of its own — pizza, wings, appetisers — and the tab runs
+        through the venue, so one person settles it at the end.
       </p>
-      <a
-        href="/menu/"
-        class="mt-s5 inline-flex min-h-tap items-center font-bold text-inkBody underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
-      >
-        See the menu
-      </a>
+      <p class="mt-s5 max-w-prose-page text-lead leading-body text-inkBody">
+        <strong>Stillwater's</strong> food and drink comes from Stillwater Bowl &amp; Lounge, the business the bays sit inside.
+      </p>
 
       <StubNote
         class="mt-s7"
