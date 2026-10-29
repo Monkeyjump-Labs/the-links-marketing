@@ -6,8 +6,7 @@
  *
  * **The idea: answer the four-second question in the headline.** A planner
  * arrives with exactly one question — *will my people fit?* — and the old page
- * made them read three paragraphs to find out. "Room for 36." is the h1's second
- * line. X-Golf Eden Prairie publishes "up to 75 guests" and surfaces on the live
+ * made them read three paragraphs to find out. The h1 now names both locations and their capacities. X-Golf Eden Prairie publishes "up to 75 guests" and surfaces on the live
  * query; The Links has a real number and was burying it (seo-map.md §1.3).
  *
  * **This page originated the gap system**, and it is still where the third mark
@@ -39,15 +38,7 @@ const venues = await getVenues();
 const lakeville = venues.find((v) => v.data.slug === 'lakeville');
 const stillwater = venues.find((v) => v.data.slug === 'stillwater');
 
-/**
- * The headline number. Sourced from Lakeville's own amenities list ("Up to 36
- * golfers"), not computed from bays × 6 — 6 × 6 = 36 is a coincidence here, and
- * deriving a capacity claim from a multiplication we invented is exactly the
- * kind of plausible-but-unsourced fact the truth audit spent 38 findings on.
- */
-const HEADLINE_CAPACITY = 36;
-
-/** Whole-venue event capacity, as supplied by CJ 2026-10-29. Distinct from the golfers-on-bays figure above. */
+/** Whole-venue event capacity, as supplied by CJ 2026-10-29. */
 const LAKEVILLE_EVENT_CAPACITY = 80;
 const STILLWATER_EVENT_CAPACITY = 50;
 
@@ -148,7 +139,6 @@ const jobs = [
           </h3>
           <div class="mt-s5 flex flex-wrap gap-s7">
             <ReadoutCell label="Guests, up to" size="xl">{LAKEVILLE_EVENT_CAPACITY}</ReadoutCell>
-            <ReadoutCell label="Golfers on the bays" size="xl">{HEADLINE_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Bays" size="xl">{lakeville?.data.bays}</ReadoutCell>
           </div>
           <p class="mt-s5 max-w-prose-page text-body leading-body text-inkBody">
