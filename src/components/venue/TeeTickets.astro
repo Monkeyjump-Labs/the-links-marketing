@@ -30,7 +30,15 @@
  * the fastest way to look like a different site), no gradient, and every colour
  * and size is an existing token. Contrast on paper: ink 12.24:1, inkBody
  * 9.13:1, inkMuted 6.32:1, the ember label 6.85:1. The stub: midnight on amber
- * 9.48:1, and 17.5:1 on its white hover.
+ * 9.48:1; paper on its ember hover 6.85:1.
+ *
+ * **The stub hovers to ember, not white.** It first used the site's dark-ground
+ * button hover (amber → white), and on a ticket that reads backwards: the stub
+ * turns the same colour as the card, so the action looks switched OFF at the
+ * moment you press it (Daran, 2026-10-30). Ember is the site's action colour,
+ * and the stub sits on the paper card — a light ground — where an ember fill
+ * with paper ink is the standard primary button. The arrow nudges toward where
+ * the link goes. Keyboard focus gets the same treatment as hover.
  *
  * Rules of use: dark ground only, once per page, at most three tickets.
  */
@@ -90,7 +98,7 @@ const TILT = ['lg:-rotate-1', 'lg:rotate-0', 'lg:rotate-1'];
 
           {/* The tear line. A dashed midnight rule with a notch at each end.
               style-exception: decoration (perforation notches) — approved by CJ 2026-10-30 */}
-          <div class="relative flex items-center justify-between gap-s4 rounded-b-control border-t-rule border-dashed border-midnight bg-amber px-s5 py-s4 font-display font-bold tracking-display text-midnight group-hover:bg-white">
+          <div class="relative flex items-center justify-between gap-s4 rounded-b-control border-t-rule border-dashed border-midnight bg-amber px-s5 py-s4 font-display font-bold tracking-display text-midnight transition-colors duration-fast ease-standard group-hover:bg-ember group-hover:text-paper group-focus-visible:bg-ember group-focus-visible:text-paper">
             <span
               aria-hidden="true"
               class="absolute top-0 -left-s2 size-s4 -translate-y-1/2 rounded-full bg-midnight"
@@ -100,7 +108,12 @@ const TILT = ['lg:-rotate-1', 'lg:rotate-0', 'lg:rotate-1'];
               class="absolute top-0 -right-s2 size-s4 -translate-y-1/2 rounded-full bg-midnight"
             />
             <span>{t.stub}</span>
-            <span aria-hidden="true">↓</span>
+            <span
+              aria-hidden="true"
+              class="motion-safe:transition-transform motion-safe:duration-fast motion-safe:group-hover:translate-y-s1 motion-safe:group-focus-visible:translate-y-s1"
+            >
+              ↓
+            </span>
           </div>
         </a>
       </li>
