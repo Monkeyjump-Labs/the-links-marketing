@@ -90,12 +90,25 @@ const season = upcomingSeason(leagues);
 
 /** One band per venue, in the order the collection sorts them. A venue with no published league gets no band. */
 const venueGroups = [
-  { slug: 'lakeville', heading: 'Lakeville Location', leagues: leagues.filter((l) => l.data.venue === 'lakeville') },
-  { slug: 'stillwater', heading: 'Stillwater Location', leagues: leagues.filter((l) => l.data.venue === 'stillwater') },
+  {
+    slug: 'lakeville',
+    heading: 'Lakeville Location',
+    jump: 'Lakeville Leagues',
+    tagline: 'Pick your night. Same friends, every week. Full Bar and Food!',
+    leagues: leagues.filter((l) => l.data.venue === 'lakeville'),
+  },
+  {
+    slug: 'stillwater',
+    heading: 'Stillwater Location',
+    jump: 'Stillwater Leagues',
+    tagline: 'Pick your night. Same friends, every week. With bowling next door. Full Bar and Food!',
+    leagues: leagues.filter((l) => l.data.venue === 'stillwater'),
+  },
   {
     slug: 'floating',
     heading: 'Floating League across all Locations',
     jump: 'Floating League at Both Locations',
+    tagline: 'No set night. Just book your round when it works for you. Play everyone at both locations!',
     leagues: leagues.filter((l) => l.data.venue === 'both'),
   },
 ].filter((g) => g.leagues.length > 0);
@@ -157,16 +170,19 @@ const steps = [
           leagues do not need a landing page, and a click before the nights is a
           click between a visitor and the answer. The ids are on the bands. */
       }
-      <div class="mt-s7 flex flex-col gap-s4 sm:flex-row">
+      <div class="mt-s7 flex flex-col gap-s6 sm:flex-row sm:items-start">
         {
           venueGroups.map((group) => (
-            <a
-              href={'#' + group.slug}
-              class={buttonClasses('lg', 'onDark')}
-              data-analytics={'leagues:jump-' + group.slug}
-            >
-              {group.jump ?? `${group.heading} Leagues`} <span aria-hidden="true">↓</span>
-            </a>
+            <div class="flex max-w-xs flex-col items-start gap-s3">
+              <a
+                href={'#' + group.slug}
+                class={buttonClasses('lg', 'onDark')}
+                data-analytics={'leagues:jump-' + group.slug}
+              >
+                {group.jump} <span aria-hidden="true">↓</span>
+              </a>
+              <p class="text-small leading-body text-paper">{group.tagline}</p>
+            </div>
           ))
         }
       </div>
