@@ -73,6 +73,7 @@ import LeagueSchema from '../components/venue/LeagueSchema.astro';
 import SeasonTrack from '../components/venue/SeasonTrack.astro';
 import SectionHead from '../components/venue/SectionHead.astro';
 import WaitlistForm from '../components/venue/WaitlistForm.astro';
+import { buttonClasses } from '../lib/buttons';
 import { LEAGUE_WAITLIST_ID, upcomingSeason } from '../lib/leagues';
 
 const leagues = (await getCollection('leagues'))
@@ -87,10 +88,35 @@ const leagues = (await getCollection('leagues'))
  */
 const season = upcomingSeason(leagues);
 
+/** One band per venue, in the order the collection sorts them. A venue with no published league gets no band. */
+const venueGroups = [
+  {
+    slug: 'lakeville',
+    heading: 'Lakeville Location',
+    jump: 'Lakeville Leagues',
+    tagline: 'Pick your night. Same friends, every week. Full Bar and Food!',
+    leagues: leagues.filter((l) => l.data.venue === 'lakeville'),
+  },
+  {
+    slug: 'stillwater',
+    heading: 'Stillwater Location',
+    jump: 'Stillwater Leagues',
+    tagline: 'Pick your night. Same friends, every week. With bowling next door. Full Bar and Food!',
+    leagues: leagues.filter((l) => l.data.venue === 'stillwater'),
+  },
+  {
+    slug: 'floating',
+    heading: 'Floating League across all Locations',
+    jump: 'Floating League at Both Locations',
+    tagline: 'No set night. Just book your round when it works for you. Play everyone at both locations!',
+    leagues: leagues.filter((l) => l.data.venue === 'both'),
+  },
+].filter((g) => g.leagues.length > 0);
+
 const metadata = {
   metaTitle: 'Indoor Golf Leagues — Lakeville & Stillwater, MN',
   metaDescription:
-    'Register for 2026 fall simulator golf leagues at The Links, Lakeville and Stillwater MN. Two-person teams, handicapped and beginner-friendly. Play starts the week of October 4th.',
+    'Register for 2027 winter simulator golf leagues at The Links, Lakeville and Stillwater MN. Two-person teams, handicapped and beginner-friendly. Play starts the week of January 11th.',
 };
 
 /**
@@ -104,17 +130,16 @@ const steps = [
   {
     marker: 'Now',
     title: 'Registration is open',
-    body: 'Both venues are taking teams for the fall season. Pick your night and sign up — teams fill fastest in the first week.',
+    body: 'Registration is open for both locations! Pick your location, your night (or pick Floating League) and sign up — teams fill fastest in the first week.',
   },
   {
     marker: 'Next',
-    title: 'Play starts the week of October 4th',
-    body: 'You play the same night every week: Monday to Thursday at Lakeville, Sunday to Thursday at Stillwater.',
+    title:
+      'Play starts the week of November 29th for the Floating League and the week of January 11th for the fixed day leagues',
   },
   {
     marker: 'Then',
-    title: 'Ten weeks, through mid-December',
-    body: 'Lakeville runs eight weeks of regular season and two of playoffs, with Thanksgiving week off.',
+    title: 'Ten weeks for the Floating League and Fourteen weeks for the fixed day leagues',
   },
 ];
 ---
@@ -127,8 +152,8 @@ const steps = [
   }
   <section class="on-dark bg-midnight">
     <div class="mx-auto max-w-content px-gutter pt-s8 pb-s7 lg:px-gutter-lg lg:pt-s9 lg:pb-s8">
-      <p class="caps-label text-amber">{season}</p>
-      <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Leagues</h1>
+      <p class="caps-label text-amber">Winter 2027</p>
+      <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Winter Leagues 2027</h1>
       <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
         The cheapest way to play all winter, and the fastest way to meet people who also think Tuesday is a golf night.
         Handicaps keep matches fair, so a first-timer and a scratch player can be on the same team.
@@ -139,6 +164,27 @@ const steps = [
           exception — see the file header and `SeasonTrack`. */
       }
       <SeasonTrack class="mt-s8" steps={steps} activeIndex={0} tone="dark" />
+      {
+        /* Jump links to the two venue bands below. Same page on purpose: five
+          leagues do not need a landing page, and a click before the nights is a
+          click between a visitor and the answer. The ids are on the bands. */
+      }
+      <div class="mt-s7 flex flex-col gap-s6 sm:flex-row sm:items-start">
+        {
+          venueGroups.map((group) => (
+            <div class="flex max-w-xs flex-col items-start gap-s3">
+              <a
+                href={'#' + group.slug}
+                class={buttonClasses('lg', 'onDark')}
+                data-analytics={'leagues:jump-' + group.slug}
+              >
+                {group.jump} <span aria-hidden="true">↓</span>
+              </a>
+              <p class="text-small leading-body text-paper">{group.tagline}</p>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </section>
 
@@ -185,13 +231,24 @@ const steps = [
     </div>
   </section>
 
-  {/* 4. THE VENUE BLOCKS — one ruled column, not two cards. */}
-  <section class="bg-white">
-    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead>League play at both venues</SectionHead>
-      {leagues.map((league, i) => <LeagueBlock league={league} first={i === 0} last={i === leagues.length - 1} />)}
-    </div>
-  </section>
+  {
+    /* 4. THE VENUE BLOCKS — one ruled column per venue. Each venue is its own
+      band with its own heading, because a registration is per location and the
+      two run on different providers: a visitor should know which venue a block
+      belongs to before reading it, not from the word in its title. */
+  }
+  {
+    venueGroups.map((group) => (
+      <section class="scroll-mt-s8 bg-white" id={group.slug}>
+        <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+          <SectionHead>{group.heading}</SectionHead>
+          {group.leagues.map((league, i) => (
+            <LeagueBlock league={league} first={i === 0} last={i === group.leagues.length - 1} />
+          ))}
+        </div>
+      </section>
+    ))
+  }
 
   {
     /* 5. "On the blanks" stood here and was removed at CJ's request 2026-09-04,

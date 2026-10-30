@@ -1,0 +1,18 @@
+{
+  "name": "Lakeville Monday Scramble",
+  "venue": "lakeville",
+  "order": 1,
+  "state": "open",
+  "status": "live",
+  "oneLiner": "Two-person scramble against the field, handicapped, over 18 holes — twelve weeks of regular season and two of playoffs. League Member Extra’s: (2) Hours of anytime sim time to use outside of league!",
+  "beginnerNote": "A scramble is the friendliest format there is: you both hit, you take the better ball and go again from there. Handicaps level the field, so nobody has to card a bad hole on their own.",
+  "night": "Mondays, 6:00pm",
+  "format": "2-person scramble against the field, handicapped, 18 holes. Format may change based on player feedback.",
+  "weeks": 14,
+  "startDate": "2027-01-11",
+  "price": "$980 per team. A $50 non-refundable deposit per team holds your spot.",
+  "prizes": "Prizes dependent on size of League",
+  "registerUrl": "https://app.primesignup.com/customer/events/the-links-of-lakeville-winter-2027-league-monday-night",
+  "season": "2027 Winter",
+  "published": true
+}

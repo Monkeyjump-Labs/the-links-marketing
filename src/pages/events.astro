@@ -6,8 +6,7 @@
  *
  * **The idea: answer the four-second question in the headline.** A planner
  * arrives with exactly one question — *will my people fit?* — and the old page
- * made them read three paragraphs to find out. "Room for 36." is the h1's second
- * line. X-Golf Eden Prairie publishes "up to 75 guests" and surfaces on the live
+ * made them read three paragraphs to find out. The h1 now names both locations and their capacities. X-Golf Eden Prairie publishes "up to 75 guests" and surfaces on the live
  * query; The Links has a real number and was burying it (seo-map.md §1.3).
  *
  * **This page originated the gap system**, and it is still where the third mark
@@ -39,18 +38,14 @@ const venues = await getVenues();
 const lakeville = venues.find((v) => v.data.slug === 'lakeville');
 const stillwater = venues.find((v) => v.data.slug === 'stillwater');
 
-/**
- * The headline number. Sourced from Lakeville's own amenities list ("Up to 36
- * golfers"), not computed from bays × 6 — 6 × 6 = 36 is a coincidence here, and
- * deriving a capacity claim from a multiplication we invented is exactly the
- * kind of plausible-but-unsourced fact the truth audit spent 38 findings on.
- */
-const HEADLINE_CAPACITY = 36;
+/** Whole-venue event capacity, as supplied by CJ 2026-10-29. */
+const LAKEVILLE_EVENT_CAPACITY = 80;
+const STILLWATER_EVENT_CAPACITY = 50;
 
 const metadata = {
   metaTitle: 'Golf Simulator Parties & Corporate Events — Twin Cities',
   metaDescription:
-    'Corporate outings, birthdays and bachelor parties on golf simulators in Lakeville and Stillwater, MN. Room for up to 36 at Lakeville. Capacity and an enquiry form.',
+    'Corporate outings, birthdays and bachelor parties on golf simulators in Lakeville and Stillwater, MN. Events at both locations: up to 80 guests at Lakeville, up to 50 at Stillwater. Capacity and an enquiry form.',
 };
 
 /** The three recurring jobs the segment actually gets booked for. No numerals — they are not steps. */
@@ -61,7 +56,7 @@ const jobs = [
   },
   {
     title: 'Birthdays',
-    body: 'Adult birthdays and teen ones. A bay is booked by the hour, not the head, so the cost does not climb every time someone else says yes.',
+    body: 'Adult birthdays and teen ones.',
   },
   {
     title: 'Bachelor and bachelorette parties',
@@ -81,10 +76,13 @@ const jobs = [
       <div class="grid gap-s8 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-start lg:gap-s9">
         <div>
           <p class="caps-label text-amber">Work outings · birthdays · parties</p>
-          <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Room for 36.</h1>
+          <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">
+            Events at both locations.
+          </h1>
           <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
-            That is Lakeville, across all six bays. Tell us the date and the headcount and we come back with a price —
-            that is the whole process.
+            We host events at The Links of Lakeville (up to 80 guests) and The Links of Stillwater (up to 50 guests).
+            Tell us the date, the headcount and which location, and we come back with a price — that is the whole
+            process.
           </p>
 
           {
@@ -100,10 +98,9 @@ const jobs = [
               that actually emits dt/dd, like `HeroStrip`. */
           }
           <div class="mt-s7 grid grid-cols-2 gap-s5 border-t-score border-amber pt-s5">
-            <ReadoutCell label="Lakeville" tone="dark" size="xl">{HEADLINE_CAPACITY}</ReadoutCell>
-            <ReadoutCell label="Bays there" tone="dark" size="xl">{lakeville?.data.bays}</ReadoutCell>
+            <ReadoutCell label="Lakeville, up to" tone="dark" size="xl">{LAKEVILLE_EVENT_CAPACITY}</ReadoutCell>
+            <ReadoutCell label="Stillwater, up to" tone="dark" size="xl">{STILLWATER_EVENT_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Per bay" tone="dark" size="name">Up to 6 people</ReadoutCell>
-            <ReadoutCell label="Priced by" tone="dark" size="name">The bay, not the head</ReadoutCell>
           </div>
         </div>
 
@@ -132,7 +129,7 @@ const jobs = [
   {/* 3. HOW MANY FIT, per venue — one honest number and one honest gap. */}
   <section class="bg-greige">
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead>How many people fit</SectionHead>
+      <SectionHead>How many people fit, at each location</SectionHead>
 
       <div class="grid gap-s7 border-t-score border-navy pt-s6 md:grid-cols-2 md:gap-s8">
         <div>
@@ -140,12 +137,10 @@ const jobs = [
             {lakeville?.data.name}
           </h3>
           <div class="mt-s5 flex flex-wrap gap-s7">
-            <ReadoutCell label="Golfers" size="xl">{HEADLINE_CAPACITY}</ReadoutCell>
+            <ReadoutCell label="Guests, up to" size="xl">{LAKEVILLE_EVENT_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Bays" size="xl">{lakeville?.data.bays}</ReadoutCell>
           </div>
-          <p class="mt-s5 max-w-prose-page text-body leading-body text-inkBody">
-            Each bay takes up to six people. Four per bay is the pace we recommend if you want the round to finish.
-          </p>
+          <p class="mt-s5 max-w-prose-page text-body leading-body text-inkBody">Each bay takes up to six people.</p>
         </div>
 
         <div>
@@ -153,27 +148,11 @@ const jobs = [
             {stillwater?.data.name}
           </h3>
           <div class="mt-s5 flex flex-wrap gap-s7">
+            <ReadoutCell label="Guests, up to" size="xl">{STILLWATER_EVENT_CAPACITY}</ReadoutCell>
             <ReadoutCell label="Bays" size="xl">{stillwater?.data.bays}</ReadoutCell>
           </div>
-          {
-            /* The bay count is published; the venue total is not. Rather than
-              multiply four by six and present the product as a fact, the cell
-              says what it is. */
-          }
-          <GapCell
-            class="mt-s5"
-            label="Golfers"
-            state="notSet"
-            size="xl"
-            reason="Stillwater's total headcount, its seating, and whether the bowling side can take a larger group have not been supplied. We are not going to multiply the bays by six and call that a capacity."
-          />
         </div>
       </div>
-
-      <p class="mt-s7 max-w-prose-page text-body leading-body text-inkBody">
-        For timing, use about an hour per person for 18 holes — a group of four in one bay is roughly a four-hour round.
-        If that is longer than you want the event to run, book more bays and play fewer holes. Most groups do.
-      </p>
     </div>
   </section>
 
@@ -187,8 +166,7 @@ const jobs = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead>What it costs</SectionHead>
 
-      <div class="grid gap-s7 border-y-quiet border-navy py-s6 md:grid-cols-3">
-        <ReadoutCell label="A bay, by the hour" size="xl">$45–60</ReadoutCell>
+      <div class="grid gap-s7 border-y-quiet border-navy py-s6 md:grid-cols-2">
         <GapCell
           label="Event packages"
           state="quoted"
@@ -204,8 +182,8 @@ const jobs = [
       </div>
 
       <p class="mt-s6 max-w-prose-page text-body leading-body text-inkBody">
-        Groups of twelve or more are priced as a group. Under twelve, there is nothing to quote — the hourly rate above
-        is the whole price, and you can book it yourself right now.
+        Groups of twelve or more are priced as a group. Under twelve, there is nothing to quote — you can book it
+        yourself right now at the normal hourly rate.
       </p>
 
       {
@@ -235,16 +213,12 @@ const jobs = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead>Food and drink</SectionHead>
       <p class="max-w-prose-page text-lead leading-body text-inkBody">
-        Lakeville has a full bar and a food menu of its own — pizza, wings, appetisers — and the tab runs through the
-        venue, so one person settles it at the end. Stillwater's food and drink comes from Stillwater Bowl &amp; Lounge,
-        the business the bays sit inside.
+        <strong>Lakeville</strong> has a full bar and a food menu of its own — pizza, wings, appetisers — and the tab runs
+        through the venue, so one person settles it at the end.
       </p>
-      <a
-        href="/menu/"
-        class="mt-s5 inline-flex min-h-tap items-center font-bold text-inkBody underline decoration-2 underline-offset-4 transition-colors duration-fast ease-standard hover:text-ember"
-      >
-        See the menu
-      </a>
+      <p class="mt-s5 max-w-prose-page text-lead leading-body text-inkBody">
+        <strong>Stillwater's</strong> food and drink comes from Stillwater Bowl &amp; Lounge, the business the bays sit inside.
+      </p>
 
       <StubNote
         class="mt-s7"
