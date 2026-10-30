@@ -72,8 +72,8 @@ import LeagueBlock from '../components/venue/LeagueBlock.astro';
 import LeagueSchema from '../components/venue/LeagueSchema.astro';
 import SeasonTrack from '../components/venue/SeasonTrack.astro';
 import SectionHead from '../components/venue/SectionHead.astro';
+import TeeTickets from '../components/venue/TeeTickets.astro';
 import WaitlistForm from '../components/venue/WaitlistForm.astro';
-import { buttonClasses } from '../lib/buttons';
 import { LEAGUE_WAITLIST_ID, upcomingSeason } from '../lib/leagues';
 
 const leagues = (await getCollection('leagues'))
@@ -93,21 +93,26 @@ const venueGroups = [
   {
     slug: 'lakeville',
     heading: 'Lakeville Location',
-    jump: 'Lakeville Leagues',
+    ticket: { admit: 'Admit your crew', where: 'South Metro', title: 'Lakeville', stub: 'Pick a Lakeville night' },
     tagline: 'Pick your night. Same friends, every week. Full Bar and Food!',
     leagues: leagues.filter((l) => l.data.venue === 'lakeville'),
   },
   {
     slug: 'stillwater',
     heading: 'Stillwater Location',
-    jump: 'Stillwater Leagues',
+    ticket: { admit: 'Admit your crew', where: 'East Metro', title: 'Stillwater', stub: 'Pick a Stillwater night' },
     tagline: 'Pick your night. Same friends, every week. With bowling next door. Full Bar and Food!',
     leagues: leagues.filter((l) => l.data.venue === 'stillwater'),
   },
   {
     slug: 'floating',
     heading: 'Floating League across all Locations',
-    jump: 'Floating League at Both Locations',
+    ticket: {
+      admit: 'All-access pass',
+      where: 'Both locations',
+      title: 'Floating',
+      stub: 'Join Floating — starts first',
+    },
     tagline: 'No set night. Just book your round when it works for you. Play everyone at both locations!',
     leagues: leagues.filter((l) => l.data.venue === 'both'),
   },
@@ -165,26 +170,24 @@ const steps = [
       }
       <SeasonTrack class="mt-s8" steps={steps} activeIndex={0} tone="dark" />
       {
-        /* Jump links to the two venue bands below. Same page on purpose: five
-          leagues do not need a landing page, and a click before the nights is a
-          click between a visitor and the answer. The ids are on the bands. */
+        /* Tee tickets — jump links to the venue bands below, styled as a custom
+          CTA set CJ chose 2026-10-30 (see `TeeTickets` for the style rules it
+          breaks on purpose). Same page on purpose: five leagues do not need a
+          landing page, and a click before the nights is a click between a
+          visitor and the answer. The ids are on the bands. */
       }
-      <div class="mt-s7 flex flex-col gap-s6 sm:flex-row sm:items-start">
-        {
-          venueGroups.map((group) => (
-            <div class="flex max-w-xs flex-col items-start gap-s3">
-              <a
-                href={'#' + group.slug}
-                class={buttonClasses('lg', 'onDark')}
-                data-analytics={'leagues:jump-' + group.slug}
-              >
-                {group.jump} <span aria-hidden="true">↓</span>
-              </a>
-              <p class="text-small leading-body text-paper">{group.tagline}</p>
-            </div>
-          ))
-        }
-      </div>
+      <TeeTickets
+        class="mt-s8"
+        tickets={venueGroups.map((group) => ({
+          href: '#' + group.slug,
+          admit: group.ticket.admit,
+          where: group.ticket.where,
+          title: group.ticket.title,
+          tagline: group.tagline,
+          stub: group.ticket.stub,
+          analytics: 'leagues:jump-' + group.slug,
+        }))}
+      />
     </div>
   </section>
 
