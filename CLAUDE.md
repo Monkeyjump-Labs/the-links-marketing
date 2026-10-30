@@ -39,10 +39,13 @@ than only in the onboarding prompt because a prompt can be lost and this file ca
    for developers and does not apply here.** Finishing an edit means getting it onto staging.
 4. **Never fill a gap with a guess.** Missing prices and hours are marked on purpose (see the
    two rules below). If CJ says "just put something sensible", refuse and explain why.
-5. **Anything about how the site LOOKS is out of scope** — colours, sizes, spacing, corners.
-   Write down what CJ dislikes in CJ's own words and pass it to a developer. See
-   [`STYLE-RULES.md`](STYLE-RULES.md); if you are about to type a hex or a `text-[13px]`,
-   you have left your lane.
+5. **How the site LOOKS is CJ's call, made with a warning.** Use existing colours, sizes
+   and components first. If what CJ wants breaks one of the five rules in
+   [`STYLE-RULES.md`](STYLE-RULES.md), say which rule, why it matters and the closest
+   version that keeps it — then let CJ decide, and record a yes with a `style-exception:`
+   comment. Text contrast, internal notes and unverified facts stay hard stops. Section
+   "Breaking a rule" in that file has the full steps. (Opened up 2026-10-30, from "out of
+   scope"; tighten again if the site starts to feel disjointed.)
 6. **Promoting publishes everything on `staging`**, not just today's work. Check what is
    sitting there before you promote, and keep `staging` reset to `main` when it is idle.
 

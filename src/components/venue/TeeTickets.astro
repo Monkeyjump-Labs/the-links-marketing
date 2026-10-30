@@ -1,0 +1,109 @@
+---
+/**
+ * Tee tickets — a stylised call-to-action set for a DARK hero. Each ticket is
+ * one link: a paper card (who it admits, where, a big name, one line of why)
+ * with an amber tear-off stub carrying the action.
+ *
+ * Chosen by CJ 2026-10-30 from three league-CTA explorations (D tagline cards,
+ * E pin flags, F tee tickets) for the leagues hero, where it replaced three
+ * plain jump buttons. It is a CUSTOM CTA SECTION: the one place on the site the
+ * scoreboard register is allowed to play.
+ *
+ * ── Style exceptions, accepted on purpose ───────────────────────────────────
+ * STYLE-RULES.md lets a rule be broken once the owner has been told which one
+ * and why it matters, and has said yes. This component breaks three:
+ *
+ * 1. **Tilt.** Nothing else on the site rotates. A tilted card reads as
+ *    playful, which is the point here and would be noise anywhere else. Only
+ *    from `lg` up — stacked on a phone, a tilt is just a crooked card — and it
+ *    straightens on hover only where motion is allowed.
+ * 2. **A rounded panel.** Rule 3 keeps `radius.control` (3px) for buttons and
+ *    inputs and keeps panels square. A ticket with square corners reads as a
+ *    slab rather than a ticket, so the card borrows the same 3px — no new
+ *    radius was added.
+ * 3. **Perforation notches.** Decoration, where the register says structure
+ *    comes from colour blocks and rules. They are two circles in the ground
+ *    colour, so they must sit on `bg-midnight` — on any other ground they show
+ *    as midnight dots.
+ *
+ * Kept: NO shadow (the explorations drew a lift; rule 4 holds, and a shadow is
+ * the fastest way to look like a different site), no gradient, and every colour
+ * and size is an existing token. Contrast on paper: ink 12.24:1, inkBody
+ * 9.13:1, inkMuted 6.32:1, the ember label 6.85:1. The stub: midnight on amber
+ * 9.48:1, and 17.5:1 on its white hover.
+ *
+ * Rules of use: dark ground only, once per page, at most three tickets.
+ */
+export interface TeeTicket {
+  /** Where the ticket points — usually an in-page anchor. */
+  href: string;
+  /** Left-hand caps label, e.g. "Admit your crew". */
+  admit: string;
+  /** Right-hand caps label, e.g. "South Metro". */
+  where: string;
+  /** The big name, e.g. "Lakeville". */
+  title: string;
+  /** One or two sentences of why. */
+  tagline: string;
+  /** The action on the stub, e.g. "Pick a Lakeville night". */
+  stub: string;
+  /** Optional `data-analytics` value for the link. */
+  analytics?: string;
+}
+
+interface Props {
+  tickets: TeeTicket[];
+  class?: string;
+}
+
+const { tickets, class: className = '' } = Astro.props;
+
+// Outer tickets lean away from the middle one; the middle stands straight.
+// style-exception: tilt, off-register decoration — approved by CJ 2026-10-30
+// Tailwind's own 1deg step — no arbitrary angle.
+const TILT = ['lg:-rotate-1', 'lg:rotate-0', 'lg:rotate-1'];
+---
+
+<ul class:list={['grid gap-s6 lg:grid-cols-3 lg:gap-s5', className]}>
+  {
+    tickets.map((t, i) => (
+      <li>
+        {/* style-exception: rule 3, rounded ticket corners — approved by CJ 2026-10-30 */}
+        <a
+          href={t.href}
+          data-analytics={t.analytics}
+          class:list={[
+            'group relative flex h-full flex-col rounded-control bg-paper text-ink',
+            'motion-safe:transition-transform motion-safe:duration-slow motion-safe:ease-standard',
+            'lg:motion-safe:hover:rotate-0',
+            TILT[i % TILT.length],
+          ]}
+        >
+          <div class="flex flex-1 flex-col gap-s3 p-s5">
+            <div class="flex items-start justify-between gap-s4">
+              <span class="caps-label text-label-sm text-inkMuted">{t.admit}</span>
+              <span class="caps-label text-label-sm text-ember">{t.where}</span>
+            </div>
+            <span class="font-display text-row leading-display font-extrabold tracking-display-tight">{t.title}</span>
+            <span class="text-small leading-body text-inkBody">{t.tagline}</span>
+          </div>
+
+          {/* The tear line. A dashed midnight rule with a notch at each end.
+              style-exception: decoration (perforation notches) — approved by CJ 2026-10-30 */}
+          <div class="relative flex items-center justify-between gap-s4 rounded-b-control border-t-rule border-dashed border-midnight bg-amber px-s5 py-s4 font-display font-bold tracking-display text-midnight group-hover:bg-white">
+            <span
+              aria-hidden="true"
+              class="absolute top-0 -left-s2 size-s4 -translate-y-1/2 rounded-full bg-midnight"
+            />
+            <span
+              aria-hidden="true"
+              class="absolute top-0 -right-s2 size-s4 -translate-y-1/2 rounded-full bg-midnight"
+            />
+            <span>{t.stub}</span>
+            <span aria-hidden="true">↓</span>
+          </div>
+        </a>
+      </li>
+    ))
+  }
+</ul>
