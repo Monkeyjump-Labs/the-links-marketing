@@ -92,7 +92,12 @@ const season = upcomingSeason(leagues);
 const venueGroups = [
   { slug: 'lakeville', heading: 'Lakeville Location', leagues: leagues.filter((l) => l.data.venue === 'lakeville') },
   { slug: 'stillwater', heading: 'Stillwater Location', leagues: leagues.filter((l) => l.data.venue === 'stillwater') },
-  { slug: 'floating', heading: 'Both Locations', leagues: leagues.filter((l) => l.data.venue === 'both') },
+  {
+    slug: 'floating',
+    heading: 'Floating League across all Locations',
+    jump: 'Floating League',
+    leagues: leagues.filter((l) => l.data.venue === 'both'),
+  },
 ].filter((g) => g.leagues.length > 0);
 
 const metadata = {
@@ -160,7 +165,7 @@ const steps = [
               class={buttonClasses('lg', 'onDark')}
               data-analytics={'leagues:jump-' + group.slug}
             >
-              {group.heading} Leagues <span aria-hidden="true">↓</span>
+              {group.jump ?? `${group.heading} Leagues`} <span aria-hidden="true">↓</span>
             </a>
           ))
         }
