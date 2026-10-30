@@ -92,6 +92,7 @@ const season = upcomingSeason(leagues);
 const venueGroups = [
   { slug: 'lakeville', heading: 'Lakeville Location', leagues: leagues.filter((l) => l.data.venue === 'lakeville') },
   { slug: 'stillwater', heading: 'Stillwater Location', leagues: leagues.filter((l) => l.data.venue === 'stillwater') },
+  { slug: 'floating', heading: 'Both Locations', leagues: leagues.filter((l) => l.data.venue === 'both') },
 ].filter((g) => g.leagues.length > 0);
 
 const metadata = {
