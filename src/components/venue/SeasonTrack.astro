@@ -29,7 +29,7 @@ export interface TrackStep {
   /** NOW / NEXT / THEN — the step's place in time, not its name. */
   marker: string;
   title: string;
-  body: string;
+  body?: string;
 }
 
 interface Props {
@@ -85,7 +85,7 @@ const bodyTone = tone === 'dark' ? 'text-paper' : 'text-inkBody';
           <p class:list={['mt-s3 font-display text-card leading-display font-bold tracking-display', titleTone]}>
             {step.title}
           </p>
-          <p class:list={['mt-s2 text-small leading-body', bodyTone]}>{step.body}</p>
+          {step.body && <p class:list={['mt-s2 text-small leading-body', bodyTone]}>{step.body}</p>}
         </li>
       ))
     }
