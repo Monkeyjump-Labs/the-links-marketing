@@ -119,7 +119,15 @@ const facts: { label: string; value?: string; reason?: string }[] = isArchive
         isArchive ? 'text-inkMuted' : 'text-ink',
       ]}
     >
-      {d.name}
+      {
+        d.state === 'full' ? (
+          <>
+            <s>{d.name}</s> FULL
+          </>
+        ) : (
+          d.name
+        )
+      }
     </h3>
     <p class="caps-label text-label-sm text-inkMuted">{stateLabel} · {d.season}</p>
   </div>

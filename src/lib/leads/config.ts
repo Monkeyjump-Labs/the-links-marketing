@@ -187,6 +187,12 @@ export const LEAD_LISTS: Record<string, LeadList> = {
     notify: INBOX,
     consent: 'One email when registration opens. Nothing else, ever.',
   },
+  'league-2027-winter-lakeville-wednesday-match-play': {
+    label: 'League waitlist — Lakeville Wednesday winter 2027',
+    tab: TABS.waitlist,
+    notify: INBOX,
+    consent: 'One email when registration opens. Nothing else, ever.',
+  },
   'league-fall-winter-2026-stillwater': {
     label: 'League waitlist — Stillwater',
     tab: TABS.waitlist,
