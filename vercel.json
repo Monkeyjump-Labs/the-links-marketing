@@ -27,11 +27,6 @@
       "permanent": true
     },
     {
-      "source": "/specials{/}?",
-      "destination": "/rates/",
-      "permanent": true
-    },
-    {
       "source": "/farewaygolf/lakeville-links-memberships{/}?",
       "destination": "/memberships/",
       "permanent": true

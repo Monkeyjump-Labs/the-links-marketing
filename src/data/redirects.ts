@@ -4,4 +4,7 @@
 // filesystems the redirect stub and the target page resolve to the same output
 // path and clobber each other at build time. Handle case normalization at the
 // host/CDN level instead.
-export const redirects: Record<string, string> = {};
+export const redirects: Record<string, string> = {
+  // The Lakeville-only flyer page became the two-venue /specials page.
+  '/lakeville-specials/': '/specials/',
+};
