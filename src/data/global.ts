@@ -42,6 +42,7 @@ export const globalData = {
     { label: 'Leagues', href: '/leagues/' },
     { label: 'Contests', href: '/contests/' },
     { label: 'Memberships', href: '/memberships/' },
+    { label: 'Specials', href: '/specials/' },
     { label: 'Events', href: '/events/' },
     { label: 'Food & Drink', href: '/menu/' },
     { label: 'Contact', href: '/contact/' },
@@ -53,6 +54,7 @@ export const globalData = {
     { label: 'Juniors', href: '/juniors/' },
     { label: 'Simulators', href: '/simulators/' },
     { label: 'Gift Cards', href: '/gift-cards/' },
+    { label: 'Specials', href: '/specials/' },
     { label: 'FAQs', href: '/faq/' },
     /**
      * "Our Story", not "About", at the owner's request (2026-09-08) — and it
