@@ -5,9 +5,8 @@
  * `/leagues` — because a special is per location and a visitor should know which
  * venue it belongs to before they read it.
  *
- * Still UNLINKED and `noIndex`, exactly as the page it replaces was: it is
- * reachable by a direct link (a social post, a QR code, a text) and not from the
- * nav, the footer or the sitemap. Link it from somewhere only on purpose.
+ * Linked from the top nav and the footer, and indexable. The page it replaces was
+ * deliberately unlinked and `noIndex`; it was opened up at the owner's request.
  *
  * Every figure below is read off a flyer image, which is the source of truth. The
  * image alone is not enough — prices and offers are HTML text on this site — so
@@ -31,7 +30,6 @@ const metadata = {
   metaTitle: 'Specials — The Links, Lakeville & Stillwater MN',
   metaDescription:
     'Half-Price Tuesdays at The Links in Lakeville and Stillwater, plus the Sunday Tailgate Bay at Lakeville: simulator time with beer, pizza and wings.',
-  noIndex: true,
 };
 
 const tailgateIncludes = [
