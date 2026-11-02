@@ -79,6 +79,7 @@ import ReadoutCell from '../components/venue/ReadoutCell.astro';
 import StubNote from '../components/venue/StubNote.astro';
 import { buttonClasses } from '../lib/buttons';
 import { globalData } from '../data/global';
+import { getVenues, telHref } from '../lib/venues';
 
 /**
  * The walk-up rates every package on this page is measured against.
@@ -116,6 +117,8 @@ const walkUpFor = (m: { data: { name: string } }) => (m.data.name === 'Anytime' 
 const EARLY_BIRD_ENDS = '2026-10-31';
 const EARLY_BIRD_LABEL = '31 October 2026';
 const earlyBirdLive = new Date() <= new Date(EARLY_BIRD_ENDS + 'T23:59:59');
+
+const venues = await getVenues();
 
 const all = (await getCollection('memberships'))
   .filter((m) => m.data.published)
@@ -253,6 +256,29 @@ const smallPrint = [
           { label: 'Season', value: '2026/27', qualifier: 'the prices on this page' },
         ]}
       />
+
+      <div class="mt-s8 border-y-score border-amber py-s7">
+        <p class="caps-label text-amber">Discounts available</p>
+        <h2 class="mt-s4 text-section leading-display font-extrabold tracking-display-tight text-white">
+          Seniors, Veterans &amp; Active First Responders
+        </h2>
+        <p class="mt-s5 max-w-prose-page text-lead leading-body text-paper">
+          On all Memberships &amp; Packages below, we have discounts available for Senior, Veteran &amp; Active First
+          Responder packages. Call the store for details.
+        </p>
+        <ul class="mt-s6 flex flex-wrap gap-x-s7 gap-y-s3">
+          {
+            venues.map((v) => (
+              <li class="text-lead leading-body text-white">
+                {v.data.name}:{' '}
+                <a class="font-bold underline decoration-2 underline-offset-4" href={telHref(v.data.phone)}>
+                  {v.data.phone}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </section>
 
