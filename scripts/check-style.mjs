@@ -23,6 +23,17 @@
  * Deleting a violation and running `npm run style:baseline` tightens the gate
  * permanently. There is no way to loosen it except deliberately, in a commit
  * someone reviews.
+ *
+ * ACCEPTED EXCEPTIONS (2026-10-30)
+ * The owner may break a style rule once they have been told which rule and why
+ * it matters, and have said yes (STYLE-RULES.md, "Breaking a rule"). That yes is
+ * recorded where the value lives: a `style-exception: <reason>` comment on the
+ * same line or the line above. Such a value does not count against the
+ * baseline. Every note is listed as a warning on every run instead — including
+ * notes on rules this gate cannot detect, like a tilt or a rounded panel — so
+ * the exceptions stay visible rather than disappearing into a count. A literal WITHOUT the
+ * note still fails: the gate's job is now to make sure nobody broke a rule
+ * without saying so, not to stop them breaking it.
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { globSync } from 'node:fs';
@@ -60,13 +71,30 @@ const files = globSync('src/**/*.{astro,tsx,ts,jsx,js,css}', { cwd: ROOT })
   .filter((f) => f !== 'src/styles/tokens.css' && f !== 'src/styles/global.css')
   .sort();
 
+const EXCEPTION = /style-exception:\s*(.*?)\s*(?:\*\/|-->|\}|$)/;
+
 const counts = {};
+const accepted = [];
 for (const f of files) {
-  const src = readFileSync(resolve(ROOT, f), 'utf8');
-  for (const { id, re } of PATTERNS) {
-    const n = (src.match(re) || []).length;
-    if (n) (counts[f] ??= {})[id] = n;
-  }
+  const lines = readFileSync(resolve(ROOT, f), 'utf8').split('\n');
+  lines.forEach((line, i) => {
+    const own = line.match(EXCEPTION);
+    // Every note is listed, including ones on a rule this gate cannot see (a
+    // tilt, a rounded panel) — the list is the record of what was broken.
+    if (own) accepted.push(`  ${f}:${i + 1}  ${own[1] || '(no reason given)'}`);
+    const excused = own ?? lines[i - 1]?.match(EXCEPTION);
+    for (const { id, re } of PATTERNS) {
+      for (const _ of line.matchAll(re)) {
+        if (!excused) (counts[f] ??= {})[id] = (counts[f]?.[id] ?? 0) + 1;
+      }
+    }
+  });
+}
+
+if (accepted.length) {
+  console.warn(
+    `⚠ ${accepted.length} accepted style exception(s) — a rule broken on purpose:\n${accepted.join('\n')}\n`,
+  );
 }
 
 const update = process.argv.includes('--update');
@@ -100,8 +128,10 @@ if (regressions.length) {
       `  The token system is the single place colours and sizes are defined, and it is what\n` +
       `  the contrast gate measures. A literal in a component is outside both.\n\n` +
       `  Read: marketing/websites/the-links/design/STYLE-GUIDE.md\n` +
-      `  If a value genuinely has no token, that is a DESIGN decision — add it to\n` +
-      `  design/tokens.json and run 'npm run tokens:build', do not inline it.\n`,
+      `  If a value genuinely has no token, either add it to design/tokens.json and run\n` +
+      `  'npm run tokens:build', or — once the owner has been told which rule this breaks\n` +
+      `  and said yes — mark the line with a 'style-exception: <reason>' comment.\n` +
+      `  See STYLE-RULES.md, "Breaking a rule".\n`,
   );
   process.exit(1);
 }
