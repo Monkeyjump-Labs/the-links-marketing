@@ -23,13 +23,24 @@ import tailgateFlyer from '../assets/images/sunday-tailgate-bay.webp';
 import lakevilleTuesday from '../assets/images/half-price-tuesdays-lakeville.jpg';
 import stillwaterTuesday from '../assets/images/half-price-tuesdays-stillwater.webp';
 
+/**
+ * SWITCH: Half-Price Tuesdays.
+ * `false` hides every Half-Price Tuesdays block on this page (the Lakeville card,
+ * the whole Stillwater band, the intro sentence and the search description).
+ * Nothing is deleted. To bring it back, change this to `true` and save.
+ * While it is off, the Stillwater band does not render, because Tuesdays is its
+ * only content.
+ */
+const showHalfPriceTuesdays = false;
+
 const lakeville = await getVenue('lakeville');
 const stillwater = await getVenue('stillwater');
 
 const metadata = {
   metaTitle: 'Specials — The Links, Lakeville & Stillwater MN',
-  metaDescription:
-    'Half-Price Tuesdays at The Links in Lakeville and Stillwater, plus the Kirko Chains Tailgate Bay at Lakeville: simulator time with beer, pizza and an appetizer.',
+  metaDescription: showHalfPriceTuesdays
+    ? 'Half-Price Tuesdays at The Links in Lakeville and Stillwater, plus the Kirko Chains Tailgate Bay at Lakeville: simulator time with beer, pizza and an appetizer.'
+    : 'The Kirko Chains Tailgate Bay at The Links in Lakeville: a 3-hour simulator rental with beer, pizza and an appetizer, $149 per bay.',
 };
 
 const tailgateIncludes = [
@@ -48,7 +59,11 @@ const tailgateIncludes = [
       <p class="caps-label text-amber">Both locations</p>
       <h1 class="mt-s5 text-hero leading-hero font-extrabold tracking-display-tight text-white">Specials</h1>
       <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
-        Half-price simulator bays every Tuesday, at both locations. Lakeville also has the Kirko Chains Tailgate Bay.
+        {
+          showHalfPriceTuesdays
+            ? 'Half-price simulator bays every Tuesday, at both locations. Lakeville also has the Kirko Chains Tailgate Bay.'
+            : 'The Kirko Chains Tailgate Bay, at our Lakeville location.'
+        }
       </p>
     </div>
   </section>
@@ -58,44 +73,48 @@ const tailgateIncludes = [
     <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
       <SectionHead>Lakeville Specials</SectionHead>
 
-      <article class="border-t-score border-navy py-s7">
-        <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
-          <Image
-            src={lakevilleTuesday}
-            widths={[480, 720]}
-            width={720}
-            quality={60}
-            sizes="(min-width: 1024px) 480px, 100vw"
-            alt="Flyer for Half-Price Tuesdays at The Links: 50% off all simulator bays, $9 Coors pitchers, and $3 domestic cans, tap and rail drinks."
-            class="w-full"
-          />
-          <div>
-            <p class="caps-label text-label-sm text-inkMuted">Every Tuesday · Lakeville Location Only</p>
-            <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">Half-Price Tuesdays</h3>
-            <p class="mt-s5 border-l-slab border-ember pl-s4 text-lead leading-body text-inkBody">
-              50% off all simulator bays.
-            </p>
-            <ul class="mt-s5 list-disc space-y-s2 pl-s6 text-body leading-body text-inkBody">
-              <li>$9 Coors pitchers</li>
-              <li>$3 domestic cans, tap and rail drinks</li>
-            </ul>
-            {
-              lakeville && (
-                <a
-                  href={lakeville.data.bookingUrl}
-                  class={buttonClasses('md', 'primary') + ' mt-s6'}
-                  target="_blank"
-                  rel="noopener"
-                  data-analytics="specials:book-lakeville-tuesday"
-                >
-                  Book your bay <span aria-hidden="true">→</span>
-                  <span class="sr-only">(opens the Lakeville booking page in a new tab)</span>
-                </a>
-              )
-            }
-          </div>
-        </div>
-      </article>
+      {
+        showHalfPriceTuesdays && (
+          <article class="border-t-score border-navy py-s7">
+            <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
+              <Image
+                src={lakevilleTuesday}
+                widths={[480, 720]}
+                width={720}
+                quality={60}
+                sizes="(min-width: 1024px) 480px, 100vw"
+                alt="Flyer for Half-Price Tuesdays at The Links: 50% off all simulator bays, $9 Coors pitchers, and $3 domestic cans, tap and rail drinks."
+                class="w-full"
+              />
+              <div>
+                <p class="caps-label text-label-sm text-inkMuted">Every Tuesday · Lakeville Location Only</p>
+                <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">
+                  Half-Price Tuesdays
+                </h3>
+                <p class="mt-s5 border-l-slab border-ember pl-s4 text-lead leading-body text-inkBody">
+                  50% off all simulator bays.
+                </p>
+                <ul class="mt-s5 list-disc space-y-s2 pl-s6 text-body leading-body text-inkBody">
+                  <li>$9 Coors pitchers</li>
+                  <li>$3 domestic cans, tap and rail drinks</li>
+                </ul>
+                {lakeville && (
+                  <a
+                    href={lakeville.data.bookingUrl}
+                    class={buttonClasses('md', 'primary') + ' mt-s6'}
+                    target="_blank"
+                    rel="noopener"
+                    data-analytics="specials:book-lakeville-tuesday"
+                  >
+                    Book your bay <span aria-hidden="true">→</span>
+                    <span class="sr-only">(opens the Lakeville booking page in a new tab)</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        )
+      }
 
       <article class="border-t-hairline border-navy py-s7">
         <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
@@ -144,45 +163,49 @@ const tailgateIncludes = [
     </div>
   </section>
 
-  {/* STILLWATER */}
-  <section class="scroll-mt-s8 bg-greige" id="stillwater">
-    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
-      <SectionHead>Stillwater Specials</SectionHead>
+  {/* STILLWATER (Half-Price Tuesdays only; hidden by the switch at the top) */}
+  {
+    showHalfPriceTuesdays && (
+      <section class="scroll-mt-s8 bg-greige" id="stillwater">
+        <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+          <SectionHead>Stillwater Specials</SectionHead>
 
-      <article class="border-t-score border-navy py-s7">
-        <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
-          <Image
-            src={stillwaterTuesday}
-            widths={[480, 720]}
-            width={720}
-            quality={60}
-            sizes="(min-width: 1024px) 480px, 100vw"
-            alt="Flyer for Half-Price Tuesdays at The Links: 50% off all simulator bays."
-            class="w-full"
-          />
-          <div>
-            <p class="caps-label text-label-sm text-inkMuted">Every Tuesday · Stillwater Location Only</p>
-            <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">Half-Price Tuesdays</h3>
-            <p class="mt-s5 border-l-slab border-ember pl-s4 text-lead leading-body text-inkBody">
-              50% off all simulator bays.
-            </p>
-            {
-              stillwater && (
-                <a
-                  href={stillwater.data.bookingUrl}
-                  class={buttonClasses('md', 'primary') + ' mt-s6'}
-                  target="_blank"
-                  rel="noopener"
-                  data-analytics="specials:book-stillwater-tuesday"
-                >
-                  Book your bay <span aria-hidden="true">→</span>
-                  <span class="sr-only">(opens the Stillwater booking page in a new tab)</span>
-                </a>
-              )
-            }
-          </div>
+          <article class="border-t-score border-navy py-s7">
+            <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
+              <Image
+                src={stillwaterTuesday}
+                widths={[480, 720]}
+                width={720}
+                quality={60}
+                sizes="(min-width: 1024px) 480px, 100vw"
+                alt="Flyer for Half-Price Tuesdays at The Links: 50% off all simulator bays."
+                class="w-full"
+              />
+              <div>
+                <p class="caps-label text-label-sm text-inkMuted">Every Tuesday · Stillwater Location Only</p>
+                <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">
+                  Half-Price Tuesdays
+                </h3>
+                <p class="mt-s5 border-l-slab border-ember pl-s4 text-lead leading-body text-inkBody">
+                  50% off all simulator bays.
+                </p>
+                {stillwater && (
+                  <a
+                    href={stillwater.data.bookingUrl}
+                    class={buttonClasses('md', 'primary') + ' mt-s6'}
+                    target="_blank"
+                    rel="noopener"
+                    data-analytics="specials:book-stillwater-tuesday"
+                  >
+                    Book your bay <span aria-hidden="true">→</span>
+                    <span class="sr-only">(opens the Stillwater booking page in a new tab)</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
         </div>
-      </article>
-    </div>
-  </section>
+      </section>
+    )
+  }
 </BaseLayout>
