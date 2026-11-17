@@ -53,6 +53,7 @@ export const globalData = {
     { label: 'Lessons', href: '/lessons/' },
     { label: 'Juniors', href: '/juniors/' },
     { label: 'Simulators', href: '/simulators/' },
+    { label: 'GolfZon Hole Data', href: '/golfzon-hole-data/' },
     { label: 'Gift Cards', href: '/gift-cards/' },
     { label: 'Specials', href: '/specials/' },
     { label: 'FAQs', href: '/faq/' },

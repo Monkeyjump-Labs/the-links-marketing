@@ -125,6 +125,9 @@ const ROUTES = [
   // banner's Download button on every page that renders chrome, so a regression
   // here is a regression on the whole site's most-rendered control.
   '/app/',
+  // Added with the page itself (2026-11-17): a reference look-up with a search
+  // box and a wide table, which is exactly what the overflow check is for.
+  '/golfzon-hole-data/',
 ];
 
 /**
@@ -611,9 +614,7 @@ if (report.contrast.length) {
 if (report.otherA11y.length) {
   failures.push(
     `\u2716 ${report.otherA11y.length} accessibility violation(s):\n` +
-      report.otherA11y
-        .map((a) => `      ${a.route} [${a.viewport}] — ${a.description ?? a.id}`)
-        .join('\n') +
+      report.otherA11y.map((a) => `      ${a.route} [${a.viewport}] — ${a.description ?? a.id}`).join('\n') +
       `\n  These are axe rules other than contrast — missing names, broken landmarks,\n` +
       `  unlabelled controls. Each one is a visitor who cannot use the page.`,
   );
@@ -622,9 +623,7 @@ if (report.otherA11y.length) {
 if (report.overflow.length) {
   failures.push(
     `\u2716 ${report.overflow.length} route/viewport(s) scroll sideways:\n` +
-      report.overflow
-        .map((o) => `      ${o.route} [${o.viewport}] — ${o.detail ?? 'horizontal overflow'}`)
-        .join('\n') +
+      report.overflow.map((o) => `      ${o.route} [${o.viewport}] — ${o.detail ?? 'horizontal overflow'}`).join('\n') +
       `\n  Almost always one element with a fixed width, a long unbroken word, or a\n` +
       `  table that needs its own scroll container. On mobile this is the most\n` +
       `  visible way a page reads as broken.`,
