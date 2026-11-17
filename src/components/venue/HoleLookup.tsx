@@ -40,6 +40,9 @@ export default function HoleLookup() {
   const [selected, setSelected] = useState<Course | null>(null);
   const [nineIdx, setNineIdx] = useState(0);
   const [unit, setUnit] = useState<'yd' | 'm'>('yd');
+  const [teeIdx, setTeeIdx] = useState(0);
+  const [minLen, setMinLen] = useState('');
+  const [maxLen, setMaxLen] = useState('');
 
   useEffect(() => {
     fetch('/data/golfzon-holes.json')
@@ -56,8 +59,21 @@ export default function HoleLookup() {
   const matches = useMemo(() => {
     if (!courses) return [];
     const q = norm(query);
-    return courses.filter((c) => (!country || c.c === country) && (!q || norm(c.n).includes(q)));
-  }, [courses, query, country]);
+    const lo = minLen === '' ? null : Number(minLen);
+    const hi = maxLen === '' ? null : Number(maxLen);
+    return courses.filter((c) => {
+      if (country && c.c !== country) return false;
+      if (q && !norm(c.n).includes(q)) return false;
+      if (lo != null || hi != null) {
+        const m = c.t[teeIdx];
+        if (m == null) return false;
+        const len = unit === 'yd' ? toYd(m) : m;
+        if (lo != null && len < lo) return false;
+        if (hi != null && len > hi) return false;
+      }
+      return true;
+    });
+  }, [courses, query, country, teeIdx, minLen, maxLen, unit]);
 
   const dist = (m: number | null) => (m == null ? '–' : unit === 'yd' ? toYd(m) : m);
   const sum = (vals: (number | null)[]) =>
@@ -111,6 +127,77 @@ export default function HoleLookup() {
         </div>
       </div>
 
+      <fieldset className="mt-s5 flex flex-wrap items-end gap-s4">
+        <legend className="text-label caps-label text-inkMuted">Total course length</legend>
+        <div className="mt-s2">
+          <label htmlFor="hl-tee" className="text-small text-inkMuted">
+            Tee
+          </label>
+          <select
+            id="hl-tee"
+            value={teeIdx}
+            onChange={(e) => setTeeIdx(Number(e.target.value))}
+            className="block min-h-tap rounded-control border-rule border-navy bg-white px-s4 py-s3 text-body text-navy"
+          >
+            {TEES.map((t, i) => (
+              <option key={t} value={i}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mt-s2">
+          <label htmlFor="hl-min" className="text-small text-inkMuted">
+            Shortest ({unit === 'yd' ? 'yards' : 'meters'})
+          </label>
+          <input
+            id="hl-min"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            value={minLen}
+            onChange={(e) => setMinLen(e.target.value)}
+            placeholder="e.g. 6000"
+            className="block min-h-tap w-36 rounded-control border-rule border-navy bg-white px-s4 py-s3 text-body text-navy placeholder:text-inkMuted"
+          />
+        </div>
+        <div className="mt-s2">
+          <label htmlFor="hl-max" className="text-small text-inkMuted">
+            Longest ({unit === 'yd' ? 'yards' : 'meters'})
+          </label>
+          <input
+            id="hl-max"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            value={maxLen}
+            onChange={(e) => setMaxLen(e.target.value)}
+            placeholder="e.g. 7000"
+            className="block min-h-tap w-36 rounded-control border-rule border-navy bg-white px-s4 py-s3 text-body text-navy placeholder:text-inkMuted"
+          />
+        </div>
+        <div className="mt-s2 flex gap-s2">
+          <button type="button" aria-pressed={unit === 'yd'} onClick={() => setUnit('yd')} className={chip}>
+            Yards
+          </button>
+          <button type="button" aria-pressed={unit === 'm'} onClick={() => setUnit('m')} className={chip}>
+            Meters
+          </button>
+        </div>
+        {(minLen !== '' || maxLen !== '') && (
+          <button
+            type="button"
+            onClick={() => {
+              setMinLen('');
+              setMaxLen('');
+            }}
+            className="mt-s2 min-h-tap cursor-pointer text-small font-semibold text-ember underline"
+          >
+            Clear length filter
+          </button>
+        )}
+      </fieldset>
+
       <p className="mt-s4 text-small text-inkMuted" aria-live="polite">
         {matches.length} of {courses.length} courses
         {matches.length > MAX_RESULTS ? ` — showing the first ${MAX_RESULTS}, type more to narrow` : ''}
@@ -131,6 +218,7 @@ export default function HoleLookup() {
               <span className="font-semibold">{c.n}</span>
               <span className="block text-small text-inkMuted">
                 {c.c} · {c.nines.reduce((a, x) => a + x.h.length, 0)} holes{c.par ? ` · par ${c.par}` : ''}
+                {c.t[teeIdx] != null && ` · ${TEES[teeIdx]} ${dist(c.t[teeIdx])} ${unit}`}
               </span>
             </button>
           </li>
