@@ -43,6 +43,7 @@ export default function HoleLookup() {
   const [teeIdx, setTeeIdx] = useState(0);
   const [minLen, setMinLen] = useState('');
   const [maxLen, setMaxLen] = useState('');
+  const [sort, setSort] = useState<'name' | 'asc' | 'desc'>('name');
 
   useEffect(() => {
     fetch('/data/golfzon-holes.json')
@@ -61,7 +62,7 @@ export default function HoleLookup() {
     const q = norm(query);
     const lo = minLen === '' ? null : Number(minLen);
     const hi = maxLen === '' ? null : Number(maxLen);
-    return courses.filter((c) => {
+    const found = courses.filter((c) => {
       if (country && c.c !== country) return false;
       if (q && !norm(c.n).includes(q)) return false;
       if (lo != null || hi != null) {
@@ -73,7 +74,14 @@ export default function HoleLookup() {
       }
       return true;
     });
-  }, [courses, query, country, teeIdx, minLen, maxLen, unit]);
+    // Sorting by length only applies once a length range is set; otherwise the
+    // list stays alphabetical (the order the data file is in).
+    if (sort !== 'name' && (lo != null || hi != null)) {
+      const dir = sort === 'asc' ? 1 : -1;
+      found.sort((a, b) => dir * ((a.t[teeIdx] ?? 0) - (b.t[teeIdx] ?? 0)));
+    }
+    return found;
+  }, [courses, query, country, teeIdx, minLen, maxLen, unit, sort]);
 
   const dist = (m: number | null) => (m == null ? '–' : unit === 'yd' ? toYd(m) : m);
   const sum = (vals: (number | null)[]) =>
@@ -184,6 +192,23 @@ export default function HoleLookup() {
             Meters
           </button>
         </div>
+        {(minLen !== '' || maxLen !== '') && (
+          <div className="mt-s2">
+            <label htmlFor="hl-sort" className="text-small text-inkMuted">
+              Sort by length
+            </label>
+            <select
+              id="hl-sort"
+              value={sort}
+              onChange={(e) => setSort(e.target.value as 'name' | 'asc' | 'desc')}
+              className="block min-h-tap rounded-control border-rule border-navy bg-white px-s4 py-s3 text-body text-navy"
+            >
+              <option value="name">Course name (A–Z)</option>
+              <option value="asc">Shortest first</option>
+              <option value="desc">Longest first</option>
+            </select>
+          </div>
+        )}
         {(minLen !== '' || maxLen !== '') && (
           <button
             type="button"
