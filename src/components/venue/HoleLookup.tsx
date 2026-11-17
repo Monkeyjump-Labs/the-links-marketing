@@ -25,6 +25,30 @@ interface Course {
 
 const TEES = ['Black', 'Blue', 'White', 'Yellow', 'Red'] as const;
 const MAX_RESULTS = 40;
+/** Shown before the data has loaded; replaced by the real list once it has. */
+const COUNTRIES = [
+  'CAN',
+  'CHN',
+  'DOM',
+  'ESP',
+  'FRA',
+  'GBR',
+  'Golfzon',
+  'IRL',
+  'ITA',
+  'JPN',
+  'KOR',
+  'MEX',
+  'NOR',
+  'PHL',
+  'RUS',
+  'SGP',
+  'THA',
+  'TWN',
+  'USA',
+  'VNM',
+  'etc',
+];
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '');
 const toYd = (m: number) => Math.round(m * 1.0936133);
@@ -44,8 +68,13 @@ export default function HoleLookup() {
   const [minLen, setMinLen] = useState('');
   const [maxLen, setMaxLen] = useState('');
   const [sort, setSort] = useState<'name' | 'asc' | 'desc'>('name');
+  // The data file is ~230 KB, so it is fetched on first interaction rather than
+  // on page load. That keeps the page inside its page-weight budget
+  // (scripts/visual-audit.mjs) and costs a visitor who only glances nothing.
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
+    if (!started) return;
     fetch('/data/golfzon-holes.json')
       .then((r) => {
         if (!r.ok) throw new Error(String(r.status));
@@ -53,9 +82,9 @@ export default function HoleLookup() {
       })
       .then((d: Course[]) => setCourses(d))
       .catch(() => setFailed(true));
-  }, []);
+  }, [started]);
 
-  const countries = useMemo(() => (courses ? [...new Set(courses.map((c) => c.c))].sort() : []), [courses]);
+  const countries = useMemo(() => (courses ? [...new Set(courses.map((c) => c.c))].sort() : COUNTRIES), [courses]);
 
   const matches = useMemo(() => {
     if (!courses) return [];
@@ -94,12 +123,11 @@ export default function HoleLookup() {
       </p>
     );
   }
-  if (!courses) return <p className="text-body text-inkMuted">Loading courses…</p>;
 
   const nine = selected?.nines[Math.min(nineIdx, (selected?.nines.length ?? 1) - 1)];
 
   return (
-    <div>
+    <div onFocusCapture={() => setStarted(true)}>
       <div className="flex flex-col gap-s4 sm:flex-row">
         <div className="flex-1">
           <label htmlFor="hl-search" className="text-label caps-label text-inkMuted">
@@ -224,8 +252,12 @@ export default function HoleLookup() {
       </fieldset>
 
       <p className="mt-s4 text-small text-inkMuted" aria-live="polite">
-        {matches.length} of {courses.length} courses
-        {matches.length > MAX_RESULTS ? ` — showing the first ${MAX_RESULTS}, type more to narrow` : ''}
+        {!courses
+          ? started
+            ? 'Loading courses…'
+            : 'Search 334 courses by name, country or length.'
+          : `${matches.length} of ${courses.length} courses`}
+        {courses && matches.length > MAX_RESULTS ? ` — showing the first ${MAX_RESULTS}, type more to narrow` : ''}
       </p>
 
       <ul className="mt-s3 grid gap-s2 sm:grid-cols-2">
