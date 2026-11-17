@@ -1,0 +1,43 @@
+---
+/**
+ * GolfZon Hole Data — a look-up of par, handicap and tee distances for every
+ * course in the GolfZon Global library, for players at the bay who want to know
+ * what the next hole is before they hit it.
+ *
+ * Source: GOLFZON Global course list and course detail pages, collected
+ * 2026-09-29 (334 courses, 6,300 holes, five tees). Added at CJ's request
+ * 2026-11-17. Data lives in `public/data/golfzon-holes.json` and is fetched by
+ * the island, not bundled. To refresh it, regenerate that file from a newer
+ * export; nothing else needs to change.
+ *
+ * Deliberately NOT in the header nav or the sitemap's primary IA — it is a
+ * reference tool, linked from wherever staff want to point people.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HoleLookup from '../components/venue/HoleLookup';
+
+const metadata = {
+  metaTitle: 'GolfZon Hole Data — Par, Handicap & Tee Distances | The Links',
+  metaDescription:
+    'Look up par, handicap and yardage from every tee for each hole on 334 GolfZon courses — the same courses you can play at The Links in Lakeville and Stillwater.',
+};
+---
+
+<BaseLayout metadata={metadata} subscribe={false}>
+  <section class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg">
+    <h1 class="text-4xl font-bold lg:text-5xl">GolfZon Hole Data</h1>
+    <p class="mt-s4 max-w-prose-page text-lead text-inkBody">
+      Search any course on our GolfZon simulators to see par, handicap and the distance from every tee, hole by hole.
+    </p>
+
+    <div class="mt-s8">
+      <HoleLookup client:load />
+    </div>
+
+    <p class="mt-s9 max-w-prose-page text-small text-inkMuted">
+      Data from GOLFZON Global, collected September 2026. Distances are stored in meters and shown here in yards unless
+      you switch. Courses and holes are updated by GolfZon from time to time, so a hole in the simulator may
+      occasionally differ.
+    </p>
+  </section>
+</BaseLayout>
