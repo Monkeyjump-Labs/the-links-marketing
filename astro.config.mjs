@@ -19,10 +19,12 @@ export default defineConfig({
   integrations: [
     mdx(),
     react(),
-    // /styleguide is an internal reference page. It already emits
-    // `<meta name="robots" content="noindex">`; keeping it out of the sitemap
-    // stops us asking Google to crawl a page we then tell it to drop.
-    sitemap({ filter: (page) => !page.includes('/styleguide') }),
+    // /styleguide (internal reference) and /thanks (post-form confirmation)
+    // both emit `<meta name="robots" content="noindex">`; keeping them out of
+    // the sitemap stops us asking Google to crawl pages we then tell it to drop.
+    sitemap({
+      filter: (page) => !page.includes('/styleguide') && !page.includes('/thanks'),
+    }),
   ],
   redirects,
 

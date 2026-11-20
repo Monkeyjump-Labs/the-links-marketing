@@ -276,6 +276,8 @@ const leagues = defineCollection({
     format: z.string().optional(),
     night: z.string().optional(),
     startDate: z.string().optional(),
+    /** How full an OPEN league is, e.g. "75% full". Shown beside the name. Leave blank to show nothing. */
+    fillNote: z.string().optional(),
     weeks: z.number().optional(),
     /**
      * The LEAGUE ENTRY FEE — what it costs to join. Not the skins pot.

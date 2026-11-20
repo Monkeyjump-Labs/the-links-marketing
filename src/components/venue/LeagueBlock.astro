@@ -125,7 +125,10 @@ const facts: { label: string; value?: string; reason?: string }[] = isArchive
             <s>{d.name}</s> FULL
           </>
         ) : (
-          d.name
+          <>
+            {d.name}
+            {d.fillNote && <span class="font-semibold text-inkMuted"> ({d.fillNote})</span>}
+          </>
         )
       }
     </h3>

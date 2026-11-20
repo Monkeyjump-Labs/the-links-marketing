@@ -214,6 +214,13 @@ export default defineConfig({
           { type: 'string', name: 'format', label: 'Format (leave blank if not decided)' },
           { type: 'string', name: 'night', label: 'Night of the week' },
           { type: 'string', name: 'startDate', label: 'Start date (YYYY-MM-DD)' },
+          {
+            type: 'string',
+            name: 'fillNote',
+            label: 'How full it is (optional)',
+            description:
+              'e.g. 75% full. Shown in brackets beside the league name while it is open. Leave blank to show nothing.',
+          },
           { type: 'number', name: 'weeks', label: 'Number of weeks' },
           {
             type: 'string',
