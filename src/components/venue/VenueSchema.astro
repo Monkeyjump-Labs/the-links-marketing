@@ -65,6 +65,17 @@ const schema = {
    * @id reference the seo-map's schema graph draws (§5).
    */
   ...(d.schemaTypes.includes('BarOrPub') ? { hasMenu: { '@id': `${site}/menu/#menu` } } : {}),
+  /**
+   * The venue's own Google Business Profile (FW-7321): the strongest single
+   * signal that this page and that map listing are the same place. Each venue
+   * links only its own profile — never the other venue's, never the brand's.
+   */
+  ...(d.googleProfileUrl ? { sameAs: [d.googleProfileUrl] } : {}),
+  /** Where to book this venue: its own Whoosh club, the same URL its Book button uses. */
+  potentialAction: {
+    '@type': 'ReserveAction',
+    target: { '@type': 'EntryPoint', urlTemplate: d.bookingUrl },
+  },
   parentOrganization: { '@id': `${site}/#organization` },
   ...(d.containedInPlace ? { containedInPlace: { '@type': 'LocalBusiness', name: d.containedInPlace } } : {}),
   amenityFeature: d.amenities.map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),

@@ -101,6 +101,12 @@ export default defineConfig({
           { type: 'string', name: 'containedInPlace', label: 'Inside another business (if any)' },
           { type: 'string', name: 'bookingUrl', label: 'Whoosh booking URL', required: true },
           { type: 'string', name: 'mapUrl', label: 'Map URL' },
+          {
+            type: 'string',
+            name: 'googleProfileUrl',
+            label: 'Google Business Profile URL',
+            description: "This venue's own profile, in the form https://www.google.com/search?kgmid=/g/…",
+          },
           { type: 'number', name: 'openedYear', label: 'Year opened' },
           {
             type: 'string',
