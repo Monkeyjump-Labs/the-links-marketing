@@ -99,17 +99,41 @@ const metadata = {
     {
       /* An embedded map of the venue (FW-7320). Built from the venue record's
         address, so it follows any address edit in the CMS. Google's keyless
-        `output=embed` URL, lazy-loaded so it costs nothing above the fold.
-        It sits below the grid rather than in "Find us" so it never pushes the
-        Book button further down the page. */
+        `output=embed` URL. It sits below the grid rather than in "Find us" so
+        it never pushes the Book button further down the page.
+
+        Click-to-load, not `loading="lazy"`: the embed pulls ~440 KB of Google
+        script, which put Lakeville at 232% of the page-weight budget, and lazy
+        loading does not help when the map is near the fold. Loading on request
+        also means no Google cookies are set until a visitor asks for the map.
+        Without JS the button is never wired, so the address link above still
+        works as the fallback. */
     }
-    <iframe
-      src={`https://maps.google.com/maps?q=${encodeURIComponent(formatAddress(venue))}&output=embed`}
-      title={`Map showing ${d.name}, ${formatAddress(venue)}`}
-      class="mt-10 aspect-video w-full rounded border-2 border-ink/15"
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-      allowfullscreen></iframe>
+    <div class="mt-10 aspect-video w-full overflow-hidden rounded border-2 border-ink/15" data-venue-map>
+      <button
+        type="button"
+        class="flex h-full w-full flex-col items-center justify-center gap-2 bg-surface text-inkMuted hover:text-ink"
+        data-src={`https://maps.google.com/maps?q=${encodeURIComponent(formatAddress(venue))}&output=embed`}
+        data-title={`Map showing ${d.name}, ${formatAddress(venue)}`}
+      >
+        <span class="text-lg font-semibold">Show map</span>
+        <span class="text-sm">{formatAddress(venue)}</span>
+      </button>
+    </div>
+    <script>
+      for (const btn of document.querySelectorAll('[data-venue-map] button')) {
+        if (!(btn instanceof HTMLButtonElement)) continue;
+        btn.addEventListener('click', () => {
+          const frame = document.createElement('iframe');
+          frame.src = btn.dataset.src ?? '';
+          frame.title = btn.dataset.title ?? 'Map';
+          frame.className = 'h-full w-full';
+          frame.referrerPolicy = 'no-referrer-when-downgrade';
+          frame.allowFullscreen = true;
+          btn.replaceWith(frame);
+        });
+      }
+    </script>
 
     {
       /* The venue's own feature blocks, in the venue's own order. See the note on
