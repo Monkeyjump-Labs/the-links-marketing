@@ -149,6 +149,13 @@ const venues = defineCollection({
     containedInPlace: z.string().optional(),
     bookingUrl: z.string().url(),
     mapUrl: z.string().url().optional(),
+    /**
+     * The venue's own Google Business Profile, emitted as `sameAs` in its
+     * LocalBusiness schema so search engines tie the page to the map listing
+     * (FW-7321). Use the stable `kgmid` form, not a share.google short link,
+     * which is a redirect Google can change.
+     */
+    googleProfileUrl: z.string().url().optional(),
     openedYear: z.number().optional(),
     /**
      * The venue's own one-line positioning, restored from the client's live site
