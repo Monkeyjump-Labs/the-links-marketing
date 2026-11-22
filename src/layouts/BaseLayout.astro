@@ -37,11 +37,26 @@ const { metadata = {}, chrome = true, subscribe = true } = Astro.props;
 // Staging deploys are noindex site-wide regardless of per-page metadata.
 // Set PUBLIC_SITE_NOINDEX=true in the Vercel preview environment.
 const noIndex = metadata.noIndex || import.meta.env.PUBLIC_SITE_NOINDEX === 'true';
+
+// Google Tag Manager. Loaded on production only: staging sets
+// PUBLIC_SITE_NOINDEX=true, and CJ's own edits and test form submissions there
+// would otherwise land in the real analytics. Per-page `noIndex` (e.g. /thanks)
+// must NOT switch it off, so this reads the site-wide flag, not `noIndex`.
+const GTM_ID = 'GTM-WM7PFZK6';
+const loadGtm = import.meta.env.PUBLIC_SITE_NOINDEX !== 'true';
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
+    {
+      loadGtm && (
+        <script
+          is:inline
+          set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`}
+        />
+      )
+    }
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {
@@ -63,6 +78,19 @@ const noIndex = metadata.noIndex || import.meta.env.PUBLIC_SITE_NOINDEX === 'tru
     />
   </head>
   <body class="flex min-h-screen flex-col">
+    {
+      loadGtm && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="Google Tag Manager"
+          />
+        </noscript>
+      )
+    }
     {
       chrome && (
         <div class="sticky top-0 z-sticky">

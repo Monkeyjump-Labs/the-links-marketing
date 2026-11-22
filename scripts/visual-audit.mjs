@@ -210,7 +210,15 @@ const BUDGET_KB = {
      * there and is never fetched (255.5 KB measured). That is a real property of
      * the layout, and this is what keeps it true.
      */
-    '/': { desktop: 1300, mobile: 350 },
+    /*
+     * 2026-11-22: raised 1300 -> 1430 desktop and 350 -> 480 mobile for Google
+     * Tag Manager (GTM-WM7PFZK6), which loads ~119 KB of script (GA4) as soon as
+     * the page loads. CJ chose this over deferring it to first interaction
+     * because deferring would drop visitors who land and leave without touching
+     * the page from the analytics. The mobile figure is no longer "film never
+     * fetched" headroom — it is now almost entirely this one script.
+     */
+    '/': { desktop: 1430, mobile: 480 },
   },
 };
 
