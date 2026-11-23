@@ -40,7 +40,7 @@ const metadata = {
   metaTitle: 'Specials — The Links, Lakeville & Stillwater MN',
   metaDescription: showHalfPriceTuesdays
     ? 'Half-Price Tuesdays at The Links in Lakeville and Stillwater, plus the Kirko Chains Tailgate Bay at Lakeville: simulator time with beer, pizza and an appetizer.'
-    : 'The Kirko Chains Tailgate Bay at The Links in Lakeville: a 3-hour simulator rental with beer, pizza and an appetizer, $149 per bay.',
+    : 'The Sunday Tailgate Bay at The Links in Lakeville: a 3-hour simulator rental with beer, pizza and wings, $149 per bay. Plus this week: Blackout Wednesday and the Turkey Shootout contest.',
 };
 
 const tailgateIncludes = [
@@ -48,8 +48,8 @@ const tailgateIncludes = [
   'Up to 6 people',
   'Domestic beer bucket',
   'Large pizza',
-  'One free appetizer for the table',
-  'Gold chains for the crew',
+  'Wings or an appetizer',
+  'Football on 9 TVs',
 ];
 ---
 
@@ -61,8 +61,8 @@ const tailgateIncludes = [
       <p class="mt-s5 max-w-prose-page border-l-slab border-amber pl-s4 text-lead leading-body text-paper">
         {
           showHalfPriceTuesdays
-            ? 'Half-price simulator bays every Tuesday, at both locations. Lakeville also has the Kirko Chains Tailgate Bay.'
-            : 'The Kirko Chains Tailgate Bay, at our Lakeville location.'
+            ? 'Half-price simulator bays every Tuesday, at both locations. Lakeville also has the Sunday Tailgate Bay.'
+            : 'The Sunday Tailgate Bay, plus this week at our Lakeville location.'
         }
       </p>
     </div>
@@ -124,14 +124,12 @@ const tailgateIncludes = [
             width={720}
             quality={60}
             sizes="(min-width: 1024px) 480px, 100vw"
-            alt="Flyer for the Sunday Kirko Chainz Tailgate Bay at The Links: a 3-hour simulator rental, up to 6 people, a domestic beer bucket, a large pizza, a free appetizer for the table and gold chains for the crew, all in for $149 per bay. If all bays are full at noon, the table gets a pitcher of beer. Vikings touchdown means $3 purple shots; Packers interception means free cheese curds."
+            alt="Flyer for the Sunday Tailgate Bay at The Links: a 3-hour simulator rental, up to 6 people, a domestic beer bucket, a large pizza, wings or an appetizer and football on 9 TVs, all in for $149 per bay. Vikings Score, You Save: the Vikings score difference is the percent off a gift card, limited to a $200 gift card, and the gift card cannot be used that day."
             class="w-full"
           />
           <div>
             <p class="caps-label text-label-sm text-inkMuted">Sundays · Lakeville Location Only</p>
-            <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">
-              Kirko Chains Tailgate Bay
-            </h3>
+            <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">Sunday Tailgate Bay</h3>
             <p class="mt-s4 text-body leading-body text-inkMuted">What is included, all in, per bay:</p>
             <ul class="mt-s3 list-disc space-y-s2 pl-s6 text-body leading-body text-inkBody">
               {tailgateIncludes.map((item) => <li>{item}</li>)}
@@ -140,8 +138,13 @@ const tailgateIncludes = [
               $149 <span class="text-body font-semibold">all in, per bay</span>
             </p>
 
+            <p class="mt-s5 text-body leading-body text-inkBody">
+              <strong>Vikings Score, You Save:</strong> the Vikings score difference is the percent off a gift card. Limited
+              to a $200 gift card. The gift card cannot be used that day.
+            </p>
+
             <p class="mt-s5 text-small leading-body text-inkMuted">
-              See store for details. Limited availability. Valid with Kirko Chains Tailgate Bay booking.
+              See store for details. Limited availability. Valid with Sunday Tailgate Bay booking.
             </p>
             {
               lakeville && (
@@ -159,6 +162,68 @@ const tailgateIncludes = [
             }
           </div>
         </div>
+      </article>
+
+      {/* THIS WEEK. Dated: remove these three after the dates shown. */}
+      <article class="border-t-hairline border-navy py-s7">
+        <p class="caps-label text-label-sm text-inkMuted">Wednesday, November 25 · Lakeville Location Only</p>
+        <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">Blackout Wednesday</h3>
+        <p class="mt-s4 text-body leading-body text-inkBody">Start your Thanksgiving Eve here. Open 8am to 10pm.</p>
+        <ul class="mt-s3 list-disc space-y-s2 pl-s6 text-body leading-body text-inkBody">
+          <li>GolfZon NX golf simulators</li>
+          <li>Full bar and great food</li>
+          <li>Craft beer and signature cocktails</li>
+          <li>Food and drink specials all day</li>
+        </ul>
+        {
+          lakeville && (
+            <a
+              href={lakeville.data.bookingUrl}
+              class={buttonClasses('md', 'primary') + ' mt-s6'}
+              target="_blank"
+              rel="noopener"
+              data-analytics="specials:book-lakeville-blackout-wednesday"
+            >
+              Book your bay <span aria-hidden="true">→</span>
+              <span class="sr-only">(opens the Lakeville booking page in a new tab)</span>
+            </a>
+          )
+        }
+      </article>
+
+      <article class="border-t-hairline border-navy py-s7">
+        <p class="caps-label text-label-sm text-inkMuted">November 23 to December 6 · Lakeville Location Only</p>
+        <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">Turkey Shootout</h3>
+        <p class="mt-s4 text-body leading-body text-inkBody">
+          A bi-weekly contest. Compete at The Links of Lakeville, climb the leaderboard and get paid.
+        </p>
+        <ul class="mt-s3 list-disc space-y-s2 pl-s6 text-body leading-body text-inkBody">
+          <li>Format: best ball stroke play, 18 holes, teams of 2</li>
+          <li>Entry fee: $15 per player</li>
+          <li>You must make your own tee times</li>
+          <li>Live net and gross leaderboards, with automatic payouts</li>
+        </ul>
+        <p class="mt-s4 text-body leading-body text-inkBody">
+          To join: download the Fareway app, then register from the contests page and start playing.
+        </p>
+        <a
+          href="/contests/"
+          class={buttonClasses('md', 'primary') + ' mt-s6'}
+          data-analytics="specials:contest-turkey-shootout"
+        >
+          Register for the contest <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <article class="border-t-hairline border-navy py-s7">
+        <p class="caps-label text-label-sm text-inkMuted">Week of November 23</p>
+        <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">
+          No league play next week
+        </h3>
+        <p class="mt-s4 text-body leading-body text-inkBody">
+          The leagues are taking a week off. Bays are wide open: grab the crew, bring the family and stay for the bar
+          and kitchen. We are closed on Thanksgiving Day.
+        </p>
       </article>
     </div>
   </section>
