@@ -19,6 +19,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHead from '../components/venue/SectionHead.astro';
 import { buttonClasses } from '../lib/buttons';
 import { getVenue } from '../lib/venues';
+import turkeyWeekFlyer from '../assets/images/home-for-turkey-week.webp';
 import blackoutFlyer from '../assets/images/blackout-wednesday-lakeville.webp';
 import noLeagueFlyer from '../assets/images/no-league-week-nov-23.png';
 import turkeyShootoutFlyer from '../assets/images/turkey-shootout-lakeville.webp';
@@ -58,6 +59,53 @@ const metadata = {
             : 'This week at our Lakeville location.'
         }
       </p>
+    </div>
+  </section>
+
+  {
+    /*
+    TURKEY WEEK. Monday, November 23 only: take this band down after that date.
+    The flyer names no venue, so this band claims none; the button goes to the
+    booking chooser, where the venue is picked.
+  */
+  }
+  <section class="scroll-mt-s8 bg-greige" id="turkey-week">
+    <div class="mx-auto max-w-content px-gutter py-section lg:px-gutter-lg lg:py-section-lg">
+      <SectionHead>Home for Turkey Week</SectionHead>
+      <article class="border-t-score border-navy py-s7">
+        <div class="grid gap-s7 lg:grid-cols-2 lg:items-start lg:gap-s9">
+          <Image
+            src={turkeyWeekFlyer}
+            widths={[480, 720]}
+            width={720}
+            quality={60}
+            sizes="(min-width: 1024px) 480px, 100vw"
+            alt="Flyer for Home for Turkey Week at The Links, Monday November 23: bay time is $35 per hour per bay from noon to close, and domestic taps and rail drinks are $3 from noon to close. Not valid with any other promo or discount."
+            class="w-full"
+          />
+          <div>
+            <p class="caps-label text-label-sm text-inkMuted">Monday, November 23</p>
+            <h3 class="mt-s3 text-row leading-display font-extrabold tracking-display text-ink">
+              Home for Turkey Week
+            </h3>
+            <p class="mt-s5 border-l-slab border-ember pl-s4 text-lead leading-body text-inkBody">
+              Everybody is back in town. Round up the crew, grab a bay and let's gobble!
+            </p>
+            <ul class="mt-s5 list-disc space-y-s2 pl-s6 text-body leading-body text-inkBody">
+              <li><strong>$35 per hour</strong> bay time, per bay, noon to close</li>
+              <li><strong>$3</strong> domestic taps and rail drinks, noon to close</li>
+            </ul>
+            <p class="mt-s5 text-small leading-body text-inkMuted">Not valid with any other promo or discount.</p>
+            <a
+              href="/book/"
+              class={buttonClasses('md', 'primary') + ' mt-s6'}
+              data-analytics="specials:book-turkey-week"
+            >
+              Book your bay <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -118,7 +166,7 @@ const metadata = {
             width={720}
             quality={60}
             sizes="(min-width: 1024px) 480px, 100vw"
-            alt="Flyer for Pre-Game at The Links, Blackout Wednesday, on Wednesday November 25, open 8am to 10pm: golf simulators, a full bar and great food, craft beer and signature cocktails, and food and drink specials all day. Start your Thanksgiving Eve here."
+            alt="Flyer for Pre-Game at The Links before Blackout Wednesday, Wednesday November 25, open 8am to 10pm. No bay? No problem, come grab a drink. Golfing: $149 package with up to 3 hours of golf, 1 appetizer and 1 pizza, and 2-for-1 domestic beer (can or tap) or rail drinks. Not golfing: 2-for-1 domestic beer (can or tap) or rail drinks, plus $3 off apps or pizzas."
             class="w-full"
           />
           <div>
@@ -127,13 +175,18 @@ const metadata = {
               Pre-Game at The Links: Blackout Wednesday
             </h3>
             <p class="mt-s5 border-l-slab border-ember pl-s4 text-lead leading-body text-inkBody">
-              Start your Thanksgiving Eve here. Open 8am to 10pm.
+              No bay? No problem. Come grab a drink. Open 8am to 10pm.
             </p>
-            <ul class="mt-s5 list-disc space-y-s2 pl-s6 text-body leading-body text-inkBody">
-              <li>GolfZon NX golf simulators</li>
-              <li>Full bar and great food</li>
-              <li>Craft beer and signature cocktails</li>
-              <li>Food and drink specials all day</li>
+            <h4 class="mt-s5 text-body leading-body font-extrabold text-ink">Want to golf? $149 package</h4>
+            <ul class="mt-s2 list-disc space-y-s2 pl-s6 text-body leading-body text-inkBody">
+              <li>Up to 3 hours of golf</li>
+              <li>1 appetizer and 1 pizza</li>
+              <li>2-for-1 domestic beer (can or tap) or rail drinks</li>
+            </ul>
+            <h4 class="mt-s5 text-body leading-body font-extrabold text-ink">Not golfing? Just here to heckle?</h4>
+            <ul class="mt-s2 list-disc space-y-s2 pl-s6 text-body leading-body text-inkBody">
+              <li>2-for-1 domestic beer (can or tap) or rail drinks</li>
+              <li>$3 off apps or pizzas</li>
             </ul>
             {
               lakeville && (

@@ -218,7 +218,13 @@ const BUDGET_KB = {
      * the page from the analytics. The mobile figure is no longer "film never
      * fetched" headroom — it is now almost entirely this one script.
      */
-    '/': { desktop: 1430, mobile: 480 },
+    /*
+     * 2026-11-25: raised 1430 -> 1440 desktop and 480 -> 490 mobile. The GA4 script
+     * behind Google Tag Manager grew ~5 KB on Google's side with no change to this
+     * site, and the homepage went 5 KB over. CJ approved the small raise to publish
+     * the specials updates. The real fix is still a smaller hero film.
+     */
+    '/': { desktop: 1440, mobile: 490 },
   },
 };
 
