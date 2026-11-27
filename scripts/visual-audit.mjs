@@ -224,7 +224,14 @@ const BUDGET_KB = {
      * site, and the homepage went 5 KB over. CJ approved the small raise to publish
      * the specials updates. The real fix is still a smaller hero film.
      */
-    '/': { desktop: 1440, mobile: 490 },
+    /*
+     * 2026-11-27: raised 1440 -> 1470 desktop only. The homepage measured 1453 KB,
+     * with scripts at ~196 KB. The gift-card banner and pop-up added no media or
+     * external script, so the growth is most likely Google's again. CJ approved
+     * the raise. Mobile stays at 490 (measured 483), so it is close to failing
+     * too. The real fix is still a smaller hero film.
+     */
+    '/': { desktop: 1470, mobile: 490 },
   },
 };
 
