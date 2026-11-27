@@ -4,10 +4,9 @@
  *
  * ── WHY THIS FILE EXISTS ───────────────────────────────────────────────────
  *
- * Two surfaces point at the same app: the dismissible strip above the header
- * (`AppBanner`) and the permanent badge in the footer (`AppBadge`). A store URL
- * typed into both is a store URL that will be corrected in one of them. The
- * pitch is here for the same reason.
+ * Two surfaces point at the same app: the `/app/` page and the permanent badge
+ * in the footer (`AppBadge`). A store URL typed into both is a store URL that
+ * will be corrected in one of them. The pitch is here for the same reason.
  *
  * ── THE URLS ARE VERIFIED, NOT GUESSED ─────────────────────────────────────
  *
@@ -24,7 +23,7 @@
  * surfaces follow. Do not paste a store link into a component.
  */
 
-/** Apple's listing. Also the no-JS default for the single Download control. */
+/** Apple's listing. */
 export const APP_STORE_URL = 'https://apps.apple.com/us/app/lakeville-links/id1668921452';
 
 /** Google's listing. */

@@ -1,14 +1,14 @@
 ---
 import '../styles/global.css';
 import Seo from '../components/Seo.astro';
-import AppBanner from '../components/layout/AppBanner.astro';
+import GiftCardBanner from '../components/layout/GiftCardBanner.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import VenueBar from '../components/venue/VenueBar.astro';
 import OrganizationSchema from '../components/venue/OrganizationSchema.astro';
 import LeadFormScript from '../components/venue/LeadFormScript.astro';
 import SubscribeBand from '../components/forms/SubscribeBand.astro';
-import MembershipPromo from '../components/venue/MembershipPromo.astro';
+import GiftCardPromo from '../components/venue/GiftCardPromo.astro';
 import type { PageMetadata } from '../lib/types';
 
 interface Props {
@@ -33,6 +33,9 @@ interface Props {
 }
 
 const { metadata = {}, chrome = true, subscribe = true } = Astro.props;
+
+// The gift-card banner and pop-up both link to /gift-cards/, so neither shows there.
+const onGiftCards = Astro.url.pathname.startsWith('/gift-cards');
 
 // Staging deploys are noindex site-wide regardless of per-page metadata.
 // Set PUBLIC_SITE_NOINDEX=true in the Vercel preview environment.
@@ -94,7 +97,7 @@ const loadGtm = import.meta.env.PUBLIC_SITE_NOINDEX !== 'true';
     {
       chrome && (
         <div class="sticky top-0 z-sticky">
-          <AppBanner />
+          {!onGiftCards && <GiftCardBanner />}
           <Header />
           <VenueBar />
         </div>
@@ -111,7 +114,7 @@ const loadGtm = import.meta.env.PUBLIC_SITE_NOINDEX !== 'true';
     }
     {chrome && subscribe && <SubscribeBand />}
     {chrome && <Footer />}
-    {chrome && subscribe && !Astro.url.pathname.startsWith('/memberships') && <MembershipPromo />}
+    {chrome && subscribe && !onGiftCards && <GiftCardPromo />}
     <OrganizationSchema />
     {
       /* Progressive enhancement for every `/api/lead` form. Mounted site-wide

@@ -3,13 +3,9 @@
  * The permanent half of the app pitch: a badge in the footer that names BOTH
  * stores outright.
  *
- * It is deliberately NOT dismissible and shares no state with `AppBanner`.
- * Dismissing the strip at the top means "stop interrupting me", not "never tell
- * me this app exists" — so the footer keeps the answer for anyone who dismissed
- * the strip in January and goes looking for the app in March. It is also the
- * fallback for the one thing the strip's single Download button can get wrong:
- * a user agent that is neither obviously Android nor Apple still gets an
- * explicit choice of store here.
+ * It is deliberately NOT dismissible, so anyone looking for the app finds it on
+ * every page. It names both stores, so nobody is sent to the wrong one by a
+ * guess about their device.
  *
  * Square, per the radius rule — badges are 0, the 3px radius belongs to the two
  * store buttons inside it and to nothing else in this component.

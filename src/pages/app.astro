@@ -5,16 +5,10 @@
  *
  * ── WHY THIS EXISTS ────────────────────────────────────────────────────────
  *
- * The banner's Download control server-rendered to Apple and was rewritten to
- * Google Play by a user-agent sniff. That is correct for a phone the sniff
- * recognises and wrong for everything else — a desktop visitor, an Android
- * browser spoofing its UA, anyone with JS off. The failure was silent and it
- * always failed the same direction: toward Apple. Owner reported it 2026-09-18.
- *
- * So the sniff stops being the answer and becomes an optimisation. This page is
- * the ground truth, the banner points here by default, and the sniff only ever
- * SHORTCUTS a visitor it is confident about. When it is wrong now, the visitor
- * lands on a choice instead of the wrong store.
+ * The old app strip's Download control guessed the store from the browser, and
+ * everyone it could not identify was sent to Apple. Owner reported it
+ * 2026-09-18. This page is the answer: it names both stores and lets the visitor
+ * choose. (The strip itself was replaced by the gift-card strip on 2026-11-27.)
  *
  * ── THE TWO BUTTONS ARE DELIBERATELY EQUAL ─────────────────────────────────
  *

@@ -1,0 +1,95 @@
+---
+/**
+ * The gift-card strip: one line, one compact button, one dismiss. It rides at the
+ * top of the sticky stack in `BaseLayout`, so it stays put as the page scrolls.
+ * It replaced the app strip on 2026-11-27 (owner: drive gift-card purchases).
+ * The app is still offered by `AppBadge` in the footer.
+ *
+ * ── IT MUST NOT OUTRANK "BOOK A BAY" ───────────────────────────────────────
+ *
+ * The site's primary CTA is transactional and lives in the header directly
+ * below this strip (playbook core.md §6: two clicks to book from any page). So
+ * the button takes the `outline` variant: navy on greige, legible at 13.31:1,
+ * unmistakably secondary to the ember button beneath it.
+ *
+ * ── GROUND ─────────────────────────────────────────────────────────────────
+ *
+ * Greige: paper is too close to the header's white to read as a separate strip,
+ * so the stack is greige / white / midnight — three distinguishable bands rather
+ * than a white sandwich.
+ *
+ * ── WHERE IT POINTS ────────────────────────────────────────────────────────
+ *
+ * `/gift-cards/`, never straight to Square. A card only works at the venue it
+ * was bought from, and that page says so before the buyer picks a venue.
+ *
+ * ── DISMISSAL ──────────────────────────────────────────────────────────────
+ *
+ * The × sets a flag in `localStorage` and the strip stays gone on later pages
+ * and later visits. The script is `is:inline` and sits immediately after the
+ * markup on purpose: a bundled module script is deferred until after parse, and
+ * a dismissed banner would flash into view on every page load before vanishing.
+ * No cookie, nothing sent anywhere, and a visitor with storage disabled simply
+ * keeps seeing the strip — which is the safe way for it to fail.
+ */
+import { buttonClasses } from '../../lib/buttons';
+---
+
+<aside class="border-b-hairline border-ink/15 bg-greige" aria-label="Gift cards" data-gift-banner>
+  {
+    /*
+     * THIS ROW MUST NOT WRAP. Built with `flex-wrap` the strip measured 281px
+     * tall at 375px — every child took its own line — and the sticky stack then
+     * stood at 547px, two thirds of a phone screen, permanently.
+     *
+     * So: one row, the sentence is the only thing allowed to take space
+     * (`min-w-0 flex-1`), and everything else is `shrink-0`. The floor is the
+     * 44px tap target inside the button, which is where it should be.
+     */
+  }
+  <div class="mx-auto flex max-w-content items-center gap-x-s4 px-gutter py-s2 lg:gap-x-s5 lg:px-gutter-lg">
+    <p class="min-w-0 flex-1 text-label-sm leading-body text-inkBody sm:text-small">
+      Give golf: gift cards for bay time, food and drink
+    </p>
+
+    <a href="/gift-cards/" class={`${buttonClasses('sm', 'outline')} shrink-0`} data-analytics="gift-card-banner-buy">
+      Buy now<span class="sr-only">: gift cards</span>
+    </a>
+
+    <button
+      type="button"
+      class="flex min-h-tap min-w-tap shrink-0 items-center justify-center text-body text-inkMuted transition-colors duration-fast ease-standard hover:text-ink"
+      data-gift-dismiss
+      aria-label="Dismiss the gift card message"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</aside>
+
+<script is:inline>
+  (function () {
+    var KEY = 'links:gift-card-banner-dismissed';
+    var banner = document.querySelector('[data-gift-banner]');
+    if (!banner) return;
+
+    // Hide before paint if this visitor has already dismissed it.
+    try {
+      if (window.localStorage.getItem(KEY) === '1') banner.hidden = true;
+    } catch {
+      /* storage blocked — keep the strip, it is not worth an error */
+    }
+
+    var dismiss = banner.querySelector('[data-gift-dismiss]');
+    if (dismiss) {
+      dismiss.addEventListener('click', function () {
+        banner.hidden = true;
+        try {
+          window.localStorage.setItem(KEY, '1');
+        } catch {
+          /* dismissed for this page view only */
+        }
+      });
+    }
+  })();
+</script>
